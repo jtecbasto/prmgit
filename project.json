@@ -33,6 +33,13 @@
 				"height": 236
 			},
 			{
+				"gid": 1987350758,
+				"y": 345,
+				"x": 1285,
+				"width": 130.484375,
+				"height": 320
+			},
+			{
 				"gid": 4193777068,
 				"y": 425,
 				"x": 20,
@@ -299,6 +306,20 @@
 							"table": 35049744,
 							"pageType": "list"
 						}
+					},
+					{
+						"id": "4",
+						"data": {
+							"name": {
+								"table": "productos",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 1987350758,
+							"pageType": "list"
+						}
 					}
 				]
 			}
@@ -393,7 +414,8 @@
 								"welcome_item6",
 								"welcome_item7",
 								"welcome_item8",
-								"welcome_item9"
+								"welcome_item9",
+								"welcome_item5"
 							]
 						}
 					},
@@ -590,6 +612,18 @@
 				},
 				"adminarea_link": {
 					"type": "adminarea_link"
+				},
+				"welcome_item5": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "productos",
+					"linkPage": "list",
+					"linkText": {
+						"table": "productos",
+						"type": 6
+					},
+					"background": "#bc8f8f",
+					"linkType": 0
 				}
 			},
 			"dbProps": {},
