@@ -313,7 +313,7 @@
 					"lookupLinkField": "idproducto",
 					"lookupDisplayField": "descripcion",
 					"lookupOrderBy": "descripcion",
-					"lookupControlType": 1,
+					"lookupControlType": 2,
 					"lookupListPage": "list"
 				}
 			],
@@ -988,12 +988,12 @@
 		{
 			"eventId": "EVENT_AFTERADD",
 			"pageType": "add",
-			"code": "// Events → Add → After record added\nglobal $conn;\n\n// Recupera y limpia el stash\n$extras = $_SESSION['solicitudes_add_extras'][$pageObject->id] ?? [];\nunset($_SESSION['solicitudes_add_extras'][$pageObject->id]);\n\n// Ya tienes $keys[\"idsolicitud\"] del registro insertado en solicitudes\n$idsolicitud = (int)$keys[\"idsolicitud\"];\n\n// EJEMPLO: insertar dirección de entrega en entregasvnp usando los extras\nif (!empty($extras)) {\n    $sql = sprintf(\n        \"INSERT INTO entregasvnp (idsolicitud, estado, ciudad, cp, calle, numeroext, numeroint, colonia)\n         VALUES (%d, %s, %s, %d, %s, %s, %s, %s)\",\n        $idsolicitud,\n        db_prepare_string($extras[\"estado\"]    ?? \"\"),\n        db_prepare_string($extras[\"ciudad\"]    ?? \"\"),\n        (int)($extras[\"cp\"]                    ?? 0),\n        db_prepare_string($extras[\"calle\"]     ?? \"\"),\n        db_prepare_string($extras[\"numeroext\"] ?? \"\"),\n        db_prepare_string($extras[\"numeroint\"] ?? \"\"),\n        db_prepare_string($extras[\"colonia\"]   ?? \"\")\n    );\n    db_exec($sql, $conn);\n}\n\n// Si quieres log/debug:\n// file_put_contents(\"extras_log.txt\", date('c').\" PID:\".$pageObject->id.\" \".json_encode($extras,JSON_UNESCAPED_UNICODE).PHP_EOL, FILE_APPEND);\n\n\n"
+			"code": "// Events → Add → After record added\nglobal $conn;\n\n// Recupera y limpia el stash\n$extras = $_SESSION['solicitudes_add_extras'][$pageObject->id] ?? [];\nunset($_SESSION['solicitudes_add_extras'][$pageObject->id]);\n\n// Ya tienes $keys[\"idsolicitud\"] del registro insertado en solicitudes\n$idsolicitud = (int)$keys[\"idsolicitud\"];\n\n// EJEMPLO: insertar dirección de entrega en entregasvnp usando los extras\nif (!empty($extras)) {\n    $sql = sprintf(\n        \"INSERT INTO entregasvnp (idsolicitud, estado, ciudad, cp, calle, numeroext, numeroint, colonia)\n         VALUES (%d, %s, %s, %d, %s, %s, %s, %s)\",\n        $idsolicitud,\n        db_prepare_string($extras[\"estado\"]    ?? \"\"),\n        db_prepare_string($extras[\"ciudad\"]    ?? \"\"),\n        (int)($extras[\"cp\"]                    ?? 0),\n        db_prepare_string($extras[\"calle\"]     ?? \"\"),\n        db_prepare_string($extras[\"numeroext\"] ?? \"\"),\n        db_prepare_string($extras[\"numeroint\"] ?? \"\"),\n        db_prepare_string($extras[\"colonia\"]   ?? \"\")\n    );\n    db_exec($sql, $conn);\n}\n\n$esnimei = $_SESSION[\"esnimei\"] ?? null;\nif (!empty($esnimei)) {\n       $sql = sprintf(\n        \"INSERT INTO seriessolicitadas (idsolicitud, esnimei)\n         VALUES (%d, %s)\",\n        $idsolicitud,\n        $esnimei\n    );\n    db_exec($sql, $conn);\n\n}\n\n// Si quieres log/debug:\n// file_put_contents(\"extras_log.txt\", date('c').\" PID:\".$pageObject->id.\" \".json_encode($extras,JSON_UNESCAPED_UNICODE).PHP_EOL, FILE_APPEND);\n\n\n"
 		},
 		{
 			"eventId": "EVENT_BEFOREADD",
 			"pageType": "add",
-			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n// Events → Add → Before record added\n// Copia campos del JOIN a un arreglo y quítalos de $values\n\n$values[\"fecha\"]=date('Y-m-d');\n$values[\"idtienda\"]=2;  //Tienda no presencial\n$values[\"idtipoventa\"]=5; //Renovación Tradicional (Equipo y Chip)\n$values[\"estatus\"]=\"ACTUALIZADA\";\n$values[\"equipoincluido\"]=1;\n\n$camposExtra = [\"nombre\",\"paterno\",\"materno\",\"estado\",\"ciudad\",\"cp\",\"calle\",\"numeroext\",\"numeroint\",\"colonia\"];\n\n$extras = [];\nforeach ($camposExtra as $f) {\n    if (array_key_exists($f, $values)) {\n        $extras[$f] = $values[$f];\n        unset($values[$f]);             // <- evita \"Unknown column ...\" en el INSERT de solicitudes\n    } else {\n        // Si alguno lo pones como \"Custom field\" (no ligado a DB), recupéralo del POST:\n        $pv = postvalue($f);\n        if ($pv !== null) $extras[$f] = $pv;\n    }\n}\n\n// Guarda en sesión, indexado por el id de la página para evitar choques con otras pestañas\n$_SESSION['solicitudes_add_extras'] = $_SESSION['solicitudes_add_extras'] ?? [];\n$_SESSION['solicitudes_add_extras'][$pageObject->id] = $extras;\n\n// Continúa con el insert normal en solicitudes\nreturn true;\n\n\n"
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n// Events → Add → Before record added\n// Copia campos del JOIN a un arreglo y quítalos de $values\n\n$values[\"fecha\"]=date('Y-m-d');\n$values[\"idtienda\"]=2;  //Tienda no presencial\n$values[\"idtipoventa\"]=5; //Renovación Tradicional (Equipo y Chip)\n$values[\"estatus\"]=\"ACTUALIZADA\";\n$values[\"equipoincluido\"]=1;\n\n$camposExtra = [\"nombre\",\"paterno\",\"materno\",\"estado\",\"ciudad\",\"cp\",\"calle\",\"numeroext\",\"numeroint\",\"colonia\"];\n\n$extras = [];\nforeach ($camposExtra as $f) {\n    if (array_key_exists($f, $values)) {\n        $extras[$f] = $values[$f];\n        unset($values[$f]);             // <- evita \"Unknown column ...\" en el INSERT de solicitudes\n    } else {\n        // Si alguno lo pones como \"Custom field\" (no ligado a DB), recupéralo del POST:\n        $pv = postvalue($f);\n        if ($pv !== null) $extras[$f] = $pv;\n    }\n}\n\n// Guarda en sesión, indexado por el id de la página para evitar choques con otras pestañas\n$_SESSION['solicitudes_add_extras'] = $_SESSION['solicitudes_add_extras'] ?? [];\n$_SESSION['solicitudes_add_extras'][$pageObject->id] = $extras;\n\n// Continúa con el insert normal en solicitudes\n\n$strSQLExists=\"SELECT\ncompras.noserie\nFROM compras\nLEFT OUTER JOIN ventas v ON compras.noserie = v.esnimei\nLEFT OUTER JOIN movimientos m ON compras.noserie = m.esnimei\nLEFT OUTER JOIN (SELECT t.esnimei,t.tiendadestino,t.`fecharecepcion` FROM traspasosdet t INNER JOIN (SELECT MAX(idtraspasodet) idtraspaso FROM traspasosdet GROUP BY esnimei) t1 ON t.idtraspasodet=t1.idtraspaso) t ON compras.noserie=t.esnimei\nINNER JOIN productos ON compras.codigoproducto = productos.codigoIUSA\nWHERE   v.esnimei is null and m.esnimei is null and (t. esnimei is null or t.fecharecepcion is not null and t.fecharecepcion<>'0000-00-00')\n  and compras.tienda=2 and compras.clasif = 2 and productos.Clasif='Equipo' LIMIT 1 \";\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\n\nif (!$data)\n{\n\t\t$message=\"No existe saldo en el inventario para el producto seleccionado\";\n\treturn false;\n\n} else {\n    $_SESSION[\"esnimei\"] = $data['noserie'];\n}\n\n\n\n\n\nreturn true;\n\n\n"
 		}
 	],
 	"dbTableInfo": {
@@ -1838,9 +1838,7 @@
 					"cells": {
 						"c1": {
 							"model": "c1",
-							"items": [
-								"export_field"
-							]
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -1887,10 +1885,6 @@
 				},
 				"export_cancel": {
 					"type": "export_cancel"
-				},
-				"export_field": {
-					"field": "descripcion",
-					"type": "export_field"
 				}
 			},
 			"dbProps": {},
@@ -2249,9 +2243,7 @@
 					"cells": {
 						"c3": {
 							"model": "c3",
-							"items": [
-								"integrated_edit_field"
-							]
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -2278,11 +2270,6 @@
 				},
 				"view_edit": {
 					"type": "view_edit"
-				},
-				"integrated_edit_field": {
-					"field": "descripcion",
-					"type": "integrated_edit_field",
-					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -2772,8 +2759,7 @@
 				},
 				"simple_grid_field31": {
 					"type": "grid_field_label",
-					"field": "fecha",
-					"background": "#ff0000"
+					"field": "fecha"
 				},
 				"simple_grid_field4": {
 					"field": "idcliente",
@@ -2963,9 +2949,7 @@
 					"cells": {
 						"c1": {
 							"model": "c1",
-							"items": [
-								"simple_grid_field"
-							]
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -2981,10 +2965,6 @@
 				},
 				"print_pages": {
 					"type": "print_pages"
-				},
-				"simple_grid_field": {
-					"field": "descripcion",
-					"type": "simple_grid_field"
 				}
 			},
 			"dbProps": {},

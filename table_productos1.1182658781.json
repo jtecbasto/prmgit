@@ -1,39 +1,23 @@
 {
-	"sql": "SELECT\n\tproductos.idproducto,\n\tproductos.codigoIUSA,\n\tproductos.descripcion\nFROM\n productos \nWHERE\n productos.Clasif ='Equipo'\n\n",
+	"sql": "SELECT\r\n\tproductos.idproducto,\r\n\tproductos.codigoIUSA,\r\n\tproductos.descripcion,\r\n\tCOUNT(idproducto) AS saldo\r\nFROM\r\n\tcompras\r\n\tLEFT OUTER JOIN ventas AS v ON v.esnimei = compras.noserie\r\n\tLEFT OUTER JOIN movimientos AS m ON m.esnimei = compras.noserie\r\n\tINNER JOIN productos ON productos.codigoIUSA = compras.codigoproducto\r\nWHERE\r\n(v.esnimei is null AND m.esnimei is null) AND productos.Clasif ='Equipo' AND compras.tienda =2\r\nGROUP BY\r\n\tproductos.idproducto\r\n",
 	"type": 1,
 	"connId": "conn",
-	"originalTable": "tmpsaldos",
+	"originalTable": "productos",
 	"name": "vw_saldosnp",
-	"shortTableName": "vw_saldosnp",
+	"shortTableName": "productos1",
 	"dbType": 0,
 	"keyFields": [
 		"idproducto"
 	],
-	"detailsBadgeColor": "6da5c8",
+	"detailsBadgeColor": "bc8f8f",
 	"fields": [
-		{
-			"name": "descripcion",
-			"sqlExpression": "productos.descripcion",
-			"index": 3,
-			"strField": "descripcion",
-			"type": 200,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{}
-			],
-			"label": {
-				"Spanish": "Descripción"
-			},
-			"tableName": "productos"
-		},
 		{
 			"name": "idproducto",
 			"sqlExpression": "productos.idproducto",
 			"index": 1,
 			"strField": "idproducto",
 			"type": 3,
+			"autoinc": true,
 			"viewFormats": [
 				{}
 			],
@@ -41,7 +25,7 @@
 				{}
 			],
 			"label": {
-				"Spanish": "Id"
+				"Spanish": "Idproducto"
 			},
 			"tableName": "productos"
 		},
@@ -58,9 +42,43 @@
 				{}
 			],
 			"label": {
-				"Spanish": "Código"
+				"Spanish": "Codigo"
 			},
 			"tableName": "productos"
+		},
+		{
+			"name": "descripcion",
+			"sqlExpression": "productos.descripcion",
+			"index": 3,
+			"strField": "descripcion",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Descripcion"
+			},
+			"tableName": "productos"
+		},
+		{
+			"name": "saldo",
+			"sqlExpression": "COUNT(idproducto)",
+			"index": 4,
+			"strField": "saldo",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Saldo"
+			},
+			"tableName": ""
 		}
 	],
 	"dbTableInfo": {
@@ -68,23 +86,56 @@
 		"foreignKeys": [],
 		"fields": [
 			{
-				"name": "noserie",
-				"type": 200,
-				"size": 30,
+				"name": "idproducto",
+				"type": 20,
+				"size": 20,
 				"scale": 0,
-				"typeName": "varchar(30)",
+				"typeName": "bigint(20)",
 				"nullable": false,
+				"autoinc": true,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "marca",
+				"type": 200,
+				"size": 20,
+				"scale": 0,
+				"typeName": "varchar(20)",
+				"nullable": true,
 				"autoinc": false,
 				"defaultValueSQL": null,
 				"defaultValue": ""
 			},
 			{
-				"name": "tienda",
-				"type": 3,
-				"size": 3,
+				"name": "modelo",
+				"type": 200,
+				"size": 50,
 				"scale": 0,
-				"typeName": "int(3)",
+				"typeName": "varchar(50)",
 				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "color",
+				"type": 200,
+				"size": 20,
+				"scale": 0,
+				"typeName": "varchar(20)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "codigoIUSA",
+				"type": 200,
+				"size": 20,
+				"scale": 0,
+				"typeName": "varchar(20)",
+				"nullable": false,
 				"autoinc": false,
 				"defaultValueSQL": null,
 				"defaultValue": ""
@@ -92,38 +143,16 @@
 			{
 				"name": "descripcion",
 				"type": 200,
-				"size": 80,
+				"size": 150,
 				"scale": 0,
-				"typeName": "varchar(80)",
-				"nullable": true,
-				"autoinc": false,
-				"defaultValueSQL": null,
-				"defaultValue": ""
-			},
-			{
-				"name": "clasif",
-				"type": 3,
-				"size": 1,
-				"scale": 0,
-				"typeName": "int(1)",
+				"typeName": "varchar(150)",
 				"nullable": false,
 				"autoinc": false,
 				"defaultValueSQL": null,
 				"defaultValue": ""
 			},
 			{
-				"name": "fecha",
-				"type": 135,
-				"size": 0,
-				"scale": 0,
-				"typeName": "datetime",
-				"nullable": true,
-				"autoinc": false,
-				"defaultValueSQL": null,
-				"defaultValue": ""
-			},
-			{
-				"name": "tipoproducto",
+				"name": "Clasif",
 				"type": 129,
 				"size": 0,
 				"scale": 0,
@@ -136,13 +165,46 @@
 				"autoinc": false,
 				"defaultValueSQL": null,
 				"defaultValue": ""
+			},
+			{
+				"name": "precioestimado",
+				"type": 14,
+				"size": 10,
+				"scale": 2,
+				"typeName": "decimal(10,2)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idmarca",
+				"type": 3,
+				"size": 4,
+				"scale": 0,
+				"typeName": "int(4)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idmodelo",
+				"type": 3,
+				"size": 4,
+				"scale": 0,
+				"typeName": "int(4)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
 			}
 		],
 		"primaryKeys": [
-			"noserie"
+			"idproducto"
 		],
 		"uniqueFields": [],
-		"name": "tmpsaldos"
+		"name": "productos"
 	},
 	"pages": [
 		{
@@ -240,7 +302,8 @@
 						"c3": {
 							"model": "c3",
 							"items": [
-								"integrated_edit_field2"
+								"integrated_edit_field3",
+								"integrated_edit_field4"
 							]
 						}
 					},
@@ -269,7 +332,12 @@
 				"add_reset": {
 					"type": "add_reset"
 				},
-				"integrated_edit_field2": {
+				"integrated_edit_field3": {
+					"field": "codigoIUSA",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field4": {
 					"field": "descripcion",
 					"type": "integrated_edit_field",
 					"orientation": 0
@@ -353,8 +421,9 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"export_field2",
-								"export_field"
+								"export_field",
+								"export_field4",
+								"export_field5"
 							]
 						}
 					},
@@ -403,12 +472,16 @@
 				"export_cancel": {
 					"type": "export_cancel"
 				},
-				"export_field2": {
-					"field": "descripcion",
-					"type": "export_field"
-				},
 				"export_field": {
 					"field": "idproducto",
+					"type": "export_field"
+				},
+				"export_field4": {
+					"field": "codigoIUSA",
+					"type": "export_field"
+				},
+				"export_field5": {
+					"field": "descripcion",
 					"type": "export_field"
 				}
 			},
@@ -494,7 +567,9 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"import_field2"
+								"import_field",
+								"import_field4",
+								"import_field5"
 							]
 						}
 					},
@@ -506,7 +581,15 @@
 				"import_header": {
 					"type": "import_header"
 				},
-				"import_field2": {
+				"import_field": {
+					"field": "idproducto",
+					"type": "import_field"
+				},
+				"import_field4": {
+					"field": "codigoIUSA",
+					"type": "import_field"
+				},
+				"import_field5": {
 					"field": "descripcion",
 					"type": "import_field"
 				}
@@ -624,7 +707,10 @@
 					"cells": {
 						"c3": {
 							"model": "c3",
-							"items": []
+							"items": [
+								"integrated_edit_field3",
+								"integrated_edit_field4"
+							]
 						}
 					},
 					"deferredItems": [],
@@ -657,6 +743,16 @@
 				},
 				"edit_close": {
 					"type": "edit_close"
+				},
+				"integrated_edit_field3": {
+					"field": "codigoIUSA",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field4": {
+					"field": "descripcion",
+					"type": "integrated_edit_field",
+					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -770,7 +866,11 @@
 					"cells": {
 						"c3": {
 							"model": "c3",
-							"items": []
+							"items": [
+								"integrated_edit_field",
+								"integrated_edit_field4",
+								"integrated_edit_field5"
+							]
 						}
 					},
 					"deferredItems": [],
@@ -788,6 +888,21 @@
 				},
 				"view_close": {
 					"type": "view_close"
+				},
+				"integrated_edit_field": {
+					"field": "idproducto",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field4": {
+					"field": "codigoIUSA",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field5": {
+					"field": "descripcion",
+					"type": "integrated_edit_field",
+					"orientation": 0
 				},
 				"hamburger": {
 					"type": "hamburger",
@@ -941,158 +1056,38 @@
 					"deferredItems": [],
 					"recsPerRow": 1
 				},
+				"grid": {
+					"modelId": "simple-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"simple_grid_field4",
+								"simple_grid_field5",
+								"simple_grid_field"
+							]
+						}
+					},
+					"deferredItems": [
+						"grid_checkbox",
+						"grid_checkbox_head"
+					],
+					"recsPerRow": 1
+				},
 				"top": {
 					"modelId": "list-sidebar-top",
 					"grid": [],
 					"cells": {},
-					"deferredItems": [],
-					"recsPerRow": 1
-				},
-				"grid": {
-					"modelId": "horizontal-grid",
-					"grid": [
-						{
-							"section": "head",
-							"cells": [
-								{
-									"cell": "headcell_checkbox"
-								},
-								{
-									"cell": "headcell_field"
-								},
-								{
-									"cell": "headcell_field1"
-								},
-								{
-									"cell": "headcell_field3"
-								}
-							]
-						},
-						{
-							"section": "body",
-							"cells": [
-								{
-									"cell": "cell_checkbox"
-								},
-								{
-									"cell": "cell_field"
-								},
-								{
-									"cell": "cell_field1"
-								},
-								{
-									"cell": "cell_field3"
-								}
-							]
-						},
-						{
-							"section": "foot",
-							"cells": [
-								{
-									"cell": "footcell_checkbox"
-								},
-								{
-									"cell": "footcell_field"
-								},
-								{
-									"cell": "footcell_field1"
-								},
-								{
-									"cell": "footcell_field3"
-								}
-							]
-						}
-					],
-					"cells": {
-						"headcell_field": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field1"
-							],
-							"field": "codigoIUSA",
-							"columnName": "field"
-						},
-						"cell_field": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field"
-							],
-							"field": "codigoIUSA",
-							"columnName": "field"
-						},
-						"footcell_field": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "codigoIUSA",
-							"columnName": "field"
-						},
-						"headcell_field1": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field3"
-							],
-							"field": "descripcion",
-							"columnName": "field"
-						},
-						"cell_field1": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field2"
-							],
-							"field": "descripcion",
-							"columnName": "field"
-						},
-						"footcell_field1": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "descripcion",
-							"columnName": "field"
-						},
-						"headcell_checkbox": {
-							"model": "headcell_checkbox",
-							"items": [
-								"grid_checkbox_head"
-							],
-							"columnName": "checkbox",
-							"field": ""
-						},
-						"cell_checkbox": {
-							"model": "cell_checkbox",
-							"items": [
-								"grid_checkbox"
-							],
-							"columnName": "checkbox",
-							"field": ""
-						},
-						"footcell_checkbox": {
-							"model": "footcell_checkbox",
-							"items": [],
-							"columnName": "checkbox",
-							"field": ""
-						},
-						"headcell_field3": {
-							"model": "headcell_field",
-							"items": [
-								"grid_field_label1"
-							],
-							"field": "idproducto",
-							"columnName": "field"
-						},
-						"cell_field3": {
-							"model": "cell_field",
-							"items": [
-								"grid_field1"
-							],
-							"field": "idproducto",
-							"columnName": "field"
-						},
-						"footcell_field3": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "idproducto",
-							"columnName": "field"
-						}
-					},
 					"deferredItems": [],
 					"recsPerRow": 1
 				}
@@ -1116,22 +1111,39 @@
 				"pagination": {
 					"type": "pagination"
 				},
+				"grid_checkbox": {
+					"type": "grid_checkbox"
+				},
+				"grid_checkbox_head": {
+					"type": "grid_checkbox_head"
+				},
 				"details_found": {
 					"type": "details_found"
+				},
+				"simple_grid_field4": {
+					"field": "codigoIUSA",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field5": {
+					"field": "descripcion",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
 				},
 				"search_panel": {
 					"type": "search_panel",
 					"items": [
-						"search_panel_field2",
-						"search_panel_field1"
+						"search_panel_field5",
+						"search_panel_field",
+						"search_panel_field4"
 					],
 					"_flexiblePanel": true
 				},
 				"list_options": {
 					"type": "list_options",
 					"items": [
-						"export_selected",
-						"-1",
 						"show_search_panel",
 						"hide_search_panel"
 					]
@@ -1142,62 +1154,13 @@
 				"hide_search_panel": {
 					"type": "hide_search_panel"
 				},
-				"search_panel_field2": {
-					"field": "descripcion",
-					"type": "search_panel_field"
-				},
-				"expand_menu_button": {
-					"type": "expand_menu_button"
-				},
-				"collapse_button": {
-					"type": "collapse_button"
-				},
-				"-": {
-					"type": "-"
-				},
-				"export_selected": {
-					"type": "export_selected"
-				},
-				"-1": {
-					"type": "-"
-				},
-				"-2": {
-					"type": "-"
-				},
-				"search_panel_field1": {
+				"search_panel_field4": {
 					"field": "codigoIUSA",
 					"type": "search_panel_field"
 				},
-				"simple_grid_field2": {
+				"search_panel_field5": {
 					"field": "descripcion",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field3": {
-					"type": "grid_field_label",
-					"field": "descripcion"
-				},
-				"simple_grid_field": {
-					"field": "codigoIUSA",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field1": {
-					"type": "grid_field_label",
-					"field": "codigoIUSA",
-					"label": {
-						"field": "codigoIUSA",
-						"table": "vw_saldosnp",
-						"type": 3
-					}
-				},
-				"grid_checkbox": {
-					"type": "grid_checkbox"
-				},
-				"grid_checkbox_head": {
-					"type": "grid_checkbox_head"
+					"type": "search_panel_field"
 				},
 				"username_button": {
 					"type": "username_button",
@@ -1220,15 +1183,30 @@
 				"adminarea_link": {
 					"type": "adminarea_link"
 				},
-				"grid_field1": {
-					"field": "idproducto",
-					"type": "grid_field",
+				"expand_menu_button": {
+					"type": "expand_menu_button"
+				},
+				"collapse_button": {
+					"type": "collapse_button"
+				},
+				"-": {
+					"type": "-"
+				},
+				"-1": {
+					"type": "-"
+				},
+				"-2": {
+					"type": "-"
+				},
+				"simple_grid_field": {
+					"field": "saldo",
+					"type": "simple_grid_field",
 					"inlineAdd": false,
 					"inlineEdit": false
 				},
-				"grid_field_label1": {
-					"type": "grid_field_label",
-					"field": "idproducto"
+				"search_panel_field": {
+					"field": "saldo",
+					"type": "search_panel_field"
 				}
 			},
 			"dbProps": {},
@@ -1333,8 +1311,9 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"simple_grid_field2",
-								"simple_grid_field"
+								"simple_grid_field",
+								"simple_grid_field4",
+								"simple_grid_field5"
 							]
 						}
 					},
@@ -1352,12 +1331,16 @@
 				"print_pages": {
 					"type": "print_pages"
 				},
-				"simple_grid_field2": {
-					"field": "descripcion",
-					"type": "simple_grid_field"
-				},
 				"simple_grid_field": {
 					"field": "idproducto",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field4": {
+					"field": "codigoIUSA",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field5": {
+					"field": "descripcion",
 					"type": "simple_grid_field"
 				}
 			},

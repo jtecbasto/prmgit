@@ -1,5 +1,5 @@
 {
-	"sql": "SELECT\n\tidproducto,\n\tcodigoIUSA,\n\tdescripcion,\n\tClasif\nFROM\n\tproductos\nWHERE\nClasif ='Equipo'\n",
+	"sql": "SELECT\r\n\tproductos.idproducto,\r\n\tproductos.codigoIUSA,\r\n\tproductos.descripcion,\r\n\tCOUNT(idproducto) AS saldo\r\nFROM\r\n\tcompras\r\n\tLEFT OUTER JOIN ventas AS v ON v.esnimei = compras.noserie\r\n\tLEFT OUTER JOIN movimientos AS m ON m.esnimei = compras.noserie\r\n\tINNER JOIN productos ON productos.codigoIUSA = compras.codigoproducto\r\nWHERE\r\n(v.esnimei is null AND m.esnimei is null) AND productos.Clasif ='Equipo' AND compras.tienda =2\r\nGROUP BY\r\n\tproductos.idproducto\r\n",
 	"connId": "conn",
 	"originalTable": "productos",
 	"name": "productos",
@@ -12,7 +12,7 @@
 	"fields": [
 		{
 			"name": "idproducto",
-			"sqlExpression": "idproducto",
+			"sqlExpression": "productos.idproducto",
 			"index": 1,
 			"strField": "idproducto",
 			"type": 3,
@@ -30,7 +30,7 @@
 		},
 		{
 			"name": "codigoIUSA",
-			"sqlExpression": "codigoIUSA",
+			"sqlExpression": "productos.codigoIUSA",
 			"index": 2,
 			"strField": "codigoIUSA",
 			"type": 200,
@@ -47,7 +47,7 @@
 		},
 		{
 			"name": "descripcion",
-			"sqlExpression": "descripcion",
+			"sqlExpression": "productos.descripcion",
 			"index": 3,
 			"strField": "descripcion",
 			"type": 200,
@@ -63,28 +63,21 @@
 			"tableName": "productos"
 		},
 		{
-			"name": "Clasif",
-			"sqlExpression": "Clasif",
+			"name": "saldo",
+			"sqlExpression": "COUNT(idproducto)",
 			"index": 4,
-			"strField": "Clasif",
-			"type": 129,
+			"strField": "saldo",
+			"type": 3,
 			"viewFormats": [
 				{}
 			],
 			"editFormats": [
-				{
-					"format": "Lookup wizard",
-					"lookupType": 0,
-					"lookupValues": [
-						"Equipo",
-						"Chip"
-					]
-				}
+				{}
 			],
 			"label": {
-				"Spanish": "Clasif"
+				"Spanish": "Saldo"
 			},
-			"tableName": "productos"
+			"tableName": ""
 		}
 	],
 	"dbTableInfo": {
@@ -309,8 +302,7 @@
 							"model": "c3",
 							"items": [
 								"integrated_edit_field3",
-								"integrated_edit_field4",
-								"integrated_edit_field5"
+								"integrated_edit_field4"
 							]
 						}
 					},
@@ -346,11 +338,6 @@
 				},
 				"integrated_edit_field4": {
 					"field": "descripcion",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field5": {
-					"field": "Clasif",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				}
@@ -435,8 +422,7 @@
 							"items": [
 								"export_field",
 								"export_field4",
-								"export_field5",
-								"export_field6"
+								"export_field5"
 							]
 						}
 					},
@@ -495,10 +481,6 @@
 				},
 				"export_field5": {
 					"field": "descripcion",
-					"type": "export_field"
-				},
-				"export_field6": {
-					"field": "Clasif",
 					"type": "export_field"
 				}
 			},
@@ -586,8 +568,7 @@
 							"items": [
 								"import_field",
 								"import_field4",
-								"import_field5",
-								"import_field6"
+								"import_field5"
 							]
 						}
 					},
@@ -609,10 +590,6 @@
 				},
 				"import_field5": {
 					"field": "descripcion",
-					"type": "import_field"
-				},
-				"import_field6": {
-					"field": "Clasif",
 					"type": "import_field"
 				}
 			},
@@ -731,8 +708,7 @@
 							"model": "c3",
 							"items": [
 								"integrated_edit_field3",
-								"integrated_edit_field4",
-								"integrated_edit_field5"
+								"integrated_edit_field4"
 							]
 						}
 					},
@@ -774,11 +750,6 @@
 				},
 				"integrated_edit_field4": {
 					"field": "descripcion",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field5": {
-					"field": "Clasif",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				}
@@ -897,8 +868,7 @@
 							"items": [
 								"integrated_edit_field",
 								"integrated_edit_field4",
-								"integrated_edit_field5",
-								"integrated_edit_field6"
+								"integrated_edit_field5"
 							]
 						}
 					},
@@ -930,11 +900,6 @@
 				},
 				"integrated_edit_field5": {
 					"field": "descripcion",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field6": {
-					"field": "Clasif",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
@@ -1108,7 +1073,7 @@
 							"items": [
 								"simple_grid_field4",
 								"simple_grid_field5",
-								"simple_grid_field6"
+								"simple_grid_field"
 							]
 						}
 					},
@@ -1166,17 +1131,11 @@
 					"inlineAdd": false,
 					"inlineEdit": false
 				},
-				"simple_grid_field6": {
-					"field": "Clasif",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
 				"search_panel": {
 					"type": "search_panel",
 					"items": [
-						"search_panel_field6",
 						"search_panel_field5",
+						"search_panel_field",
 						"search_panel_field4"
 					],
 					"_flexiblePanel": true
@@ -1200,10 +1159,6 @@
 				},
 				"search_panel_field5": {
 					"field": "descripcion",
-					"type": "search_panel_field"
-				},
-				"search_panel_field6": {
-					"field": "Clasif",
 					"type": "search_panel_field"
 				},
 				"username_button": {
@@ -1241,6 +1196,16 @@
 				},
 				"-2": {
 					"type": "-"
+				},
+				"simple_grid_field": {
+					"field": "saldo",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"search_panel_field": {
+					"field": "saldo",
+					"type": "search_panel_field"
 				}
 			},
 			"dbProps": {},
@@ -1347,8 +1312,7 @@
 							"items": [
 								"simple_grid_field",
 								"simple_grid_field4",
-								"simple_grid_field5",
-								"simple_grid_field6"
+								"simple_grid_field5"
 							]
 						}
 					},
@@ -1376,10 +1340,6 @@
 				},
 				"simple_grid_field5": {
 					"field": "descripcion",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field6": {
-					"field": "Clasif",
 					"type": "simple_grid_field"
 				}
 			},

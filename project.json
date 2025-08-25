@@ -91,9 +91,9 @@
 			{
 				"gid": 1182658781,
 				"y": 180,
-				"x": 935,
+				"x": 810,
 				"width": 149.9375,
-				"height": 208
+				"height": 152
 			}
 		]
 	},
@@ -320,6 +320,20 @@
 							"table": 1987350758,
 							"pageType": "list"
 						}
+					},
+					{
+						"id": "5",
+						"data": {
+							"name": {
+								"table": "vw_saldosnp",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 1182658781,
+							"pageType": "list"
+						}
 					}
 				]
 			}
@@ -413,9 +427,9 @@
 								"welcome_item1",
 								"welcome_item6",
 								"welcome_item7",
-								"welcome_item8",
 								"welcome_item9",
-								"welcome_item5"
+								"welcome_item5",
+								"welcome_item8"
 							]
 						}
 					},
@@ -568,18 +582,6 @@
 					"background": "#e67349",
 					"linkType": 0
 				},
-				"welcome_item8": {
-					"type": "welcome_item",
-					"linkUrl": "",
-					"linkTable": "vw_saldosnp",
-					"linkPage": "list",
-					"linkText": {
-						"table": "vw_saldosnp",
-						"type": 6
-					},
-					"background": "#6da5c8",
-					"linkType": 0
-				},
 				"welcome_item9": {
 					"type": "welcome_item",
 					"linkUrl": "",
@@ -620,6 +622,18 @@
 					"linkPage": "list",
 					"linkText": {
 						"table": "productos",
+						"type": 6
+					},
+					"background": "#bc8f8f",
+					"linkType": 0
+				},
+				"welcome_item8": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "vw_saldosnp",
+					"linkPage": "list",
+					"linkText": {
+						"table": "vw_saldosnp",
 						"type": 6
 					},
 					"background": "#bc8f8f",

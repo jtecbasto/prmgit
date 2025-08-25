@@ -13,6 +13,7 @@
 		{
 			"name": "id",
 			"sqlExpression": "id",
+			"index": 1,
 			"strField": "id",
 			"type": 3,
 			"autoinc": true,
@@ -30,6 +31,7 @@
 		{
 			"name": "estado",
 			"sqlExpression": "estado",
+			"index": 2,
 			"strField": "estado",
 			"type": 200,
 			"viewFormats": [
@@ -46,6 +48,7 @@
 		{
 			"name": "ciudad",
 			"sqlExpression": "ciudad",
+			"index": 3,
 			"strField": "ciudad",
 			"type": 200,
 			"viewFormats": [
@@ -62,6 +65,7 @@
 		{
 			"name": "cp",
 			"sqlExpression": "cp",
+			"index": 4,
 			"strField": "cp",
 			"type": 200,
 			"viewFormats": [
@@ -78,6 +82,7 @@
 		{
 			"name": "calle",
 			"sqlExpression": "calle",
+			"index": 5,
 			"strField": "calle",
 			"type": 200,
 			"viewFormats": [
@@ -94,6 +99,7 @@
 		{
 			"name": "numeroext",
 			"sqlExpression": "numeroext",
+			"index": 6,
 			"strField": "numeroext",
 			"type": 200,
 			"viewFormats": [
@@ -110,6 +116,7 @@
 		{
 			"name": "numeroint",
 			"sqlExpression": "numeroint",
+			"index": 7,
 			"strField": "numeroint",
 			"type": 200,
 			"viewFormats": [
@@ -126,6 +133,7 @@
 		{
 			"name": "colonia",
 			"sqlExpression": "colonia",
+			"index": 8,
 			"strField": "colonia",
 			"type": 200,
 			"viewFormats": [
@@ -142,6 +150,7 @@
 		{
 			"name": "idsolicitud",
 			"sqlExpression": "idsolicitud",
+			"index": 9,
 			"strField": "idsolicitud",
 			"type": 3,
 			"viewFormats": [
