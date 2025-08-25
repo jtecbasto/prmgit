@@ -7,7 +7,7 @@
 			"asc": false
 		}
 	],
-	"sql": "SELECT\n\tsolicitudes.idsolicitud,\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tclientes.nombre,\n\tclientes.paterno,\n\tclientes.materno,\n\tentregasvnp.estado,\n\tentregasvnp.ciudad,\n\tentregasvnp.cp,\n\tentregasvnp.calle,\n\tentregasvnp.numeroext,\n\tentregasvnp.numeroint,\n\tentregasvnp.colonia\nFROM\n\tsolicitudes\n\tLEFT OUTER JOIN clientes ON clientes.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp ON entregasvnp.idsolicitud = solicitudes.idsolicitud\nWHERE\nsolicitudes.idtienda =2\nORDER BY\n\tsolicitudes.idsolicitud DESC\n",
+	"sql": "SELECT\n\tsolicitudes.idsolicitud,\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tclientes.nombre,\n\tclientes.paterno,\n\tclientes.materno,\n\tentregasvnp.estado,\n\tentregasvnp.ciudad,\n\tentregasvnp.cp,\n\tentregasvnp.calle,\n\tentregasvnp.numeroext,\n\tentregasvnp.numeroint,\n\tentregasvnp.colonia,\n\tproductos.descripcion\nFROM\n\tsolicitudes\n\tLEFT OUTER JOIN clientes ON clientes.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp ON entregasvnp.idsolicitud = solicitudes.idsolicitud\n\tLEFT JOIN productos on solicitudes.idproducto=productos.idproducto\nWHERE\nsolicitudes.idtienda =2\nORDER BY\n\tsolicitudes.idsolicitud DESC\n",
 	"connId": "conn",
 	"originalTable": "solicitudes",
 	"name": "solicitudes",
@@ -965,6 +965,23 @@
 				"Spanish": "Colonia"
 			},
 			"tableName": "entregasvnp"
+		},
+		{
+			"name": "descripcion",
+			"sqlExpression": "productos.descripcion",
+			"index": 40,
+			"strField": "descripcion",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Descripcion"
+			},
+			"tableName": "productos"
 		}
 	],
 	"eventHandlers": [
@@ -1821,7 +1838,9 @@
 					"cells": {
 						"c1": {
 							"model": "c1",
-							"items": []
+							"items": [
+								"export_field"
+							]
 						}
 					},
 					"deferredItems": [],
@@ -1868,6 +1887,10 @@
 				},
 				"export_cancel": {
 					"type": "export_cancel"
+				},
+				"export_field": {
+					"field": "descripcion",
+					"type": "export_field"
 				}
 			},
 			"dbProps": {},
@@ -2226,7 +2249,9 @@
 					"cells": {
 						"c3": {
 							"model": "c3",
-							"items": []
+							"items": [
+								"integrated_edit_field"
+							]
 						}
 					},
 					"deferredItems": [],
@@ -2253,6 +2278,11 @@
 				},
 				"view_edit": {
 					"type": "view_edit"
+				},
+				"integrated_edit_field": {
+					"field": "descripcion",
+					"type": "integrated_edit_field",
+					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -2428,6 +2458,9 @@
 									"cell": "headcell_field2"
 								},
 								{
+									"cell": "headcell_field3"
+								},
+								{
 									"cell": "headcell_field4"
 								},
 								{
@@ -2454,6 +2487,9 @@
 									"cell": "cell_field2"
 								},
 								{
+									"cell": "headcell_field5"
+								},
+								{
 									"cell": "cell_field4"
 								},
 								{
@@ -2478,6 +2514,9 @@
 								},
 								{
 									"cell": "footcell_field2"
+								},
+								{
+									"cell": "headcell_field6"
 								},
 								{
 									"cell": "footcell_field4"
@@ -2517,14 +2556,14 @@
 						"headcell_field4": {
 							"model": "headcell_field",
 							"items": [
-								"simple_grid_field33"
+								"grid_field_label"
 							],
 							"field": "idcliente"
 						},
 						"cell_field4": {
 							"model": "cell_field",
 							"items": [
-								"simple_grid_field4"
+								"grid_field"
 							],
 							"field": "idcliente"
 						},
@@ -2620,6 +2659,22 @@
 							"model": "footcell_field",
 							"items": [],
 							"field": "descripcion"
+						},
+						"headcell_field3": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field33"
+							]
+						},
+						"headcell_field5": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field4"
+							]
+						},
+						"headcell_field6": {
+							"model": "footcell_field",
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -2653,7 +2708,7 @@
 					"items": [
 						"export_selected",
 						"delete_selected",
-						"-1",
+						"-3",
 						"export",
 						"-2",
 						"import"
@@ -2791,6 +2846,19 @@
 				},
 				"adminarea_link": {
 					"type": "adminarea_link"
+				},
+				"grid_field": {
+					"field": "descripcion",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label": {
+					"type": "grid_field_label",
+					"field": "descripcion"
+				},
+				"-3": {
+					"type": "-"
 				}
 			},
 			"dbProps": {},
@@ -2894,7 +2962,9 @@
 					"cells": {
 						"c1": {
 							"model": "c1",
-							"items": []
+							"items": [
+								"simple_grid_field"
+							]
 						}
 					},
 					"deferredItems": [],
@@ -2910,6 +2980,10 @@
 				},
 				"print_pages": {
 					"type": "print_pages"
+				},
+				"simple_grid_field": {
+					"field": "descripcion",
+					"type": "simple_grid_field"
 				}
 			},
 			"dbProps": {},
