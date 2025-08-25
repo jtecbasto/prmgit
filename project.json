@@ -1,9 +1,16 @@
 {
 	"programVersion": 2,
 	"versionName": "11.1",
-	"name": "prm2",
+	"name": "prm3",
 	"mainDiagram": {
 		"tables": [
+			{
+				"gid": 3030998547,
+				"y": 345,
+				"x": 1110,
+				"width": 149.15625,
+				"height": 400
+			},
 			{
 				"gid": 1358825431,
 				"y": 425,
@@ -24,13 +31,6 @@
 				"x": 635,
 				"width": 110.265625,
 				"height": 236
-			},
-			{
-				"gid": 1987350758,
-				"y": 10,
-				"x": 775,
-				"width": 130.484375,
-				"height": 320
 			},
 			{
 				"gid": 4193777068,
@@ -299,178 +299,6 @@
 							"table": 35049744,
 							"pageType": "list"
 						}
-					},
-					{
-						"id": "4",
-						"data": {
-							"name": {
-								"table": "tiendas",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"iconType": 2,
-							"iconName": "glyphicon-hand-right",
-							"showIconType": 2,
-							"table": 3668907077,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "5",
-						"data": {
-							"name": {
-								"table": "planes",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"iconType": 2,
-							"iconName": "glyphicon-briefcase",
-							"showIconType": 2,
-							"table": 4135059206,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "6",
-						"data": {
-							"name": {
-								"table": "productos",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"iconType": 2,
-							"iconName": "glyphicon-barcode",
-							"showIconType": 2,
-							"table": 1987350758,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "12",
-						"data": {
-							"name": {
-								"table": "sectores",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 4193777068,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "13",
-						"data": {
-							"name": {
-								"table": "clientes",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 1358825431,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "14",
-						"data": {
-							"name": {
-								"table": "serviciosmoviles_users",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"iconType": 2,
-							"iconName": "glyphicon-flash",
-							"showIconType": 2,
-							"table": 3616522410,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "15",
-						"data": {
-							"name": {
-								"table": "serviciosmoviles_ugrights",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"iconType": 2,
-							"iconName": "glyphicon-calendar",
-							"showIconType": 2,
-							"table": 482452165,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "16",
-						"data": {
-							"name": {
-								"table": "serviciosmoviles_ugmembers",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"iconType": 2,
-							"iconName": "glyphicon-barcode",
-							"showIconType": 2,
-							"table": 934941705,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "17",
-						"data": {
-							"name": {
-								"table": "serviciosmoviles_uggroups",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 3989588662,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "18",
-						"data": {
-							"name": {
-								"table": "vw_saldosnp",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 1182658781,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "19",
-						"data": {
-							"name": {
-								"table": "entregasvnp",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 749770169,
-							"pageType": "list"
-						}
 					}
 				]
 			}
@@ -558,7 +386,6 @@
 								"welcome_item2",
 								"welcome_item3",
 								"welcome_item4",
-								"welcome_item5",
 								"welcome_item10",
 								"welcome_item11",
 								"welcome_item",
@@ -634,21 +461,6 @@
 					"linkComments": {
 						"text": "Planes description",
 						"type": 0
-					},
-					"background": "#bc8f8f",
-					"linkType": 0
-				},
-				"welcome_item5": {
-					"type": "welcome_item",
-					"linkUrl": "",
-					"linkTable": "productos",
-					"linkPage": "list",
-					"linkText": {
-						"table": "productos",
-						"type": 6
-					},
-					"linkIcon": {
-						"glyph": "barcode"
 					},
 					"background": "#bc8f8f",
 					"linkType": 0

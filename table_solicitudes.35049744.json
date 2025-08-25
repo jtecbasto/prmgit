@@ -186,6 +186,7 @@
 					"lookupTableConnection": "conn",
 					"lookupLinkField": "idcliente",
 					"lookupDisplayField": "nombre_completo",
+					"lookupOrderBy": "nombre_completo",
 					"lookupAllowAdd": true,
 					"lookupAllowEdit": true,
 					"lookupControlType": 2,
@@ -298,22 +299,27 @@
 			"strField": "idproducto",
 			"type": 3,
 			"viewFormats": [
-				{}
+				{
+					"textShowFirstN": 20
+				}
 			],
 			"editFormats": [
 				{
 					"format": "Lookup wizard",
 					"required": true,
 					"lookupType": 2,
-					"lookupTable": "vw_saldosnp",
+					"lookupTable": "productos",
 					"lookupTableConnection": "conn",
 					"lookupLinkField": "idproducto",
 					"lookupDisplayField": "descripcion",
 					"lookupOrderBy": "descripcion",
-					"lookupControlType": 2,
+					"lookupControlType": 1,
 					"lookupListPage": "list"
 				}
 			],
+			"filterFormat": {
+				"format": "Values list"
+			},
 			"label": {
 				"English": "Idproducto",
 				"Spanish": "Producto"
@@ -1815,47 +1821,7 @@
 					"cells": {
 						"c1": {
 							"model": "c1",
-							"items": [
-								"export_field",
-								"export_field1",
-								"export_field2",
-								"export_field3",
-								"export_field4",
-								"export_field5",
-								"export_field6",
-								"export_field7",
-								"export_field8",
-								"export_field9",
-								"export_field10",
-								"export_field11",
-								"export_field12",
-								"export_field13",
-								"export_field14",
-								"export_field15",
-								"export_field16",
-								"export_field17",
-								"export_field18",
-								"export_field19",
-								"export_field20",
-								"export_field21",
-								"export_field22",
-								"export_field23",
-								"export_field24",
-								"export_field25",
-								"export_field26",
-								"export_field27",
-								"export_field28",
-								"export_field29",
-								"export_field30",
-								"export_field31",
-								"export_field32",
-								"export_field33",
-								"export_field34",
-								"export_field35",
-								"export_field36",
-								"export_field37",
-								"export_field38"
-							]
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -1902,162 +1868,6 @@
 				},
 				"export_cancel": {
 					"type": "export_cancel"
-				},
-				"export_field": {
-					"field": "idsolicitud",
-					"type": "export_field"
-				},
-				"export_field1": {
-					"field": "idtipoventa",
-					"type": "export_field"
-				},
-				"export_field2": {
-					"field": "fecha",
-					"type": "export_field"
-				},
-				"export_field3": {
-					"field": "fechacaptura",
-					"type": "export_field"
-				},
-				"export_field4": {
-					"field": "idcliente",
-					"type": "export_field"
-				},
-				"export_field5": {
-					"field": "idproducto",
-					"type": "export_field"
-				},
-				"export_field6": {
-					"field": "idplan",
-					"type": "export_field"
-				},
-				"export_field7": {
-					"field": "usuario",
-					"type": "export_field"
-				},
-				"export_field8": {
-					"field": "idtienda",
-					"type": "export_field"
-				},
-				"export_field9": {
-					"field": "fechamodif",
-					"type": "export_field"
-				},
-				"export_field10": {
-					"field": "orden",
-					"type": "export_field"
-				},
-				"export_field11": {
-					"field": "solicitudimg",
-					"type": "export_field"
-				},
-				"export_field12": {
-					"field": "estatus",
-					"type": "export_field"
-				},
-				"export_field13": {
-					"field": "idsolrazon",
-					"type": "export_field"
-				},
-				"export_field14": {
-					"field": "importeatt",
-					"type": "export_field"
-				},
-				"export_field15": {
-					"field": "importesms",
-					"type": "export_field"
-				},
-				"export_field16": {
-					"field": "plazo",
-					"type": "export_field"
-				},
-				"export_field17": {
-					"field": "observaciones",
-					"type": "export_field"
-				},
-				"export_field18": {
-					"field": "equipoincluido",
-					"type": "export_field"
-				},
-				"export_field19": {
-					"field": "rfc",
-					"type": "export_field"
-				},
-				"export_field20": {
-					"field": "idtratamiento",
-					"type": "export_field"
-				},
-				"export_field21": {
-					"field": "riesgo",
-					"type": "export_field"
-				},
-				"export_field22": {
-					"field": "observacionest",
-					"type": "export_field"
-				},
-				"export_field23": {
-					"field": "idcli",
-					"type": "export_field"
-				},
-				"export_field24": {
-					"field": "fecha1avta",
-					"type": "export_field"
-				},
-				"export_field25": {
-					"field": "idplan1avta",
-					"type": "export_field"
-				},
-				"export_field26": {
-					"field": "dn1avta",
-					"type": "export_field"
-				},
-				"export_field27": {
-					"field": "idproceso",
-					"type": "export_field"
-				},
-				"export_field28": {
-					"field": "idorigenventa",
-					"type": "export_field"
-				},
-				"export_field29": {
-					"field": "nombre",
-					"type": "export_field"
-				},
-				"export_field30": {
-					"field": "paterno",
-					"type": "export_field"
-				},
-				"export_field31": {
-					"field": "materno",
-					"type": "export_field"
-				},
-				"export_field32": {
-					"field": "estado",
-					"type": "export_field"
-				},
-				"export_field33": {
-					"field": "ciudad",
-					"type": "export_field"
-				},
-				"export_field34": {
-					"field": "cp",
-					"type": "export_field"
-				},
-				"export_field35": {
-					"field": "calle",
-					"type": "export_field"
-				},
-				"export_field36": {
-					"field": "numeroext",
-					"type": "export_field"
-				},
-				"export_field37": {
-					"field": "numeroint",
-					"type": "export_field"
-				},
-				"export_field38": {
-					"field": "colonia",
-					"type": "export_field"
 				}
 			},
 			"dbProps": {},
@@ -2141,40 +1951,7 @@
 					"cells": {
 						"c1": {
 							"model": "c1",
-							"items": [
-								"import_field",
-								"import_field1",
-								"import_field2",
-								"import_field3",
-								"import_field4",
-								"import_field5",
-								"import_field6",
-								"import_field7",
-								"import_field8",
-								"import_field9",
-								"import_field10",
-								"import_field11",
-								"import_field12",
-								"import_field13",
-								"import_field14",
-								"import_field15",
-								"import_field16",
-								"import_field17",
-								"import_field18",
-								"import_field19",
-								"import_field20",
-								"import_field21",
-								"import_field22",
-								"import_field23",
-								"import_field24",
-								"import_field25",
-								"import_field26",
-								"import_field27",
-								"import_field28",
-								"import_field29",
-								"import_field30",
-								"import_field31"
-							]
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -2184,134 +1961,6 @@
 			"items": {
 				"import_header": {
 					"type": "import_header"
-				},
-				"import_field": {
-					"field": "idsolicitud",
-					"type": "import_field"
-				},
-				"import_field1": {
-					"field": "idtipoventa",
-					"type": "import_field"
-				},
-				"import_field2": {
-					"field": "fecha",
-					"type": "import_field"
-				},
-				"import_field3": {
-					"field": "fechacaptura",
-					"type": "import_field"
-				},
-				"import_field4": {
-					"field": "idcliente",
-					"type": "import_field"
-				},
-				"import_field5": {
-					"field": "idproducto",
-					"type": "import_field"
-				},
-				"import_field6": {
-					"field": "idplan",
-					"type": "import_field"
-				},
-				"import_field7": {
-					"field": "usuario",
-					"type": "import_field"
-				},
-				"import_field8": {
-					"field": "idtienda",
-					"type": "import_field"
-				},
-				"import_field9": {
-					"field": "fechamodif",
-					"type": "import_field"
-				},
-				"import_field10": {
-					"field": "orden",
-					"type": "import_field"
-				},
-				"import_field11": {
-					"field": "solicitudimg",
-					"type": "import_field"
-				},
-				"import_field12": {
-					"field": "estatus",
-					"type": "import_field"
-				},
-				"import_field13": {
-					"field": "idsolrazon",
-					"type": "import_field"
-				},
-				"import_field14": {
-					"field": "importeatt",
-					"type": "import_field"
-				},
-				"import_field15": {
-					"field": "importesms",
-					"type": "import_field"
-				},
-				"import_field16": {
-					"field": "plazo",
-					"type": "import_field"
-				},
-				"import_field17": {
-					"field": "observaciones",
-					"type": "import_field"
-				},
-				"import_field18": {
-					"field": "equipoincluido",
-					"type": "import_field"
-				},
-				"import_field19": {
-					"field": "rfc",
-					"type": "import_field"
-				},
-				"import_field20": {
-					"field": "idtratamiento",
-					"type": "import_field"
-				},
-				"import_field21": {
-					"field": "riesgo",
-					"type": "import_field"
-				},
-				"import_field22": {
-					"field": "observacionest",
-					"type": "import_field"
-				},
-				"import_field23": {
-					"field": "idcli",
-					"type": "import_field"
-				},
-				"import_field24": {
-					"field": "fecha1avta",
-					"type": "import_field"
-				},
-				"import_field25": {
-					"field": "idplan1avta",
-					"type": "import_field"
-				},
-				"import_field26": {
-					"field": "dn1avta",
-					"type": "import_field"
-				},
-				"import_field27": {
-					"field": "idproceso",
-					"type": "import_field"
-				},
-				"import_field28": {
-					"field": "idorigenventa",
-					"type": "import_field"
-				},
-				"import_field29": {
-					"field": "nombre",
-					"type": "import_field"
-				},
-				"import_field30": {
-					"field": "paterno",
-					"type": "import_field"
-				},
-				"import_field31": {
-					"field": "materno",
-					"type": "import_field"
 				}
 			},
 			"dbProps": {},
@@ -2427,39 +2076,7 @@
 					"cells": {
 						"c3": {
 							"model": "c3",
-							"items": [
-								"integrated_edit_field",
-								"integrated_edit_field1",
-								"integrated_edit_field2",
-								"integrated_edit_field3",
-								"integrated_edit_field4",
-								"integrated_edit_field5",
-								"integrated_edit_field6",
-								"integrated_edit_field7",
-								"integrated_edit_field8",
-								"integrated_edit_field9",
-								"integrated_edit_field10",
-								"integrated_edit_field11",
-								"integrated_edit_field12",
-								"integrated_edit_field13",
-								"integrated_edit_field14",
-								"integrated_edit_field15",
-								"integrated_edit_field16",
-								"integrated_edit_field17",
-								"integrated_edit_field18",
-								"integrated_edit_field19",
-								"integrated_edit_field20",
-								"integrated_edit_field21",
-								"integrated_edit_field22",
-								"integrated_edit_field23",
-								"integrated_edit_field24",
-								"integrated_edit_field25",
-								"integrated_edit_field26",
-								"integrated_edit_field27",
-								"integrated_edit_field28",
-								"integrated_edit_field29",
-								"integrated_edit_field30"
-							]
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -2494,194 +2111,8 @@
 				"edit_close": {
 					"type": "edit_close"
 				},
-				"integrated_edit_field": {
-					"field": "idtipoventa",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field1": {
-					"field": "fecha",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field2": {
-					"field": "fechacaptura",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field3": {
-					"field": "idcliente",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field4": {
-					"field": "idproducto",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field5": {
-					"field": "idplan",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field6": {
-					"field": "usuario",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field7": {
-					"field": "idtienda",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field8": {
-					"field": "fechamodif",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field9": {
-					"field": "orden",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field10": {
-					"field": "solicitudimg",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field11": {
-					"field": "estatus",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field12": {
-					"field": "idsolrazon",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field13": {
-					"field": "importeatt",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field14": {
-					"field": "importesms",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field15": {
-					"field": "plazo",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field16": {
-					"field": "observaciones",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field17": {
-					"field": "equipoincluido",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field18": {
-					"field": "rfc",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field19": {
-					"field": "idtratamiento",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field20": {
-					"field": "riesgo",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field21": {
-					"field": "observacionest",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field22": {
-					"field": "idcli",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field23": {
-					"field": "fecha1avta",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field24": {
-					"field": "idplan1avta",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field25": {
-					"field": "dn1avta",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field26": {
-					"field": "idproceso",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field27": {
-					"field": "idorigenventa",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
 				"edit_view": {
 					"type": "edit_view"
-				},
-				"integrated_edit_field28": {
-					"field": "nombre",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field29": {
-					"field": "paterno",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field30": {
-					"field": "materno",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
 				}
 			},
 			"dbProps": {},
@@ -2795,47 +2226,7 @@
 					"cells": {
 						"c3": {
 							"model": "c3",
-							"items": [
-								"integrated_edit_field",
-								"integrated_edit_field1",
-								"integrated_edit_field2",
-								"integrated_edit_field3",
-								"integrated_edit_field4",
-								"integrated_edit_field5",
-								"integrated_edit_field6",
-								"integrated_edit_field7",
-								"integrated_edit_field8",
-								"integrated_edit_field9",
-								"integrated_edit_field10",
-								"integrated_edit_field11",
-								"integrated_edit_field12",
-								"integrated_edit_field13",
-								"integrated_edit_field14",
-								"integrated_edit_field15",
-								"integrated_edit_field16",
-								"integrated_edit_field17",
-								"integrated_edit_field18",
-								"integrated_edit_field19",
-								"integrated_edit_field20",
-								"integrated_edit_field21",
-								"integrated_edit_field22",
-								"integrated_edit_field23",
-								"integrated_edit_field24",
-								"integrated_edit_field25",
-								"integrated_edit_field26",
-								"integrated_edit_field27",
-								"integrated_edit_field28",
-								"integrated_edit_field29",
-								"integrated_edit_field30",
-								"integrated_edit_field31",
-								"integrated_edit_field32",
-								"integrated_edit_field33",
-								"integrated_edit_field34",
-								"integrated_edit_field35",
-								"integrated_edit_field36",
-								"integrated_edit_field37",
-								"integrated_edit_field38"
-							]
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -2854,151 +2245,6 @@
 				"view_close": {
 					"type": "view_close"
 				},
-				"integrated_edit_field": {
-					"field": "idsolicitud",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field1": {
-					"field": "idtipoventa",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field2": {
-					"field": "fecha",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field3": {
-					"field": "fechacaptura",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field4": {
-					"field": "idcliente",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field5": {
-					"field": "idproducto",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field6": {
-					"field": "idplan",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field7": {
-					"field": "usuario",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field8": {
-					"field": "idtienda",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field9": {
-					"field": "fechamodif",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field10": {
-					"field": "orden",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field11": {
-					"field": "solicitudimg",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field12": {
-					"field": "estatus",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field13": {
-					"field": "idsolrazon",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field14": {
-					"field": "importeatt",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field15": {
-					"field": "importesms",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field16": {
-					"field": "plazo",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field17": {
-					"field": "observaciones",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field18": {
-					"field": "equipoincluido",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field19": {
-					"field": "rfc",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field20": {
-					"field": "idtratamiento",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field21": {
-					"field": "riesgo",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field22": {
-					"field": "observacionest",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field23": {
-					"field": "idcli",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field24": {
-					"field": "fecha1avta",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field25": {
-					"field": "idplan1avta",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field26": {
-					"field": "dn1avta",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field27": {
-					"field": "idproceso",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field28": {
-					"field": "idorigenventa",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
 				"hamburger": {
 					"type": "hamburger",
 					"items": [
@@ -3007,56 +2253,6 @@
 				},
 				"view_edit": {
 					"type": "view_edit"
-				},
-				"integrated_edit_field29": {
-					"field": "nombre",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field30": {
-					"field": "paterno",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field31": {
-					"field": "materno",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field32": {
-					"field": "estado",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field33": {
-					"field": "ciudad",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field34": {
-					"field": "cp",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field35": {
-					"field": "calle",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field36": {
-					"field": "numeroext",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field37": {
-					"field": "numeroint",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field38": {
-					"field": "colonia",
-					"type": "integrated_edit_field",
-					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -3165,8 +2361,7 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"menu",
-								"search_panel"
+								"menu"
 							]
 						}
 					},
@@ -3230,121 +2425,19 @@
 									"cell": "headcell_checkbox"
 								},
 								{
-									"cell": "headcell_field"
-								},
-								{
-									"cell": "headcell_field1"
-								},
-								{
 									"cell": "headcell_field2"
-								},
-								{
-									"cell": "headcell_field3"
 								},
 								{
 									"cell": "headcell_field4"
 								},
 								{
-									"cell": "headcell_field5"
-								},
-								{
-									"cell": "headcell_field6"
-								},
-								{
-									"cell": "headcell_field7"
-								},
-								{
-									"cell": "headcell_field8"
-								},
-								{
-									"cell": "headcell_field9"
-								},
-								{
-									"cell": "headcell_field10"
-								},
-								{
-									"cell": "headcell_field11"
-								},
-								{
 									"cell": "headcell_field12"
-								},
-								{
-									"cell": "headcell_field13"
-								},
-								{
-									"cell": "headcell_field14"
-								},
-								{
-									"cell": "headcell_field15"
 								},
 								{
 									"cell": "headcell_field16"
 								},
 								{
-									"cell": "headcell_field17"
-								},
-								{
-									"cell": "headcell_field18"
-								},
-								{
-									"cell": "headcell_field19"
-								},
-								{
-									"cell": "headcell_field20"
-								},
-								{
-									"cell": "headcell_field21"
-								},
-								{
-									"cell": "headcell_field22"
-								},
-								{
-									"cell": "headcell_field23"
-								},
-								{
-									"cell": "headcell_field24"
-								},
-								{
-									"cell": "headcell_field25"
-								},
-								{
-									"cell": "headcell_field26"
-								},
-								{
-									"cell": "headcell_field27"
-								},
-								{
-									"cell": "headcell_field28"
-								},
-								{
-									"cell": "headcell_field29"
-								},
-								{
-									"cell": "headcell_field30"
-								},
-								{
-									"cell": "headcell_field31"
-								},
-								{
-									"cell": "headcell_field32"
-								},
-								{
-									"cell": "headcell_field33"
-								},
-								{
-									"cell": "headcell_field34"
-								},
-								{
-									"cell": "headcell_field35"
-								},
-								{
-									"cell": "headcell_field36"
-								},
-								{
-									"cell": "headcell_field37"
-								},
-								{
-									"cell": "headcell_field38"
+									"cell": "headcell_field"
 								}
 							]
 						},
@@ -3358,121 +2451,19 @@
 									"cell": "cell_checkbox"
 								},
 								{
-									"cell": "cell_field"
-								},
-								{
-									"cell": "cell_field1"
-								},
-								{
 									"cell": "cell_field2"
-								},
-								{
-									"cell": "cell_field3"
 								},
 								{
 									"cell": "cell_field4"
 								},
 								{
-									"cell": "cell_field5"
-								},
-								{
-									"cell": "cell_field6"
-								},
-								{
-									"cell": "cell_field7"
-								},
-								{
-									"cell": "cell_field8"
-								},
-								{
-									"cell": "cell_field9"
-								},
-								{
-									"cell": "cell_field10"
-								},
-								{
-									"cell": "cell_field11"
-								},
-								{
 									"cell": "cell_field12"
-								},
-								{
-									"cell": "cell_field13"
-								},
-								{
-									"cell": "cell_field14"
-								},
-								{
-									"cell": "cell_field15"
 								},
 								{
 									"cell": "cell_field16"
 								},
 								{
-									"cell": "cell_field17"
-								},
-								{
-									"cell": "cell_field18"
-								},
-								{
-									"cell": "cell_field19"
-								},
-								{
-									"cell": "cell_field20"
-								},
-								{
-									"cell": "cell_field21"
-								},
-								{
-									"cell": "cell_field22"
-								},
-								{
-									"cell": "cell_field23"
-								},
-								{
-									"cell": "cell_field24"
-								},
-								{
-									"cell": "cell_field25"
-								},
-								{
-									"cell": "cell_field26"
-								},
-								{
-									"cell": "cell_field27"
-								},
-								{
-									"cell": "cell_field28"
-								},
-								{
-									"cell": "cell_field29"
-								},
-								{
-									"cell": "cell_field30"
-								},
-								{
-									"cell": "cell_field31"
-								},
-								{
-									"cell": "cell_field32"
-								},
-								{
-									"cell": "cell_field33"
-								},
-								{
-									"cell": "cell_field34"
-								},
-								{
-									"cell": "cell_field35"
-								},
-								{
-									"cell": "cell_field36"
-								},
-								{
-									"cell": "cell_field37"
-								},
-								{
-									"cell": "cell_field38"
+									"cell": "cell_field"
 								}
 							]
 						},
@@ -3486,164 +2477,24 @@
 									"cell": "footcell_checkbox"
 								},
 								{
-									"cell": "footcell_field"
-								},
-								{
-									"cell": "footcell_field1"
-								},
-								{
 									"cell": "footcell_field2"
-								},
-								{
-									"cell": "footcell_field3"
 								},
 								{
 									"cell": "footcell_field4"
 								},
 								{
-									"cell": "footcell_field5"
-								},
-								{
-									"cell": "footcell_field6"
-								},
-								{
-									"cell": "footcell_field7"
-								},
-								{
-									"cell": "footcell_field8"
-								},
-								{
-									"cell": "footcell_field9"
-								},
-								{
-									"cell": "footcell_field10"
-								},
-								{
-									"cell": "footcell_field11"
-								},
-								{
 									"cell": "footcell_field12"
-								},
-								{
-									"cell": "footcell_field13"
-								},
-								{
-									"cell": "footcell_field14"
-								},
-								{
-									"cell": "footcell_field15"
 								},
 								{
 									"cell": "footcell_field16"
 								},
 								{
-									"cell": "footcell_field17"
-								},
-								{
-									"cell": "footcell_field18"
-								},
-								{
-									"cell": "footcell_field19"
-								},
-								{
-									"cell": "footcell_field20"
-								},
-								{
-									"cell": "footcell_field21"
-								},
-								{
-									"cell": "footcell_field22"
-								},
-								{
-									"cell": "footcell_field23"
-								},
-								{
-									"cell": "footcell_field24"
-								},
-								{
-									"cell": "footcell_field25"
-								},
-								{
-									"cell": "footcell_field26"
-								},
-								{
-									"cell": "footcell_field27"
-								},
-								{
-									"cell": "footcell_field28"
-								},
-								{
-									"cell": "footcell_field29"
-								},
-								{
-									"cell": "footcell_field30"
-								},
-								{
-									"cell": "footcell_field31"
-								},
-								{
-									"cell": "footcell_field32"
-								},
-								{
-									"cell": "footcell_field33"
-								},
-								{
-									"cell": "footcell_field34"
-								},
-								{
-									"cell": "footcell_field35"
-								},
-								{
-									"cell": "footcell_field36"
-								},
-								{
-									"cell": "footcell_field37"
-								},
-								{
-									"cell": "footcell_field38"
+									"cell": "footcell_field"
 								}
 							]
 						}
 					],
 					"cells": {
-						"headcell_field": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field29"
-							],
-							"field": "idsolicitud"
-						},
-						"cell_field": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field"
-							],
-							"field": "idsolicitud"
-						},
-						"footcell_field": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "idsolicitud"
-						},
-						"headcell_field1": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field30"
-							],
-							"field": "idtipoventa"
-						},
-						"cell_field1": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field1"
-							],
-							"field": "idtipoventa"
-						},
-						"footcell_field1": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "idtipoventa"
-						},
 						"headcell_field2": {
 							"model": "headcell_field",
 							"items": [
@@ -3662,25 +2513,6 @@
 							"model": "footcell_field",
 							"items": [],
 							"field": "fecha"
-						},
-						"headcell_field3": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field32"
-							],
-							"field": "fechacaptura"
-						},
-						"cell_field3": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field3"
-							],
-							"field": "fechacaptura"
-						},
-						"footcell_field3": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "fechacaptura"
 						},
 						"headcell_field4": {
 							"model": "headcell_field",
@@ -3701,139 +2533,6 @@
 							"items": [],
 							"field": "idcliente"
 						},
-						"headcell_field5": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field34"
-							],
-							"field": "idproducto"
-						},
-						"cell_field5": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field5"
-							],
-							"field": "idproducto"
-						},
-						"footcell_field5": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "idproducto"
-						},
-						"headcell_field6": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field35"
-							],
-							"field": "idplan"
-						},
-						"cell_field6": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field6"
-							],
-							"field": "idplan"
-						},
-						"footcell_field6": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "idplan"
-						},
-						"headcell_field7": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field36"
-							],
-							"field": "usuario"
-						},
-						"cell_field7": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field7"
-							],
-							"field": "usuario"
-						},
-						"footcell_field7": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "usuario"
-						},
-						"headcell_field8": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field37"
-							],
-							"field": "idtienda"
-						},
-						"cell_field8": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field8"
-							],
-							"field": "idtienda"
-						},
-						"footcell_field8": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "idtienda"
-						},
-						"headcell_field9": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field38"
-							],
-							"field": "fechamodif"
-						},
-						"cell_field9": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field9"
-							],
-							"field": "fechamodif"
-						},
-						"footcell_field9": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "fechamodif"
-						},
-						"headcell_field10": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field39"
-							],
-							"field": "orden"
-						},
-						"cell_field10": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field10"
-							],
-							"field": "orden"
-						},
-						"footcell_field10": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "orden"
-						},
-						"headcell_field11": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field40"
-							],
-							"field": "solicitudimg"
-						},
-						"cell_field11": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field11"
-							],
-							"field": "solicitudimg"
-						},
-						"footcell_field11": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "solicitudimg"
-						},
 						"headcell_field12": {
 							"model": "headcell_field",
 							"items": [
@@ -3853,63 +2552,6 @@
 							"items": [],
 							"field": "estatus"
 						},
-						"headcell_field13": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field42"
-							],
-							"field": "idsolrazon"
-						},
-						"cell_field13": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field13"
-							],
-							"field": "idsolrazon"
-						},
-						"footcell_field13": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "idsolrazon"
-						},
-						"headcell_field14": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field43"
-							],
-							"field": "importeatt"
-						},
-						"cell_field14": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field14"
-							],
-							"field": "importeatt"
-						},
-						"footcell_field14": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "importeatt"
-						},
-						"headcell_field15": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field44"
-							],
-							"field": "importesms"
-						},
-						"cell_field15": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field15"
-							],
-							"field": "importesms"
-						},
-						"footcell_field15": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "importesms"
-						},
 						"headcell_field16": {
 							"model": "headcell_field",
 							"items": [
@@ -3928,234 +2570,6 @@
 							"model": "footcell_field",
 							"items": [],
 							"field": "plazo"
-						},
-						"headcell_field17": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field46"
-							],
-							"field": "observaciones"
-						},
-						"cell_field17": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field17"
-							],
-							"field": "observaciones"
-						},
-						"footcell_field17": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "observaciones"
-						},
-						"headcell_field18": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field47"
-							],
-							"field": "equipoincluido"
-						},
-						"cell_field18": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field18"
-							],
-							"field": "equipoincluido"
-						},
-						"footcell_field18": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "equipoincluido"
-						},
-						"headcell_field19": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field48"
-							],
-							"field": "rfc"
-						},
-						"cell_field19": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field19"
-							],
-							"field": "rfc"
-						},
-						"footcell_field19": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "rfc"
-						},
-						"headcell_field20": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field49"
-							],
-							"field": "idtratamiento"
-						},
-						"cell_field20": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field20"
-							],
-							"field": "idtratamiento"
-						},
-						"footcell_field20": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "idtratamiento"
-						},
-						"headcell_field21": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field50"
-							],
-							"field": "riesgo"
-						},
-						"cell_field21": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field21"
-							],
-							"field": "riesgo"
-						},
-						"footcell_field21": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "riesgo"
-						},
-						"headcell_field22": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field51"
-							],
-							"field": "observacionest"
-						},
-						"cell_field22": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field22"
-							],
-							"field": "observacionest"
-						},
-						"footcell_field22": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "observacionest"
-						},
-						"headcell_field23": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field52"
-							],
-							"field": "idcli"
-						},
-						"cell_field23": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field23"
-							],
-							"field": "idcli"
-						},
-						"footcell_field23": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "idcli"
-						},
-						"headcell_field24": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field53"
-							],
-							"field": "fecha1avta"
-						},
-						"cell_field24": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field24"
-							],
-							"field": "fecha1avta"
-						},
-						"footcell_field24": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "fecha1avta"
-						},
-						"headcell_field25": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field54"
-							],
-							"field": "idplan1avta"
-						},
-						"cell_field25": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field25"
-							],
-							"field": "idplan1avta"
-						},
-						"footcell_field25": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "idplan1avta"
-						},
-						"headcell_field26": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field55"
-							],
-							"field": "dn1avta"
-						},
-						"cell_field26": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field26"
-							],
-							"field": "dn1avta"
-						},
-						"footcell_field26": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "dn1avta"
-						},
-						"headcell_field27": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field56"
-							],
-							"field": "idproceso"
-						},
-						"cell_field27": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field27"
-							],
-							"field": "idproceso"
-						},
-						"footcell_field27": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "idproceso"
-						},
-						"headcell_field28": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field57"
-							],
-							"field": "idorigenventa"
-						},
-						"cell_field28": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field28"
-							],
-							"field": "idorigenventa"
-						},
-						"footcell_field28": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "idorigenventa"
 						},
 						"headcell_checkbox": {
 							"model": "headcell_checkbox",
@@ -4188,195 +2602,24 @@
 							"model": "footcell_icons",
 							"items": []
 						},
-						"headcell_field29": {
+						"headcell_field": {
 							"model": "headcell_field",
 							"items": [
-								"grid_field_label"
+								"simple_grid_field39"
 							],
-							"field": "nombre"
+							"field": "descripcion"
 						},
-						"cell_field29": {
+						"cell_field": {
 							"model": "cell_field",
 							"items": [
-								"grid_field"
+								"simple_grid_field10"
 							],
-							"field": "nombre"
+							"field": "descripcion"
 						},
-						"footcell_field29": {
+						"footcell_field": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "nombre"
-						},
-						"headcell_field30": {
-							"model": "headcell_field",
-							"items": [
-								"grid_field_label1"
-							],
-							"field": "paterno"
-						},
-						"cell_field30": {
-							"model": "cell_field",
-							"items": [
-								"grid_field1"
-							],
-							"field": "paterno"
-						},
-						"footcell_field30": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "paterno"
-						},
-						"headcell_field31": {
-							"model": "headcell_field",
-							"items": [
-								"grid_field_label2"
-							],
-							"field": "materno"
-						},
-						"cell_field31": {
-							"model": "cell_field",
-							"items": [
-								"grid_field2"
-							],
-							"field": "materno"
-						},
-						"footcell_field31": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "materno"
-						},
-						"headcell_field32": {
-							"model": "headcell_field",
-							"items": [
-								"grid_field_label3"
-							],
-							"field": "estado"
-						},
-						"cell_field32": {
-							"model": "cell_field",
-							"items": [
-								"grid_field3"
-							],
-							"field": "estado"
-						},
-						"footcell_field32": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "estado"
-						},
-						"headcell_field33": {
-							"model": "headcell_field",
-							"items": [
-								"grid_field_label4"
-							],
-							"field": "ciudad"
-						},
-						"cell_field33": {
-							"model": "cell_field",
-							"items": [
-								"grid_field4"
-							],
-							"field": "ciudad"
-						},
-						"footcell_field33": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "ciudad"
-						},
-						"headcell_field34": {
-							"model": "headcell_field",
-							"items": [
-								"grid_field_label5"
-							],
-							"field": "cp"
-						},
-						"cell_field34": {
-							"model": "cell_field",
-							"items": [
-								"grid_field5"
-							],
-							"field": "cp"
-						},
-						"footcell_field34": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "cp"
-						},
-						"headcell_field35": {
-							"model": "headcell_field",
-							"items": [
-								"grid_field_label6"
-							],
-							"field": "calle"
-						},
-						"cell_field35": {
-							"model": "cell_field",
-							"items": [
-								"grid_field6"
-							],
-							"field": "calle"
-						},
-						"footcell_field35": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "calle"
-						},
-						"headcell_field36": {
-							"model": "headcell_field",
-							"items": [
-								"grid_field_label7"
-							],
-							"field": "numeroext"
-						},
-						"cell_field36": {
-							"model": "cell_field",
-							"items": [
-								"grid_field7"
-							],
-							"field": "numeroext"
-						},
-						"footcell_field36": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "numeroext"
-						},
-						"headcell_field37": {
-							"model": "headcell_field",
-							"items": [
-								"grid_field_label8"
-							],
-							"field": "numeroint"
-						},
-						"cell_field37": {
-							"model": "cell_field",
-							"items": [
-								"grid_field8"
-							],
-							"field": "numeroint"
-						},
-						"footcell_field37": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "numeroint"
-						},
-						"headcell_field38": {
-							"model": "headcell_field",
-							"items": [
-								"grid_field_label9"
-							],
-							"field": "colonia"
-						},
-						"cell_field38": {
-							"model": "cell_field",
-							"items": [
-								"grid_field9"
-							],
-							"field": "colonia"
-						},
-						"footcell_field38": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "colonia"
+							"field": "descripcion"
 						}
 					},
 					"deferredItems": [],
@@ -4405,186 +2648,16 @@
 				"details_found": {
 					"type": "details_found"
 				},
-				"search_panel": {
-					"type": "search_panel",
-					"items": [
-						"search_panel_field",
-						"search_panel_field38",
-						"search_panel_field37",
-						"search_panel_field36",
-						"search_panel_field35",
-						"search_panel_field34",
-						"search_panel_field33",
-						"search_panel_field32",
-						"search_panel_field31",
-						"search_panel_field30",
-						"search_panel_field29",
-						"search_panel_field28",
-						"search_panel_field27",
-						"search_panel_field26",
-						"search_panel_field25",
-						"search_panel_field24",
-						"search_panel_field23",
-						"search_panel_field22",
-						"search_panel_field21",
-						"search_panel_field20",
-						"search_panel_field19",
-						"search_panel_field18",
-						"search_panel_field17",
-						"search_panel_field16",
-						"search_panel_field15",
-						"search_panel_field14",
-						"search_panel_field13",
-						"search_panel_field12",
-						"search_panel_field11",
-						"search_panel_field10",
-						"search_panel_field9",
-						"search_panel_field8",
-						"search_panel_field7",
-						"search_panel_field6",
-						"search_panel_field5",
-						"search_panel_field4",
-						"search_panel_field3",
-						"search_panel_field2",
-						"search_panel_field1"
-					],
-					"_flexiblePanel": true
-				},
 				"list_options": {
 					"type": "list_options",
 					"items": [
 						"export_selected",
 						"delete_selected",
 						"-1",
-						"show_search_panel",
-						"hide_search_panel",
-						"-",
 						"export",
 						"-2",
 						"import"
 					]
-				},
-				"show_search_panel": {
-					"type": "show_search_panel"
-				},
-				"hide_search_panel": {
-					"type": "hide_search_panel"
-				},
-				"search_panel_field": {
-					"field": "idsolicitud",
-					"type": "search_panel_field"
-				},
-				"search_panel_field1": {
-					"field": "idtipoventa",
-					"type": "search_panel_field"
-				},
-				"search_panel_field2": {
-					"field": "fecha",
-					"type": "search_panel_field"
-				},
-				"search_panel_field3": {
-					"field": "fechacaptura",
-					"type": "search_panel_field"
-				},
-				"search_panel_field4": {
-					"field": "idcliente",
-					"type": "search_panel_field"
-				},
-				"search_panel_field5": {
-					"field": "idproducto",
-					"type": "search_panel_field"
-				},
-				"search_panel_field6": {
-					"field": "idplan",
-					"type": "search_panel_field"
-				},
-				"search_panel_field7": {
-					"field": "usuario",
-					"type": "search_panel_field"
-				},
-				"search_panel_field8": {
-					"field": "idtienda",
-					"type": "search_panel_field"
-				},
-				"search_panel_field9": {
-					"field": "fechamodif",
-					"type": "search_panel_field"
-				},
-				"search_panel_field10": {
-					"field": "orden",
-					"type": "search_panel_field"
-				},
-				"search_panel_field11": {
-					"field": "solicitudimg",
-					"type": "search_panel_field"
-				},
-				"search_panel_field12": {
-					"field": "estatus",
-					"type": "search_panel_field"
-				},
-				"search_panel_field13": {
-					"field": "idsolrazon",
-					"type": "search_panel_field"
-				},
-				"search_panel_field14": {
-					"field": "importeatt",
-					"type": "search_panel_field"
-				},
-				"search_panel_field15": {
-					"field": "importesms",
-					"type": "search_panel_field"
-				},
-				"search_panel_field16": {
-					"field": "plazo",
-					"type": "search_panel_field"
-				},
-				"search_panel_field17": {
-					"field": "observaciones",
-					"type": "search_panel_field"
-				},
-				"search_panel_field18": {
-					"field": "equipoincluido",
-					"type": "search_panel_field"
-				},
-				"search_panel_field19": {
-					"field": "rfc",
-					"type": "search_panel_field"
-				},
-				"search_panel_field20": {
-					"field": "idtratamiento",
-					"type": "search_panel_field"
-				},
-				"search_panel_field21": {
-					"field": "riesgo",
-					"type": "search_panel_field"
-				},
-				"search_panel_field22": {
-					"field": "observacionest",
-					"type": "search_panel_field"
-				},
-				"search_panel_field23": {
-					"field": "idcli",
-					"type": "search_panel_field"
-				},
-				"search_panel_field24": {
-					"field": "fecha1avta",
-					"type": "search_panel_field"
-				},
-				"search_panel_field25": {
-					"field": "idplan1avta",
-					"type": "search_panel_field"
-				},
-				"search_panel_field26": {
-					"field": "dn1avta",
-					"type": "search_panel_field"
-				},
-				"search_panel_field27": {
-					"field": "idproceso",
-					"type": "search_panel_field"
-				},
-				"search_panel_field28": {
-					"field": "idorigenventa",
-					"type": "search_panel_field"
 				},
 				"expand_menu_button": {
 					"type": "expand_menu_button"
@@ -4636,26 +2709,6 @@
 				"delete_selected": {
 					"type": "delete_selected"
 				},
-				"simple_grid_field": {
-					"field": "idsolicitud",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field29": {
-					"type": "grid_field_label",
-					"field": "idsolicitud"
-				},
-				"simple_grid_field1": {
-					"field": "idtipoventa",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field30": {
-					"type": "grid_field_label",
-					"field": "idtipoventa"
-				},
 				"simple_grid_field2": {
 					"field": "fecha",
 					"type": "grid_field",
@@ -4665,16 +2718,6 @@
 				"simple_grid_field31": {
 					"type": "grid_field_label",
 					"field": "fecha"
-				},
-				"simple_grid_field3": {
-					"field": "fechacaptura",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field32": {
-					"type": "grid_field_label",
-					"field": "fechacaptura"
 				},
 				"simple_grid_field4": {
 					"field": "idcliente",
@@ -4686,56 +2729,6 @@
 					"type": "grid_field_label",
 					"field": "idcliente"
 				},
-				"simple_grid_field5": {
-					"field": "idproducto",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field34": {
-					"type": "grid_field_label",
-					"field": "idproducto"
-				},
-				"simple_grid_field6": {
-					"field": "idplan",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field35": {
-					"type": "grid_field_label",
-					"field": "idplan"
-				},
-				"simple_grid_field7": {
-					"field": "usuario",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field36": {
-					"type": "grid_field_label",
-					"field": "usuario"
-				},
-				"simple_grid_field8": {
-					"field": "idtienda",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field37": {
-					"type": "grid_field_label",
-					"field": "idtienda"
-				},
-				"simple_grid_field9": {
-					"field": "fechamodif",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field38": {
-					"type": "grid_field_label",
-					"field": "fechamodif"
-				},
 				"simple_grid_field10": {
 					"field": "orden",
 					"type": "grid_field",
@@ -4745,16 +2738,6 @@
 				"simple_grid_field39": {
 					"type": "grid_field_label",
 					"field": "orden"
-				},
-				"simple_grid_field11": {
-					"field": "solicitudimg",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field40": {
-					"type": "grid_field_label",
-					"field": "solicitudimg"
 				},
 				"simple_grid_field12": {
 					"field": "estatus",
@@ -4766,36 +2749,6 @@
 					"type": "grid_field_label",
 					"field": "estatus"
 				},
-				"simple_grid_field13": {
-					"field": "idsolrazon",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field42": {
-					"type": "grid_field_label",
-					"field": "idsolrazon"
-				},
-				"simple_grid_field14": {
-					"field": "importeatt",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field43": {
-					"type": "grid_field_label",
-					"field": "importeatt"
-				},
-				"simple_grid_field15": {
-					"field": "importesms",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field44": {
-					"type": "grid_field_label",
-					"field": "importesms"
-				},
 				"simple_grid_field16": {
 					"field": "plazo",
 					"type": "grid_field",
@@ -4805,126 +2758,6 @@
 				"simple_grid_field45": {
 					"type": "grid_field_label",
 					"field": "plazo"
-				},
-				"simple_grid_field17": {
-					"field": "observaciones",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field46": {
-					"type": "grid_field_label",
-					"field": "observaciones"
-				},
-				"simple_grid_field18": {
-					"field": "equipoincluido",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field47": {
-					"type": "grid_field_label",
-					"field": "equipoincluido"
-				},
-				"simple_grid_field19": {
-					"field": "rfc",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field48": {
-					"type": "grid_field_label",
-					"field": "rfc"
-				},
-				"simple_grid_field20": {
-					"field": "idtratamiento",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field49": {
-					"type": "grid_field_label",
-					"field": "idtratamiento"
-				},
-				"simple_grid_field21": {
-					"field": "riesgo",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field50": {
-					"type": "grid_field_label",
-					"field": "riesgo"
-				},
-				"simple_grid_field22": {
-					"field": "observacionest",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field51": {
-					"type": "grid_field_label",
-					"field": "observacionest"
-				},
-				"simple_grid_field23": {
-					"field": "idcli",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field52": {
-					"type": "grid_field_label",
-					"field": "idcli"
-				},
-				"simple_grid_field24": {
-					"field": "fecha1avta",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field53": {
-					"type": "grid_field_label",
-					"field": "fecha1avta"
-				},
-				"simple_grid_field25": {
-					"field": "idplan1avta",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field54": {
-					"type": "grid_field_label",
-					"field": "idplan1avta"
-				},
-				"simple_grid_field26": {
-					"field": "dn1avta",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field55": {
-					"type": "grid_field_label",
-					"field": "dn1avta"
-				},
-				"simple_grid_field27": {
-					"field": "idproceso",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field56": {
-					"type": "grid_field_label",
-					"field": "idproceso"
-				},
-				"simple_grid_field28": {
-					"field": "idorigenventa",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field57": {
-					"type": "grid_field_label",
-					"field": "idorigenventa"
 				},
 				"grid_checkbox": {
 					"type": "grid_checkbox"
@@ -4937,146 +2770,6 @@
 				},
 				"grid_view": {
 					"type": "grid_view"
-				},
-				"grid_field": {
-					"field": "nombre",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"grid_field_label": {
-					"type": "grid_field_label",
-					"field": "nombre"
-				},
-				"grid_field1": {
-					"field": "paterno",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"grid_field_label1": {
-					"type": "grid_field_label",
-					"field": "paterno"
-				},
-				"grid_field2": {
-					"field": "materno",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"grid_field_label2": {
-					"type": "grid_field_label",
-					"field": "materno"
-				},
-				"search_panel_field29": {
-					"field": "nombre",
-					"type": "search_panel_field"
-				},
-				"search_panel_field30": {
-					"field": "paterno",
-					"type": "search_panel_field"
-				},
-				"search_panel_field31": {
-					"field": "materno",
-					"type": "search_panel_field"
-				},
-				"grid_field3": {
-					"field": "estado",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"grid_field_label3": {
-					"type": "grid_field_label",
-					"field": "estado"
-				},
-				"grid_field4": {
-					"field": "ciudad",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"grid_field_label4": {
-					"type": "grid_field_label",
-					"field": "ciudad"
-				},
-				"grid_field5": {
-					"field": "cp",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"grid_field_label5": {
-					"type": "grid_field_label",
-					"field": "cp"
-				},
-				"grid_field6": {
-					"field": "calle",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"grid_field_label6": {
-					"type": "grid_field_label",
-					"field": "calle"
-				},
-				"grid_field7": {
-					"field": "numeroext",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"grid_field_label7": {
-					"type": "grid_field_label",
-					"field": "numeroext"
-				},
-				"grid_field8": {
-					"field": "numeroint",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"grid_field_label8": {
-					"type": "grid_field_label",
-					"field": "numeroint"
-				},
-				"grid_field9": {
-					"field": "colonia",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"grid_field_label9": {
-					"type": "grid_field_label",
-					"field": "colonia"
-				},
-				"search_panel_field32": {
-					"field": "estado",
-					"type": "search_panel_field"
-				},
-				"search_panel_field33": {
-					"field": "ciudad",
-					"type": "search_panel_field"
-				},
-				"search_panel_field34": {
-					"field": "cp",
-					"type": "search_panel_field"
-				},
-				"search_panel_field35": {
-					"field": "calle",
-					"type": "search_panel_field"
-				},
-				"search_panel_field36": {
-					"field": "numeroext",
-					"type": "search_panel_field"
-				},
-				"search_panel_field37": {
-					"field": "numeroint",
-					"type": "search_panel_field"
-				},
-				"search_panel_field38": {
-					"field": "colonia",
-					"type": "search_panel_field"
 				},
 				"username_button": {
 					"type": "username_button",
@@ -5201,47 +2894,7 @@
 					"cells": {
 						"c1": {
 							"model": "c1",
-							"items": [
-								"simple_grid_field",
-								"simple_grid_field1",
-								"simple_grid_field2",
-								"simple_grid_field3",
-								"simple_grid_field4",
-								"simple_grid_field5",
-								"simple_grid_field6",
-								"simple_grid_field7",
-								"simple_grid_field8",
-								"simple_grid_field9",
-								"simple_grid_field10",
-								"simple_grid_field11",
-								"simple_grid_field12",
-								"simple_grid_field13",
-								"simple_grid_field14",
-								"simple_grid_field15",
-								"simple_grid_field16",
-								"simple_grid_field17",
-								"simple_grid_field18",
-								"simple_grid_field19",
-								"simple_grid_field20",
-								"simple_grid_field21",
-								"simple_grid_field22",
-								"simple_grid_field23",
-								"simple_grid_field24",
-								"simple_grid_field25",
-								"simple_grid_field26",
-								"simple_grid_field27",
-								"simple_grid_field28",
-								"simple_grid_field29",
-								"simple_grid_field30",
-								"simple_grid_field31",
-								"simple_grid_field32",
-								"simple_grid_field33",
-								"simple_grid_field34",
-								"simple_grid_field35",
-								"simple_grid_field36",
-								"simple_grid_field37",
-								"simple_grid_field38"
-							]
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -5257,162 +2910,6 @@
 				},
 				"print_pages": {
 					"type": "print_pages"
-				},
-				"simple_grid_field": {
-					"field": "idsolicitud",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field1": {
-					"field": "idtipoventa",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field2": {
-					"field": "fecha",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field3": {
-					"field": "fechacaptura",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field4": {
-					"field": "idcliente",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field5": {
-					"field": "idproducto",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field6": {
-					"field": "idplan",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field7": {
-					"field": "usuario",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field8": {
-					"field": "idtienda",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field9": {
-					"field": "fechamodif",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field10": {
-					"field": "orden",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field11": {
-					"field": "solicitudimg",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field12": {
-					"field": "estatus",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field13": {
-					"field": "idsolrazon",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field14": {
-					"field": "importeatt",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field15": {
-					"field": "importesms",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field16": {
-					"field": "plazo",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field17": {
-					"field": "observaciones",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field18": {
-					"field": "equipoincluido",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field19": {
-					"field": "rfc",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field20": {
-					"field": "idtratamiento",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field21": {
-					"field": "riesgo",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field22": {
-					"field": "observacionest",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field23": {
-					"field": "idcli",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field24": {
-					"field": "fecha1avta",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field25": {
-					"field": "idplan1avta",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field26": {
-					"field": "dn1avta",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field27": {
-					"field": "idproceso",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field28": {
-					"field": "idorigenventa",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field29": {
-					"field": "nombre",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field30": {
-					"field": "paterno",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field31": {
-					"field": "materno",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field32": {
-					"field": "estado",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field33": {
-					"field": "ciudad",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field34": {
-					"field": "cp",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field35": {
-					"field": "calle",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field36": {
-					"field": "numeroext",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field37": {
-					"field": "numeroint",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field38": {
-					"field": "colonia",
-					"type": "simple_grid_field"
 				}
 			},
 			"dbProps": {},

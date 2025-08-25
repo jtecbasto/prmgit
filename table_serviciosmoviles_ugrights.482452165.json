@@ -14,6 +14,7 @@
 		{
 			"name": "TableName",
 			"sqlExpression": "TableName",
+			"index": 1,
 			"strField": "TableName",
 			"type": 200,
 			"viewFormats": [
@@ -30,6 +31,7 @@
 		{
 			"name": "GroupID",
 			"sqlExpression": "GroupID",
+			"index": 2,
 			"strField": "GroupID",
 			"type": 3,
 			"viewFormats": [
@@ -46,6 +48,7 @@
 		{
 			"name": "AccessMask",
 			"sqlExpression": "AccessMask",
+			"index": 3,
 			"strField": "AccessMask",
 			"type": 200,
 			"viewFormats": [
@@ -62,6 +65,7 @@
 		{
 			"name": "Page",
 			"sqlExpression": "Page",
+			"index": 4,
 			"strField": "Page",
 			"type": 201,
 			"viewFormats": [
