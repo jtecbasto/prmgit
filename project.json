@@ -274,7 +274,7 @@
 		{
 			"id": "conn",
 			"name": "servicio_mov at localhost",
-			"connString": "mysql;localhost;root;jsusxt1510;;servicio_mov;;1"
+			"connString": "mysql;rocasamexico.com;rocasamexico_admin;Tecno2023+;;rocasamexico_pruebas;;1"
 		}
 	],
 	"defaultConnID": "conn",
