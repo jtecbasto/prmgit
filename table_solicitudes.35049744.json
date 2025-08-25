@@ -1,0 +1,5439 @@
+{
+	"orderInfo": [
+		{
+			"index": 1,
+			"field": "idsolicitud",
+			"expr": "solicitudes.idsolicitud",
+			"asc": false
+		}
+	],
+	"sql": "SELECT\n\tsolicitudes.idsolicitud,\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tclientes.nombre,\n\tclientes.paterno,\n\tclientes.materno,\n\tentregasvnp.estado,\n\tentregasvnp.ciudad,\n\tentregasvnp.cp,\n\tentregasvnp.calle,\n\tentregasvnp.numeroext,\n\tentregasvnp.numeroint,\n\tentregasvnp.colonia\nFROM\n\tsolicitudes\n\tLEFT OUTER JOIN clientes ON clientes.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp ON entregasvnp.idsolicitud = solicitudes.idsolicitud\nWHERE\nsolicitudes.idtienda =2\nORDER BY\n\tsolicitudes.idsolicitud DESC\n",
+	"connId": "conn",
+	"originalTable": "solicitudes",
+	"name": "solicitudes",
+	"shortTableName": "solicitudes",
+	"dbType": 0,
+	"tableOwnerIdField": "idsolicitud",
+	"usersOwnerIdField": "ID",
+	"keyFields": [
+		"idsolicitud"
+	],
+	"detailsBadgeColor": "1e90ff",
+	"fields": [
+		{
+			"name": "idsolicitud",
+			"sqlExpression": "solicitudes.idsolicitud",
+			"index": 1,
+			"strField": "idsolicitud",
+			"type": 3,
+			"autoinc": true,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"English": "Idsolicitud"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "idtipoventa",
+			"sqlExpression": "solicitudes.idtipoventa",
+			"index": 2,
+			"strField": "idtipoventa",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"English": "Idtipoventa"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "fecha",
+			"sqlExpression": "solicitudes.fecha",
+			"index": 3,
+			"strField": "fecha",
+			"type": 7,
+			"viewFormats": [
+				{
+					"format": "Short Date"
+				}
+			],
+			"editFormats": [
+				{
+					"format": "Date",
+					"dateEditType": 11
+				}
+			],
+			"label": {
+				"English": "Fecha"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "fechacaptura",
+			"sqlExpression": "solicitudes.fechacaptura",
+			"index": 4,
+			"strField": "fechacaptura",
+			"type": 135,
+			"viewFormats": [
+				{
+					"format": "Short Date"
+				}
+			],
+			"editFormats": [
+				{
+					"format": "Date",
+					"dateEditType": 11
+				}
+			],
+			"label": {
+				"English": "Fechacaptura"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "idcliente",
+			"sqlExpression": "solicitudes.idcliente",
+			"index": 5,
+			"strField": "idcliente",
+			"type": 3,
+			"separateEditViewFormats": true,
+			"viewFormats": [
+				{},
+				{
+					"pageType": "list",
+					"textShowFirstN": 20
+				},
+				{
+					"pageType": "print"
+				},
+				{
+					"pageType": "export"
+				}
+			],
+			"editFormats": [
+				{
+					"format": "Lookup wizard",
+					"required": true,
+					"denyDuplicateMessage": {
+						"text": "El cliente %value% ya existe",
+						"type": 0
+					},
+					"lookupType": 2,
+					"lookupTable": "clientes",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "idcliente",
+					"lookupDisplayField": "nombre_completo",
+					"lookupAllowAdd": true,
+					"lookupAllowEdit": true,
+					"lookupControlType": 2,
+					"lookupListPage": "list",
+					"lookupAddPage": "add",
+					"lookupEditPage": "edit",
+					"lookupAutofillFields": [
+						{
+							"masterField": "nombre",
+							"lookupField": "nombre"
+						},
+						{
+							"masterField": "paterno",
+							"lookupField": "paterno"
+						},
+						{
+							"masterField": "materno",
+							"lookupField": "materno"
+						},
+						{
+							"masterField": "rfc",
+							"lookupField": "rfc"
+						},
+						{
+							"masterField": "cliente_id",
+							"lookupField": "idcliente"
+						},
+						{
+							"masterField": "estado",
+							"lookupField": "estado"
+						},
+						{
+							"masterField": "ciudad",
+							"lookupField": "ciudad"
+						},
+						{
+							"masterField": "cp",
+							"lookupField": "idcp"
+						}
+					]
+				},
+				{
+					"format": "Lookup wizard",
+					"pageType": "add",
+					"required": true,
+					"denyDuplicateMessage": {
+						"text": "El cliente %value% ya existe",
+						"type": 0
+					},
+					"lookupType": 2,
+					"lookupTable": "clientes",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "idcliente",
+					"lookupDisplayField": "nombre_completo",
+					"lookupAllowAdd": true,
+					"lookupAllowEdit": true,
+					"lookupControlType": 2,
+					"lookupListPage": "list",
+					"lookupAddPage": "add",
+					"lookupEditPage": "edit",
+					"lookupAutofillFields": [
+						{
+							"masterField": "nombre",
+							"lookupField": "nombre"
+						},
+						{
+							"masterField": "paterno",
+							"lookupField": "paterno"
+						},
+						{
+							"masterField": "materno",
+							"lookupField": "materno"
+						},
+						{
+							"masterField": "rfc",
+							"lookupField": "rfc"
+						},
+						{
+							"masterField": "cliente_id",
+							"lookupField": "idcliente"
+						},
+						{
+							"masterField": "estado",
+							"lookupField": "estado"
+						},
+						{
+							"masterField": "ciudad",
+							"lookupField": "ciudad"
+						},
+						{
+							"masterField": "cp",
+							"lookupField": "idcp"
+						}
+					]
+				},
+				{
+					"format": "Lookup wizard",
+					"pageType": "search",
+					"required": true,
+					"denyDuplicateMessage": {
+						"text": "El cliente %value% ya existe",
+						"type": 0
+					},
+					"lookupType": 2,
+					"lookupTable": "clientes",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "idcliente",
+					"lookupDisplayField": "nombre_completo",
+					"lookupAllowAdd": true,
+					"lookupAllowEdit": true,
+					"lookupControlType": 2,
+					"lookupListPage": "list",
+					"lookupAddPage": "add",
+					"lookupEditPage": "edit",
+					"lookupAutofillFields": [
+						{
+							"masterField": "nombre",
+							"lookupField": "nombre"
+						},
+						{
+							"masterField": "paterno",
+							"lookupField": "paterno"
+						},
+						{
+							"masterField": "materno",
+							"lookupField": "materno"
+						},
+						{
+							"masterField": "rfc",
+							"lookupField": "rfc"
+						},
+						{
+							"masterField": "cliente_id",
+							"lookupField": "idcliente"
+						},
+						{
+							"masterField": "estado",
+							"lookupField": "estado"
+						},
+						{
+							"masterField": "ciudad",
+							"lookupField": "ciudad"
+						},
+						{
+							"masterField": "cp",
+							"lookupField": "idcp"
+						}
+					]
+				}
+			],
+			"label": {
+				"English": "Idcliente",
+				"Spanish": "Cliente"
+			},
+			"placeholder": {
+				"Spanish": "Seleccione al cliente"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "idproducto",
+			"sqlExpression": "solicitudes.idproducto",
+			"index": 6,
+			"strField": "idproducto",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Lookup wizard",
+					"required": true,
+					"lookupType": 2,
+					"lookupTable": "vw_saldosnp",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "idproducto",
+					"lookupDisplayField": "descripcion",
+					"lookupOrderBy": "descripcion",
+					"lookupControlType": 2,
+					"lookupListPage": "list"
+				}
+			],
+			"label": {
+				"English": "Idproducto",
+				"Spanish": "Producto"
+			},
+			"placeholder": {
+				"Spanish": "Seleccione el equipo"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "idplan",
+			"sqlExpression": "solicitudes.idplan",
+			"index": 7,
+			"strField": "idplan",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Lookup wizard",
+					"lookupTable": "planes",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "idplan",
+					"lookupDisplayField": "plan"
+				}
+			],
+			"label": {
+				"English": "Idplan",
+				"Spanish": "Plan"
+			},
+			"placeholder": {
+				"Spanish": "Seleccione el plan"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "usuario",
+			"sqlExpression": "solicitudes.usuario",
+			"index": 8,
+			"strField": "usuario",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"English": "Usuario"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "idtienda",
+			"sqlExpression": "solicitudes.idtienda",
+			"index": 9,
+			"strField": "idtienda",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"English": "Idtienda"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "fechamodif",
+			"sqlExpression": "solicitudes.fechamodif",
+			"index": 10,
+			"strField": "fechamodif",
+			"type": 135,
+			"viewFormats": [
+				{
+					"format": "Short Date"
+				}
+			],
+			"editFormats": [
+				{
+					"format": "Date",
+					"dateEditType": 11
+				}
+			],
+			"label": {
+				"English": "Fechamodif"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "orden",
+			"sqlExpression": "solicitudes.orden",
+			"index": 11,
+			"strField": "orden",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"English": "Orden"
+			},
+			"placeholder": {
+				"Spanish": "Ingrese la orden"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "solicitudimg",
+			"sqlExpression": "solicitudes.solicitudimg",
+			"index": 12,
+			"strField": "solicitudimg",
+			"type": 201,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Text area"
+				}
+			],
+			"label": {
+				"English": "Solicitudimg"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "estatus",
+			"sqlExpression": "solicitudes.estatus",
+			"index": 13,
+			"strField": "estatus",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"English": "Estatus"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "idsolrazon",
+			"sqlExpression": "solicitudes.idsolrazon",
+			"index": 14,
+			"strField": "idsolrazon",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"English": "Idsolrazon"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "importeatt",
+			"sqlExpression": "solicitudes.importeatt",
+			"index": 15,
+			"strField": "importeatt",
+			"type": 5,
+			"viewFormats": [
+				{
+					"format": "Number"
+				}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"English": "Importeatt"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "importesms",
+			"sqlExpression": "solicitudes.importesms",
+			"index": 16,
+			"strField": "importesms",
+			"type": 5,
+			"viewFormats": [
+				{
+					"format": "Number"
+				}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"English": "Importesms"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "plazo",
+			"sqlExpression": "solicitudes.plazo",
+			"index": 17,
+			"strField": "plazo",
+			"type": 2,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Lookup wizard",
+					"required": true,
+					"lookupTable": "plazos",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "plazo",
+					"lookupDisplayField": "plazo",
+					"lookupOrderBy": "plazo"
+				}
+			],
+			"label": {
+				"English": "Plazo"
+			},
+			"placeholder": {
+				"Spanish": "Ingrese el plazo"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "observaciones",
+			"sqlExpression": "solicitudes.observaciones",
+			"index": 18,
+			"strField": "observaciones",
+			"type": 200,
+			"separateEditViewFormats": true,
+			"viewFormats": [
+				{},
+				{
+					"pageType": "list",
+					"textShowFirstN": 30
+				},
+				{
+					"pageType": "print"
+				},
+				{
+					"pageType": "export"
+				}
+			],
+			"editFormats": [
+				{},
+				{
+					"pageType": "add"
+				},
+				{
+					"pageType": "search"
+				}
+			],
+			"label": {
+				"English": "Observaciones",
+				"Spanish": "Observaciones"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "equipoincluido",
+			"sqlExpression": "solicitudes.equipoincluido",
+			"index": 19,
+			"strField": "equipoincluido",
+			"type": 2,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"English": "Equipoincluido"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "rfc",
+			"sqlExpression": "solicitudes.rfc",
+			"index": 20,
+			"strField": "rfc",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Readonly"
+				}
+			],
+			"label": {
+				"English": "Rfc"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "idtratamiento",
+			"sqlExpression": "solicitudes.idtratamiento",
+			"index": 21,
+			"strField": "idtratamiento",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"English": "Idtratamiento"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "riesgo",
+			"sqlExpression": "solicitudes.riesgo",
+			"index": 22,
+			"strField": "riesgo",
+			"type": 129,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"English": "Riesgo"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "observacionest",
+			"sqlExpression": "solicitudes.observacionest",
+			"index": 23,
+			"strField": "observacionest",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"English": "Observacionest"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "idcli",
+			"sqlExpression": "solicitudes.idcli",
+			"index": 24,
+			"strField": "idcli",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"English": "Idcli",
+				"Spanish": "Cliente ID"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "fecha1avta",
+			"sqlExpression": "solicitudes.fecha1avta",
+			"index": 25,
+			"strField": "fecha1avta",
+			"type": 7,
+			"viewFormats": [
+				{
+					"format": "Short Date"
+				}
+			],
+			"editFormats": [
+				{
+					"format": "Date",
+					"dateEditType": 11
+				}
+			],
+			"label": {
+				"English": "Fecha1avta"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "idplan1avta",
+			"sqlExpression": "solicitudes.idplan1avta",
+			"index": 26,
+			"strField": "idplan1avta",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"English": "Idplan1avta"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "dn1avta",
+			"sqlExpression": "solicitudes.dn1avta",
+			"index": 27,
+			"strField": "dn1avta",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"English": "Dn1avta"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "idproceso",
+			"sqlExpression": "solicitudes.idproceso",
+			"index": 28,
+			"strField": "idproceso",
+			"type": 2,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"English": "Idproceso"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "idorigenventa",
+			"sqlExpression": "solicitudes.idorigenventa",
+			"index": 29,
+			"strField": "idorigenventa",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"English": "Idorigenventa"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "nombre",
+			"sqlExpression": "clientes.nombre",
+			"index": 30,
+			"strField": "nombre",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Readonly"
+				}
+			],
+			"label": {
+				"Spanish": "Nombre(s)"
+			},
+			"placeholder": {
+				"Spanish": "Nombre(s) del cliente"
+			},
+			"tableName": "clientes"
+		},
+		{
+			"name": "paterno",
+			"sqlExpression": "clientes.paterno",
+			"index": 31,
+			"strField": "paterno",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Readonly"
+				}
+			],
+			"label": {
+				"Spanish": "Paterno"
+			},
+			"placeholder": {
+				"Spanish": "Apellido paterno"
+			},
+			"tableName": "clientes"
+		},
+		{
+			"name": "materno",
+			"sqlExpression": "clientes.materno",
+			"index": 32,
+			"strField": "materno",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Readonly"
+				}
+			],
+			"label": {
+				"Spanish": "Materno"
+			},
+			"placeholder": {
+				"Spanish": "Apellido materno"
+			},
+			"tableName": "clientes"
+		},
+		{
+			"name": "estado",
+			"sqlExpression": "entregasvnp.estado",
+			"index": 33,
+			"strField": "estado",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Estado"
+			},
+			"tableName": "entregasvnp"
+		},
+		{
+			"name": "ciudad",
+			"sqlExpression": "entregasvnp.ciudad",
+			"index": 34,
+			"strField": "ciudad",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Ciudad"
+			},
+			"tableName": "entregasvnp"
+		},
+		{
+			"name": "cp",
+			"sqlExpression": "entregasvnp.cp",
+			"index": 35,
+			"strField": "cp",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "CP"
+			},
+			"tableName": "entregasvnp"
+		},
+		{
+			"name": "calle",
+			"sqlExpression": "entregasvnp.calle",
+			"index": 36,
+			"strField": "calle",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Calle"
+			},
+			"tableName": "entregasvnp"
+		},
+		{
+			"name": "numeroext",
+			"sqlExpression": "entregasvnp.numeroext",
+			"index": 37,
+			"strField": "numeroext",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "# Ext"
+			},
+			"tableName": "entregasvnp"
+		},
+		{
+			"name": "numeroint",
+			"sqlExpression": "entregasvnp.numeroint",
+			"index": 38,
+			"strField": "numeroint",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "# Int"
+			},
+			"tableName": "entregasvnp"
+		},
+		{
+			"name": "colonia",
+			"sqlExpression": "entregasvnp.colonia",
+			"index": 39,
+			"strField": "colonia",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Colonia"
+			},
+			"tableName": "entregasvnp"
+		}
+	],
+	"eventHandlers": [
+		{
+			"eventId": "EVENT_AFTERADD",
+			"pageType": "add",
+			"code": "// Events → Add → After record added\nglobal $conn;\n\n// Recupera y limpia el stash\n$extras = $_SESSION['solicitudes_add_extras'][$pageObject->id] ?? [];\nunset($_SESSION['solicitudes_add_extras'][$pageObject->id]);\n\n// Ya tienes $keys[\"idsolicitud\"] del registro insertado en solicitudes\n$idsolicitud = (int)$keys[\"idsolicitud\"];\n\n// EJEMPLO: insertar dirección de entrega en entregasvnp usando los extras\nif (!empty($extras)) {\n    $sql = sprintf(\n        \"INSERT INTO entregasvnp (idsolicitud, estado, ciudad, cp, calle, numeroext, numeroint, colonia)\n         VALUES (%d, %s, %s, %d, %s, %s, %s, %s)\",\n        $idsolicitud,\n        db_prepare_string($extras[\"estado\"]    ?? \"\"),\n        db_prepare_string($extras[\"ciudad\"]    ?? \"\"),\n        (int)($extras[\"cp\"]                    ?? 0),\n        db_prepare_string($extras[\"calle\"]     ?? \"\"),\n        db_prepare_string($extras[\"numeroext\"] ?? \"\"),\n        db_prepare_string($extras[\"numeroint\"] ?? \"\"),\n        db_prepare_string($extras[\"colonia\"]   ?? \"\")\n    );\n    db_exec($sql, $conn);\n}\n\n// Si quieres log/debug:\n// file_put_contents(\"extras_log.txt\", date('c').\" PID:\".$pageObject->id.\" \".json_encode($extras,JSON_UNESCAPED_UNICODE).PHP_EOL, FILE_APPEND);\n\n\n"
+		},
+		{
+			"eventId": "EVENT_BEFOREADD",
+			"pageType": "add",
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n// Events → Add → Before record added\n// Copia campos del JOIN a un arreglo y quítalos de $values\n\n$values[\"fecha\"]=date('Y-m-d');\n$values[\"idtienda\"]=2;  //Tienda no presencial\n$values[\"idtipoventa\"]=5; //Renovación Tradicional (Equipo y Chip)\n$values[\"estatus\"]=\"ACTUALIZADA\";\n$values[\"equipoincluido\"]=1;\n\n$camposExtra = [\"nombre\",\"paterno\",\"materno\",\"estado\",\"ciudad\",\"cp\",\"calle\",\"numeroext\",\"numeroint\",\"colonia\"];\n\n$extras = [];\nforeach ($camposExtra as $f) {\n    if (array_key_exists($f, $values)) {\n        $extras[$f] = $values[$f];\n        unset($values[$f]);             // <- evita \"Unknown column ...\" en el INSERT de solicitudes\n    } else {\n        // Si alguno lo pones como \"Custom field\" (no ligado a DB), recupéralo del POST:\n        $pv = postvalue($f);\n        if ($pv !== null) $extras[$f] = $pv;\n    }\n}\n\n// Guarda en sesión, indexado por el id de la página para evitar choques con otras pestañas\n$_SESSION['solicitudes_add_extras'] = $_SESSION['solicitudes_add_extras'] ?? [];\n$_SESSION['solicitudes_add_extras'][$pageObject->id] = $extras;\n\n// Continúa con el insert normal en solicitudes\nreturn true;\n\n\n"
+		}
+	],
+	"dbTableInfo": {
+		"type": 0,
+		"foreignKeys": [],
+		"fields": [
+			{
+				"name": "idsolicitud",
+				"type": 20,
+				"size": 20,
+				"scale": 0,
+				"typeName": "bigint(20)",
+				"nullable": false,
+				"autoinc": true,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idtipoventa",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": false,
+				"autoinc": false,
+				"defaultValueSQL": "0",
+				"defaultValue": "0"
+			},
+			{
+				"name": "fecha",
+				"type": 7,
+				"size": 0,
+				"scale": 0,
+				"typeName": "date",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "fechacaptura",
+				"type": 135,
+				"size": 0,
+				"scale": 0,
+				"typeName": "datetime",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": "current_timestamp()",
+				"defaultValue": "CURRENT_TIMESTAMP"
+			},
+			{
+				"name": "idcliente",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idproducto",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idplan",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "usuario",
+				"type": 200,
+				"size": 20,
+				"scale": 0,
+				"typeName": "varchar(20)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idtienda",
+				"type": 3,
+				"size": 3,
+				"scale": 0,
+				"typeName": "int(3)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "fechamodif",
+				"type": 135,
+				"size": 0,
+				"scale": 0,
+				"typeName": "datetime",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": "current_timestamp()",
+				"defaultValue": "CURRENT_TIMESTAMP"
+			},
+			{
+				"name": "orden",
+				"type": 200,
+				"size": 11,
+				"scale": 0,
+				"typeName": "varchar(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "solicitudimg",
+				"type": 201,
+				"size": 0,
+				"scale": 0,
+				"typeName": "mediumtext",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "estatus",
+				"type": 200,
+				"size": 20,
+				"scale": 0,
+				"typeName": "varchar(20)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idsolrazon",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "importeatt",
+				"type": 5,
+				"size": 0,
+				"scale": 0,
+				"typeName": "float",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "importesms",
+				"type": 5,
+				"size": 0,
+				"scale": 0,
+				"typeName": "float",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "plazo",
+				"type": 2,
+				"size": 6,
+				"scale": 0,
+				"typeName": "smallint(6)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "observaciones",
+				"type": 200,
+				"size": 200,
+				"scale": 0,
+				"typeName": "varchar(200)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "equipoincluido",
+				"type": 16,
+				"size": 1,
+				"scale": 0,
+				"typeName": "tinyint(1)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "rfc",
+				"type": 200,
+				"size": 20,
+				"scale": 0,
+				"typeName": "varchar(20)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idtratamiento",
+				"type": 3,
+				"size": 2,
+				"scale": 0,
+				"typeName": "int(2)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "riesgo",
+				"type": 200,
+				"size": 1,
+				"scale": 0,
+				"typeName": "char(1)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "observacionest",
+				"type": 200,
+				"size": 200,
+				"scale": 0,
+				"typeName": "varchar(200)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idcli",
+				"type": 200,
+				"size": 9,
+				"scale": 0,
+				"typeName": "varchar(9)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "fecha1avta",
+				"type": 7,
+				"size": 0,
+				"scale": 0,
+				"typeName": "date",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idplan1avta",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "dn1avta",
+				"type": 200,
+				"size": 10,
+				"scale": 0,
+				"typeName": "varchar(10)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idproceso",
+				"type": 16,
+				"size": 2,
+				"scale": 0,
+				"typeName": "tinyint(2)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idorigenventa",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			}
+		],
+		"primaryKeys": [
+			"idsolicitud"
+		],
+		"uniqueFields": [],
+		"name": "solicitudes"
+	},
+	"pages": [
+		{
+			"id": "add",
+			"type": "add",
+			"layoutId": "nomenu",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "add-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"add_message"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "add-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"add_save",
+								"add_reset",
+								"add_back_list",
+								"add_cancel"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "add-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"add_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c3"
+								},
+								{
+									"cell": "c"
+								}
+							],
+							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c4",
+									"colspan": 2,
+									"rowspan": 1
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c3": {
+							"model": "c3",
+							"items": [
+								"section"
+							],
+							"border": [
+								{
+									"side": "",
+									"width": "0"
+								}
+							],
+							"padding": {
+								"right": "10px"
+							}
+						},
+						"c": {
+							"model": "c3",
+							"items": [
+								"section1"
+							]
+						},
+						"c4": {
+							"model": "c3",
+							"items": [
+								"section2"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				},
+				"section": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field3",
+								"integrated_edit_field4",
+								"integrated_edit_field5",
+								"integrated_edit_field1",
+								"integrated_edit_field6",
+								"integrated_edit_field9"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				},
+				"section1": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field",
+								"integrated_edit_field2",
+								"integrated_edit_field7",
+								"integrated_edit_field8"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				},
+				"section2": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field13",
+								"integrated_edit_field14",
+								"integrated_edit_field15",
+								"integrated_edit_field16"
+							]
+						},
+						"c": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field11",
+								"integrated_edit_field10",
+								"integrated_edit_field12"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				}
+			},
+			"items": {
+				"add_header": {
+					"type": "add_header"
+				},
+				"add_back_list": {
+					"type": "add_back_list"
+				},
+				"add_cancel": {
+					"type": "add_cancel"
+				},
+				"add_message": {
+					"type": "add_message"
+				},
+				"add_save": {
+					"type": "add_save"
+				},
+				"add_reset": {
+					"type": "add_reset"
+				},
+				"integrated_edit_field3": {
+					"field": "idcliente",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "idcliente",
+						"table": "solicitudes",
+						"type": 5
+					}
+				},
+				"integrated_edit_field": {
+					"field": "idproducto",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "idproducto",
+						"table": "solicitudes",
+						"type": 5
+					}
+				},
+				"integrated_edit_field2": {
+					"field": "idplan",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "idplan",
+						"table": "solicitudes",
+						"type": 5
+					}
+				},
+				"integrated_edit_field1": {
+					"field": "nombre",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "nombre",
+						"table": "solicitudes",
+						"type": 5
+					},
+					"label": {
+						"field": "nombre",
+						"table": "solicitudes",
+						"type": 3
+					}
+				},
+				"integrated_edit_field4": {
+					"field": "paterno",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "paterno",
+						"table": "solicitudes",
+						"type": 5
+					}
+				},
+				"integrated_edit_field5": {
+					"field": "materno",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "materno",
+						"table": "solicitudes",
+						"type": 5
+					}
+				},
+				"integrated_edit_field6": {
+					"field": "rfc",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field7": {
+					"field": "orden",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "orden",
+						"table": "solicitudes",
+						"type": 5
+					}
+				},
+				"integrated_edit_field8": {
+					"field": "plazo",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "plazo",
+						"table": "solicitudes",
+						"type": 5
+					}
+				},
+				"integrated_edit_field9": {
+					"field": "idcli",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"section": {
+					"type": "section",
+					"title": {
+						"type": 0,
+						"text": "Datos del cliente"
+					},
+					"location": "section",
+					"bsStyle": "default",
+					"panelType": 3,
+					"headerBg": "#a0dcf5",
+					"headerColor": "",
+					"bodyBg": "",
+					"bodyColor": "",
+					"panelBorder": null,
+					"borderColor": ""
+				},
+				"section1": {
+					"type": "section",
+					"title": {
+						"type": 0,
+						"text": "Datos de la solicitud"
+					},
+					"location": "section1",
+					"bsStyle": "default",
+					"panelType": 3,
+					"headerBg": "#72d6f9",
+					"headerColor": "",
+					"bodyBg": "",
+					"bodyColor": "",
+					"panelBorder": null,
+					"borderColor": ""
+				},
+				"section2": {
+					"type": "section",
+					"title": {
+						"type": 0,
+						"text": "Datos de entrega"
+					},
+					"location": "section2",
+					"bsStyle": "default",
+					"panelType": 3,
+					"headerBg": "#44bee9",
+					"headerColor": "",
+					"bodyBg": "",
+					"bodyColor": "",
+					"panelBorder": null,
+					"borderColor": ""
+				},
+				"integrated_edit_field10": {
+					"field": "estado",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field11": {
+					"field": "ciudad",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field12": {
+					"field": "cp",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field13": {
+					"field": "calle",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field14": {
+					"field": "numeroext",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field15": {
+					"field": "numeroint",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field16": {
+					"field": "colonia",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "export",
+			"type": "export",
+			"layoutId": "first",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"supertop": {
+					"modelId": "panel-top",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "export-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"export_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "export-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"export_field",
+								"export_field1",
+								"export_field2",
+								"export_field3",
+								"export_field4",
+								"export_field5",
+								"export_field6",
+								"export_field7",
+								"export_field8",
+								"export_field9",
+								"export_field10",
+								"export_field11",
+								"export_field12",
+								"export_field13",
+								"export_field14",
+								"export_field15",
+								"export_field16",
+								"export_field17",
+								"export_field18",
+								"export_field19",
+								"export_field20",
+								"export_field21",
+								"export_field22",
+								"export_field23",
+								"export_field24",
+								"export_field25",
+								"export_field26",
+								"export_field27",
+								"export_field28",
+								"export_field29",
+								"export_field30",
+								"export_field31",
+								"export_field32",
+								"export_field33",
+								"export_field34",
+								"export_field35",
+								"export_field36",
+								"export_field37",
+								"export_field38"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"footer": {
+					"modelId": "export-footer",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"export_export",
+								"export_cancel"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"export_header": {
+					"type": "export_header"
+				},
+				"export_export": {
+					"type": "export_export"
+				},
+				"export_cancel": {
+					"type": "export_cancel"
+				},
+				"export_field": {
+					"field": "idsolicitud",
+					"type": "export_field"
+				},
+				"export_field1": {
+					"field": "idtipoventa",
+					"type": "export_field"
+				},
+				"export_field2": {
+					"field": "fecha",
+					"type": "export_field"
+				},
+				"export_field3": {
+					"field": "fechacaptura",
+					"type": "export_field"
+				},
+				"export_field4": {
+					"field": "idcliente",
+					"type": "export_field"
+				},
+				"export_field5": {
+					"field": "idproducto",
+					"type": "export_field"
+				},
+				"export_field6": {
+					"field": "idplan",
+					"type": "export_field"
+				},
+				"export_field7": {
+					"field": "usuario",
+					"type": "export_field"
+				},
+				"export_field8": {
+					"field": "idtienda",
+					"type": "export_field"
+				},
+				"export_field9": {
+					"field": "fechamodif",
+					"type": "export_field"
+				},
+				"export_field10": {
+					"field": "orden",
+					"type": "export_field"
+				},
+				"export_field11": {
+					"field": "solicitudimg",
+					"type": "export_field"
+				},
+				"export_field12": {
+					"field": "estatus",
+					"type": "export_field"
+				},
+				"export_field13": {
+					"field": "idsolrazon",
+					"type": "export_field"
+				},
+				"export_field14": {
+					"field": "importeatt",
+					"type": "export_field"
+				},
+				"export_field15": {
+					"field": "importesms",
+					"type": "export_field"
+				},
+				"export_field16": {
+					"field": "plazo",
+					"type": "export_field"
+				},
+				"export_field17": {
+					"field": "observaciones",
+					"type": "export_field"
+				},
+				"export_field18": {
+					"field": "equipoincluido",
+					"type": "export_field"
+				},
+				"export_field19": {
+					"field": "rfc",
+					"type": "export_field"
+				},
+				"export_field20": {
+					"field": "idtratamiento",
+					"type": "export_field"
+				},
+				"export_field21": {
+					"field": "riesgo",
+					"type": "export_field"
+				},
+				"export_field22": {
+					"field": "observacionest",
+					"type": "export_field"
+				},
+				"export_field23": {
+					"field": "idcli",
+					"type": "export_field"
+				},
+				"export_field24": {
+					"field": "fecha1avta",
+					"type": "export_field"
+				},
+				"export_field25": {
+					"field": "idplan1avta",
+					"type": "export_field"
+				},
+				"export_field26": {
+					"field": "dn1avta",
+					"type": "export_field"
+				},
+				"export_field27": {
+					"field": "idproceso",
+					"type": "export_field"
+				},
+				"export_field28": {
+					"field": "idorigenventa",
+					"type": "export_field"
+				},
+				"export_field29": {
+					"field": "nombre",
+					"type": "export_field"
+				},
+				"export_field30": {
+					"field": "paterno",
+					"type": "export_field"
+				},
+				"export_field31": {
+					"field": "materno",
+					"type": "export_field"
+				},
+				"export_field32": {
+					"field": "estado",
+					"type": "export_field"
+				},
+				"export_field33": {
+					"field": "ciudad",
+					"type": "export_field"
+				},
+				"export_field34": {
+					"field": "cp",
+					"type": "export_field"
+				},
+				"export_field35": {
+					"field": "calle",
+					"type": "export_field"
+				},
+				"export_field36": {
+					"field": "numeroext",
+					"type": "export_field"
+				},
+				"export_field37": {
+					"field": "numeroint",
+					"type": "export_field"
+				},
+				"export_field38": {
+					"field": "colonia",
+					"type": "export_field"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {},
+			"exportFormat": 2,
+			"exportDelimiter": ",",
+			"exportSelectDelimiter": false,
+			"exportSelectFields": false
+		},
+		{
+			"id": "import",
+			"type": "import",
+			"layoutId": "first",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"supertop": {
+					"modelId": "panel-top",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "import-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"import_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "import-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"import_field",
+								"import_field1",
+								"import_field2",
+								"import_field3",
+								"import_field4",
+								"import_field5",
+								"import_field6",
+								"import_field7",
+								"import_field8",
+								"import_field9",
+								"import_field10",
+								"import_field11",
+								"import_field12",
+								"import_field13",
+								"import_field14",
+								"import_field15",
+								"import_field16",
+								"import_field17",
+								"import_field18",
+								"import_field19",
+								"import_field20",
+								"import_field21",
+								"import_field22",
+								"import_field23",
+								"import_field24",
+								"import_field25",
+								"import_field26",
+								"import_field27",
+								"import_field28",
+								"import_field29",
+								"import_field30",
+								"import_field31"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"import_header": {
+					"type": "import_header"
+				},
+				"import_field": {
+					"field": "idsolicitud",
+					"type": "import_field"
+				},
+				"import_field1": {
+					"field": "idtipoventa",
+					"type": "import_field"
+				},
+				"import_field2": {
+					"field": "fecha",
+					"type": "import_field"
+				},
+				"import_field3": {
+					"field": "fechacaptura",
+					"type": "import_field"
+				},
+				"import_field4": {
+					"field": "idcliente",
+					"type": "import_field"
+				},
+				"import_field5": {
+					"field": "idproducto",
+					"type": "import_field"
+				},
+				"import_field6": {
+					"field": "idplan",
+					"type": "import_field"
+				},
+				"import_field7": {
+					"field": "usuario",
+					"type": "import_field"
+				},
+				"import_field8": {
+					"field": "idtienda",
+					"type": "import_field"
+				},
+				"import_field9": {
+					"field": "fechamodif",
+					"type": "import_field"
+				},
+				"import_field10": {
+					"field": "orden",
+					"type": "import_field"
+				},
+				"import_field11": {
+					"field": "solicitudimg",
+					"type": "import_field"
+				},
+				"import_field12": {
+					"field": "estatus",
+					"type": "import_field"
+				},
+				"import_field13": {
+					"field": "idsolrazon",
+					"type": "import_field"
+				},
+				"import_field14": {
+					"field": "importeatt",
+					"type": "import_field"
+				},
+				"import_field15": {
+					"field": "importesms",
+					"type": "import_field"
+				},
+				"import_field16": {
+					"field": "plazo",
+					"type": "import_field"
+				},
+				"import_field17": {
+					"field": "observaciones",
+					"type": "import_field"
+				},
+				"import_field18": {
+					"field": "equipoincluido",
+					"type": "import_field"
+				},
+				"import_field19": {
+					"field": "rfc",
+					"type": "import_field"
+				},
+				"import_field20": {
+					"field": "idtratamiento",
+					"type": "import_field"
+				},
+				"import_field21": {
+					"field": "riesgo",
+					"type": "import_field"
+				},
+				"import_field22": {
+					"field": "observacionest",
+					"type": "import_field"
+				},
+				"import_field23": {
+					"field": "idcli",
+					"type": "import_field"
+				},
+				"import_field24": {
+					"field": "fecha1avta",
+					"type": "import_field"
+				},
+				"import_field25": {
+					"field": "idplan1avta",
+					"type": "import_field"
+				},
+				"import_field26": {
+					"field": "dn1avta",
+					"type": "import_field"
+				},
+				"import_field27": {
+					"field": "idproceso",
+					"type": "import_field"
+				},
+				"import_field28": {
+					"field": "idorigenventa",
+					"type": "import_field"
+				},
+				"import_field29": {
+					"field": "nombre",
+					"type": "import_field"
+				},
+				"import_field30": {
+					"field": "paterno",
+					"type": "import_field"
+				},
+				"import_field31": {
+					"field": "materno",
+					"type": "import_field"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "edit",
+			"type": "edit",
+			"layoutId": "nomenu",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "edit-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"edit_message"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "edit-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"edit_save",
+								"edit_back_list",
+								"edit_close"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"hamburger"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "edit-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"edit_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c3"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c3": {
+							"model": "c3",
+							"items": [
+								"integrated_edit_field",
+								"integrated_edit_field1",
+								"integrated_edit_field2",
+								"integrated_edit_field3",
+								"integrated_edit_field4",
+								"integrated_edit_field5",
+								"integrated_edit_field6",
+								"integrated_edit_field7",
+								"integrated_edit_field8",
+								"integrated_edit_field9",
+								"integrated_edit_field10",
+								"integrated_edit_field11",
+								"integrated_edit_field12",
+								"integrated_edit_field13",
+								"integrated_edit_field14",
+								"integrated_edit_field15",
+								"integrated_edit_field16",
+								"integrated_edit_field17",
+								"integrated_edit_field18",
+								"integrated_edit_field19",
+								"integrated_edit_field20",
+								"integrated_edit_field21",
+								"integrated_edit_field22",
+								"integrated_edit_field23",
+								"integrated_edit_field24",
+								"integrated_edit_field25",
+								"integrated_edit_field26",
+								"integrated_edit_field27",
+								"integrated_edit_field28",
+								"integrated_edit_field29",
+								"integrated_edit_field30"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				}
+			},
+			"items": {
+				"edit_header": {
+					"type": "edit_header"
+				},
+				"hamburger": {
+					"type": "hamburger",
+					"items": [
+						"edit_reset",
+						"edit_view"
+					]
+				},
+				"edit_reset": {
+					"type": "edit_reset"
+				},
+				"edit_message": {
+					"type": "edit_message"
+				},
+				"edit_save": {
+					"type": "edit_save"
+				},
+				"edit_back_list": {
+					"type": "edit_back_list"
+				},
+				"edit_close": {
+					"type": "edit_close"
+				},
+				"integrated_edit_field": {
+					"field": "idtipoventa",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field1": {
+					"field": "fecha",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field2": {
+					"field": "fechacaptura",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field3": {
+					"field": "idcliente",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field4": {
+					"field": "idproducto",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field5": {
+					"field": "idplan",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field6": {
+					"field": "usuario",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field7": {
+					"field": "idtienda",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field8": {
+					"field": "fechamodif",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field9": {
+					"field": "orden",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field10": {
+					"field": "solicitudimg",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field11": {
+					"field": "estatus",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field12": {
+					"field": "idsolrazon",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field13": {
+					"field": "importeatt",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field14": {
+					"field": "importesms",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field15": {
+					"field": "plazo",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field16": {
+					"field": "observaciones",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field17": {
+					"field": "equipoincluido",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field18": {
+					"field": "rfc",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field19": {
+					"field": "idtratamiento",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field20": {
+					"field": "riesgo",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field21": {
+					"field": "observacionest",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field22": {
+					"field": "idcli",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field23": {
+					"field": "fecha1avta",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field24": {
+					"field": "idplan1avta",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field25": {
+					"field": "dn1avta",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field26": {
+					"field": "idproceso",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field27": {
+					"field": "idorigenventa",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"edit_view": {
+					"type": "edit_view"
+				},
+				"integrated_edit_field28": {
+					"field": "nombre",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field29": {
+					"field": "paterno",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field30": {
+					"field": "materno",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "view",
+			"type": "view",
+			"layoutId": "nomenu",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "view-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1",
+									"colspan": 2
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "view-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"view_back_list",
+								"view_close"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"hamburger"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "view-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"view_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c3"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c3": {
+							"model": "c3",
+							"items": [
+								"integrated_edit_field",
+								"integrated_edit_field1",
+								"integrated_edit_field2",
+								"integrated_edit_field3",
+								"integrated_edit_field4",
+								"integrated_edit_field5",
+								"integrated_edit_field6",
+								"integrated_edit_field7",
+								"integrated_edit_field8",
+								"integrated_edit_field9",
+								"integrated_edit_field10",
+								"integrated_edit_field11",
+								"integrated_edit_field12",
+								"integrated_edit_field13",
+								"integrated_edit_field14",
+								"integrated_edit_field15",
+								"integrated_edit_field16",
+								"integrated_edit_field17",
+								"integrated_edit_field18",
+								"integrated_edit_field19",
+								"integrated_edit_field20",
+								"integrated_edit_field21",
+								"integrated_edit_field22",
+								"integrated_edit_field23",
+								"integrated_edit_field24",
+								"integrated_edit_field25",
+								"integrated_edit_field26",
+								"integrated_edit_field27",
+								"integrated_edit_field28",
+								"integrated_edit_field29",
+								"integrated_edit_field30",
+								"integrated_edit_field31",
+								"integrated_edit_field32",
+								"integrated_edit_field33",
+								"integrated_edit_field34",
+								"integrated_edit_field35",
+								"integrated_edit_field36",
+								"integrated_edit_field37",
+								"integrated_edit_field38"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				}
+			},
+			"items": {
+				"view_header": {
+					"type": "view_header"
+				},
+				"view_back_list": {
+					"type": "view_back_list"
+				},
+				"view_close": {
+					"type": "view_close"
+				},
+				"integrated_edit_field": {
+					"field": "idsolicitud",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field1": {
+					"field": "idtipoventa",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field2": {
+					"field": "fecha",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field3": {
+					"field": "fechacaptura",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field4": {
+					"field": "idcliente",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field5": {
+					"field": "idproducto",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field6": {
+					"field": "idplan",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field7": {
+					"field": "usuario",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field8": {
+					"field": "idtienda",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field9": {
+					"field": "fechamodif",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field10": {
+					"field": "orden",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field11": {
+					"field": "solicitudimg",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field12": {
+					"field": "estatus",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field13": {
+					"field": "idsolrazon",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field14": {
+					"field": "importeatt",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field15": {
+					"field": "importesms",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field16": {
+					"field": "plazo",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field17": {
+					"field": "observaciones",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field18": {
+					"field": "equipoincluido",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field19": {
+					"field": "rfc",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field20": {
+					"field": "idtratamiento",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field21": {
+					"field": "riesgo",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field22": {
+					"field": "observacionest",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field23": {
+					"field": "idcli",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field24": {
+					"field": "fecha1avta",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field25": {
+					"field": "idplan1avta",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field26": {
+					"field": "dn1avta",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field27": {
+					"field": "idproceso",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field28": {
+					"field": "idorigenventa",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"hamburger": {
+					"type": "hamburger",
+					"items": [
+						"view_edit"
+					]
+				},
+				"view_edit": {
+					"type": "view_edit"
+				},
+				"integrated_edit_field29": {
+					"field": "nombre",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field30": {
+					"field": "paterno",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field31": {
+					"field": "materno",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field32": {
+					"field": "estado",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field33": {
+					"field": "ciudad",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field34": {
+					"field": "cp",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field35": {
+					"field": "calle",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field36": {
+					"field": "numeroext",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field37": {
+					"field": "numeroint",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field38": {
+					"field": "colonia",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "list",
+			"type": "list",
+			"layoutId": "leftbar",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "list-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"add",
+								"delete"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"details_found",
+								"page_size",
+								"print_panel"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "list-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"pagination"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"left": {
+					"modelId": "leftbar-menu",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c0"
+								}
+							],
+							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c0": {
+							"model": "c0",
+							"items": [
+								"logo"
+							]
+						},
+						"c1": {
+							"model": "c1",
+							"items": [
+								"menu",
+								"search_panel"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"supertop": {
+					"modelId": "leftbar-top",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"expand_menu_button",
+								"collapse_button",
+								"breadcrumb"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"simple_search",
+								"list_options",
+								"loginform_login",
+								"username_button"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "list-sidebar-top",
+					"grid": [],
+					"cells": {},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "horizontal-grid",
+					"grid": [
+						{
+							"section": "head",
+							"cells": [
+								{
+									"cell": "headcell_icons"
+								},
+								{
+									"cell": "headcell_checkbox"
+								},
+								{
+									"cell": "headcell_field"
+								},
+								{
+									"cell": "headcell_field1"
+								},
+								{
+									"cell": "headcell_field2"
+								},
+								{
+									"cell": "headcell_field3"
+								},
+								{
+									"cell": "headcell_field4"
+								},
+								{
+									"cell": "headcell_field5"
+								},
+								{
+									"cell": "headcell_field6"
+								},
+								{
+									"cell": "headcell_field7"
+								},
+								{
+									"cell": "headcell_field8"
+								},
+								{
+									"cell": "headcell_field9"
+								},
+								{
+									"cell": "headcell_field10"
+								},
+								{
+									"cell": "headcell_field11"
+								},
+								{
+									"cell": "headcell_field12"
+								},
+								{
+									"cell": "headcell_field13"
+								},
+								{
+									"cell": "headcell_field14"
+								},
+								{
+									"cell": "headcell_field15"
+								},
+								{
+									"cell": "headcell_field16"
+								},
+								{
+									"cell": "headcell_field17"
+								},
+								{
+									"cell": "headcell_field18"
+								},
+								{
+									"cell": "headcell_field19"
+								},
+								{
+									"cell": "headcell_field20"
+								},
+								{
+									"cell": "headcell_field21"
+								},
+								{
+									"cell": "headcell_field22"
+								},
+								{
+									"cell": "headcell_field23"
+								},
+								{
+									"cell": "headcell_field24"
+								},
+								{
+									"cell": "headcell_field25"
+								},
+								{
+									"cell": "headcell_field26"
+								},
+								{
+									"cell": "headcell_field27"
+								},
+								{
+									"cell": "headcell_field28"
+								},
+								{
+									"cell": "headcell_field29"
+								},
+								{
+									"cell": "headcell_field30"
+								},
+								{
+									"cell": "headcell_field31"
+								},
+								{
+									"cell": "headcell_field32"
+								},
+								{
+									"cell": "headcell_field33"
+								},
+								{
+									"cell": "headcell_field34"
+								},
+								{
+									"cell": "headcell_field35"
+								},
+								{
+									"cell": "headcell_field36"
+								},
+								{
+									"cell": "headcell_field37"
+								},
+								{
+									"cell": "headcell_field38"
+								}
+							]
+						},
+						{
+							"section": "body",
+							"cells": [
+								{
+									"cell": "cell_icons"
+								},
+								{
+									"cell": "cell_checkbox"
+								},
+								{
+									"cell": "cell_field"
+								},
+								{
+									"cell": "cell_field1"
+								},
+								{
+									"cell": "cell_field2"
+								},
+								{
+									"cell": "cell_field3"
+								},
+								{
+									"cell": "cell_field4"
+								},
+								{
+									"cell": "cell_field5"
+								},
+								{
+									"cell": "cell_field6"
+								},
+								{
+									"cell": "cell_field7"
+								},
+								{
+									"cell": "cell_field8"
+								},
+								{
+									"cell": "cell_field9"
+								},
+								{
+									"cell": "cell_field10"
+								},
+								{
+									"cell": "cell_field11"
+								},
+								{
+									"cell": "cell_field12"
+								},
+								{
+									"cell": "cell_field13"
+								},
+								{
+									"cell": "cell_field14"
+								},
+								{
+									"cell": "cell_field15"
+								},
+								{
+									"cell": "cell_field16"
+								},
+								{
+									"cell": "cell_field17"
+								},
+								{
+									"cell": "cell_field18"
+								},
+								{
+									"cell": "cell_field19"
+								},
+								{
+									"cell": "cell_field20"
+								},
+								{
+									"cell": "cell_field21"
+								},
+								{
+									"cell": "cell_field22"
+								},
+								{
+									"cell": "cell_field23"
+								},
+								{
+									"cell": "cell_field24"
+								},
+								{
+									"cell": "cell_field25"
+								},
+								{
+									"cell": "cell_field26"
+								},
+								{
+									"cell": "cell_field27"
+								},
+								{
+									"cell": "cell_field28"
+								},
+								{
+									"cell": "cell_field29"
+								},
+								{
+									"cell": "cell_field30"
+								},
+								{
+									"cell": "cell_field31"
+								},
+								{
+									"cell": "cell_field32"
+								},
+								{
+									"cell": "cell_field33"
+								},
+								{
+									"cell": "cell_field34"
+								},
+								{
+									"cell": "cell_field35"
+								},
+								{
+									"cell": "cell_field36"
+								},
+								{
+									"cell": "cell_field37"
+								},
+								{
+									"cell": "cell_field38"
+								}
+							]
+						},
+						{
+							"section": "foot",
+							"cells": [
+								{
+									"cell": "footcell_icons"
+								},
+								{
+									"cell": "footcell_checkbox"
+								},
+								{
+									"cell": "footcell_field"
+								},
+								{
+									"cell": "footcell_field1"
+								},
+								{
+									"cell": "footcell_field2"
+								},
+								{
+									"cell": "footcell_field3"
+								},
+								{
+									"cell": "footcell_field4"
+								},
+								{
+									"cell": "footcell_field5"
+								},
+								{
+									"cell": "footcell_field6"
+								},
+								{
+									"cell": "footcell_field7"
+								},
+								{
+									"cell": "footcell_field8"
+								},
+								{
+									"cell": "footcell_field9"
+								},
+								{
+									"cell": "footcell_field10"
+								},
+								{
+									"cell": "footcell_field11"
+								},
+								{
+									"cell": "footcell_field12"
+								},
+								{
+									"cell": "footcell_field13"
+								},
+								{
+									"cell": "footcell_field14"
+								},
+								{
+									"cell": "footcell_field15"
+								},
+								{
+									"cell": "footcell_field16"
+								},
+								{
+									"cell": "footcell_field17"
+								},
+								{
+									"cell": "footcell_field18"
+								},
+								{
+									"cell": "footcell_field19"
+								},
+								{
+									"cell": "footcell_field20"
+								},
+								{
+									"cell": "footcell_field21"
+								},
+								{
+									"cell": "footcell_field22"
+								},
+								{
+									"cell": "footcell_field23"
+								},
+								{
+									"cell": "footcell_field24"
+								},
+								{
+									"cell": "footcell_field25"
+								},
+								{
+									"cell": "footcell_field26"
+								},
+								{
+									"cell": "footcell_field27"
+								},
+								{
+									"cell": "footcell_field28"
+								},
+								{
+									"cell": "footcell_field29"
+								},
+								{
+									"cell": "footcell_field30"
+								},
+								{
+									"cell": "footcell_field31"
+								},
+								{
+									"cell": "footcell_field32"
+								},
+								{
+									"cell": "footcell_field33"
+								},
+								{
+									"cell": "footcell_field34"
+								},
+								{
+									"cell": "footcell_field35"
+								},
+								{
+									"cell": "footcell_field36"
+								},
+								{
+									"cell": "footcell_field37"
+								},
+								{
+									"cell": "footcell_field38"
+								}
+							]
+						}
+					],
+					"cells": {
+						"headcell_field": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field29"
+							],
+							"field": "idsolicitud"
+						},
+						"cell_field": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field"
+							],
+							"field": "idsolicitud"
+						},
+						"footcell_field": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "idsolicitud"
+						},
+						"headcell_field1": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field30"
+							],
+							"field": "idtipoventa"
+						},
+						"cell_field1": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field1"
+							],
+							"field": "idtipoventa"
+						},
+						"footcell_field1": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "idtipoventa"
+						},
+						"headcell_field2": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field31"
+							],
+							"field": "fecha"
+						},
+						"cell_field2": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field2"
+							],
+							"field": "fecha"
+						},
+						"footcell_field2": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "fecha"
+						},
+						"headcell_field3": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field32"
+							],
+							"field": "fechacaptura"
+						},
+						"cell_field3": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field3"
+							],
+							"field": "fechacaptura"
+						},
+						"footcell_field3": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "fechacaptura"
+						},
+						"headcell_field4": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field33"
+							],
+							"field": "idcliente"
+						},
+						"cell_field4": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field4"
+							],
+							"field": "idcliente"
+						},
+						"footcell_field4": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "idcliente"
+						},
+						"headcell_field5": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field34"
+							],
+							"field": "idproducto"
+						},
+						"cell_field5": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field5"
+							],
+							"field": "idproducto"
+						},
+						"footcell_field5": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "idproducto"
+						},
+						"headcell_field6": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field35"
+							],
+							"field": "idplan"
+						},
+						"cell_field6": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field6"
+							],
+							"field": "idplan"
+						},
+						"footcell_field6": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "idplan"
+						},
+						"headcell_field7": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field36"
+							],
+							"field": "usuario"
+						},
+						"cell_field7": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field7"
+							],
+							"field": "usuario"
+						},
+						"footcell_field7": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "usuario"
+						},
+						"headcell_field8": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field37"
+							],
+							"field": "idtienda"
+						},
+						"cell_field8": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field8"
+							],
+							"field": "idtienda"
+						},
+						"footcell_field8": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "idtienda"
+						},
+						"headcell_field9": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field38"
+							],
+							"field": "fechamodif"
+						},
+						"cell_field9": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field9"
+							],
+							"field": "fechamodif"
+						},
+						"footcell_field9": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "fechamodif"
+						},
+						"headcell_field10": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field39"
+							],
+							"field": "orden"
+						},
+						"cell_field10": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field10"
+							],
+							"field": "orden"
+						},
+						"footcell_field10": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "orden"
+						},
+						"headcell_field11": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field40"
+							],
+							"field": "solicitudimg"
+						},
+						"cell_field11": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field11"
+							],
+							"field": "solicitudimg"
+						},
+						"footcell_field11": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "solicitudimg"
+						},
+						"headcell_field12": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field41"
+							],
+							"field": "estatus"
+						},
+						"cell_field12": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field12"
+							],
+							"field": "estatus"
+						},
+						"footcell_field12": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "estatus"
+						},
+						"headcell_field13": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field42"
+							],
+							"field": "idsolrazon"
+						},
+						"cell_field13": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field13"
+							],
+							"field": "idsolrazon"
+						},
+						"footcell_field13": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "idsolrazon"
+						},
+						"headcell_field14": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field43"
+							],
+							"field": "importeatt"
+						},
+						"cell_field14": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field14"
+							],
+							"field": "importeatt"
+						},
+						"footcell_field14": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "importeatt"
+						},
+						"headcell_field15": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field44"
+							],
+							"field": "importesms"
+						},
+						"cell_field15": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field15"
+							],
+							"field": "importesms"
+						},
+						"footcell_field15": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "importesms"
+						},
+						"headcell_field16": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field45"
+							],
+							"field": "plazo"
+						},
+						"cell_field16": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field16"
+							],
+							"field": "plazo"
+						},
+						"footcell_field16": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "plazo"
+						},
+						"headcell_field17": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field46"
+							],
+							"field": "observaciones"
+						},
+						"cell_field17": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field17"
+							],
+							"field": "observaciones"
+						},
+						"footcell_field17": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "observaciones"
+						},
+						"headcell_field18": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field47"
+							],
+							"field": "equipoincluido"
+						},
+						"cell_field18": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field18"
+							],
+							"field": "equipoincluido"
+						},
+						"footcell_field18": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "equipoincluido"
+						},
+						"headcell_field19": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field48"
+							],
+							"field": "rfc"
+						},
+						"cell_field19": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field19"
+							],
+							"field": "rfc"
+						},
+						"footcell_field19": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "rfc"
+						},
+						"headcell_field20": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field49"
+							],
+							"field": "idtratamiento"
+						},
+						"cell_field20": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field20"
+							],
+							"field": "idtratamiento"
+						},
+						"footcell_field20": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "idtratamiento"
+						},
+						"headcell_field21": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field50"
+							],
+							"field": "riesgo"
+						},
+						"cell_field21": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field21"
+							],
+							"field": "riesgo"
+						},
+						"footcell_field21": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "riesgo"
+						},
+						"headcell_field22": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field51"
+							],
+							"field": "observacionest"
+						},
+						"cell_field22": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field22"
+							],
+							"field": "observacionest"
+						},
+						"footcell_field22": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "observacionest"
+						},
+						"headcell_field23": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field52"
+							],
+							"field": "idcli"
+						},
+						"cell_field23": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field23"
+							],
+							"field": "idcli"
+						},
+						"footcell_field23": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "idcli"
+						},
+						"headcell_field24": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field53"
+							],
+							"field": "fecha1avta"
+						},
+						"cell_field24": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field24"
+							],
+							"field": "fecha1avta"
+						},
+						"footcell_field24": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "fecha1avta"
+						},
+						"headcell_field25": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field54"
+							],
+							"field": "idplan1avta"
+						},
+						"cell_field25": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field25"
+							],
+							"field": "idplan1avta"
+						},
+						"footcell_field25": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "idplan1avta"
+						},
+						"headcell_field26": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field55"
+							],
+							"field": "dn1avta"
+						},
+						"cell_field26": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field26"
+							],
+							"field": "dn1avta"
+						},
+						"footcell_field26": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "dn1avta"
+						},
+						"headcell_field27": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field56"
+							],
+							"field": "idproceso"
+						},
+						"cell_field27": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field27"
+							],
+							"field": "idproceso"
+						},
+						"footcell_field27": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "idproceso"
+						},
+						"headcell_field28": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field57"
+							],
+							"field": "idorigenventa"
+						},
+						"cell_field28": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field28"
+							],
+							"field": "idorigenventa"
+						},
+						"footcell_field28": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "idorigenventa"
+						},
+						"headcell_checkbox": {
+							"model": "headcell_checkbox",
+							"items": [
+								"grid_checkbox_head"
+							]
+						},
+						"cell_checkbox": {
+							"model": "cell_checkbox",
+							"items": [
+								"grid_checkbox"
+							]
+						},
+						"footcell_checkbox": {
+							"model": "footcell_checkbox",
+							"items": []
+						},
+						"headcell_icons": {
+							"model": "headcell_icons",
+							"items": []
+						},
+						"cell_icons": {
+							"model": "cell_icons",
+							"items": [
+								"grid_edit",
+								"grid_view"
+							]
+						},
+						"footcell_icons": {
+							"model": "footcell_icons",
+							"items": []
+						},
+						"headcell_field29": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label"
+							],
+							"field": "nombre"
+						},
+						"cell_field29": {
+							"model": "cell_field",
+							"items": [
+								"grid_field"
+							],
+							"field": "nombre"
+						},
+						"footcell_field29": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "nombre"
+						},
+						"headcell_field30": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label1"
+							],
+							"field": "paterno"
+						},
+						"cell_field30": {
+							"model": "cell_field",
+							"items": [
+								"grid_field1"
+							],
+							"field": "paterno"
+						},
+						"footcell_field30": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "paterno"
+						},
+						"headcell_field31": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label2"
+							],
+							"field": "materno"
+						},
+						"cell_field31": {
+							"model": "cell_field",
+							"items": [
+								"grid_field2"
+							],
+							"field": "materno"
+						},
+						"footcell_field31": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "materno"
+						},
+						"headcell_field32": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label3"
+							],
+							"field": "estado"
+						},
+						"cell_field32": {
+							"model": "cell_field",
+							"items": [
+								"grid_field3"
+							],
+							"field": "estado"
+						},
+						"footcell_field32": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "estado"
+						},
+						"headcell_field33": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label4"
+							],
+							"field": "ciudad"
+						},
+						"cell_field33": {
+							"model": "cell_field",
+							"items": [
+								"grid_field4"
+							],
+							"field": "ciudad"
+						},
+						"footcell_field33": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "ciudad"
+						},
+						"headcell_field34": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label5"
+							],
+							"field": "cp"
+						},
+						"cell_field34": {
+							"model": "cell_field",
+							"items": [
+								"grid_field5"
+							],
+							"field": "cp"
+						},
+						"footcell_field34": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "cp"
+						},
+						"headcell_field35": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label6"
+							],
+							"field": "calle"
+						},
+						"cell_field35": {
+							"model": "cell_field",
+							"items": [
+								"grid_field6"
+							],
+							"field": "calle"
+						},
+						"footcell_field35": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "calle"
+						},
+						"headcell_field36": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label7"
+							],
+							"field": "numeroext"
+						},
+						"cell_field36": {
+							"model": "cell_field",
+							"items": [
+								"grid_field7"
+							],
+							"field": "numeroext"
+						},
+						"footcell_field36": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "numeroext"
+						},
+						"headcell_field37": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label8"
+							],
+							"field": "numeroint"
+						},
+						"cell_field37": {
+							"model": "cell_field",
+							"items": [
+								"grid_field8"
+							],
+							"field": "numeroint"
+						},
+						"footcell_field37": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "numeroint"
+						},
+						"headcell_field38": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label9"
+							],
+							"field": "colonia"
+						},
+						"cell_field38": {
+							"model": "cell_field",
+							"items": [
+								"grid_field9"
+							],
+							"field": "colonia"
+						},
+						"footcell_field38": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "colonia"
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"page_size": {
+					"type": "page_size"
+				},
+				"breadcrumb": {
+					"type": "breadcrumb"
+				},
+				"logo": {
+					"type": "logo"
+				},
+				"menu": {
+					"type": "menu"
+				},
+				"simple_search": {
+					"type": "simple_search"
+				},
+				"pagination": {
+					"type": "pagination"
+				},
+				"details_found": {
+					"type": "details_found"
+				},
+				"search_panel": {
+					"type": "search_panel",
+					"items": [
+						"search_panel_field",
+						"search_panel_field38",
+						"search_panel_field37",
+						"search_panel_field36",
+						"search_panel_field35",
+						"search_panel_field34",
+						"search_panel_field33",
+						"search_panel_field32",
+						"search_panel_field31",
+						"search_panel_field30",
+						"search_panel_field29",
+						"search_panel_field28",
+						"search_panel_field27",
+						"search_panel_field26",
+						"search_panel_field25",
+						"search_panel_field24",
+						"search_panel_field23",
+						"search_panel_field22",
+						"search_panel_field21",
+						"search_panel_field20",
+						"search_panel_field19",
+						"search_panel_field18",
+						"search_panel_field17",
+						"search_panel_field16",
+						"search_panel_field15",
+						"search_panel_field14",
+						"search_panel_field13",
+						"search_panel_field12",
+						"search_panel_field11",
+						"search_panel_field10",
+						"search_panel_field9",
+						"search_panel_field8",
+						"search_panel_field7",
+						"search_panel_field6",
+						"search_panel_field5",
+						"search_panel_field4",
+						"search_panel_field3",
+						"search_panel_field2",
+						"search_panel_field1"
+					],
+					"_flexiblePanel": true
+				},
+				"list_options": {
+					"type": "list_options",
+					"items": [
+						"export_selected",
+						"delete_selected",
+						"-1",
+						"show_search_panel",
+						"hide_search_panel",
+						"-",
+						"export",
+						"-2",
+						"import"
+					]
+				},
+				"show_search_panel": {
+					"type": "show_search_panel"
+				},
+				"hide_search_panel": {
+					"type": "hide_search_panel"
+				},
+				"search_panel_field": {
+					"field": "idsolicitud",
+					"type": "search_panel_field"
+				},
+				"search_panel_field1": {
+					"field": "idtipoventa",
+					"type": "search_panel_field"
+				},
+				"search_panel_field2": {
+					"field": "fecha",
+					"type": "search_panel_field"
+				},
+				"search_panel_field3": {
+					"field": "fechacaptura",
+					"type": "search_panel_field"
+				},
+				"search_panel_field4": {
+					"field": "idcliente",
+					"type": "search_panel_field"
+				},
+				"search_panel_field5": {
+					"field": "idproducto",
+					"type": "search_panel_field"
+				},
+				"search_panel_field6": {
+					"field": "idplan",
+					"type": "search_panel_field"
+				},
+				"search_panel_field7": {
+					"field": "usuario",
+					"type": "search_panel_field"
+				},
+				"search_panel_field8": {
+					"field": "idtienda",
+					"type": "search_panel_field"
+				},
+				"search_panel_field9": {
+					"field": "fechamodif",
+					"type": "search_panel_field"
+				},
+				"search_panel_field10": {
+					"field": "orden",
+					"type": "search_panel_field"
+				},
+				"search_panel_field11": {
+					"field": "solicitudimg",
+					"type": "search_panel_field"
+				},
+				"search_panel_field12": {
+					"field": "estatus",
+					"type": "search_panel_field"
+				},
+				"search_panel_field13": {
+					"field": "idsolrazon",
+					"type": "search_panel_field"
+				},
+				"search_panel_field14": {
+					"field": "importeatt",
+					"type": "search_panel_field"
+				},
+				"search_panel_field15": {
+					"field": "importesms",
+					"type": "search_panel_field"
+				},
+				"search_panel_field16": {
+					"field": "plazo",
+					"type": "search_panel_field"
+				},
+				"search_panel_field17": {
+					"field": "observaciones",
+					"type": "search_panel_field"
+				},
+				"search_panel_field18": {
+					"field": "equipoincluido",
+					"type": "search_panel_field"
+				},
+				"search_panel_field19": {
+					"field": "rfc",
+					"type": "search_panel_field"
+				},
+				"search_panel_field20": {
+					"field": "idtratamiento",
+					"type": "search_panel_field"
+				},
+				"search_panel_field21": {
+					"field": "riesgo",
+					"type": "search_panel_field"
+				},
+				"search_panel_field22": {
+					"field": "observacionest",
+					"type": "search_panel_field"
+				},
+				"search_panel_field23": {
+					"field": "idcli",
+					"type": "search_panel_field"
+				},
+				"search_panel_field24": {
+					"field": "fecha1avta",
+					"type": "search_panel_field"
+				},
+				"search_panel_field25": {
+					"field": "idplan1avta",
+					"type": "search_panel_field"
+				},
+				"search_panel_field26": {
+					"field": "dn1avta",
+					"type": "search_panel_field"
+				},
+				"search_panel_field27": {
+					"field": "idproceso",
+					"type": "search_panel_field"
+				},
+				"search_panel_field28": {
+					"field": "idorigenventa",
+					"type": "search_panel_field"
+				},
+				"expand_menu_button": {
+					"type": "expand_menu_button"
+				},
+				"collapse_button": {
+					"type": "collapse_button"
+				},
+				"add": {
+					"type": "add"
+				},
+				"export": {
+					"type": "export"
+				},
+				"-": {
+					"type": "-"
+				},
+				"export_selected": {
+					"type": "export_selected"
+				},
+				"-1": {
+					"type": "-"
+				},
+				"import": {
+					"type": "import"
+				},
+				"-2": {
+					"type": "-"
+				},
+				"print_panel": {
+					"type": "print_panel",
+					"items": [
+						"print_scope",
+						"print_records",
+						"print_button"
+					]
+				},
+				"print_scope": {
+					"type": "print_scope"
+				},
+				"print_button": {
+					"type": "print_button"
+				},
+				"print_records": {
+					"type": "print_records"
+				},
+				"delete": {
+					"type": "delete"
+				},
+				"delete_selected": {
+					"type": "delete_selected"
+				},
+				"simple_grid_field": {
+					"field": "idsolicitud",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field29": {
+					"type": "grid_field_label",
+					"field": "idsolicitud"
+				},
+				"simple_grid_field1": {
+					"field": "idtipoventa",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field30": {
+					"type": "grid_field_label",
+					"field": "idtipoventa"
+				},
+				"simple_grid_field2": {
+					"field": "fecha",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field31": {
+					"type": "grid_field_label",
+					"field": "fecha"
+				},
+				"simple_grid_field3": {
+					"field": "fechacaptura",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field32": {
+					"type": "grid_field_label",
+					"field": "fechacaptura"
+				},
+				"simple_grid_field4": {
+					"field": "idcliente",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field33": {
+					"type": "grid_field_label",
+					"field": "idcliente"
+				},
+				"simple_grid_field5": {
+					"field": "idproducto",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field34": {
+					"type": "grid_field_label",
+					"field": "idproducto"
+				},
+				"simple_grid_field6": {
+					"field": "idplan",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field35": {
+					"type": "grid_field_label",
+					"field": "idplan"
+				},
+				"simple_grid_field7": {
+					"field": "usuario",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field36": {
+					"type": "grid_field_label",
+					"field": "usuario"
+				},
+				"simple_grid_field8": {
+					"field": "idtienda",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field37": {
+					"type": "grid_field_label",
+					"field": "idtienda"
+				},
+				"simple_grid_field9": {
+					"field": "fechamodif",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field38": {
+					"type": "grid_field_label",
+					"field": "fechamodif"
+				},
+				"simple_grid_field10": {
+					"field": "orden",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field39": {
+					"type": "grid_field_label",
+					"field": "orden"
+				},
+				"simple_grid_field11": {
+					"field": "solicitudimg",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field40": {
+					"type": "grid_field_label",
+					"field": "solicitudimg"
+				},
+				"simple_grid_field12": {
+					"field": "estatus",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field41": {
+					"type": "grid_field_label",
+					"field": "estatus"
+				},
+				"simple_grid_field13": {
+					"field": "idsolrazon",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field42": {
+					"type": "grid_field_label",
+					"field": "idsolrazon"
+				},
+				"simple_grid_field14": {
+					"field": "importeatt",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field43": {
+					"type": "grid_field_label",
+					"field": "importeatt"
+				},
+				"simple_grid_field15": {
+					"field": "importesms",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field44": {
+					"type": "grid_field_label",
+					"field": "importesms"
+				},
+				"simple_grid_field16": {
+					"field": "plazo",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field45": {
+					"type": "grid_field_label",
+					"field": "plazo"
+				},
+				"simple_grid_field17": {
+					"field": "observaciones",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field46": {
+					"type": "grid_field_label",
+					"field": "observaciones"
+				},
+				"simple_grid_field18": {
+					"field": "equipoincluido",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field47": {
+					"type": "grid_field_label",
+					"field": "equipoincluido"
+				},
+				"simple_grid_field19": {
+					"field": "rfc",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field48": {
+					"type": "grid_field_label",
+					"field": "rfc"
+				},
+				"simple_grid_field20": {
+					"field": "idtratamiento",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field49": {
+					"type": "grid_field_label",
+					"field": "idtratamiento"
+				},
+				"simple_grid_field21": {
+					"field": "riesgo",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field50": {
+					"type": "grid_field_label",
+					"field": "riesgo"
+				},
+				"simple_grid_field22": {
+					"field": "observacionest",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field51": {
+					"type": "grid_field_label",
+					"field": "observacionest"
+				},
+				"simple_grid_field23": {
+					"field": "idcli",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field52": {
+					"type": "grid_field_label",
+					"field": "idcli"
+				},
+				"simple_grid_field24": {
+					"field": "fecha1avta",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field53": {
+					"type": "grid_field_label",
+					"field": "fecha1avta"
+				},
+				"simple_grid_field25": {
+					"field": "idplan1avta",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field54": {
+					"type": "grid_field_label",
+					"field": "idplan1avta"
+				},
+				"simple_grid_field26": {
+					"field": "dn1avta",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field55": {
+					"type": "grid_field_label",
+					"field": "dn1avta"
+				},
+				"simple_grid_field27": {
+					"field": "idproceso",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field56": {
+					"type": "grid_field_label",
+					"field": "idproceso"
+				},
+				"simple_grid_field28": {
+					"field": "idorigenventa",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field57": {
+					"type": "grid_field_label",
+					"field": "idorigenventa"
+				},
+				"grid_checkbox": {
+					"type": "grid_checkbox"
+				},
+				"grid_checkbox_head": {
+					"type": "grid_checkbox_head"
+				},
+				"grid_edit": {
+					"type": "grid_edit"
+				},
+				"grid_view": {
+					"type": "grid_view"
+				},
+				"grid_field": {
+					"field": "nombre",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label": {
+					"type": "grid_field_label",
+					"field": "nombre"
+				},
+				"grid_field1": {
+					"field": "paterno",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label1": {
+					"type": "grid_field_label",
+					"field": "paterno"
+				},
+				"grid_field2": {
+					"field": "materno",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label2": {
+					"type": "grid_field_label",
+					"field": "materno"
+				},
+				"search_panel_field29": {
+					"field": "nombre",
+					"type": "search_panel_field"
+				},
+				"search_panel_field30": {
+					"field": "paterno",
+					"type": "search_panel_field"
+				},
+				"search_panel_field31": {
+					"field": "materno",
+					"type": "search_panel_field"
+				},
+				"grid_field3": {
+					"field": "estado",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label3": {
+					"type": "grid_field_label",
+					"field": "estado"
+				},
+				"grid_field4": {
+					"field": "ciudad",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label4": {
+					"type": "grid_field_label",
+					"field": "ciudad"
+				},
+				"grid_field5": {
+					"field": "cp",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label5": {
+					"type": "grid_field_label",
+					"field": "cp"
+				},
+				"grid_field6": {
+					"field": "calle",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label6": {
+					"type": "grid_field_label",
+					"field": "calle"
+				},
+				"grid_field7": {
+					"field": "numeroext",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label7": {
+					"type": "grid_field_label",
+					"field": "numeroext"
+				},
+				"grid_field8": {
+					"field": "numeroint",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label8": {
+					"type": "grid_field_label",
+					"field": "numeroint"
+				},
+				"grid_field9": {
+					"field": "colonia",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label9": {
+					"type": "grid_field_label",
+					"field": "colonia"
+				},
+				"search_panel_field32": {
+					"field": "estado",
+					"type": "search_panel_field"
+				},
+				"search_panel_field33": {
+					"field": "ciudad",
+					"type": "search_panel_field"
+				},
+				"search_panel_field34": {
+					"field": "cp",
+					"type": "search_panel_field"
+				},
+				"search_panel_field35": {
+					"field": "calle",
+					"type": "search_panel_field"
+				},
+				"search_panel_field36": {
+					"field": "numeroext",
+					"type": "search_panel_field"
+				},
+				"search_panel_field37": {
+					"field": "numeroint",
+					"type": "search_panel_field"
+				},
+				"search_panel_field38": {
+					"field": "colonia",
+					"type": "search_panel_field"
+				},
+				"username_button": {
+					"type": "username_button",
+					"items": [
+						"userinfo_link",
+						"logout_link",
+						"adminarea_link"
+					]
+				},
+				"loginform_login": {
+					"type": "loginform_login",
+					"popup": false
+				},
+				"userinfo_link": {
+					"type": "userinfo_link"
+				},
+				"logout_link": {
+					"type": "logout_link"
+				},
+				"adminarea_link": {
+					"type": "adminarea_link"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "print",
+			"type": "print",
+			"layoutId": "basic",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "print-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"print_pages"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "print-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "print-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c2": {
+							"model": "c2",
+							"items": [
+								"print_header",
+								"print_subheader"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"simple_grid_field",
+								"simple_grid_field1",
+								"simple_grid_field2",
+								"simple_grid_field3",
+								"simple_grid_field4",
+								"simple_grid_field5",
+								"simple_grid_field6",
+								"simple_grid_field7",
+								"simple_grid_field8",
+								"simple_grid_field9",
+								"simple_grid_field10",
+								"simple_grid_field11",
+								"simple_grid_field12",
+								"simple_grid_field13",
+								"simple_grid_field14",
+								"simple_grid_field15",
+								"simple_grid_field16",
+								"simple_grid_field17",
+								"simple_grid_field18",
+								"simple_grid_field19",
+								"simple_grid_field20",
+								"simple_grid_field21",
+								"simple_grid_field22",
+								"simple_grid_field23",
+								"simple_grid_field24",
+								"simple_grid_field25",
+								"simple_grid_field26",
+								"simple_grid_field27",
+								"simple_grid_field28",
+								"simple_grid_field29",
+								"simple_grid_field30",
+								"simple_grid_field31",
+								"simple_grid_field32",
+								"simple_grid_field33",
+								"simple_grid_field34",
+								"simple_grid_field35",
+								"simple_grid_field36",
+								"simple_grid_field37",
+								"simple_grid_field38"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"print_header": {
+					"type": "print_header"
+				},
+				"print_subheader": {
+					"type": "print_subheader"
+				},
+				"print_pages": {
+					"type": "print_pages"
+				},
+				"simple_grid_field": {
+					"field": "idsolicitud",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field1": {
+					"field": "idtipoventa",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field2": {
+					"field": "fecha",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field3": {
+					"field": "fechacaptura",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field4": {
+					"field": "idcliente",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field5": {
+					"field": "idproducto",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field6": {
+					"field": "idplan",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field7": {
+					"field": "usuario",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field8": {
+					"field": "idtienda",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field9": {
+					"field": "fechamodif",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field10": {
+					"field": "orden",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field11": {
+					"field": "solicitudimg",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field12": {
+					"field": "estatus",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field13": {
+					"field": "idsolrazon",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field14": {
+					"field": "importeatt",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field15": {
+					"field": "importesms",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field16": {
+					"field": "plazo",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field17": {
+					"field": "observaciones",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field18": {
+					"field": "equipoincluido",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field19": {
+					"field": "rfc",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field20": {
+					"field": "idtratamiento",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field21": {
+					"field": "riesgo",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field22": {
+					"field": "observacionest",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field23": {
+					"field": "idcli",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field24": {
+					"field": "fecha1avta",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field25": {
+					"field": "idplan1avta",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field26": {
+					"field": "dn1avta",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field27": {
+					"field": "idproceso",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field28": {
+					"field": "idorigenventa",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field29": {
+					"field": "nombre",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field30": {
+					"field": "paterno",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field31": {
+					"field": "materno",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field32": {
+					"field": "estado",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field33": {
+					"field": "ciudad",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field34": {
+					"field": "cp",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field35": {
+					"field": "calle",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field36": {
+					"field": "numeroext",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field37": {
+					"field": "numeroint",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field38": {
+					"field": "colonia",
+					"type": "simple_grid_field"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		}
+	],
+	"geoCoding": {
+		"enabled": false,
+		"latField": "",
+		"lonField": "",
+		"addressFields": []
+	},
+	"caption": {
+		"English": "Solicitudes"
+	}
+}
