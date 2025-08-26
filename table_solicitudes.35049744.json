@@ -7,7 +7,7 @@
 			"asc": false
 		}
 	],
-	"sql": "SELECT\n\tsolicitudes.idsolicitud,\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tclientes.nombre,\n\tclientes.paterno,\n\tclientes.materno,\n\tentregasvnp.estado,\n\tentregasvnp.ciudad,\n\tentregasvnp.cp,\n\tentregasvnp.calle,\n\tentregasvnp.numeroext,\n\tentregasvnp.numeroint,\n\tentregasvnp.colonia,\n\tproductos.descripcion,\nCONCAT(\n  'https://www.google.com/maps/search/?api=1&query=',\n  REPLACE(\n    TRIM(CONCAT_WS(' ',\n      IFNULL(entregasvnp.calle,''), IFNULL(entregasvnp.numeroext,''), IFNULL(entregasvnp.numeroint,''),\n      IFNULL(entregasvnp.colonia,''), IFNULL(entregasvnp.cp,''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    )),\n    ' ', '+'\n  )\n) AS maps_url,\nCONCAT(\n  REPLACE(\n    TRIM(CONCAT_WS(' ',\n      IFNULL(entregasvnp.calle,''), IFNULL(entregasvnp.numeroext,''), IFNULL(entregasvnp.numeroint,''),\n      IFNULL(entregasvnp.colonia,''), IFNULL(entregasvnp.cp,''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    )),\n    ' ', '+'\n  )\n) AS direccion\n\n\t\nFROM\n\tsolicitudes\n\tLEFT OUTER JOIN clientes ON clientes.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp ON entregasvnp.idsolicitud = solicitudes.idsolicitud\n\tLEFT JOIN productos on solicitudes.idproducto=productos.idproducto\nWHERE\nsolicitudes.idtienda =2\nORDER BY\n\tsolicitudes.idsolicitud DESC\n",
+	"sql": "SELECT\n\tsolicitudes.idsolicitud,\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tclientes.nombre,\n\tclientes.paterno,\n\tclientes.materno,\n\tentregasvnp.estado,\n\tentregasvnp.ciudad,\n\tentregasvnp.cp,\n\tentregasvnp.calle,\n\tentregasvnp.numeroext,\n\tentregasvnp.numeroint,\n\tentregasvnp.colonia,\n\tproductos.descripcion,\nCONCAT(\n  'https://www.google.com/maps/search/?api=1&query=',\n  REPLACE(\n    TRIM(CONCAT_WS(' ',\n      IFNULL(entregasvnp.numeroext,''),IFNULL(entregasvnp.calle,''), IFNULL(entregasvnp.numeroint,''),\n      IFNULL(entregasvnp.colonia,''), IFNULL(entregasvnp.cp,''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    )),\n    ' ', '+'\n  )\n) AS maps_url,\nCONCAT(\n    TRIM(CONCAT_WS(' ',\n      if(IFNULL(entregasvnp.calle,'')='','',concat('C.',entregasvnp.calle)),IFNULL(concat('No.',entregasvnp.numeroext),''), IFNULL(concat('Int.',entregasvnp.numeroint),''),\n      IFNULL((entregasvnp.colonia),''), IFNULL(concat('C.P.',entregasvnp.cp),''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    ))\n) AS direccion\n\n\t\nFROM\n\tsolicitudes\n\tLEFT OUTER JOIN clientes ON clientes.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp ON entregasvnp.idsolicitud = solicitudes.idsolicitud\n\tLEFT JOIN productos on solicitudes.idproducto=productos.idproducto\nWHERE\nsolicitudes.idtienda =2\nORDER BY\n\tsolicitudes.idsolicitud DESC\n",
 	"connId": "conn",
 	"originalTable": "solicitudes",
 	"name": "solicitudes",
@@ -653,7 +653,10 @@
 			"strField": "riesgo",
 			"type": 129,
 			"viewFormats": [
-				{}
+				{
+					"linkDisplay": 2,
+					"linkDisplayField": "direccion"
+				}
 			],
 			"editFormats": [
 				{}
@@ -992,7 +995,7 @@
 		},
 		{
 			"name": "maps_url",
-			"sqlExpression": "CONCAT(\n  'https://www.google.com/maps/search/?api=1&query=',\n  REPLACE(\n    TRIM(CONCAT_WS(' ',\n      IFNULL(entregasvnp.calle,''), IFNULL(entregasvnp.numeroext,''), IFNULL(entregasvnp.numeroint,''),\n      IFNULL(entregasvnp.colonia,''), IFNULL(entregasvnp.cp,''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    )),\n    ' ', '+'\n  )\n)",
+			"sqlExpression": "CONCAT(\n  'https://www.google.com/maps/search/?api=1&query=',\n  REPLACE(\n    TRIM(CONCAT_WS(' ',\n      IFNULL(entregasvnp.numeroext,''),IFNULL(entregasvnp.calle,''), IFNULL(entregasvnp.numeroint,''),\n      IFNULL(entregasvnp.colonia,''), IFNULL(entregasvnp.cp,''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    )),\n    ' ', '+'\n  )\n)",
 			"index": 41,
 			"strField": "maps_url",
 			"type": 200,
@@ -1018,12 +1021,15 @@
 		},
 		{
 			"name": "direccion",
-			"sqlExpression": "CONCAT(\n  REPLACE(\n    TRIM(CONCAT_WS(' ',\n      IFNULL(entregasvnp.calle,''), IFNULL(entregasvnp.numeroext,''), IFNULL(entregasvnp.numeroint,''),\n      IFNULL(entregasvnp.colonia,''), IFNULL(entregasvnp.cp,''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    )),\n    ' ', '+'\n  )\n)",
+			"sqlExpression": "CONCAT(\n    TRIM(CONCAT_WS(' ',\n      if(IFNULL(entregasvnp.calle,'')='','',concat('C.',entregasvnp.calle)),IFNULL(concat('No.',entregasvnp.numeroext),''), IFNULL(concat('Int.',entregasvnp.numeroint),''),\n      IFNULL((entregasvnp.colonia),''), IFNULL(concat('C.P.',entregasvnp.cp),''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    ))\n)",
 			"index": 42,
 			"strField": "direccion",
 			"type": 200,
 			"viewFormats": [
-				{}
+				{
+					"format": "Custom",
+					"customExpression": "\r\n"
+				}
 			],
 			"editFormats": [
 				{}
@@ -1038,7 +1044,7 @@
 		{
 			"eventId": "EVENT_AFTERADD",
 			"pageType": "add",
-			"code": "// Events → Add → After record added\nglobal $conn;\n\n// Recupera y limpia el stash\n$extras = $_SESSION['solicitudes_add_extras'][$pageObject->id] ?? [];\nunset($_SESSION['solicitudes_add_extras'][$pageObject->id]);\n\n// Ya tienes $keys[\"idsolicitud\"] del registro insertado en solicitudes\n$idsolicitud = (int)$keys[\"idsolicitud\"];\n\n// EJEMPLO: insertar dirección de entrega en entregasvnp usando los extras\nif (!empty($extras)) {\n    $sql = sprintf(\n        \"INSERT INTO entregasvnp (idsolicitud, estado, ciudad, cp, calle, numeroext, numeroint, colonia)\n         VALUES (%d, %s, %s, %d, %s, %s, %s, %s)\",\n        $idsolicitud,\n        db_prepare_string($extras[\"estado\"]    ?? \"\"),\n        db_prepare_string($extras[\"ciudad\"]    ?? \"\"),\n        (int)($extras[\"cp\"]                    ?? 0),\n        db_prepare_string($extras[\"calle\"]     ?? \"\"),\n        db_prepare_string($extras[\"numeroext\"] ?? \"\"),\n        db_prepare_string($extras[\"numeroint\"] ?? \"\"),\n        db_prepare_string($extras[\"colonia\"]   ?? \"\")\n    );\n    db_exec($sql, $conn);\n}\n\n$esnimei = $_SESSION[\"esnimei\"] ?? null;\nif (!empty($esnimei)) {\n       $sql = sprintf(\n        \"INSERT INTO seriessolicitadas (idsolicitud, esnimei)\n         VALUES (%d, %s)\",\n        $idsolicitud,\n        $esnimei\n    );\n    db_exec($sql, $conn);\n\n}\n\n$simcard = $_SESSION[\"simcard\"] ?? null;\nif (!empty($esnimei)) {\n       $sql = sprintf(\n        \"INSERT INTO seriessolicitadas (idsolicitud, esnimei)\n         VALUES (%d, %s)\",\n        $idsolicitud,\n        $simcard\n    );\n    db_exec($sql, $conn);\n\n}\n\n// Si quieres log/debug:\n// file_put_contents(\"extras_log.txt\", date('c').\" PID:\".$pageObject->id.\" \".json_encode($extras,JSON_UNESCAPED_UNICODE).PHP_EOL, FILE_APPEND);\n\n\n"
+			"code": "// Events → Add → After record added\nglobal $conn;\n\n// Recupera y limpia el stash\n$extras = $_SESSION['solicitudes_add_extras'][$pageObject->id] ?? [];\nunset($_SESSION['solicitudes_add_extras'][$pageObject->id]);\n\n// Ya tienes $keys[\"idsolicitud\"] del registro insertado en solicitudes\n$idsolicitud = (int)$keys[\"idsolicitud\"];\n\n// EJEMPLO: insertar dirección de entrega en entregasvnp usando los extras\nif (!empty($extras)) {\n    $sql = sprintf(\n        \"INSERT INTO entregasvnp (idsolicitud, estado, ciudad, cp, calle, numeroext, numeroint, colonia)\n         VALUES (%d, %s, %s, %d, %s, %s, %s, %s)\",\n        $idsolicitud,\n        db_prepare_string($extras[\"estado\"]    ?? \"\"),\n        db_prepare_string($extras[\"ciudad\"]    ?? \"\"),\n        db_prepare_string($extras[\"cp\"]        ?? \"\"),\n        db_prepare_string($extras[\"calle\"]     ?? \"\"),\n        db_prepare_string($extras[\"numeroext\"] ?? \"\"),\n        db_prepare_string($extras[\"numeroint\"] ?? \"\"),\n        db_prepare_string($extras[\"colonia\"]   ?? \"\")\n    );\n    db_exec($sql, $conn);\n}\n\n$esnimei = $_SESSION[\"esnimei\"] ?? null;\nif (!empty($esnimei)) {\n       $sql = sprintf(\n        \"INSERT INTO seriessolicitadas (idsolicitud, esnimei)\n         VALUES (%d, %s)\",\n        $idsolicitud,\n        db_prepare_string($esnimei    ?? \"\")\n    );\n    db_exec($sql, $conn);\n\n}\n\n$simcard = $_SESSION[\"simcard\"] ?? null;\nif (!empty($esnimei)) {\n       $sql = sprintf(\n        \"INSERT INTO seriessolicitadas (idsolicitud, esnimei)\n         VALUES (%d, %s)\",\n        $idsolicitud,\n        db_prepare_string($simcard    ?? \"\")\n    );\n    db_exec($sql, $conn);\n\n}\n\n// Si quieres log/debug:\n// file_put_contents(\"extras_log.txt\", date('c').\" PID:\".$pageObject->id.\" \".json_encode($extras,JSON_UNESCAPED_UNICODE).PHP_EOL, FILE_APPEND);\n\n\n"
 		},
 		{
 			"eventId": "EVENT_BEFOREADD",
