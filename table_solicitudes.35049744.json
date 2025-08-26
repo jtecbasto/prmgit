@@ -7,7 +7,7 @@
 			"asc": false
 		}
 	],
-	"sql": "SELECT\n\tsolicitudes.idsolicitud,\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tclientes.nombre,\n\tclientes.paterno,\n\tclientes.materno,\n\tentregasvnp.estado,\n\tentregasvnp.ciudad,\n\tentregasvnp.cp,\n\tentregasvnp.calle,\n\tentregasvnp.numeroext,\n\tentregasvnp.numeroint,\n\tentregasvnp.colonia,\n\tproductos.descripcion,\nCONCAT(\n  'https://www.google.com/maps/search/?api=1&query=',\n  REPLACE(\n    TRIM(CONCAT_WS(' ',\n      IFNULL(entregasvnp.numeroext,''),IFNULL(entregasvnp.calle,''), IFNULL(entregasvnp.numeroint,''),\n      IFNULL(entregasvnp.colonia,''), IFNULL(entregasvnp.cp,''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    )),\n    ' ', '+'\n  )\n) AS maps_url,\nCONCAT(\n    TRIM(CONCAT_WS(' ',\n      if(IFNULL(entregasvnp.calle,'')='','',concat('C.',entregasvnp.calle)),IFNULL(concat('No.',entregasvnp.numeroext),''), IFNULL(concat('Int.',entregasvnp.numeroint),''),\n      IFNULL((entregasvnp.colonia),''), IFNULL(concat('C.P.',entregasvnp.cp),''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    ))\n) AS direccion\n\n\t\nFROM\n\tsolicitudes\n\tLEFT OUTER JOIN clientes ON clientes.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp ON entregasvnp.idsolicitud = solicitudes.idsolicitud\n\tLEFT JOIN productos on solicitudes.idproducto=productos.idproducto\nWHERE\nsolicitudes.idtienda =2\nORDER BY\n\tsolicitudes.idsolicitud DESC\n",
+	"sql": "SELECT\n\tsolicitudes.idsolicitud,\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tsolicitudes.estatusentrega,\n\tclientes.nombre,\n\tclientes.paterno,\n\tclientes.materno,\n\tentregasvnp.estado,\n\tentregasvnp.ciudad,\n\tentregasvnp.cp,\n\tentregasvnp.calle,\n\tentregasvnp.numeroext,\n\tentregasvnp.numeroint,\n\tentregasvnp.colonia,\n\tproductos.descripcion,\nCONCAT(\n  'https://www.google.com/maps/search/?api=1&query=',\n  REPLACE(\n    TRIM(CONCAT_WS(' ',\n      IFNULL(entregasvnp.numeroext,''),IFNULL(entregasvnp.calle,''), IFNULL(entregasvnp.numeroint,''),\n      IFNULL(entregasvnp.colonia,''), IFNULL(entregasvnp.cp,''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    )),\n    ' ', '+'\n  )\n) AS maps_url,\nCONCAT(\n    TRIM(CONCAT_WS(' ',\n      if(IFNULL(entregasvnp.calle,'')='','',concat('C.',entregasvnp.calle)),IFNULL(concat('No.',entregasvnp.numeroext),''), IFNULL(concat('Int.',entregasvnp.numeroint),''),\n      IFNULL((entregasvnp.colonia),''), IFNULL(concat('C.P.',entregasvnp.cp),''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    ))\n) AS direccion\n\n\t\nFROM\n\tsolicitudes\n\tLEFT OUTER JOIN clientes ON clientes.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp ON entregasvnp.idsolicitud = solicitudes.idsolicitud\n\tLEFT JOIN productos on solicitudes.idproducto=productos.idproducto\nWHERE\nsolicitudes.idtienda =2\nORDER BY\n\tsolicitudes.idsolicitud DESC\n",
 	"connId": "conn",
 	"originalTable": "solicitudes",
 	"name": "solicitudes",
@@ -61,14 +61,37 @@
 			"index": 3,
 			"strField": "fecha",
 			"type": 7,
+			"separateEditViewFormats": true,
 			"viewFormats": [
 				{
 					"format": "Short Date"
+				},
+				{
+					"format": "Short Date",
+					"pageType": "list"
+				},
+				{
+					"format": "Short Date",
+					"pageType": "print"
+				},
+				{
+					"format": "Short Date",
+					"pageType": "export"
 				}
 			],
 			"editFormats": [
 				{
-					"format": "Date",
+					"format": "Readonly",
+					"dateEditType": 11
+				},
+				{
+					"format": "Readonly",
+					"pageType": "add",
+					"dateEditType": 11
+				},
+				{
+					"format": "Readonly",
+					"pageType": "search",
 					"dateEditType": 11
 				}
 			],
@@ -121,7 +144,7 @@
 			],
 			"editFormats": [
 				{
-					"format": "Lookup wizard",
+					"format": "Readonly",
 					"required": true,
 					"denyDuplicateMessage": {
 						"text": "El cliente %value% ya existe",
@@ -418,11 +441,30 @@
 			"index": 11,
 			"strField": "orden",
 			"type": 200,
+			"separateEditViewFormats": true,
 			"viewFormats": [
-				{}
+				{},
+				{
+					"pageType": "list"
+				},
+				{
+					"pageType": "print"
+				},
+				{
+					"pageType": "export"
+				}
 			],
 			"editFormats": [
-				{}
+				{
+					"format": "Readonly"
+				},
+				{
+					"pageType": "add"
+				},
+				{
+					"format": "Readonly",
+					"pageType": "search"
+				}
 			],
 			"label": {
 				"English": "Orden"
@@ -541,7 +583,7 @@
 			],
 			"editFormats": [
 				{
-					"format": "Lookup wizard",
+					"format": "Readonly",
 					"required": true,
 					"lookupTable": "plazos",
 					"lookupTableConnection": "conn",
@@ -794,7 +836,7 @@
 		{
 			"name": "nombre",
 			"sqlExpression": "clientes.nombre",
-			"index": 30,
+			"index": 31,
 			"strField": "nombre",
 			"type": 200,
 			"viewFormats": [
@@ -816,7 +858,7 @@
 		{
 			"name": "paterno",
 			"sqlExpression": "clientes.paterno",
-			"index": 31,
+			"index": 32,
 			"strField": "paterno",
 			"type": 200,
 			"viewFormats": [
@@ -838,7 +880,7 @@
 		{
 			"name": "materno",
 			"sqlExpression": "clientes.materno",
-			"index": 32,
+			"index": 33,
 			"strField": "materno",
 			"type": 200,
 			"viewFormats": [
@@ -860,7 +902,7 @@
 		{
 			"name": "estado",
 			"sqlExpression": "entregasvnp.estado",
-			"index": 33,
+			"index": 34,
 			"strField": "estado",
 			"type": 200,
 			"viewFormats": [
@@ -877,7 +919,7 @@
 		{
 			"name": "ciudad",
 			"sqlExpression": "entregasvnp.ciudad",
-			"index": 34,
+			"index": 35,
 			"strField": "ciudad",
 			"type": 200,
 			"viewFormats": [
@@ -894,7 +936,7 @@
 		{
 			"name": "cp",
 			"sqlExpression": "entregasvnp.cp",
-			"index": 35,
+			"index": 36,
 			"strField": "cp",
 			"type": 200,
 			"viewFormats": [
@@ -911,7 +953,7 @@
 		{
 			"name": "calle",
 			"sqlExpression": "entregasvnp.calle",
-			"index": 36,
+			"index": 37,
 			"strField": "calle",
 			"type": 200,
 			"viewFormats": [
@@ -928,7 +970,7 @@
 		{
 			"name": "numeroext",
 			"sqlExpression": "entregasvnp.numeroext",
-			"index": 37,
+			"index": 38,
 			"strField": "numeroext",
 			"type": 200,
 			"viewFormats": [
@@ -945,7 +987,7 @@
 		{
 			"name": "numeroint",
 			"sqlExpression": "entregasvnp.numeroint",
-			"index": 38,
+			"index": 39,
 			"strField": "numeroint",
 			"type": 200,
 			"viewFormats": [
@@ -962,7 +1004,7 @@
 		{
 			"name": "colonia",
 			"sqlExpression": "entregasvnp.colonia",
-			"index": 39,
+			"index": 40,
 			"strField": "colonia",
 			"type": 200,
 			"viewFormats": [
@@ -979,14 +1021,16 @@
 		{
 			"name": "descripcion",
 			"sqlExpression": "productos.descripcion",
-			"index": 40,
+			"index": 41,
 			"strField": "descripcion",
 			"type": 200,
 			"viewFormats": [
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"format": "Readonly"
+				}
 			],
 			"label": {
 				"Spanish": "Descripcion"
@@ -996,7 +1040,7 @@
 		{
 			"name": "maps_url",
 			"sqlExpression": "CONCAT(\n  'https://www.google.com/maps/search/?api=1&query=',\n  REPLACE(\n    TRIM(CONCAT_WS(' ',\n      IFNULL(entregasvnp.numeroext,''),IFNULL(entregasvnp.calle,''), IFNULL(entregasvnp.numeroint,''),\n      IFNULL(entregasvnp.colonia,''), IFNULL(entregasvnp.cp,''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    )),\n    ' ', '+'\n  )\n)",
-			"index": 41,
+			"index": 42,
 			"strField": "maps_url",
 			"type": 200,
 			"viewFormats": [
@@ -1022,7 +1066,7 @@
 		{
 			"name": "direccion",
 			"sqlExpression": "CONCAT(\n    TRIM(CONCAT_WS(' ',\n      if(IFNULL(entregasvnp.calle,'')='','',concat('C.',entregasvnp.calle)),IFNULL(concat('No.',entregasvnp.numeroext),''), IFNULL(concat('Int.',entregasvnp.numeroint),''),\n      IFNULL((entregasvnp.colonia),''), IFNULL(concat('C.P.',entregasvnp.cp),''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    ))\n)",
-			"index": 42,
+			"index": 43,
 			"strField": "direccion",
 			"type": 200,
 			"viewFormats": [
@@ -1038,6 +1082,29 @@
 				"Spanish": "Direccion"
 			},
 			"tableName": ""
+		},
+		{
+			"name": "estatusentrega",
+			"sqlExpression": "solicitudes.estatusentrega",
+			"index": 30,
+			"strField": "estatusentrega",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Lookup wizard",
+					"lookupTable": "estatusentregas",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "id",
+					"lookupDisplayField": "estatusentrega"
+				}
+			],
+			"label": {
+				"Spanish": "Estatus entrega"
+			},
+			"tableName": "solicitudes"
 		}
 	],
 	"eventHandlers": [
@@ -1050,6 +1117,16 @@
 			"eventId": "EVENT_BEFOREADD",
 			"pageType": "add",
 			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n// Events → Add → Before record added\n// Copia campos del JOIN a un arreglo y quítalos de $values\n\n$values[\"fecha\"]=date('Y-m-d');\n$values[\"idtienda\"]=2;  //Tienda no presencial\n$values[\"idtipoventa\"]=5; //Renovación Tradicional (Equipo y Chip)\n$values[\"estatus\"]=\"ACTUALIZADA\";\n$values[\"equipoincluido\"]=1;\n$values[\"usuario\"]=\n\n$camposExtra = [\"nombre\",\"paterno\",\"materno\",\"estado\",\"ciudad\",\"cp\",\"calle\",\"numeroext\",\"numeroint\",\"colonia\"];\n\n$extras = [];\nforeach ($camposExtra as $f) {\n    if (array_key_exists($f, $values)) {\n        $extras[$f] = $values[$f];\n        unset($values[$f]);             // <- evita \"Unknown column ...\" en el INSERT de solicitudes\n    } else {\n        // Si alguno lo pones como \"Custom field\" (no ligado a DB), recupéralo del POST:\n        $pv = postvalue($f);\n        if ($pv !== null) $extras[$f] = $pv;\n    }\n}\n\n// Guarda en sesión, indexado por el id de la página para evitar choques con otras pestañas\n$_SESSION['solicitudes_add_extras'] = $_SESSION['solicitudes_add_extras'] ?? [];\n$_SESSION['solicitudes_add_extras'][$pageObject->id] = $extras;\n\n// Continúa con el insert normal en solicitudes\n\n$strSQLExists=\"SELECT\ncompras.noserie\nFROM compras\nLEFT OUTER JOIN ventas v ON compras.noserie = v.esnimei\nLEFT OUTER JOIN movimientos m ON compras.noserie = m.esnimei\nLEFT OUTER JOIN (SELECT t.esnimei,t.tiendadestino,t.`fecharecepcion` FROM traspasosdet t INNER JOIN (SELECT MAX(idtraspasodet) idtraspaso FROM traspasosdet GROUP BY esnimei) t1 ON t.idtraspasodet=t1.idtraspaso) t ON compras.noserie=t.esnimei\nINNER JOIN productos ON compras.codigoproducto = productos.codigoIUSA\nWHERE   v.esnimei is null and m.esnimei is null and (t. esnimei is null or t.fecharecepcion is not null and t.fecharecepcion<>'0000-00-00')\n  and compras.tienda=2 and compras.clasif = 2 and productos.Clasif='Equipo' LIMIT 1 \";\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\n\nif (!$data)\n{\n\t\t$message=\"No existe saldo en el inventario para el producto seleccionado\";\n\treturn false;\n\n} else {\n    $_SESSION[\"esnimei\"] = $data['noserie'];\n}\n\n\n$strSQLExists=\"SELECT\ncompras.noserie\nFROM compras\nLEFT OUTER JOIN ventas v ON compras.noserie = v.esnimei\nLEFT OUTER JOIN movimientos m ON compras.noserie = m.esnimei\nLEFT OUTER JOIN (SELECT t.esnimei,t.tiendadestino,t.`fecharecepcion` FROM traspasosdet t INNER JOIN (SELECT MAX(idtraspasodet) idtraspaso FROM traspasosdet GROUP BY esnimei) t1 ON t.idtraspasodet=t1.idtraspaso) t ON compras.noserie=t.esnimei\nINNER JOIN productos ON compras.codigoproducto = productos.codigoIUSA\nWHERE   v.esnimei is null and m.esnimei is null and (t. esnimei is null or t.fecharecepcion is not null and t.fecharecepcion<>'0000-00-00')\n  and compras.tienda=2 and compras.clasif = 2 and productos.Clasif='Chip' LIMIT 1 \";\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\n\nif (!$data)\n{\n\t\t$message=\"No existe saldo en el inventario de simcards\";\n\treturn false;\n\n} else {\n    $_SESSION[\"simcard\"] = $data['noserie'];\n}\n\n\n\nreturn true;\n\n\n"
+		},
+		{
+			"eventId": "EVENT_JS_ONLOAD",
+			"pageType": "list",
+			"code": "var ctrlFecha = Runner.getControl(pageid, \"fecha\");\r\nctrlFecha.makeReadOnly;\r\n\r\n/*// ==================================================\r\n// EVENTO ONLOAD PARA LISTA EN PHPRUNNER 11\r\n// ==================================================\r\n\r\nfunction onLoad() {\r\n    // Esperar a que la lista se cargue completamente\r\n    setTimeout(function() {\r\n        aplicarSoloLecturaControles();\r\n        configurarObservadorEdicion();\r\n    }, 1000);\r\n}\r\n\r\n// ==================================================\r\n// FUNCIÓN PRINCIPAL PARA APLICAR SOLO LECTURA\r\n// ==================================================\r\n\r\nfunction aplicarSoloLecturaControles() {\r\n    // Lista de campos que deben ser solo lectura en edición\r\n    var camposSoloLectura = [\r\n        'fecha',       // campo fecha       \r\n        'idcliente',  // Campo idcliente\r\n        'descripcion', // Campo descripcion\r\n        'plazo',           // Campo estado\r\n        'orden'\r\n        // Agrega aquí tus campos específicos\r\n    ];\r\n    \r\n    // Aplicar a todos los campos de la lista\r\n    camposSoloLectura.forEach(function(campo) {\r\n        hacerCampoSoloLectura(campo);\r\n    });\r\n    \r\n    // También aplicar a elementos específicos por clase o ID\r\n    var elementosEspecificos = [\r\n        '.readonly-field',\r\n        '[data-readonly=\"true\"]',\r\n        '#campo_protegido'\r\n    ];\r\n    \r\n    elementosEspecificos.forEach(function(selector) {\r\n        var elementos = document.querySelectorAll(selector);\r\n        elementos.forEach(function(elemento) {\r\n            aplicarEstilosSoloLectura(elemento);\r\n        });\r\n    });\r\n}\r\n\r\n// ==================================================\r\n// FUNCIÓN PARA HACER UN CAMPO ESPECÍFICO SOLO LECTURA\r\n// ==================================================\r\n\r\nfunction hacerCampoSoloLectura(nombreCampo) {\r\n    // Buscar todos los elementos relacionados con el campo\r\n    var selectores = [\r\n        'input[name*=\"' + nombreCampo + '\"]',\r\n        'select[name*=\"' + nombreCampo + '\"]',\r\n        'textarea[name*=\"' + nombreCampo + '\"]',\r\n        '[data-field=\"' + nombreCampo + '\"] input',\r\n        '[data-field=\"' + nombreCampo + '\"] select',\r\n        '[data-field=\"' + nombreCampo + '\"] textarea',\r\n        '.field_' + nombreCampo + ' input',\r\n        '.field_' + nombreCampo + ' select',\r\n        '.field_' + nombreCampo + ' textarea'\r\n    ];\r\n    \r\n    selectores.forEach(function(selector) {\r\n        var elementos = document.querySelectorAll(selector);\r\n        \r\n        elementos.forEach(function(elemento) {\r\n            if (elemento && !elemento.closest('.view-mode')) {\r\n                elemento.setAttribute('readonly', 'true');\r\n                elemento.setAttribute('disabled', 'true');\r\n                aplicarEstilosSoloLectura(elemento);\r\n                \r\n                // Prevenir edición mediante eventos\r\n                elemento.addEventListener('mousedown', prevenirEdicion);\r\n                elemento.addEventListener('keydown', prevenirEdicion);\r\n            }\r\n        });\r\n    });\r\n}\r\n\r\n// ==================================================\r\n// ESTILOS Y COMPORTAMIENTO PARA SOLO LECTURA\r\n// ==================================================\r\n\r\nfunction aplicarEstilosSoloLectura(elemento) {\r\n    elemento.style.backgroundColor = '#f8f9fa';\r\n    elemento.style.borderColor = '#dee2e6';\r\n    elemento.style.color = '#6c757d';\r\n    elemento.style.cursor = 'not-allowed';\r\n    elemento.classList.add('campo-solo-lectura');\r\n}\r\n\r\nfunction prevenirEdicion(evento) {\r\n    evento.preventDefault();\r\n    evento.stopPropagation();\r\n    return false;\r\n}\r\n\r\n// ==================================================\r\n// OBSERVADOR PARA DETECTAR EDICIONES EN LÍNEA\r\n// ==================================================\r\n\r\nfunction configurarObservadorEdicion() {\r\n    // Observar cambios en el body para detectar modos de edición\r\n    var observer = new MutationObserver(function(mutations) {\r\n        mutations.forEach(function(mutation) {\r\n            if (mutation.addedNodes.length > 0) {\r\n                // Verificar si se activó el modo edición\r\n                var elementosEdicion = document.querySelectorAll('.edit-mode, .editing, [data-editing=\"true\"]');\r\n                if (elementosEdicion.length > 0) {\r\n                    setTimeout(aplicarSoloLecturaControles, 300);\r\n                }\r\n            }\r\n        });\r\n    });\r\n    \r\n    // Configurar el observador\r\n    observer.observe(document.body, {\r\n        childList: true,\r\n        subtree: true,\r\n        attributes: true,\r\n        attributeFilter: ['class', 'data-editing']\r\n    });\r\n    \r\n    // También escuchar eventos de clic en botones de edición\r\n    document.addEventListener('click', function(e) {\r\n        var botonEdicion = e.target.closest('[id*=\"edit\"], .edit-btn, .phpr-edit');\r\n        if (botonEdicion) {\r\n            setTimeout(aplicarSoloLecturaControles, 500);\r\n        }\r\n    });\r\n}\r\n\r\n// ==================================================\r\n// INICIALIZACIÓN AL CARGAR LA PÁGINA\r\n// ==================================================\r\n\r\n// Llamar a onLoad cuando el DOM esté listo\r\nif (document.readyState === 'loading') {\r\n    document.addEventListener('DOMContentLoaded', onLoad);\r\n} else {\r\n    onLoad();\r\n}\r\n\r\n// Re-aplicar cuando se redimensiona o hay cambios\r\nwindow.addEventListener('resize', function() {\r\n    setTimeout(aplicarSoloLecturaControles, 300);\r\n});\r\n\r\n// ==================================================\r\n// CSS ADICIONAL (opcional, agregar en Custom CSS)\r\n// ==================================================\r\n/*\r\n.campo-solo-lectura {\r\n    background-color: #f8f9fa !important;\r\n    border: 1px solid #dee2e6 !important;\r\n    color: #6c757d !important;\r\n    cursor: not-allowed !important;\r\n}\r\n\r\n.campo-solo-lectura:hover {\r\n    background-color: #e9ecef !important;\r\n}\r\n*/"
+		},
+		{
+			"eventId": "EVENT_JS_ONLOAD",
+			"pageType": "edit",
+			"code": "\n// === Lock de campos durante Inline Edit/Inline Add, con reintentos y observer ===\n/*(function () {\n  // <-- CAMBIA ESTOS NOMBRES POR LOS TUYOS\n  var READONLY_FIELDS = ['idcliente','fecha','descripcion'];\n\n  // --- utilidades ---\n  function lockOne(field, rowid){\n    var c = Runner.getControl(pageid, field, rowid);\n    if(!c) return;\n    var $inp = $('#'+c.getInputId());\n    if(!$inp.length) return;\n\n    if ($inp.is('select')) {\n      $inp.prop('disabled', true);\n      $inp.closest('.select2-container').css('pointer-events','none').addClass('opacity-75');\n    } else if ($inp.is(':checkbox, :radio')) {\n      $inp.prop('disabled', true);\n    } else {\n      $inp.prop('readonly', true).addClass('bg-light');\n      // evita edición por teclado\n      $inp.off('.ro').on('keydown.ro input.ro', function(e){ e.preventDefault(); });\n    }\n    // desactivar iconos/widget adyacentes (datepicker, etc.)\n    $inp.closest('.rnr-edit-field, .r-edit-field')\n        .find('.rnr-dp-control, .glyphicon-calendar, .fa-calendar')\n        .css('pointer-events','none').addClass('disabled');\n\n    // última barrera\n    $inp.closest('.rnr-edit-field, .r-edit-field').css('pointer-events','none').css('opacity', 0.75);\n  }\n\n  function lockRowFields(rowid){\n    READONLY_FIELDS.forEach(function(fname){ lockOne(fname, rowid); });\n    // marca la fila como “bloqueada”\n    var $row = $('.rnr-row[data-record-id=\"'+rowid+'\"]');\n    if(!$row.length) $row = $('#'+rowid);\n    $row.attr('data-ro-locked','1');\n  }\n\n  // identificar si una fila está en inline edit\n  function isInlineEditingRow($row){\n    // botones de guardar/cancelar inline presentes suelen indicar estado de edición\n    return $row.find('.rnr-inline-save, .rnr-inline-cancel').length > 0;\n  }\n\n  // aplica lock a todas las filas actualmente en inline edit\n  function scanAndLock(){\n    $('.rnr-row').each(function(){\n      var $row = $(this);\n      if (!isInlineEditingRow($row)) return;\n      if ($row.attr('data-ro-locked') === '1') return;\n\n      // tomar recId/rowid\n      var recId = $row.attr('data-record-id') || $row.attr('id');\n      if (recId) {\n        // pequeño delay por si los controles acaban de crearse\n        setTimeout(function(){ lockRowFields(recId); }, 0);\n      }\n    });\n  }\n\n  // --- ganchos de eventos ---\n  // 1) cuando el grid está listo, escanea\n  if (pageObj && typeof pageObj.on === 'function') {\n    pageObj.on('gridReady', function(){ scanAndLock(); });\n    // algunos temas disparan estos cuando se inicia inline edit/add\n    pageObj.on('afterInlineEditRow', function(rowid){ setTimeout(function(){ lockRowFields(rowid); }, 0); });\n    pageObj.on('afterInlineAddRow',  function(rowid){ setTimeout(function(){ lockRowFields(rowid); }, 0); });\n  }\n\n  // 2) delega clicks en botones de inline edit/add para reintentar\n  $(document).on('click', '.rnr-inlineedit, .rnr-inlineadd, .rnr-ie, [data-button=inline_edit], [data-button=inline_add]', function(){\n    setTimeout(scanAndLock, 50);\n  });\n\n  // 3) observa el contenedor del grid: si re-renderiza, volvemos a aplicar\n  var grid = document.querySelector('.rnr-grid, .grid, .bs-grid');\n  if (grid) {\n    var mo = new MutationObserver(function(){ setTimeout(scanAndLock, 0); });\n    mo.observe(grid, {childList:true, subtree:true});\n  }\n\n  // 4) plan B: escaneo periódico corto (por si algún caso extremo se escapa)\n  var tries = 0, timer = setInterval(function(){\n    scanAndLock();\n    if (++tries > 20) clearInterval(timer); // ~6–10 s según tu preferencia\n  }, 300);\n})();\n*/\n\n"
 		}
 	],
 	"dbTableInfo": {
@@ -1366,6 +1443,17 @@
 			},
 			{
 				"name": "idorigenventa",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "estatusentrega",
 				"type": 3,
 				"size": 11,
 				"scale": 0,
@@ -2155,7 +2243,26 @@
 					"cells": {
 						"c3": {
 							"model": "c3",
-							"items": []
+							"items": [
+								"integrated_edit_field",
+								"integrated_edit_field1",
+								"integrated_edit_field2",
+								"integrated_edit_field3",
+								"integrated_edit_field4",
+								"integrated_edit_field5",
+								"integrated_edit_field6",
+								"integrated_edit_field7",
+								"integrated_edit_field8",
+								"integrated_edit_field9",
+								"integrated_edit_field10",
+								"integrated_edit_field11",
+								"integrated_edit_field12",
+								"integrated_edit_field13",
+								"integrated_edit_field14",
+								"integrated_edit_field15",
+								"integrated_edit_field16",
+								"integrated_edit_field17"
+							]
 						}
 					},
 					"deferredItems": [],
@@ -2192,6 +2299,114 @@
 				},
 				"edit_view": {
 					"type": "edit_view"
+				},
+				"integrated_edit_field": {
+					"field": "idcliente",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field1": {
+					"field": "idproducto",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field2": {
+					"field": "idplan",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field3": {
+					"field": "orden",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field4": {
+					"field": "plazo",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field5": {
+					"field": "rfc",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field6": {
+					"field": "idcli",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field7": {
+					"field": "nombre",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field8": {
+					"field": "paterno",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field9": {
+					"field": "materno",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field10": {
+					"field": "estado",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field11": {
+					"field": "ciudad",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field12": {
+					"field": "cp",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field13": {
+					"field": "calle",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field14": {
+					"field": "numeroext",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field15": {
+					"field": "numeroint",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field16": {
+					"field": "colonia",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field17": {
+					"field": "estatusentrega",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
 				}
 			},
 			"dbProps": {},
@@ -2306,7 +2521,8 @@
 						"c3": {
 							"model": "c3",
 							"items": [
-								"integrated_edit_field"
+								"integrated_edit_field",
+								"integrated_edit_field1"
 							]
 						}
 					},
@@ -2337,6 +2553,11 @@
 				},
 				"integrated_edit_field": {
 					"field": "direccion",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field1": {
+					"field": "estatusentrega",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				}
@@ -2532,6 +2753,9 @@
 								},
 								{
 									"cell": "headcell_field1"
+								},
+								{
+									"cell": "headcell_field7"
 								}
 							]
 						},
@@ -2564,6 +2788,9 @@
 								},
 								{
 									"cell": "cell_field1"
+								},
+								{
+									"cell": "cell_field3"
 								}
 							]
 						},
@@ -2596,6 +2823,9 @@
 								},
 								{
 									"cell": "footcell_field1"
+								},
+								{
+									"cell": "footcell_field3"
 								}
 							]
 						}
@@ -2797,6 +3027,25 @@
 							"model": "footcell_field",
 							"items": [],
 							"field": "maps_url"
+						},
+						"headcell_field7": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label2"
+							],
+							"field": "estatusentrega"
+						},
+						"cell_field3": {
+							"model": "cell_field",
+							"items": [
+								"grid_field2"
+							],
+							"field": "estatusentrega"
+						},
+						"footcell_field3": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "estatusentrega"
 						}
 					},
 					"deferredItems": [],
@@ -2831,7 +3080,7 @@
 						"edit_selected",
 						"export_selected",
 						"delete_selected",
-						"-5",
+						"-6",
 						"export",
 						"-2",
 						"import"
@@ -3016,6 +3265,19 @@
 				},
 				"-5": {
 					"type": "-"
+				},
+				"grid_field2": {
+					"field": "estatusentrega",
+					"type": "grid_field",
+					"inlineEdit": true,
+					"inlineAdd": true
+				},
+				"grid_field_label2": {
+					"type": "grid_field_label",
+					"field": "estatusentrega"
+				},
+				"-6": {
+					"type": "-"
 				}
 			},
 			"dbProps": {},
@@ -3028,6 +3290,7 @@
 			"imageBgColor": "#f2f2f2",
 			"controlsBgColor": "white",
 			"imagePosition": "right",
+			"pageCSS": "/* Put  your custom CSS code here */\n\n.table {\n    font-family: 'Arial', sans-serif !important;\n    font-size: 6px !important;\n    border-collapse: collapse !important;\n}",
 			"listTotals": 1,
 			"title": {}
 		},
