@@ -2118,13 +2118,6 @@
 			"title": {}
 		}
 	],
-	"eventHandlers": [
-		{
-			"eventId": "EVENT_BEFORELOGIN",
-			"pageType": "login",
-			"code": "\nreturn true;"
-		}
-	],
 	"projectStyle": {
 		"sidebarTheme": "legacy",
 		"topbarTheme": "legacy",
