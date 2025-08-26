@@ -7,7 +7,7 @@
 			"asc": false
 		}
 	],
-	"sql": "SELECT\n\tsolicitudes.idsolicitud,\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tclientes.nombre,\n\tclientes.paterno,\n\tclientes.materno,\n\tentregasvnp.estado,\n\tentregasvnp.ciudad,\n\tentregasvnp.cp,\n\tentregasvnp.calle,\n\tentregasvnp.numeroext,\n\tentregasvnp.numeroint,\n\tentregasvnp.colonia,\n\tproductos.descripcion\nFROM\n\tsolicitudes\n\tLEFT OUTER JOIN clientes ON clientes.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp ON entregasvnp.idsolicitud = solicitudes.idsolicitud\n\tLEFT JOIN productos on solicitudes.idproducto=productos.idproducto\nWHERE\nsolicitudes.idtienda =2\nORDER BY\n\tsolicitudes.idsolicitud DESC\n",
+	"sql": "SELECT\n\tsolicitudes.idsolicitud,\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tclientes.nombre,\n\tclientes.paterno,\n\tclientes.materno,\n\tentregasvnp.estado,\n\tentregasvnp.ciudad,\n\tentregasvnp.cp,\n\tentregasvnp.calle,\n\tentregasvnp.numeroext,\n\tentregasvnp.numeroint,\n\tentregasvnp.colonia,\n\tproductos.descripcion,\nCONCAT(\n  'https://www.google.com/maps/search/?api=1&query=',\n  REPLACE(\n    TRIM(CONCAT_WS(' ',\n      IFNULL(entregasvnp.calle,''), IFNULL(entregasvnp.numeroext,''), IFNULL(entregasvnp.numeroint,''),\n      IFNULL(entregasvnp.colonia,''), IFNULL(entregasvnp.cp,''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    )),\n    ' ', '+'\n  )\n) AS maps_url,\nCONCAT(\n  REPLACE(\n    TRIM(CONCAT_WS(' ',\n      IFNULL(entregasvnp.calle,''), IFNULL(entregasvnp.numeroext,''), IFNULL(entregasvnp.numeroint,''),\n      IFNULL(entregasvnp.colonia,''), IFNULL(entregasvnp.cp,''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    )),\n    ' ', '+'\n  )\n) AS direccion\n\n\t\nFROM\n\tsolicitudes\n\tLEFT OUTER JOIN clientes ON clientes.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp ON entregasvnp.idsolicitud = solicitudes.idsolicitud\n\tLEFT JOIN productos on solicitudes.idproducto=productos.idproducto\nWHERE\nsolicitudes.idtienda =2\nORDER BY\n\tsolicitudes.idsolicitud DESC\n",
 	"connId": "conn",
 	"originalTable": "solicitudes",
 	"name": "solicitudes",
@@ -461,7 +461,14 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"format": "Lookup wizard",
+					"lookupTable": "decisionessolicitud_lookup",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "decisionsolicitud",
+					"lookupDisplayField": "decisionsolicitud",
+					"lookupOrderBy": "decisionsolicitud"
+				}
 			],
 			"label": {
 				"English": "Estatus"
@@ -982,18 +989,61 @@
 				"Spanish": "Descripcion"
 			},
 			"tableName": "productos"
+		},
+		{
+			"name": "maps_url",
+			"sqlExpression": "CONCAT(\n  'https://www.google.com/maps/search/?api=1&query=',\n  REPLACE(\n    TRIM(CONCAT_WS(' ',\n      IFNULL(entregasvnp.calle,''), IFNULL(entregasvnp.numeroext,''), IFNULL(entregasvnp.numeroint,''),\n      IFNULL(entregasvnp.colonia,''), IFNULL(entregasvnp.cp,''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    )),\n    ' ', '+'\n  )\n)",
+			"index": 41,
+			"strField": "maps_url",
+			"type": 200,
+			"viewFormats": [
+				{
+					"format": "Hyperlink",
+					"linkNewWindow": true,
+					"linkDisplay": 2,
+					"linkDisplayField": "direccion",
+					"linkDisplayText": {
+						"text": "Dirección de entrega...",
+						"type": 0
+					}
+				}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Maps Url"
+			},
+			"tableName": ""
+		},
+		{
+			"name": "direccion",
+			"sqlExpression": "CONCAT(\n  REPLACE(\n    TRIM(CONCAT_WS(' ',\n      IFNULL(entregasvnp.calle,''), IFNULL(entregasvnp.numeroext,''), IFNULL(entregasvnp.numeroint,''),\n      IFNULL(entregasvnp.colonia,''), IFNULL(entregasvnp.cp,''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    )),\n    ' ', '+'\n  )\n)",
+			"index": 42,
+			"strField": "direccion",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Direccion"
+			},
+			"tableName": ""
 		}
 	],
 	"eventHandlers": [
 		{
 			"eventId": "EVENT_AFTERADD",
 			"pageType": "add",
-			"code": "// Events → Add → After record added\nglobal $conn;\n\n// Recupera y limpia el stash\n$extras = $_SESSION['solicitudes_add_extras'][$pageObject->id] ?? [];\nunset($_SESSION['solicitudes_add_extras'][$pageObject->id]);\n\n// Ya tienes $keys[\"idsolicitud\"] del registro insertado en solicitudes\n$idsolicitud = (int)$keys[\"idsolicitud\"];\n\n// EJEMPLO: insertar dirección de entrega en entregasvnp usando los extras\nif (!empty($extras)) {\n    $sql = sprintf(\n        \"INSERT INTO entregasvnp (idsolicitud, estado, ciudad, cp, calle, numeroext, numeroint, colonia)\n         VALUES (%d, %s, %s, %d, %s, %s, %s, %s)\",\n        $idsolicitud,\n        db_prepare_string($extras[\"estado\"]    ?? \"\"),\n        db_prepare_string($extras[\"ciudad\"]    ?? \"\"),\n        (int)($extras[\"cp\"]                    ?? 0),\n        db_prepare_string($extras[\"calle\"]     ?? \"\"),\n        db_prepare_string($extras[\"numeroext\"] ?? \"\"),\n        db_prepare_string($extras[\"numeroint\"] ?? \"\"),\n        db_prepare_string($extras[\"colonia\"]   ?? \"\")\n    );\n    db_exec($sql, $conn);\n}\n\n$esnimei = $_SESSION[\"esnimei\"] ?? null;\nif (!empty($esnimei)) {\n       $sql = sprintf(\n        \"INSERT INTO seriessolicitadas (idsolicitud, esnimei)\n         VALUES (%d, %s)\",\n        $idsolicitud,\n        $esnimei\n    );\n    db_exec($sql, $conn);\n\n}\n\n// Si quieres log/debug:\n// file_put_contents(\"extras_log.txt\", date('c').\" PID:\".$pageObject->id.\" \".json_encode($extras,JSON_UNESCAPED_UNICODE).PHP_EOL, FILE_APPEND);\n\n\n"
+			"code": "// Events → Add → After record added\nglobal $conn;\n\n// Recupera y limpia el stash\n$extras = $_SESSION['solicitudes_add_extras'][$pageObject->id] ?? [];\nunset($_SESSION['solicitudes_add_extras'][$pageObject->id]);\n\n// Ya tienes $keys[\"idsolicitud\"] del registro insertado en solicitudes\n$idsolicitud = (int)$keys[\"idsolicitud\"];\n\n// EJEMPLO: insertar dirección de entrega en entregasvnp usando los extras\nif (!empty($extras)) {\n    $sql = sprintf(\n        \"INSERT INTO entregasvnp (idsolicitud, estado, ciudad, cp, calle, numeroext, numeroint, colonia)\n         VALUES (%d, %s, %s, %d, %s, %s, %s, %s)\",\n        $idsolicitud,\n        db_prepare_string($extras[\"estado\"]    ?? \"\"),\n        db_prepare_string($extras[\"ciudad\"]    ?? \"\"),\n        (int)($extras[\"cp\"]                    ?? 0),\n        db_prepare_string($extras[\"calle\"]     ?? \"\"),\n        db_prepare_string($extras[\"numeroext\"] ?? \"\"),\n        db_prepare_string($extras[\"numeroint\"] ?? \"\"),\n        db_prepare_string($extras[\"colonia\"]   ?? \"\")\n    );\n    db_exec($sql, $conn);\n}\n\n$esnimei = $_SESSION[\"esnimei\"] ?? null;\nif (!empty($esnimei)) {\n       $sql = sprintf(\n        \"INSERT INTO seriessolicitadas (idsolicitud, esnimei)\n         VALUES (%d, %s)\",\n        $idsolicitud,\n        $esnimei\n    );\n    db_exec($sql, $conn);\n\n}\n\n$simcard = $_SESSION[\"simcard\"] ?? null;\nif (!empty($esnimei)) {\n       $sql = sprintf(\n        \"INSERT INTO seriessolicitadas (idsolicitud, esnimei)\n         VALUES (%d, %s)\",\n        $idsolicitud,\n        $simcard\n    );\n    db_exec($sql, $conn);\n\n}\n\n// Si quieres log/debug:\n// file_put_contents(\"extras_log.txt\", date('c').\" PID:\".$pageObject->id.\" \".json_encode($extras,JSON_UNESCAPED_UNICODE).PHP_EOL, FILE_APPEND);\n\n\n"
 		},
 		{
 			"eventId": "EVENT_BEFOREADD",
 			"pageType": "add",
-			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n// Events → Add → Before record added\n// Copia campos del JOIN a un arreglo y quítalos de $values\n\n$values[\"fecha\"]=date('Y-m-d');\n$values[\"idtienda\"]=2;  //Tienda no presencial\n$values[\"idtipoventa\"]=5; //Renovación Tradicional (Equipo y Chip)\n$values[\"estatus\"]=\"ACTUALIZADA\";\n$values[\"equipoincluido\"]=1;\n\n$camposExtra = [\"nombre\",\"paterno\",\"materno\",\"estado\",\"ciudad\",\"cp\",\"calle\",\"numeroext\",\"numeroint\",\"colonia\"];\n\n$extras = [];\nforeach ($camposExtra as $f) {\n    if (array_key_exists($f, $values)) {\n        $extras[$f] = $values[$f];\n        unset($values[$f]);             // <- evita \"Unknown column ...\" en el INSERT de solicitudes\n    } else {\n        // Si alguno lo pones como \"Custom field\" (no ligado a DB), recupéralo del POST:\n        $pv = postvalue($f);\n        if ($pv !== null) $extras[$f] = $pv;\n    }\n}\n\n// Guarda en sesión, indexado por el id de la página para evitar choques con otras pestañas\n$_SESSION['solicitudes_add_extras'] = $_SESSION['solicitudes_add_extras'] ?? [];\n$_SESSION['solicitudes_add_extras'][$pageObject->id] = $extras;\n\n// Continúa con el insert normal en solicitudes\n\n$strSQLExists=\"SELECT\ncompras.noserie\nFROM compras\nLEFT OUTER JOIN ventas v ON compras.noserie = v.esnimei\nLEFT OUTER JOIN movimientos m ON compras.noserie = m.esnimei\nLEFT OUTER JOIN (SELECT t.esnimei,t.tiendadestino,t.`fecharecepcion` FROM traspasosdet t INNER JOIN (SELECT MAX(idtraspasodet) idtraspaso FROM traspasosdet GROUP BY esnimei) t1 ON t.idtraspasodet=t1.idtraspaso) t ON compras.noserie=t.esnimei\nINNER JOIN productos ON compras.codigoproducto = productos.codigoIUSA\nWHERE   v.esnimei is null and m.esnimei is null and (t. esnimei is null or t.fecharecepcion is not null and t.fecharecepcion<>'0000-00-00')\n  and compras.tienda=2 and compras.clasif = 2 and productos.Clasif='Equipo' LIMIT 1 \";\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\n\nif (!$data)\n{\n\t\t$message=\"No existe saldo en el inventario para el producto seleccionado\";\n\treturn false;\n\n} else {\n    $_SESSION[\"esnimei\"] = $data['noserie'];\n}\n\n\n\n\n\nreturn true;\n\n\n"
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n// Events → Add → Before record added\n// Copia campos del JOIN a un arreglo y quítalos de $values\n\n$values[\"fecha\"]=date('Y-m-d');\n$values[\"idtienda\"]=2;  //Tienda no presencial\n$values[\"idtipoventa\"]=5; //Renovación Tradicional (Equipo y Chip)\n$values[\"estatus\"]=\"ACTUALIZADA\";\n$values[\"equipoincluido\"]=1;\n$values[\"usuario\"]=\n\n$camposExtra = [\"nombre\",\"paterno\",\"materno\",\"estado\",\"ciudad\",\"cp\",\"calle\",\"numeroext\",\"numeroint\",\"colonia\"];\n\n$extras = [];\nforeach ($camposExtra as $f) {\n    if (array_key_exists($f, $values)) {\n        $extras[$f] = $values[$f];\n        unset($values[$f]);             // <- evita \"Unknown column ...\" en el INSERT de solicitudes\n    } else {\n        // Si alguno lo pones como \"Custom field\" (no ligado a DB), recupéralo del POST:\n        $pv = postvalue($f);\n        if ($pv !== null) $extras[$f] = $pv;\n    }\n}\n\n// Guarda en sesión, indexado por el id de la página para evitar choques con otras pestañas\n$_SESSION['solicitudes_add_extras'] = $_SESSION['solicitudes_add_extras'] ?? [];\n$_SESSION['solicitudes_add_extras'][$pageObject->id] = $extras;\n\n// Continúa con el insert normal en solicitudes\n\n$strSQLExists=\"SELECT\ncompras.noserie\nFROM compras\nLEFT OUTER JOIN ventas v ON compras.noserie = v.esnimei\nLEFT OUTER JOIN movimientos m ON compras.noserie = m.esnimei\nLEFT OUTER JOIN (SELECT t.esnimei,t.tiendadestino,t.`fecharecepcion` FROM traspasosdet t INNER JOIN (SELECT MAX(idtraspasodet) idtraspaso FROM traspasosdet GROUP BY esnimei) t1 ON t.idtraspasodet=t1.idtraspaso) t ON compras.noserie=t.esnimei\nINNER JOIN productos ON compras.codigoproducto = productos.codigoIUSA\nWHERE   v.esnimei is null and m.esnimei is null and (t. esnimei is null or t.fecharecepcion is not null and t.fecharecepcion<>'0000-00-00')\n  and compras.tienda=2 and compras.clasif = 2 and productos.Clasif='Equipo' LIMIT 1 \";\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\n\nif (!$data)\n{\n\t\t$message=\"No existe saldo en el inventario para el producto seleccionado\";\n\treturn false;\n\n} else {\n    $_SESSION[\"esnimei\"] = $data['noserie'];\n}\n\n\n$strSQLExists=\"SELECT\ncompras.noserie\nFROM compras\nLEFT OUTER JOIN ventas v ON compras.noserie = v.esnimei\nLEFT OUTER JOIN movimientos m ON compras.noserie = m.esnimei\nLEFT OUTER JOIN (SELECT t.esnimei,t.tiendadestino,t.`fecharecepcion` FROM traspasosdet t INNER JOIN (SELECT MAX(idtraspasodet) idtraspaso FROM traspasosdet GROUP BY esnimei) t1 ON t.idtraspasodet=t1.idtraspaso) t ON compras.noserie=t.esnimei\nINNER JOIN productos ON compras.codigoproducto = productos.codigoIUSA\nWHERE   v.esnimei is null and m.esnimei is null and (t. esnimei is null or t.fecharecepcion is not null and t.fecharecepcion<>'0000-00-00')\n  and compras.tienda=2 and compras.clasif = 2 and productos.Clasif='Chip' LIMIT 1 \";\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\n\nif (!$data)\n{\n\t\t$message=\"No existe saldo en el inventario de simcards\";\n\treturn false;\n\n} else {\n    $_SESSION[\"simcard\"] = $data['noserie'];\n}\n\n\n\nreturn true;\n\n\n"
 		}
 	],
 	"dbTableInfo": {
@@ -1838,7 +1888,9 @@
 					"cells": {
 						"c1": {
 							"model": "c1",
-							"items": []
+							"items": [
+								"export_field"
+							]
 						}
 					},
 					"deferredItems": [],
@@ -1885,6 +1937,10 @@
 				},
 				"export_cancel": {
 					"type": "export_cancel"
+				},
+				"export_field": {
+					"field": "direccion",
+					"type": "export_field"
 				}
 			},
 			"dbProps": {},
@@ -2243,7 +2299,9 @@
 					"cells": {
 						"c3": {
 							"model": "c3",
-							"items": []
+							"items": [
+								"integrated_edit_field"
+							]
 						}
 					},
 					"deferredItems": [],
@@ -2270,6 +2328,11 @@
 				},
 				"view_edit": {
 					"type": "view_edit"
+				},
+				"integrated_edit_field": {
+					"field": "direccion",
+					"type": "integrated_edit_field",
+					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -2310,6 +2373,8 @@
 							"model": "c1",
 							"items": [
 								"add",
+								"inline_save_all",
+								"inline_cancel_all",
 								"delete"
 							]
 						},
@@ -2458,6 +2523,9 @@
 								},
 								{
 									"cell": "headcell_field"
+								},
+								{
+									"cell": "headcell_field1"
 								}
 							]
 						},
@@ -2487,6 +2555,9 @@
 								},
 								{
 									"cell": "cell_field"
+								},
+								{
+									"cell": "cell_field1"
 								}
 							]
 						},
@@ -2516,6 +2587,9 @@
 								},
 								{
 									"cell": "footcell_field"
+								},
+								{
+									"cell": "footcell_field1"
 								}
 							]
 						}
@@ -2526,142 +2600,197 @@
 							"items": [
 								"simple_grid_field31"
 							],
-							"field": "fecha"
+							"field": "fecha",
+							"columnName": "field"
 						},
 						"cell_field2": {
 							"model": "cell_field",
 							"items": [
 								"simple_grid_field2"
 							],
-							"field": "fecha"
+							"field": "fecha",
+							"columnName": "field"
 						},
 						"footcell_field2": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "fecha"
+							"field": "fecha",
+							"columnName": "field"
 						},
 						"headcell_field4": {
 							"model": "headcell_field",
 							"items": [
 								"grid_field_label"
 							],
-							"field": "idcliente"
+							"field": "descripcion",
+							"columnName": "field"
 						},
 						"cell_field4": {
 							"model": "cell_field",
 							"items": [
 								"grid_field"
 							],
-							"field": "idcliente"
+							"field": "descripcion",
+							"columnName": "field"
 						},
 						"footcell_field4": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "idcliente"
+							"field": "descripcion",
+							"columnName": "field"
 						},
 						"headcell_field12": {
 							"model": "headcell_field",
 							"items": [
 								"simple_grid_field41"
 							],
-							"field": "estatus"
+							"field": "estatus",
+							"columnName": "field"
 						},
 						"cell_field12": {
 							"model": "cell_field",
 							"items": [
 								"simple_grid_field12"
 							],
-							"field": "estatus"
+							"field": "estatus",
+							"columnName": "field"
 						},
 						"footcell_field12": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "estatus"
+							"field": "estatus",
+							"columnName": "field"
 						},
 						"headcell_field16": {
 							"model": "headcell_field",
 							"items": [
 								"simple_grid_field45"
 							],
-							"field": "plazo"
+							"field": "plazo",
+							"columnName": "field"
 						},
 						"cell_field16": {
 							"model": "cell_field",
 							"items": [
 								"simple_grid_field16"
 							],
-							"field": "plazo"
+							"field": "plazo",
+							"columnName": "field"
 						},
 						"footcell_field16": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "plazo"
+							"field": "plazo",
+							"columnName": "field"
 						},
 						"headcell_checkbox": {
 							"model": "headcell_checkbox",
 							"items": [
 								"grid_checkbox_head"
-							]
+							],
+							"columnName": "checkbox",
+							"field": ""
 						},
 						"cell_checkbox": {
 							"model": "cell_checkbox",
 							"items": [
 								"grid_checkbox"
-							]
+							],
+							"columnName": "checkbox",
+							"field": ""
 						},
 						"footcell_checkbox": {
 							"model": "footcell_checkbox",
-							"items": []
+							"items": [],
+							"columnName": "checkbox",
+							"field": ""
 						},
 						"headcell_icons": {
 							"model": "headcell_icons",
-							"items": []
+							"items": [],
+							"columnName": "list-icons",
+							"field": ""
 						},
 						"cell_icons": {
 							"model": "cell_icons",
 							"items": [
 								"grid_edit",
+								"grid_inline_edit",
+								"grid_inline_save",
+								"grid_inline_cancel",
 								"grid_view"
-							]
+							],
+							"columnName": "list-icons",
+							"field": ""
 						},
 						"footcell_icons": {
 							"model": "footcell_icons",
-							"items": []
+							"items": [],
+							"columnName": "list-icons",
+							"field": ""
 						},
 						"headcell_field": {
 							"model": "headcell_field",
 							"items": [
 								"simple_grid_field39"
 							],
-							"field": "descripcion"
+							"field": "orden",
+							"columnName": "field"
 						},
 						"cell_field": {
 							"model": "cell_field",
 							"items": [
 								"simple_grid_field10"
 							],
-							"field": "descripcion"
+							"field": "orden",
+							"columnName": "field"
 						},
 						"footcell_field": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "descripcion"
+							"field": "orden",
+							"columnName": "field"
 						},
 						"headcell_field3": {
 							"model": "headcell_field",
 							"items": [
 								"simple_grid_field33"
-							]
+							],
+							"columnName": "field",
+							"field": "idcliente"
 						},
 						"headcell_field5": {
 							"model": "cell_field",
 							"items": [
 								"simple_grid_field4"
-							]
+							],
+							"columnName": "field",
+							"field": "idcliente"
 						},
 						"headcell_field6": {
 							"model": "footcell_field",
-							"items": []
+							"items": [],
+							"columnName": "field",
+							"field": "idcliente"
+						},
+						"headcell_field1": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label1"
+							],
+							"field": "maps_url"
+						},
+						"cell_field1": {
+							"model": "cell_field",
+							"items": [
+								"grid_field1"
+							],
+							"field": "maps_url"
+						},
+						"footcell_field1": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "maps_url"
 						}
 					},
 					"deferredItems": [],
@@ -2693,9 +2822,10 @@
 				"list_options": {
 					"type": "list_options",
 					"items": [
+						"edit_selected",
 						"export_selected",
 						"delete_selected",
-						"-3",
+						"-5",
 						"export",
 						"-2",
 						"import"
@@ -2755,7 +2885,7 @@
 					"field": "fecha",
 					"type": "grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": true
 				},
 				"simple_grid_field31": {
 					"type": "grid_field_label",
@@ -2765,7 +2895,7 @@
 					"field": "idcliente",
 					"type": "grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": true
 				},
 				"simple_grid_field33": {
 					"type": "grid_field_label",
@@ -2775,7 +2905,7 @@
 					"field": "orden",
 					"type": "grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": true
 				},
 				"simple_grid_field39": {
 					"type": "grid_field_label",
@@ -2785,7 +2915,7 @@
 					"field": "estatus",
 					"type": "grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": true
 				},
 				"simple_grid_field41": {
 					"type": "grid_field_label",
@@ -2795,7 +2925,7 @@
 					"field": "plazo",
 					"type": "grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": true
 				},
 				"simple_grid_field45": {
 					"type": "grid_field_label",
@@ -2838,7 +2968,7 @@
 					"field": "descripcion",
 					"type": "grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": true
 				},
 				"grid_field_label": {
 					"type": "grid_field_label",
@@ -2846,9 +2976,45 @@
 				},
 				"-3": {
 					"type": "-"
+				},
+				"edit_selected": {
+					"type": "edit_selected"
+				},
+				"grid_inline_edit": {
+					"type": "grid_inline_edit"
+				},
+				"grid_inline_save": {
+					"type": "grid_inline_save"
+				},
+				"grid_inline_cancel": {
+					"type": "grid_inline_cancel"
+				},
+				"inline_save_all": {
+					"type": "inline_save_all"
+				},
+				"inline_cancel_all": {
+					"type": "inline_cancel_all"
+				},
+				"grid_field1": {
+					"field": "maps_url",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label1": {
+					"type": "grid_field_label",
+					"field": "maps_url"
+				},
+				"-4": {
+					"type": "-"
+				},
+				"-5": {
+					"type": "-"
 				}
 			},
 			"dbProps": {},
+			"spreadsheetGrid": false,
+			"autoAddNewRecord": false,
 			"version": 13,
 			"imageItem": {
 				"type": "page_image"
@@ -2949,7 +3115,9 @@
 					"cells": {
 						"c1": {
 							"model": "c1",
-							"items": []
+							"items": [
+								"simple_grid_field"
+							]
 						}
 					},
 					"deferredItems": [],
@@ -2965,6 +3133,10 @@
 				},
 				"print_pages": {
 					"type": "print_pages"
+				},
+				"simple_grid_field": {
+					"field": "direccion",
+					"type": "simple_grid_field"
 				}
 			},
 			"dbProps": {},

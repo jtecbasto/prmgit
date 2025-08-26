@@ -2103,6 +2103,18 @@
 			"title": {}
 		}
 	],
+	"eventHandlers": [
+		{
+			"eventId": "EVENT_AFTERSUCCESSFULLLOGIN",
+			"pageType": "login",
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\ndate_default_timezone_set('America/Mexico_City');\nglobal $conn;\n\n\n\n$strSQLExists = \"SELECT\n    serviciosmoviles_ugmembers.UserName\n    , IFNULL(serviciosmoviles_uggroups.Acceso,11) Acceso\n    , IFNULL(serviciosmoviles_users.Tienda,0) Tienda\n\t\t, IFNULL(serviciosmoviles_uggroups.Label,'') Label\nFROM\n    serviciosmoviles_ugmembers\n    LEFT JOIN serviciosmoviles_uggroups \n        ON (serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID)\n LEFT JOIN serviciosmoviles_users\n        ON (serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName)\nWHERE serviciosmoviles_ugmembers.username='\".$_SESSION[\"UserID\"].\"'\" ;\n\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\nif($data)\n{\n\t$_SESSION[\"Acceso\"]=$data[\"Acceso\"];\n\t$_SESSION[\"Tienda\"]=$data[\"Tienda\"];\n\t$_SESSION[\"UserID\"]=strtoupper($_SESSION[\"UserID\"]);\n\t$_SESSION[\"Label\"]=strtoupper($data[\"Label\"]);\n\n\n}\n"
+		},
+		{
+			"eventId": "EVENT_BEFORELOGIN",
+			"pageType": "login",
+			"code": "global $conn;\r\n$strSQLExists = \"SELECT IFNULL(u.active,0) active, u.tienda, g.Acceso acceso   FROM serviciosmoviles_users u\r\nLEFT join serviciosmoviles_ugmembers m on u.username=m.username LEFT join serviciosmoviles_uggroups g\r\non m.groupid=g.groupid\r\n WHERE u.username='\".$username.\"'\" ;\r\n$rsExists = db_query($strSQLExists,$conn);\r\n$data=db_fetch_array($rsExists);\r\n\r\n$_SESSION[\"tiendaNP\"]=2;\r\nif($data)\r\n{\r\n\t$_SESSION[\"active\"]=$data[\"active\"];\r\n\t$_SESSION[\"tienda\"]=$data[\"tienda\"];\r\n\t$_SESSION[\"acceso\"]=$data[\"acceso\"];\r\n}\r\n\r\n\r\n// Place event code here.\r\n// Use \"Add Action\" button to add code snippets.\r\nif ($_SESSION[\"active\"]== 1 and  ($_SESSION[\"tienda\"]==$_SESSION[\"tiendaNP\"] or $_SESSION[\"acceso\"]<=1) )    //tienda no presencial or ($_SESSION[\"tienda\"]==$_SESSION[\"tiendaNP\"] or $_SESSION[\"acceso\"]<=1) and (strtoupper($username)==\"ADMIN\"  )\r\n{\r\n   \r\n\treturn true;\r\n}\r\nelse\r\n{\r\n\treturn false;\r\n}"
+		}
+	],
 	"projectStyle": {
 		"sidebarTheme": "legacy",
 		"topbarTheme": "legacy",

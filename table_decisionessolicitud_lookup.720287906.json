@@ -1,0 +1,93 @@
+{
+	"sql": "SELECT\r\n\tiddecisionsolicitud,\r\n\tdecisionsolicitud\r\nFROM\r\n\tdecisionessolicitud",
+	"type": 1,
+	"connId": "conn",
+	"originalTable": "decisionessolicitud",
+	"name": "decisionessolicitud_lookup",
+	"shortTableName": "decisionessolicitud_lookup",
+	"dbType": 0,
+	"keyFields": [
+		"iddecisionsolicitud"
+	],
+	"detailsBadgeColor": "cd853f",
+	"fields": [
+		{
+			"name": "iddecisionsolicitud",
+			"sqlExpression": "iddecisionsolicitud",
+			"index": 1,
+			"strField": "iddecisionsolicitud",
+			"type": 3,
+			"autoinc": true,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Iddecisionsolicitud"
+			},
+			"tableName": "decisionessolicitud"
+		},
+		{
+			"name": "decisionsolicitud",
+			"sqlExpression": "decisionsolicitud",
+			"index": 2,
+			"strField": "decisionsolicitud",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Decisionsolicitud"
+			},
+			"tableName": "decisionessolicitud"
+		}
+	],
+	"dbTableInfo": {
+		"type": 0,
+		"foreignKeys": [],
+		"fields": [
+			{
+				"name": "iddecisionsolicitud",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": false,
+				"autoinc": true,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "decisionsolicitud",
+				"type": 200,
+				"size": 20,
+				"scale": 0,
+				"typeName": "varchar(20)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			}
+		],
+		"primaryKeys": [
+			"iddecisionsolicitud"
+		],
+		"uniqueFields": [],
+		"name": "decisionessolicitud"
+	},
+	"pages": [],
+	"geoCoding": {
+		"enabled": false,
+		"latField": "",
+		"lonField": "",
+		"addressFields": []
+	},
+	"caption": {
+		"Spanish": "Decisionessolicitud Lookup"
+	}
+}
