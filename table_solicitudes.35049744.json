@@ -2772,8 +2772,7 @@
 				},
 				"simple_grid_field31": {
 					"type": "grid_field_label",
-					"field": "fecha",
-					"background": "#ff0000"
+					"field": "fecha"
 				},
 				"simple_grid_field4": {
 					"field": "idcliente",
