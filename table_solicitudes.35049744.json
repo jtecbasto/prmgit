@@ -1,13 +1,13 @@
 {
 	"orderInfo": [
 		{
-			"index": 1,
-			"field": "idsolicitud",
+			"index": 43,
+			"field": "estatusentrega",
 			"expr": "solicitudes.idsolicitud",
 			"asc": false
 		}
 	],
-	"sql": "SELECT\n\tsolicitudes.idsolicitud,\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tsolicitudes.estatusentrega,\n\tclientes.nombre,\n\tclientes.paterno,\n\tclientes.materno,\n\tentregasvnp.estado,\n\tentregasvnp.ciudad,\n\tentregasvnp.cp,\n\tentregasvnp.calle,\n\tentregasvnp.numeroext,\n\tentregasvnp.numeroint,\n\tentregasvnp.colonia,\n\tproductos.descripcion,\nCONCAT(\n  'https://www.google.com/maps/search/?api=1&query=',\n  REPLACE(\n    TRIM(CONCAT_WS(' ',\n      IFNULL(entregasvnp.numeroext,''),IFNULL(entregasvnp.calle,''), IFNULL(entregasvnp.numeroint,''),\n      IFNULL(entregasvnp.colonia,''), IFNULL(entregasvnp.cp,''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    )),\n    ' ', '+'\n  )\n) AS maps_url,\nCONCAT(\n    TRIM(CONCAT_WS(' ',\n      if(IFNULL(entregasvnp.calle,'')='','',concat('C.',entregasvnp.calle)),IFNULL(concat('No.',entregasvnp.numeroext),''), IFNULL(concat('Int.',entregasvnp.numeroint),''),\n      IFNULL((entregasvnp.colonia),''), IFNULL(concat('C.P.',entregasvnp.cp),''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    ))\n) AS direccion\n\n\t\nFROM\n\tsolicitudes\n\tLEFT OUTER JOIN clientes ON clientes.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp ON entregasvnp.idsolicitud = solicitudes.idsolicitud\n\tLEFT JOIN productos on solicitudes.idproducto=productos.idproducto\nWHERE\nsolicitudes.idtienda =2\nORDER BY\n\tsolicitudes.idsolicitud DESC\n",
+	"sql": "SELECT\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tsolicitudes.estatusentrega,\n\tclientes.nombre,\n\tclientes.paterno,\n\tclientes.materno,\n\tentregasvnp.estado,\n\tentregasvnp.ciudad,\n\tentregasvnp.cp,\n\tentregasvnp.calle,\n\tentregasvnp.numeroext,\n\tentregasvnp.numeroint,\n\tentregasvnp.colonia,\n\tproductos.descripcion,\n\tCONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(\n    TRIM(CONCAT_WS(' ',\n      IFNULL(entregasvnp.numeroext,''),IFNULL(entregasvnp.calle,''), IFNULL(entregasvnp.numeroint,''),\n      IFNULL(entregasvnp.colonia,''), IFNULL(entregasvnp.cp,''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    )),\n    ' ', '+'\n  )) AS maps_url,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      if(IFNULL(entregasvnp.calle,'')='','',concat('C.',entregasvnp.calle)),IFNULL(concat('No.',entregasvnp.numeroext),''), IFNULL(concat('Int.',entregasvnp.numeroint),''),\n      IFNULL((entregasvnp.colonia),''), IFNULL(concat('C.P.',entregasvnp.cp),''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    ))) AS direccion,\n\tsolicitudes.idsolicitud,\n\tss.equipo,\n\tss.chip\nFROM\n\tsolicitudes\n\tLEFT OUTER JOIN clientes ON clientes.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp ON entregasvnp.idsolicitud = solicitudes.idsolicitud\n\tLEFT OUTER JOIN productos ON productos.idproducto = solicitudes.idproducto\n\tLEFT JOIN (select  idsolicitud,\n  MAX(CASE WHEN clasif = 'Equipo' THEN esnimei END) AS equipo,\n  MAX(CASE WHEN clasif = 'Chip'   THEN esnimei END) AS chip from (\nselect ss.idsolicitud,ss.esnimei,\"Equipo\" clasif  from compras c inner join seriessolicitadas ss \non c.noserie = ss.esnimei inner join productos p on c.codigoproducto=p.codigoiusa where p.clasif='Equipo'\nunion all\nselect ss.idsolicitud, esnimei, \"Chip\"   from compras c inner join seriessolicitadas ss\non c.noserie = ss.esnimei inner join productos p on c.codigoproducto=p.codigoiusa where p.clasif='Chip'\n) x group by idsolicitud\n) ss ON solicitudes.idsolicitud=ss.idsolicitud  \nWHERE\nsolicitudes.idtienda =2 and solicitudes.fecha between '20250801' and '20250831'\norder by idsolicitud desc",
 	"connId": "conn",
 	"originalTable": "solicitudes",
 	"name": "solicitudes",
@@ -23,7 +23,7 @@
 		{
 			"name": "idsolicitud",
 			"sqlExpression": "solicitudes.idsolicitud",
-			"index": 1,
+			"index": 43,
 			"strField": "idsolicitud",
 			"type": 3,
 			"autoinc": true,
@@ -41,7 +41,7 @@
 		{
 			"name": "idtipoventa",
 			"sqlExpression": "solicitudes.idtipoventa",
-			"index": 2,
+			"index": 1,
 			"strField": "idtipoventa",
 			"type": 3,
 			"viewFormats": [
@@ -58,7 +58,7 @@
 		{
 			"name": "fecha",
 			"sqlExpression": "solicitudes.fecha",
-			"index": 3,
+			"index": 2,
 			"strField": "fecha",
 			"type": 7,
 			"separateEditViewFormats": true,
@@ -103,7 +103,7 @@
 		{
 			"name": "fechacaptura",
 			"sqlExpression": "solicitudes.fechacaptura",
-			"index": 4,
+			"index": 3,
 			"strField": "fechacaptura",
 			"type": 135,
 			"viewFormats": [
@@ -125,7 +125,7 @@
 		{
 			"name": "idcliente",
 			"sqlExpression": "solicitudes.idcliente",
-			"index": 5,
+			"index": 4,
 			"strField": "idcliente",
 			"type": 3,
 			"separateEditViewFormats": true,
@@ -318,7 +318,7 @@
 		{
 			"name": "idproducto",
 			"sqlExpression": "solicitudes.idproducto",
-			"index": 6,
+			"index": 5,
 			"strField": "idproducto",
 			"type": 3,
 			"viewFormats": [
@@ -355,7 +355,7 @@
 		{
 			"name": "idplan",
 			"sqlExpression": "solicitudes.idplan",
-			"index": 7,
+			"index": 6,
 			"strField": "idplan",
 			"type": 3,
 			"viewFormats": [
@@ -382,7 +382,7 @@
 		{
 			"name": "usuario",
 			"sqlExpression": "solicitudes.usuario",
-			"index": 8,
+			"index": 7,
 			"strField": "usuario",
 			"type": 200,
 			"viewFormats": [
@@ -399,7 +399,7 @@
 		{
 			"name": "idtienda",
 			"sqlExpression": "solicitudes.idtienda",
-			"index": 9,
+			"index": 8,
 			"strField": "idtienda",
 			"type": 3,
 			"viewFormats": [
@@ -416,7 +416,7 @@
 		{
 			"name": "fechamodif",
 			"sqlExpression": "solicitudes.fechamodif",
-			"index": 10,
+			"index": 9,
 			"strField": "fechamodif",
 			"type": 135,
 			"viewFormats": [
@@ -438,7 +438,7 @@
 		{
 			"name": "orden",
 			"sqlExpression": "solicitudes.orden",
-			"index": 11,
+			"index": 10,
 			"strField": "orden",
 			"type": 200,
 			"separateEditViewFormats": true,
@@ -477,7 +477,7 @@
 		{
 			"name": "solicitudimg",
 			"sqlExpression": "solicitudes.solicitudimg",
-			"index": 12,
+			"index": 11,
 			"strField": "solicitudimg",
 			"type": 201,
 			"viewFormats": [
@@ -496,7 +496,7 @@
 		{
 			"name": "estatus",
 			"sqlExpression": "solicitudes.estatus",
-			"index": 13,
+			"index": 12,
 			"strField": "estatus",
 			"type": 200,
 			"viewFormats": [
@@ -520,7 +520,7 @@
 		{
 			"name": "idsolrazon",
 			"sqlExpression": "solicitudes.idsolrazon",
-			"index": 14,
+			"index": 13,
 			"strField": "idsolrazon",
 			"type": 3,
 			"viewFormats": [
@@ -537,7 +537,7 @@
 		{
 			"name": "importeatt",
 			"sqlExpression": "solicitudes.importeatt",
-			"index": 15,
+			"index": 14,
 			"strField": "importeatt",
 			"type": 5,
 			"viewFormats": [
@@ -556,7 +556,7 @@
 		{
 			"name": "importesms",
 			"sqlExpression": "solicitudes.importesms",
-			"index": 16,
+			"index": 15,
 			"strField": "importesms",
 			"type": 5,
 			"viewFormats": [
@@ -575,7 +575,7 @@
 		{
 			"name": "plazo",
 			"sqlExpression": "solicitudes.plazo",
-			"index": 17,
+			"index": 16,
 			"strField": "plazo",
 			"type": 2,
 			"viewFormats": [
@@ -603,7 +603,7 @@
 		{
 			"name": "observaciones",
 			"sqlExpression": "solicitudes.observaciones",
-			"index": 18,
+			"index": 17,
 			"strField": "observaciones",
 			"type": 200,
 			"separateEditViewFormats": true,
@@ -638,7 +638,7 @@
 		{
 			"name": "equipoincluido",
 			"sqlExpression": "solicitudes.equipoincluido",
-			"index": 19,
+			"index": 18,
 			"strField": "equipoincluido",
 			"type": 2,
 			"viewFormats": [
@@ -655,7 +655,7 @@
 		{
 			"name": "rfc",
 			"sqlExpression": "solicitudes.rfc",
-			"index": 20,
+			"index": 19,
 			"strField": "rfc",
 			"type": 200,
 			"viewFormats": [
@@ -674,7 +674,7 @@
 		{
 			"name": "idtratamiento",
 			"sqlExpression": "solicitudes.idtratamiento",
-			"index": 21,
+			"index": 20,
 			"strField": "idtratamiento",
 			"type": 3,
 			"viewFormats": [
@@ -691,7 +691,7 @@
 		{
 			"name": "riesgo",
 			"sqlExpression": "solicitudes.riesgo",
-			"index": 22,
+			"index": 21,
 			"strField": "riesgo",
 			"type": 129,
 			"viewFormats": [
@@ -711,7 +711,7 @@
 		{
 			"name": "observacionest",
 			"sqlExpression": "solicitudes.observacionest",
-			"index": 23,
+			"index": 22,
 			"strField": "observacionest",
 			"type": 200,
 			"viewFormats": [
@@ -728,7 +728,7 @@
 		{
 			"name": "idcli",
 			"sqlExpression": "solicitudes.idcli",
-			"index": 24,
+			"index": 23,
 			"strField": "idcli",
 			"type": 200,
 			"viewFormats": [
@@ -746,7 +746,7 @@
 		{
 			"name": "fecha1avta",
 			"sqlExpression": "solicitudes.fecha1avta",
-			"index": 25,
+			"index": 24,
 			"strField": "fecha1avta",
 			"type": 7,
 			"viewFormats": [
@@ -768,7 +768,7 @@
 		{
 			"name": "idplan1avta",
 			"sqlExpression": "solicitudes.idplan1avta",
-			"index": 26,
+			"index": 25,
 			"strField": "idplan1avta",
 			"type": 3,
 			"viewFormats": [
@@ -785,7 +785,7 @@
 		{
 			"name": "dn1avta",
 			"sqlExpression": "solicitudes.dn1avta",
-			"index": 27,
+			"index": 26,
 			"strField": "dn1avta",
 			"type": 200,
 			"viewFormats": [
@@ -802,7 +802,7 @@
 		{
 			"name": "idproceso",
 			"sqlExpression": "solicitudes.idproceso",
-			"index": 28,
+			"index": 27,
 			"strField": "idproceso",
 			"type": 2,
 			"viewFormats": [
@@ -819,7 +819,7 @@
 		{
 			"name": "idorigenventa",
 			"sqlExpression": "solicitudes.idorigenventa",
-			"index": 29,
+			"index": 28,
 			"strField": "idorigenventa",
 			"type": 3,
 			"viewFormats": [
@@ -836,7 +836,7 @@
 		{
 			"name": "nombre",
 			"sqlExpression": "clientes.nombre",
-			"index": 31,
+			"index": 30,
 			"strField": "nombre",
 			"type": 200,
 			"viewFormats": [
@@ -858,7 +858,7 @@
 		{
 			"name": "paterno",
 			"sqlExpression": "clientes.paterno",
-			"index": 32,
+			"index": 31,
 			"strField": "paterno",
 			"type": 200,
 			"viewFormats": [
@@ -880,7 +880,7 @@
 		{
 			"name": "materno",
 			"sqlExpression": "clientes.materno",
-			"index": 33,
+			"index": 32,
 			"strField": "materno",
 			"type": 200,
 			"viewFormats": [
@@ -902,7 +902,7 @@
 		{
 			"name": "estado",
 			"sqlExpression": "entregasvnp.estado",
-			"index": 34,
+			"index": 33,
 			"strField": "estado",
 			"type": 200,
 			"viewFormats": [
@@ -919,7 +919,7 @@
 		{
 			"name": "ciudad",
 			"sqlExpression": "entregasvnp.ciudad",
-			"index": 35,
+			"index": 34,
 			"strField": "ciudad",
 			"type": 200,
 			"viewFormats": [
@@ -936,7 +936,7 @@
 		{
 			"name": "cp",
 			"sqlExpression": "entregasvnp.cp",
-			"index": 36,
+			"index": 35,
 			"strField": "cp",
 			"type": 200,
 			"viewFormats": [
@@ -953,7 +953,7 @@
 		{
 			"name": "calle",
 			"sqlExpression": "entregasvnp.calle",
-			"index": 37,
+			"index": 36,
 			"strField": "calle",
 			"type": 200,
 			"viewFormats": [
@@ -970,7 +970,7 @@
 		{
 			"name": "numeroext",
 			"sqlExpression": "entregasvnp.numeroext",
-			"index": 38,
+			"index": 37,
 			"strField": "numeroext",
 			"type": 200,
 			"viewFormats": [
@@ -987,7 +987,7 @@
 		{
 			"name": "numeroint",
 			"sqlExpression": "entregasvnp.numeroint",
-			"index": 39,
+			"index": 38,
 			"strField": "numeroint",
 			"type": 200,
 			"viewFormats": [
@@ -1004,7 +1004,7 @@
 		{
 			"name": "colonia",
 			"sqlExpression": "entregasvnp.colonia",
-			"index": 40,
+			"index": 39,
 			"strField": "colonia",
 			"type": 200,
 			"viewFormats": [
@@ -1021,7 +1021,7 @@
 		{
 			"name": "descripcion",
 			"sqlExpression": "productos.descripcion",
-			"index": 41,
+			"index": 40,
 			"strField": "descripcion",
 			"type": 200,
 			"viewFormats": [
@@ -1039,8 +1039,8 @@
 		},
 		{
 			"name": "maps_url",
-			"sqlExpression": "CONCAT(\n  'https://www.google.com/maps/search/?api=1&query=',\n  REPLACE(\n    TRIM(CONCAT_WS(' ',\n      IFNULL(entregasvnp.numeroext,''),IFNULL(entregasvnp.calle,''), IFNULL(entregasvnp.numeroint,''),\n      IFNULL(entregasvnp.colonia,''), IFNULL(entregasvnp.cp,''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    )),\n    ' ', '+'\n  )\n)",
-			"index": 42,
+			"sqlExpression": "CONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(\n    TRIM(CONCAT_WS(' ',\n      IFNULL(entregasvnp.numeroext,''),IFNULL(entregasvnp.calle,''), IFNULL(entregasvnp.numeroint,''),\n      IFNULL(entregasvnp.colonia,''), IFNULL(entregasvnp.cp,''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    )),\n    ' ', '+'\n  ))",
+			"index": 41,
 			"strField": "maps_url",
 			"type": 200,
 			"viewFormats": [
@@ -1065,8 +1065,8 @@
 		},
 		{
 			"name": "direccion",
-			"sqlExpression": "CONCAT(\n    TRIM(CONCAT_WS(' ',\n      if(IFNULL(entregasvnp.calle,'')='','',concat('C.',entregasvnp.calle)),IFNULL(concat('No.',entregasvnp.numeroext),''), IFNULL(concat('Int.',entregasvnp.numeroint),''),\n      IFNULL((entregasvnp.colonia),''), IFNULL(concat('C.P.',entregasvnp.cp),''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    ))\n)",
-			"index": 43,
+			"sqlExpression": "CONCAT(TRIM(CONCAT_WS(' ',\n      if(IFNULL(entregasvnp.calle,'')='','',concat('C.',entregasvnp.calle)),IFNULL(concat('No.',entregasvnp.numeroext),''), IFNULL(concat('Int.',entregasvnp.numeroint),''),\n      IFNULL((entregasvnp.colonia),''), IFNULL(concat('C.P.',entregasvnp.cp),''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    )))",
+			"index": 42,
 			"strField": "direccion",
 			"type": 200,
 			"viewFormats": [
@@ -1086,7 +1086,7 @@
 		{
 			"name": "estatusentrega",
 			"sqlExpression": "solicitudes.estatusentrega",
-			"index": 30,
+			"index": 29,
 			"strField": "estatusentrega",
 			"type": 3,
 			"viewFormats": [
@@ -1105,6 +1105,44 @@
 				"Spanish": "Estatus entrega"
 			},
 			"tableName": "solicitudes"
+		},
+		{
+			"name": "equipo",
+			"sqlExpression": "ss.equipo",
+			"index": 44,
+			"strField": "equipo",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Readonly"
+				}
+			],
+			"label": {
+				"Spanish": "Equipo"
+			},
+			"tableName": ""
+		},
+		{
+			"name": "chip",
+			"sqlExpression": "ss.chip",
+			"index": 45,
+			"strField": "chip",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Readonly"
+				}
+			],
+			"label": {
+				"Spanish": "Simcard"
+			},
+			"tableName": ""
 		}
 	],
 	"eventHandlers": [
@@ -1116,12 +1154,12 @@
 		{
 			"eventId": "EVENT_BEFOREADD",
 			"pageType": "add",
-			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n// Events → Add → Before record added\n// Copia campos del JOIN a un arreglo y quítalos de $values\n\n$values[\"fecha\"]=date('Y-m-d');\n$values[\"idtienda\"]=2;  //Tienda no presencial\n$values[\"idtipoventa\"]=5; //Renovación Tradicional (Equipo y Chip)\n$values[\"estatus\"]=\"ACTUALIZADA\";\n$values[\"equipoincluido\"]=1;\n$values[\"usuario\"]=\n\n$camposExtra = [\"nombre\",\"paterno\",\"materno\",\"estado\",\"ciudad\",\"cp\",\"calle\",\"numeroext\",\"numeroint\",\"colonia\"];\n\n$extras = [];\nforeach ($camposExtra as $f) {\n    if (array_key_exists($f, $values)) {\n        $extras[$f] = $values[$f];\n        unset($values[$f]);             // <- evita \"Unknown column ...\" en el INSERT de solicitudes\n    } else {\n        // Si alguno lo pones como \"Custom field\" (no ligado a DB), recupéralo del POST:\n        $pv = postvalue($f);\n        if ($pv !== null) $extras[$f] = $pv;\n    }\n}\n\n// Guarda en sesión, indexado por el id de la página para evitar choques con otras pestañas\n$_SESSION['solicitudes_add_extras'] = $_SESSION['solicitudes_add_extras'] ?? [];\n$_SESSION['solicitudes_add_extras'][$pageObject->id] = $extras;\n\n// Continúa con el insert normal en solicitudes\n\n$strSQLExists=\"SELECT\ncompras.noserie\nFROM compras\nLEFT OUTER JOIN ventas v ON compras.noserie = v.esnimei\nLEFT OUTER JOIN movimientos m ON compras.noserie = m.esnimei\nLEFT OUTER JOIN (SELECT t.esnimei,t.tiendadestino,t.`fecharecepcion` FROM traspasosdet t INNER JOIN (SELECT MAX(idtraspasodet) idtraspaso FROM traspasosdet GROUP BY esnimei) t1 ON t.idtraspasodet=t1.idtraspaso) t ON compras.noserie=t.esnimei\nINNER JOIN productos ON compras.codigoproducto = productos.codigoIUSA\nWHERE   v.esnimei is null and m.esnimei is null and (t. esnimei is null or t.fecharecepcion is not null and t.fecharecepcion<>'0000-00-00')\n  and compras.tienda=2 and compras.clasif = 2 and productos.Clasif='Equipo' LIMIT 1 \";\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\n\nif (!$data)\n{\n\t\t$message=\"No existe saldo en el inventario para el producto seleccionado\";\n\treturn false;\n\n} else {\n    $_SESSION[\"esnimei\"] = $data['noserie'];\n}\n\n\n$strSQLExists=\"SELECT\ncompras.noserie\nFROM compras\nLEFT OUTER JOIN ventas v ON compras.noserie = v.esnimei\nLEFT OUTER JOIN movimientos m ON compras.noserie = m.esnimei\nLEFT OUTER JOIN (SELECT t.esnimei,t.tiendadestino,t.`fecharecepcion` FROM traspasosdet t INNER JOIN (SELECT MAX(idtraspasodet) idtraspaso FROM traspasosdet GROUP BY esnimei) t1 ON t.idtraspasodet=t1.idtraspaso) t ON compras.noserie=t.esnimei\nINNER JOIN productos ON compras.codigoproducto = productos.codigoIUSA\nWHERE   v.esnimei is null and m.esnimei is null and (t. esnimei is null or t.fecharecepcion is not null and t.fecharecepcion<>'0000-00-00')\n  and compras.tienda=2 and compras.clasif = 2 and productos.Clasif='Chip' LIMIT 1 \";\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\n\nif (!$data)\n{\n\t\t$message=\"No existe saldo en el inventario de simcards\";\n\treturn false;\n\n} else {\n    $_SESSION[\"simcard\"] = $data['noserie'];\n}\n\n\n\nreturn true;\n\n\n"
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n// Events → Add → Before record added\n// Copia campos del JOIN a un arreglo y quítalos de $values\n\n$values[\"fecha\"]=date('Y-m-d');\n$values[\"idtienda\"]=2;  //Tienda no presencial\n$values[\"idtipoventa\"]=5; //Renovación Tradicional (Equipo y Chip)\n$values[\"estatus\"]=\"ACTUALIZADA\";\n$values[\"equipoincluido\"]=1;\n$values[\"usuario\"]=\n\n$camposExtra = [\"nombre\",\"paterno\",\"materno\",\"estado\",\"ciudad\",\"cp\",\"calle\",\"numeroext\",\"numeroint\",\"colonia\"];\n\n$extras = [];\nforeach ($camposExtra as $f) {\n    if (array_key_exists($f, $values)) {\n        $extras[$f] = $values[$f];\n        unset($values[$f]);             // <- evita \"Unknown column ...\" en el INSERT de solicitudes\n    } else {\n        // Si alguno lo pones como \"Custom field\" (no ligado a DB), recupéralo del POST:\n        $pv = postvalue($f);\n        if ($pv !== null) $extras[$f] = $pv;\n    }\n}\n\n// Guarda en sesión, indexado por el id de la página para evitar choques con otras pestañas\n$_SESSION['solicitudes_add_extras'] = $_SESSION['solicitudes_add_extras'] ?? [];\n$_SESSION['solicitudes_add_extras'][$pageObject->id] = $extras;\n\n// Continúa con el insert normal en solicitudes\n\n$strSQLExists=\"SELECT\ncompras.noserie\nFROM compras\nLEFT OUTER JOIN ventas v ON compras.noserie = v.esnimei\nLEFT OUTER JOIN movimientos m ON compras.noserie = m.esnimei\nLEFT OUTER JOIN seriessolicitadas ss on compras.noserie=ss.esnimei     \nLEFT OUTER JOIN (SELECT t.esnimei,t.tiendadestino,t.`fecharecepcion` FROM traspasosdet t INNER JOIN (SELECT MAX(idtraspasodet) idtraspaso FROM traspasosdet GROUP BY esnimei) t1 ON t.idtraspasodet=t1.idtraspaso) t ON compras.noserie=t.esnimei\nINNER JOIN productos ON compras.codigoproducto = productos.codigoIUSA\nWHERE   v.esnimei is null and m.esnimei is null and ss.esnimei is null and (t. esnimei is null or t.fecharecepcion is not null and t.fecharecepcion<>'0000-00-00')\n  and compras.tienda=2 and compras.clasif = 2 and productos.Clasif='Equipo' AND productos.idproducto=\". $values['idproducto']. \" LIMIT 1 \";\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\n\nif (!$data)\n{\n\t\t$message=\"No existe saldo en el inventario para el producto seleccionado\";\n\treturn false;\n\n} else {\n    $_SESSION[\"esnimei\"] = $data['noserie'];\n}\n\n\n$strSQLExists=\"SELECT\ncompras.noserie\nFROM compras\nLEFT OUTER JOIN ventas v ON compras.noserie = v.esnimei\nLEFT OUTER JOIN movimientos m ON compras.noserie = m.esnimei\nLEFT OUTER JOIN seriessolicitadas ss on compras.noserie=ss.esnimei     \nLEFT OUTER JOIN (SELECT t.esnimei,t.tiendadestino,t.`fecharecepcion` FROM traspasosdet t INNER JOIN (SELECT MAX(idtraspasodet) idtraspaso FROM traspasosdet GROUP BY esnimei) t1 ON t.idtraspasodet=t1.idtraspaso) t ON compras.noserie=t.esnimei\nINNER JOIN productos ON compras.codigoproducto = productos.codigoIUSA\nWHERE   v.esnimei is null and m.esnimei is null  and ss.esnimei is null and (t. esnimei is null or t.fecharecepcion is not null and t.fecharecepcion<>'0000-00-00')\n  and compras.tienda=2 and compras.clasif = 2 and productos.Clasif='Chip' LIMIT 1 \";\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\n\nif (!$data)\n{\n\t\t$message=\"No existe saldo en el inventario de simcards\";\n\treturn false;\n\n} else {\n    $_SESSION[\"simcard\"] = $data['noserie'];\n}\n\n\n\nreturn true;\n\n\n"
 		},
 		{
 			"eventId": "EVENT_JS_ONLOAD",
 			"pageType": "list",
-			"code": "var ctrlFecha = Runner.getControl(pageid, \"fecha\");\r\nctrlFecha.makeReadOnly;\r\n\r\n/*// ==================================================\r\n// EVENTO ONLOAD PARA LISTA EN PHPRUNNER 11\r\n// ==================================================\r\n\r\nfunction onLoad() {\r\n    // Esperar a que la lista se cargue completamente\r\n    setTimeout(function() {\r\n        aplicarSoloLecturaControles();\r\n        configurarObservadorEdicion();\r\n    }, 1000);\r\n}\r\n\r\n// ==================================================\r\n// FUNCIÓN PRINCIPAL PARA APLICAR SOLO LECTURA\r\n// ==================================================\r\n\r\nfunction aplicarSoloLecturaControles() {\r\n    // Lista de campos que deben ser solo lectura en edición\r\n    var camposSoloLectura = [\r\n        'fecha',       // campo fecha       \r\n        'idcliente',  // Campo idcliente\r\n        'descripcion', // Campo descripcion\r\n        'plazo',           // Campo estado\r\n        'orden'\r\n        // Agrega aquí tus campos específicos\r\n    ];\r\n    \r\n    // Aplicar a todos los campos de la lista\r\n    camposSoloLectura.forEach(function(campo) {\r\n        hacerCampoSoloLectura(campo);\r\n    });\r\n    \r\n    // También aplicar a elementos específicos por clase o ID\r\n    var elementosEspecificos = [\r\n        '.readonly-field',\r\n        '[data-readonly=\"true\"]',\r\n        '#campo_protegido'\r\n    ];\r\n    \r\n    elementosEspecificos.forEach(function(selector) {\r\n        var elementos = document.querySelectorAll(selector);\r\n        elementos.forEach(function(elemento) {\r\n            aplicarEstilosSoloLectura(elemento);\r\n        });\r\n    });\r\n}\r\n\r\n// ==================================================\r\n// FUNCIÓN PARA HACER UN CAMPO ESPECÍFICO SOLO LECTURA\r\n// ==================================================\r\n\r\nfunction hacerCampoSoloLectura(nombreCampo) {\r\n    // Buscar todos los elementos relacionados con el campo\r\n    var selectores = [\r\n        'input[name*=\"' + nombreCampo + '\"]',\r\n        'select[name*=\"' + nombreCampo + '\"]',\r\n        'textarea[name*=\"' + nombreCampo + '\"]',\r\n        '[data-field=\"' + nombreCampo + '\"] input',\r\n        '[data-field=\"' + nombreCampo + '\"] select',\r\n        '[data-field=\"' + nombreCampo + '\"] textarea',\r\n        '.field_' + nombreCampo + ' input',\r\n        '.field_' + nombreCampo + ' select',\r\n        '.field_' + nombreCampo + ' textarea'\r\n    ];\r\n    \r\n    selectores.forEach(function(selector) {\r\n        var elementos = document.querySelectorAll(selector);\r\n        \r\n        elementos.forEach(function(elemento) {\r\n            if (elemento && !elemento.closest('.view-mode')) {\r\n                elemento.setAttribute('readonly', 'true');\r\n                elemento.setAttribute('disabled', 'true');\r\n                aplicarEstilosSoloLectura(elemento);\r\n                \r\n                // Prevenir edición mediante eventos\r\n                elemento.addEventListener('mousedown', prevenirEdicion);\r\n                elemento.addEventListener('keydown', prevenirEdicion);\r\n            }\r\n        });\r\n    });\r\n}\r\n\r\n// ==================================================\r\n// ESTILOS Y COMPORTAMIENTO PARA SOLO LECTURA\r\n// ==================================================\r\n\r\nfunction aplicarEstilosSoloLectura(elemento) {\r\n    elemento.style.backgroundColor = '#f8f9fa';\r\n    elemento.style.borderColor = '#dee2e6';\r\n    elemento.style.color = '#6c757d';\r\n    elemento.style.cursor = 'not-allowed';\r\n    elemento.classList.add('campo-solo-lectura');\r\n}\r\n\r\nfunction prevenirEdicion(evento) {\r\n    evento.preventDefault();\r\n    evento.stopPropagation();\r\n    return false;\r\n}\r\n\r\n// ==================================================\r\n// OBSERVADOR PARA DETECTAR EDICIONES EN LÍNEA\r\n// ==================================================\r\n\r\nfunction configurarObservadorEdicion() {\r\n    // Observar cambios en el body para detectar modos de edición\r\n    var observer = new MutationObserver(function(mutations) {\r\n        mutations.forEach(function(mutation) {\r\n            if (mutation.addedNodes.length > 0) {\r\n                // Verificar si se activó el modo edición\r\n                var elementosEdicion = document.querySelectorAll('.edit-mode, .editing, [data-editing=\"true\"]');\r\n                if (elementosEdicion.length > 0) {\r\n                    setTimeout(aplicarSoloLecturaControles, 300);\r\n                }\r\n            }\r\n        });\r\n    });\r\n    \r\n    // Configurar el observador\r\n    observer.observe(document.body, {\r\n        childList: true,\r\n        subtree: true,\r\n        attributes: true,\r\n        attributeFilter: ['class', 'data-editing']\r\n    });\r\n    \r\n    // También escuchar eventos de clic en botones de edición\r\n    document.addEventListener('click', function(e) {\r\n        var botonEdicion = e.target.closest('[id*=\"edit\"], .edit-btn, .phpr-edit');\r\n        if (botonEdicion) {\r\n            setTimeout(aplicarSoloLecturaControles, 500);\r\n        }\r\n    });\r\n}\r\n\r\n// ==================================================\r\n// INICIALIZACIÓN AL CARGAR LA PÁGINA\r\n// ==================================================\r\n\r\n// Llamar a onLoad cuando el DOM esté listo\r\nif (document.readyState === 'loading') {\r\n    document.addEventListener('DOMContentLoaded', onLoad);\r\n} else {\r\n    onLoad();\r\n}\r\n\r\n// Re-aplicar cuando se redimensiona o hay cambios\r\nwindow.addEventListener('resize', function() {\r\n    setTimeout(aplicarSoloLecturaControles, 300);\r\n});\r\n\r\n// ==================================================\r\n// CSS ADICIONAL (opcional, agregar en Custom CSS)\r\n// ==================================================\r\n/*\r\n.campo-solo-lectura {\r\n    background-color: #f8f9fa !important;\r\n    border: 1px solid #dee2e6 !important;\r\n    color: #6c757d !important;\r\n    cursor: not-allowed !important;\r\n}\r\n\r\n.campo-solo-lectura:hover {\r\n    background-color: #e9ecef !important;\r\n}\r\n*/"
+			"code": "/*var ctrlFecha = Runner.getControl(pageid, \"fecha\");\r\nctrlFecha.makeReadOnly;\r\n\r\n// ==================================================\r\n// EVENTO ONLOAD PARA LISTA EN PHPRUNNER 11\r\n// ==================================================\r\n\r\nfunction onLoad() {\r\n    // Esperar a que la lista se cargue completamente\r\n    setTimeout(function() {\r\n        aplicarSoloLecturaControles();\r\n        configurarObservadorEdicion();\r\n    }, 1000);\r\n}\r\n\r\n// ==================================================\r\n// FUNCIÓN PRINCIPAL PARA APLICAR SOLO LECTURA\r\n// ==================================================\r\n\r\nfunction aplicarSoloLecturaControles() {\r\n    // Lista de campos que deben ser solo lectura en edición\r\n    var camposSoloLectura = [\r\n        'fecha',       // campo fecha       \r\n        'idcliente',  // Campo idcliente\r\n        'descripcion', // Campo descripcion\r\n        'plazo',           // Campo estado\r\n        'orden'\r\n        // Agrega aquí tus campos específicos\r\n    ];\r\n    \r\n    // Aplicar a todos los campos de la lista\r\n    camposSoloLectura.forEach(function(campo) {\r\n        hacerCampoSoloLectura(campo);\r\n    });\r\n    \r\n    // También aplicar a elementos específicos por clase o ID\r\n    var elementosEspecificos = [\r\n        '.readonly-field',\r\n        '[data-readonly=\"true\"]',\r\n        '#campo_protegido'\r\n    ];\r\n    \r\n    elementosEspecificos.forEach(function(selector) {\r\n        var elementos = document.querySelectorAll(selector);\r\n        elementos.forEach(function(elemento) {\r\n            aplicarEstilosSoloLectura(elemento);\r\n        });\r\n    });\r\n}\r\n\r\n// ==================================================\r\n// FUNCIÓN PARA HACER UN CAMPO ESPECÍFICO SOLO LECTURA\r\n// ==================================================\r\n\r\nfunction hacerCampoSoloLectura(nombreCampo) {\r\n    // Buscar todos los elementos relacionados con el campo\r\n    var selectores = [\r\n        'input[name*=\"' + nombreCampo + '\"]',\r\n        'select[name*=\"' + nombreCampo + '\"]',\r\n        'textarea[name*=\"' + nombreCampo + '\"]',\r\n        '[data-field=\"' + nombreCampo + '\"] input',\r\n        '[data-field=\"' + nombreCampo + '\"] select',\r\n        '[data-field=\"' + nombreCampo + '\"] textarea',\r\n        '.field_' + nombreCampo + ' input',\r\n        '.field_' + nombreCampo + ' select',\r\n        '.field_' + nombreCampo + ' textarea'\r\n    ];\r\n    \r\n    selectores.forEach(function(selector) {\r\n        var elementos = document.querySelectorAll(selector);\r\n        \r\n        elementos.forEach(function(elemento) {\r\n            if (elemento && !elemento.closest('.view-mode')) {\r\n                elemento.setAttribute('readonly', 'true');\r\n                elemento.setAttribute('disabled', 'true');\r\n                aplicarEstilosSoloLectura(elemento);\r\n                \r\n                // Prevenir edición mediante eventos\r\n                elemento.addEventListener('mousedown', prevenirEdicion);\r\n                elemento.addEventListener('keydown', prevenirEdicion);\r\n            }\r\n        });\r\n    });\r\n}\r\n\r\n// ==================================================\r\n// ESTILOS Y COMPORTAMIENTO PARA SOLO LECTURA\r\n// ==================================================\r\n\r\nfunction aplicarEstilosSoloLectura(elemento) {\r\n    elemento.style.backgroundColor = '#f8f9fa';\r\n    elemento.style.borderColor = '#dee2e6';\r\n    elemento.style.color = '#6c757d';\r\n    elemento.style.cursor = 'not-allowed';\r\n    elemento.classList.add('campo-solo-lectura');\r\n}\r\n\r\nfunction prevenirEdicion(evento) {\r\n    evento.preventDefault();\r\n    evento.stopPropagation();\r\n    return false;\r\n}\r\n\r\n// ==================================================\r\n// OBSERVADOR PARA DETECTAR EDICIONES EN LÍNEA\r\n// ==================================================\r\n\r\nfunction configurarObservadorEdicion() {\r\n    // Observar cambios en el body para detectar modos de edición\r\n    var observer = new MutationObserver(function(mutations) {\r\n        mutations.forEach(function(mutation) {\r\n            if (mutation.addedNodes.length > 0) {\r\n                // Verificar si se activó el modo edición\r\n                var elementosEdicion = document.querySelectorAll('.edit-mode, .editing, [data-editing=\"true\"]');\r\n                if (elementosEdicion.length > 0) {\r\n                    setTimeout(aplicarSoloLecturaControles, 300);\r\n                }\r\n            }\r\n        });\r\n    });\r\n    \r\n    // Configurar el observador\r\n    observer.observe(document.body, {\r\n        childList: true,\r\n        subtree: true,\r\n        attributes: true,\r\n        attributeFilter: ['class', 'data-editing']\r\n    });\r\n    \r\n    // También escuchar eventos de clic en botones de edición\r\n    document.addEventListener('click', function(e) {\r\n        var botonEdicion = e.target.closest('[id*=\"edit\"], .edit-btn, .phpr-edit');\r\n        if (botonEdicion) {\r\n            setTimeout(aplicarSoloLecturaControles, 500);\r\n        }\r\n    });\r\n}\r\n\r\n// ==================================================\r\n// INICIALIZACIÓN AL CARGAR LA PÁGINA\r\n// ==================================================\r\n\r\n// Llamar a onLoad cuando el DOM esté listo\r\nif (document.readyState === 'loading') {\r\n    document.addEventListener('DOMContentLoaded', onLoad);\r\n} else {\r\n    onLoad();\r\n}\r\n\r\n// Re-aplicar cuando se redimensiona o hay cambios\r\nwindow.addEventListener('resize', function() {\r\n    setTimeout(aplicarSoloLecturaControles, 300);\r\n});\r\n\r\n// ==================================================\r\n// CSS ADICIONAL (opcional, agregar en Custom CSS)\r\n// ==================================================\r\n/*\r\n.campo-solo-lectura {\r\n    background-color: #f8f9fa !important;\r\n    border: 1px solid #dee2e6 !important;\r\n    color: #6c757d !important;\r\n    cursor: not-allowed !important;\r\n}\r\n\r\n.campo-solo-lectura:hover {\r\n    background-color: #e9ecef !important;\r\n}\r\n*/"
 		},
 		{
 			"eventId": "EVENT_JS_ONLOAD",
@@ -2756,6 +2794,12 @@
 								},
 								{
 									"cell": "headcell_field7"
+								},
+								{
+									"cell": "headcell_field8"
+								},
+								{
+									"cell": "headcell_field9"
 								}
 							]
 						},
@@ -2791,6 +2835,12 @@
 								},
 								{
 									"cell": "cell_field3"
+								},
+								{
+									"cell": "cell_field5"
+								},
+								{
+									"cell": "cell_field6"
 								}
 							]
 						},
@@ -2826,6 +2876,12 @@
 								},
 								{
 									"cell": "footcell_field3"
+								},
+								{
+									"cell": "footcell_field5"
+								},
+								{
+									"cell": "footcell_field6"
 								}
 							]
 						}
@@ -3046,6 +3102,44 @@
 							"model": "footcell_field",
 							"items": [],
 							"field": "estatusentrega"
+						},
+						"headcell_field8": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label3"
+							],
+							"field": "equipo"
+						},
+						"cell_field5": {
+							"model": "cell_field",
+							"items": [
+								"grid_field3"
+							],
+							"field": "equipo"
+						},
+						"footcell_field5": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "equipo"
+						},
+						"headcell_field9": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label4"
+							],
+							"field": "chip"
+						},
+						"cell_field6": {
+							"model": "cell_field",
+							"items": [
+								"grid_field4"
+							],
+							"field": "chip"
+						},
+						"footcell_field6": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "chip"
 						}
 					},
 					"deferredItems": [],
@@ -3080,7 +3174,7 @@
 						"edit_selected",
 						"export_selected",
 						"delete_selected",
-						"-6",
+						"-8",
 						"export",
 						"-2",
 						"import"
@@ -3278,6 +3372,32 @@
 				},
 				"-6": {
 					"type": "-"
+				},
+				"-7": {
+					"type": "-"
+				},
+				"grid_field3": {
+					"field": "equipo",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label3": {
+					"type": "grid_field_label",
+					"field": "equipo"
+				},
+				"grid_field4": {
+					"field": "chip",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label4": {
+					"type": "grid_field_label",
+					"field": "chip"
+				},
+				"-8": {
+					"type": "-"
 				}
 			},
 			"dbProps": {},
@@ -3290,7 +3410,7 @@
 			"imageBgColor": "#f2f2f2",
 			"controlsBgColor": "white",
 			"imagePosition": "right",
-			"pageCSS": "/* Put  your custom CSS code here */\n\n.table {\n    font-family: 'Arial', sans-serif !important;\n    font-size: 6px !important;\n    border-collapse: collapse !important;\n}",
+			"pageCSS": "/* Put  your custom CSS code here */\n\n.table {\n    font-family: 'Arial', sans-serif !important;\n    font-size: 12px !important;\n    border-collapse: collapse !important;\n}",
 			"listTotals": 1,
 			"title": {}
 		},
