@@ -1,5 +1,5 @@
 {
-	"sql": "SELECT\r\n\tproductos.idproducto,\r\n\tproductos.codigoIUSA,\r\n\tproductos.descripcion,\r\n\tCOUNT(idproducto) AS saldo\r\nFROM\r\n\tcompras\r\n\tLEFT OUTER JOIN ventas AS v ON v.esnimei = compras.noserie\r\n\tLEFT OUTER JOIN movimientos AS m ON m.esnimei = compras.noserie\r\n\tINNER JOIN productos ON productos.codigoIUSA = compras.codigoproducto\r\nWHERE\r\n(v.esnimei is null AND m.esnimei is null) AND productos.Clasif ='Equipo' AND compras.tienda =2\r\nGROUP BY\r\n\tproductos.idproducto\r\n",
+	"sql": "  SELECT\n\tproductos.idproducto,\n\tproductos.codigoIUSA,\n\tproductos.descripcion,\n\tCOUNT(idproducto) AS saldo\nFROM\n\tcompras\n\tLEFT OUTER JOIN ventas AS v ON v.esnimei = compras.noserie\n\tLEFT OUTER JOIN movimientos AS m ON m.esnimei = compras.noserie\n\tLEFT OUTER JOIN seriessolicitadas ss ON compras.noserie=ss.esnimei\n\tINNER JOIN productos ON productos.codigoIUSA = compras.codigoproducto\nWHERE\n(v.esnimei is null AND m.esnimei is null and ss.esnimei is null) AND productos.Clasif ='Equipo' AND compras.tienda =2 and compras.clasif=2\nGROUP BY\n\tproductos.idproducto\n",
 	"connId": "conn",
 	"originalTable": "productos",
 	"name": "productos",

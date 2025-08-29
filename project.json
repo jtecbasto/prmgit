@@ -425,18 +425,7 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"welcome_item2",
-								"welcome_item3",
-								"welcome_item4",
-								"welcome_item10",
-								"welcome_item11",
-								"welcome_item",
-								"welcome_item1",
-								"welcome_item6",
-								"welcome_item7",
-								"welcome_item9",
-								"welcome_item5",
-								"welcome_item8"
+								"welcome_item2"
 							]
 						}
 					},
@@ -470,137 +459,6 @@
 					"background": "#1e90ff",
 					"linkType": 0
 				},
-				"welcome_item3": {
-					"type": "welcome_item",
-					"linkUrl": "",
-					"linkTable": "tiendas",
-					"linkPage": "list",
-					"linkText": {
-						"table": "tiendas",
-						"type": 6
-					},
-					"linkIcon": {
-						"glyph": "hand-right"
-					},
-					"linkComments": {
-						"text": "Tiendas description",
-						"type": 0
-					},
-					"background": "#1e90ff",
-					"linkType": 0
-				},
-				"welcome_item4": {
-					"type": "welcome_item",
-					"linkUrl": "",
-					"linkTable": "planes",
-					"linkPage": "list",
-					"linkText": {
-						"table": "planes",
-						"type": 6
-					},
-					"linkIcon": {
-						"glyph": "briefcase"
-					},
-					"linkComments": {
-						"text": "Planes description",
-						"type": 0
-					},
-					"background": "#bc8f8f",
-					"linkType": 0
-				},
-				"welcome_item10": {
-					"type": "welcome_item",
-					"linkUrl": "",
-					"linkTable": "sectores",
-					"linkPage": "list",
-					"linkText": {
-						"table": "sectores",
-						"type": 6
-					},
-					"background": "#cd5c5c",
-					"linkType": 0
-				},
-				"welcome_item11": {
-					"type": "welcome_item",
-					"linkUrl": "",
-					"linkTable": "clientes",
-					"linkPage": "list",
-					"linkText": {
-						"table": "clientes",
-						"type": 6
-					},
-					"background": "#e8926f",
-					"linkType": 0
-				},
-				"welcome_item": {
-					"type": "welcome_item",
-					"linkUrl": "",
-					"linkTable": "serviciosmoviles_users",
-					"linkPage": "list",
-					"linkText": {
-						"table": "serviciosmoviles_users",
-						"type": 6
-					},
-					"linkIcon": {
-						"glyph": "flash"
-					},
-					"background": "#d2691e",
-					"linkType": 0
-				},
-				"welcome_item1": {
-					"type": "welcome_item",
-					"linkUrl": "",
-					"linkTable": "serviciosmoviles_ugrights",
-					"linkPage": "list",
-					"linkText": {
-						"table": "serviciosmoviles_ugrights",
-						"type": 6
-					},
-					"linkIcon": {
-						"glyph": "calendar"
-					},
-					"background": "#cfae83",
-					"linkType": 0
-				},
-				"welcome_item6": {
-					"type": "welcome_item",
-					"linkUrl": "",
-					"linkTable": "serviciosmoviles_ugmembers",
-					"linkPage": "list",
-					"linkText": {
-						"table": "serviciosmoviles_ugmembers",
-						"type": 6
-					},
-					"linkIcon": {
-						"glyph": "barcode"
-					},
-					"background": "#dc143c",
-					"linkType": 0
-				},
-				"welcome_item7": {
-					"type": "welcome_item",
-					"linkUrl": "",
-					"linkTable": "serviciosmoviles_uggroups",
-					"linkPage": "list",
-					"linkText": {
-						"table": "serviciosmoviles_uggroups",
-						"type": 6
-					},
-					"background": "#e67349",
-					"linkType": 0
-				},
-				"welcome_item9": {
-					"type": "welcome_item",
-					"linkUrl": "",
-					"linkTable": "entregasvnp",
-					"linkPage": "list",
-					"linkText": {
-						"table": "entregasvnp",
-						"type": 6
-					},
-					"background": "#6da5c8",
-					"linkType": 0
-				},
 				"username_button": {
 					"type": "username_button",
 					"items": [
@@ -621,30 +479,6 @@
 				},
 				"adminarea_link": {
 					"type": "adminarea_link"
-				},
-				"welcome_item5": {
-					"type": "welcome_item",
-					"linkUrl": "",
-					"linkTable": "productos",
-					"linkPage": "list",
-					"linkText": {
-						"table": "productos",
-						"type": 6
-					},
-					"background": "#bc8f8f",
-					"linkType": 0
-				},
-				"welcome_item8": {
-					"type": "welcome_item",
-					"linkUrl": "",
-					"linkTable": "vw_saldosnp",
-					"linkPage": "list",
-					"linkText": {
-						"table": "vw_saldosnp",
-						"type": 6
-					},
-					"background": "#bc8f8f",
-					"linkType": 0
 				}
 			},
 			"dbProps": {},
