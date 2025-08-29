@@ -279,6 +279,37 @@
 			}
 		}
 	},
+	"ftpLocations": [
+		{
+			"id": "ftploc",
+			"name": "FTP on admin@rocasamexico.com@ftp://ftp.rocasamexico.com:21",
+			"ftp": {
+				"username": "admin@rocasamexico.com",
+				"password": "",
+				"host": "ftp.rocasamexico.com",
+				"port": 21,
+				"pathname": "/public_html/prm1",
+				"passive": true,
+				"secureType": 0,
+				"useCCC": false,
+				"pathFromRoot": false
+			},
+			"proxy": {
+				"username": "",
+				"password": "",
+				"host": "localhost",
+				"port": 3128,
+				"pathname": "",
+				"type": 0,
+				"enabled": false
+			},
+			"threads": 4,
+			"serverDbConnections": {
+				"conn": "New connection"
+			}
+		}
+	],
+	"lastFtpLocation": "ftploc",
 	"lcid": 2058,
 	"defaultLanguage": "Spanish",
 	"languages": [
@@ -288,7 +319,15 @@
 		{
 			"id": "conn",
 			"name": "servicio_mov at localhost",
-			"connString": "mysql;rocasamexico.com;rocasamexico_admin;Tecno2023+;;rocasamexico_pruebas;;1"
+			"connString": "mysql;rocasamexico.com;rocasamexico_admin;Tecno2023+;;rocasamexico_pruebas;;1",
+			"buildParams": {
+				"customConnections": [
+					{
+						"name": "New connection",
+						"code": "$host = 'rocasamexico.com';\n$user = 'rocasamexico_admin';\n$pwd = 'Tecno2023+';\n$port = 3306;\n$sys_dbname = 'rocasamexico_pruebas';"
+					}
+				]
+			}
 		}
 	],
 	"defaultConnID": "conn",
