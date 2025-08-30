@@ -13,6 +13,7 @@
 		{
 			"name": "idplan",
 			"sqlExpression": "idplan",
+			"index": 1,
 			"strField": "idplan",
 			"type": 3,
 			"autoinc": true,
@@ -30,6 +31,7 @@
 		{
 			"name": "plan",
 			"sqlExpression": "`plan`",
+			"index": 2,
 			"strField": "plan",
 			"type": 200,
 			"viewFormats": [
@@ -46,6 +48,7 @@
 		{
 			"name": "familia",
 			"sqlExpression": "familia",
+			"index": 3,
 			"strField": "familia",
 			"type": 200,
 			"viewFormats": [
@@ -62,6 +65,7 @@
 		{
 			"name": "renta",
 			"sqlExpression": "renta",
+			"index": 4,
 			"strField": "renta",
 			"type": 14,
 			"viewFormats": [
@@ -80,6 +84,7 @@
 		{
 			"name": "tipo",
 			"sqlExpression": "tipo",
+			"index": 5,
 			"strField": "tipo",
 			"type": 200,
 			"viewFormats": [
@@ -96,6 +101,7 @@
 		{
 			"name": "uso",
 			"sqlExpression": "uso",
+			"index": 6,
 			"strField": "uso",
 			"type": 200,
 			"viewFormats": [
@@ -112,6 +118,7 @@
 		{
 			"name": "idgplan",
 			"sqlExpression": "idgplan",
+			"index": 7,
 			"strField": "idgplan",
 			"type": 3,
 			"viewFormats": [

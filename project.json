@@ -331,6 +331,9 @@
 		}
 	],
 	"defaultConnID": "conn",
+	"mapSettings": {
+		"apikey": "AIzaSyA2P1eBUfOvpeXBIWM5t5Drg3EjZc25Tzs"
+	},
 	"menus": [
 		{
 			"id": "main",

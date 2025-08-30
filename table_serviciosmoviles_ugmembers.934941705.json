@@ -1,19 +1,19 @@
 {
-	"sql": "SELECT\r\n\tUserName,\r\n\tGroupID,\r\n\tProvider\r\nFROM\r\n\tserviciosmoviles_ugmembers",
+	"sql": "SELECT\r\n\tUserName,\r\n\tGroupID\r\nFROM\r\n\tserviciosmoviles_ugmembers",
 	"connId": "conn",
 	"originalTable": "serviciosmoviles_ugmembers",
 	"name": "serviciosmoviles_ugmembers",
 	"shortTableName": "serviciosmoviles_ugmembers",
 	"dbType": 0,
 	"keyFields": [
-		"UserName",
-		"Provider"
+		"UserName"
 	],
 	"detailsBadgeColor": "dc143c",
 	"fields": [
 		{
 			"name": "UserName",
 			"sqlExpression": "UserName",
+			"index": 1,
 			"strField": "UserName",
 			"type": 200,
 			"viewFormats": [
@@ -30,6 +30,7 @@
 		{
 			"name": "GroupID",
 			"sqlExpression": "GroupID",
+			"index": 2,
 			"strField": "GroupID",
 			"type": 3,
 			"viewFormats": [
@@ -40,22 +41,6 @@
 			],
 			"label": {
 				"English": "Group ID"
-			},
-			"tableName": "serviciosmoviles_ugmembers"
-		},
-		{
-			"name": "Provider",
-			"sqlExpression": "Provider",
-			"strField": "Provider",
-			"type": 200,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{}
-			],
-			"label": {
-				"English": "Provider"
 			},
 			"tableName": "serviciosmoviles_ugmembers"
 		}
@@ -85,22 +70,10 @@
 				"autoinc": false,
 				"defaultValueSQL": "0",
 				"defaultValue": "0"
-			},
-			{
-				"name": "Provider",
-				"type": 200,
-				"size": 10,
-				"scale": 0,
-				"typeName": "varchar(10)",
-				"nullable": false,
-				"autoinc": false,
-				"defaultValueSQL": "",
-				"defaultValue": ""
 			}
 		],
 		"primaryKeys": [
-			"UserName",
-			"Provider"
+			"UserName"
 		],
 		"uniqueFields": [],
 		"name": "serviciosmoviles_ugmembers"
@@ -202,8 +175,7 @@
 							"model": "c3",
 							"items": [
 								"integrated_edit_field",
-								"integrated_edit_field1",
-								"integrated_edit_field2"
+								"integrated_edit_field1"
 							]
 						}
 					},
@@ -239,11 +211,6 @@
 				},
 				"integrated_edit_field1": {
 					"field": "GroupID",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field2": {
-					"field": "Provider",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				}
@@ -327,8 +294,7 @@
 							"model": "c1",
 							"items": [
 								"export_field",
-								"export_field1",
-								"export_field2"
+								"export_field1"
 							]
 						}
 					},
@@ -383,10 +349,6 @@
 				},
 				"export_field1": {
 					"field": "GroupID",
-					"type": "export_field"
-				},
-				"export_field2": {
-					"field": "Provider",
 					"type": "export_field"
 				}
 			},
@@ -473,8 +435,7 @@
 							"model": "c1",
 							"items": [
 								"import_field",
-								"import_field1",
-								"import_field2"
+								"import_field1"
 							]
 						}
 					},
@@ -492,10 +453,6 @@
 				},
 				"import_field1": {
 					"field": "GroupID",
-					"type": "import_field"
-				},
-				"import_field2": {
-					"field": "Provider",
 					"type": "import_field"
 				}
 			},
@@ -614,8 +571,7 @@
 							"model": "c3",
 							"items": [
 								"integrated_edit_field",
-								"integrated_edit_field1",
-								"integrated_edit_field2"
+								"integrated_edit_field1"
 							]
 						}
 					},
@@ -658,11 +614,6 @@
 				},
 				"integrated_edit_field1": {
 					"field": "GroupID",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field2": {
-					"field": "Provider",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
@@ -783,8 +734,7 @@
 							"model": "c3",
 							"items": [
 								"integrated_edit_field",
-								"integrated_edit_field1",
-								"integrated_edit_field2"
+								"integrated_edit_field1"
 							]
 						}
 					},
@@ -811,11 +761,6 @@
 				},
 				"integrated_edit_field1": {
 					"field": "GroupID",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field2": {
-					"field": "Provider",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
@@ -997,8 +942,7 @@
 							"model": "c1",
 							"items": [
 								"simple_grid_field",
-								"simple_grid_field1",
-								"simple_grid_field2"
+								"simple_grid_field1"
 							]
 						}
 					},
@@ -1054,15 +998,10 @@
 					"field": "GroupID",
 					"type": "simple_grid_field"
 				},
-				"simple_grid_field2": {
-					"field": "Provider",
-					"type": "simple_grid_field"
-				},
 				"search_panel": {
 					"type": "search_panel",
 					"items": [
 						"search_panel_field",
-						"search_panel_field2",
 						"search_panel_field1"
 					],
 					"_flexiblePanel": true
@@ -1093,10 +1032,6 @@
 				},
 				"search_panel_field1": {
 					"field": "GroupID",
-					"type": "search_panel_field"
-				},
-				"search_panel_field2": {
-					"field": "Provider",
 					"type": "search_panel_field"
 				},
 				"expand_menu_button": {
@@ -1280,8 +1215,7 @@
 							"model": "c1",
 							"items": [
 								"simple_grid_field",
-								"simple_grid_field1",
-								"simple_grid_field2"
+								"simple_grid_field1"
 							]
 						}
 					},
@@ -1305,10 +1239,6 @@
 				},
 				"simple_grid_field1": {
 					"field": "GroupID",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field2": {
-					"field": "Provider",
 					"type": "simple_grid_field"
 				}
 			},

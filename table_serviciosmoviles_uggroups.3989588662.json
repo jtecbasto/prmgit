@@ -1,5 +1,5 @@
 {
-	"sql": "SELECT\r\n\tGroupID,\r\n\t`Label`,\r\n\tAcceso,\r\n\tProvider,\r\n\t`Comment`\r\nFROM\r\n\tserviciosmoviles_uggroups",
+	"sql": "SELECT\r\n\tGroupID,\r\n\t`Label`,\r\n\tAcceso\r\nFROM\r\n\tserviciosmoviles_uggroups",
 	"connId": "conn",
 	"originalTable": "serviciosmoviles_uggroups",
 	"name": "serviciosmoviles_uggroups",
@@ -61,42 +61,6 @@
 				"English": "Acceso"
 			},
 			"tableName": "serviciosmoviles_uggroups"
-		},
-		{
-			"name": "Provider",
-			"sqlExpression": "Provider",
-			"index": 4,
-			"strField": "Provider",
-			"type": 200,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{}
-			],
-			"label": {
-				"English": "Provider"
-			},
-			"tableName": "serviciosmoviles_uggroups"
-		},
-		{
-			"name": "Comment",
-			"sqlExpression": "`Comment`",
-			"index": 5,
-			"strField": "Comment",
-			"type": 201,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{
-					"format": "Text area"
-				}
-			],
-			"label": {
-				"English": "Comment"
-			},
-			"tableName": "serviciosmoviles_uggroups"
 		}
 	],
 	"dbTableInfo": {
@@ -131,28 +95,6 @@
 				"size": 1,
 				"scale": 0,
 				"typeName": "int(1)",
-				"nullable": true,
-				"autoinc": false,
-				"defaultValueSQL": null,
-				"defaultValue": ""
-			},
-			{
-				"name": "Provider",
-				"type": 200,
-				"size": 10,
-				"scale": 0,
-				"typeName": "varchar(10)",
-				"nullable": true,
-				"autoinc": false,
-				"defaultValueSQL": "",
-				"defaultValue": ""
-			},
-			{
-				"name": "Comment",
-				"type": 201,
-				"size": 0,
-				"scale": 0,
-				"typeName": "mediumtext",
 				"nullable": true,
 				"autoinc": false,
 				"defaultValueSQL": null,
@@ -262,9 +204,7 @@
 							"model": "c3",
 							"items": [
 								"integrated_edit_field",
-								"integrated_edit_field1",
-								"integrated_edit_field2",
-								"integrated_edit_field3"
+								"integrated_edit_field1"
 							]
 						}
 					},
@@ -300,16 +240,6 @@
 				},
 				"integrated_edit_field1": {
 					"field": "Acceso",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field2": {
-					"field": "Provider",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field3": {
-					"field": "Comment",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				}
@@ -394,9 +324,7 @@
 							"items": [
 								"export_field",
 								"export_field1",
-								"export_field2",
-								"export_field3",
-								"export_field4"
+								"export_field2"
 							]
 						}
 					},
@@ -455,14 +383,6 @@
 				},
 				"export_field2": {
 					"field": "Acceso",
-					"type": "export_field"
-				},
-				"export_field3": {
-					"field": "Provider",
-					"type": "export_field"
-				},
-				"export_field4": {
-					"field": "Comment",
 					"type": "export_field"
 				}
 			},
@@ -550,9 +470,7 @@
 							"items": [
 								"import_field",
 								"import_field1",
-								"import_field2",
-								"import_field3",
-								"import_field4"
+								"import_field2"
 							]
 						}
 					},
@@ -574,14 +492,6 @@
 				},
 				"import_field2": {
 					"field": "Acceso",
-					"type": "import_field"
-				},
-				"import_field3": {
-					"field": "Provider",
-					"type": "import_field"
-				},
-				"import_field4": {
-					"field": "Comment",
 					"type": "import_field"
 				}
 			},
@@ -700,9 +610,7 @@
 							"model": "c3",
 							"items": [
 								"integrated_edit_field",
-								"integrated_edit_field1",
-								"integrated_edit_field2",
-								"integrated_edit_field3"
+								"integrated_edit_field1"
 							]
 						}
 					},
@@ -745,16 +653,6 @@
 				},
 				"integrated_edit_field1": {
 					"field": "Acceso",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field2": {
-					"field": "Provider",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field3": {
-					"field": "Comment",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
@@ -876,9 +774,7 @@
 							"items": [
 								"integrated_edit_field",
 								"integrated_edit_field1",
-								"integrated_edit_field2",
-								"integrated_edit_field3",
-								"integrated_edit_field4"
+								"integrated_edit_field2"
 							]
 						}
 					},
@@ -910,16 +806,6 @@
 				},
 				"integrated_edit_field2": {
 					"field": "Acceso",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field3": {
-					"field": "Provider",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field4": {
-					"field": "Comment",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
@@ -1102,9 +988,7 @@
 							"items": [
 								"simple_grid_field",
 								"simple_grid_field1",
-								"simple_grid_field2",
-								"simple_grid_field3",
-								"simple_grid_field4"
+								"simple_grid_field2"
 							]
 						}
 					},
@@ -1164,20 +1048,10 @@
 					"field": "Acceso",
 					"type": "simple_grid_field"
 				},
-				"simple_grid_field3": {
-					"field": "Provider",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field4": {
-					"field": "Comment",
-					"type": "simple_grid_field"
-				},
 				"search_panel": {
 					"type": "search_panel",
 					"items": [
 						"search_panel_field",
-						"search_panel_field4",
-						"search_panel_field3",
 						"search_panel_field2",
 						"search_panel_field1"
 					],
@@ -1213,14 +1087,6 @@
 				},
 				"search_panel_field2": {
 					"field": "Acceso",
-					"type": "search_panel_field"
-				},
-				"search_panel_field3": {
-					"field": "Provider",
-					"type": "search_panel_field"
-				},
-				"search_panel_field4": {
-					"field": "Comment",
 					"type": "search_panel_field"
 				},
 				"expand_menu_button": {
@@ -1405,9 +1271,7 @@
 							"items": [
 								"simple_grid_field",
 								"simple_grid_field1",
-								"simple_grid_field2",
-								"simple_grid_field3",
-								"simple_grid_field4"
+								"simple_grid_field2"
 							]
 						}
 					},
@@ -1435,14 +1299,6 @@
 				},
 				"simple_grid_field2": {
 					"field": "Acceso",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field3": {
-					"field": "Provider",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field4": {
-					"field": "Comment",
 					"type": "simple_grid_field"
 				}
 			},
