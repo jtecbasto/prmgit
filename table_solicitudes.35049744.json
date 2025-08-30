@@ -7,7 +7,7 @@
 			"asc": false
 		}
 	],
-	"sql": "SELECT\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tsolicitudes.estatusentrega,\n\tclientes.nombre,\n\tclientes.paterno,\n\tclientes.materno,\n\tentregasvnp.estado,\n\tentregasvnp.ciudad,\n\tentregasvnp.cp,\n\tentregasvnp.calle,\n\tentregasvnp.numeroext,\n\tentregasvnp.numeroint,\n\tentregasvnp.colonia,\n\tproductos.descripcion,\n\tCONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(\n    TRIM(CONCAT_WS(' ',\n      IFNULL(entregasvnp.numeroext,''),IFNULL(entregasvnp.calle,''), IFNULL(entregasvnp.numeroint,''),\n      IFNULL(entregasvnp.colonia,''), IFNULL(entregasvnp.cp,''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    )),\n    ' ', '+'\n  )) AS maps_url,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      if(IFNULL(entregasvnp.calle,'')='','',concat('C.',entregasvnp.calle)),IFNULL(concat('No.',entregasvnp.numeroext),''), IFNULL(concat('Int.',entregasvnp.numeroint),''),\n      IFNULL((entregasvnp.colonia),''), IFNULL(concat('C.P.',entregasvnp.cp),''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    ))) AS direccion,\n\tsolicitudes.idsolicitud,\n\tss.equipo,\n\tss.chip\nFROM\n\tsolicitudes\n\tLEFT OUTER JOIN clientes ON clientes.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp ON entregasvnp.idsolicitud = solicitudes.idsolicitud\n\tLEFT OUTER JOIN productos ON productos.idproducto = solicitudes.idproducto\n\tLEFT JOIN (select  idsolicitud,\n  MAX(CASE WHEN clasif = 'Equipo' THEN esnimei END) AS equipo,\n  MAX(CASE WHEN clasif = 'Chip'   THEN esnimei END) AS chip from (\nselect ss.idsolicitud,ss.esnimei,\"Equipo\" clasif  from compras c inner join seriessolicitadas ss \non c.noserie = ss.esnimei inner join productos p on c.codigoproducto=p.codigoiusa where p.clasif='Equipo'\nunion all\nselect ss.idsolicitud, esnimei, \"Chip\"   from compras c inner join seriessolicitadas ss\non c.noserie = ss.esnimei inner join productos p on c.codigoproducto=p.codigoiusa where p.clasif='Chip'\n) x group by idsolicitud\n) ss ON solicitudes.idsolicitud=ss.idsolicitud  \nWHERE\nsolicitudes.idtienda =2 and solicitudes.fecha between '20250801' and '20250831'\norder by idsolicitud desc",
+	"sql": "SELECT\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tsolicitudes.estatusentrega,\n\tclientes.nombre,\n\tclientes.paterno,\n\tclientes.materno,\n\tentregasvnp.estado,\n\tentregasvnp.ciudad,\n\tentregasvnp.cp,\n\tentregasvnp.calle,\n\tentregasvnp.numeroext,\n\tentregasvnp.numeroint,\n\tentregasvnp.colonia,\n\tproductos.descripcion,\n\tCONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(\n    TRIM(CONCAT_WS(' ',\n      IFNULL(entregasvnp.numeroext,''),IFNULL(entregasvnp.calle,''), IFNULL(entregasvnp.numeroint,''),\n      IFNULL(entregasvnp.colonia,''), IFNULL(entregasvnp.cp,''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    )),\n    ' ', '+'\n  )) AS maps_url,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      if(IFNULL(entregasvnp.calle,'')='','',concat('C.',entregasvnp.calle)),IFNULL(concat('No.',entregasvnp.numeroext),''), IFNULL(concat('Int.',entregasvnp.numeroint),''),\n      IFNULL((entregasvnp.colonia),''), IFNULL(concat('C.P.',entregasvnp.cp),''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    ))) AS direccion,\n\tsolicitudes.idsolicitud,\n\tss.equipo,\n\tss.chip,\n\tentregasvnp.lat,\n\tentregasvnp.lng\nFROM\n\tsolicitudes\n\tLEFT OUTER JOIN clientes ON clientes.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp ON entregasvnp.idsolicitud = solicitudes.idsolicitud\n\tLEFT OUTER JOIN productos ON productos.idproducto = solicitudes.idproducto\n\tLEFT JOIN (select  idsolicitud,\n  MAX(CASE WHEN clasif = 'Equipo' THEN esnimei END) AS equipo,\n  MAX(CASE WHEN clasif = 'Chip'   THEN esnimei END) AS chip from (\nselect ss.idsolicitud,ss.esnimei,\"Equipo\" clasif  from compras c inner join seriessolicitadas ss \non c.noserie = ss.esnimei inner join productos p on c.codigoproducto=p.codigoiusa where p.clasif='Equipo'\nunion all\nselect ss.idsolicitud, esnimei, \"Chip\"   from compras c inner join seriessolicitadas ss\non c.noserie = ss.esnimei inner join productos p on c.codigoproducto=p.codigoiusa where p.clasif='Chip'\n) x group by idsolicitud\n) ss ON solicitudes.idsolicitud=ss.idsolicitud  \nWHERE\nsolicitudes.idtienda =2 and solicitudes.fecha between '20250801' and '20250831'\norder by idsolicitud desc",
 	"connId": "conn",
 	"originalTable": "solicitudes",
 	"name": "solicitudes",
@@ -1214,6 +1214,40 @@
 				"Spanish": "Simcard"
 			},
 			"tableName": ""
+		},
+		{
+			"name": "lat",
+			"sqlExpression": "entregasvnp.lat",
+			"index": 46,
+			"strField": "lat",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Lat"
+			},
+			"tableName": "entregasvnp"
+		},
+		{
+			"name": "lng",
+			"sqlExpression": "entregasvnp.lng",
+			"index": 47,
+			"strField": "lng",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Lng"
+			},
+			"tableName": "entregasvnp"
 		}
 	],
 	"eventHandlers": [
@@ -1816,7 +1850,8 @@
 							"items": [
 								"integrated_edit_field11",
 								"integrated_edit_field10",
-								"integrated_edit_field12"
+								"integrated_edit_field12",
+								"text"
 							]
 						}
 					},
@@ -2022,6 +2057,14 @@
 					"field": "colonia",
 					"type": "integrated_edit_field",
 					"orientation": 0
+				},
+				"text": {
+					"type": "text",
+					"label": {
+						"text": "<div id=\"map\" style=\"height: 400px; width: 100%; margin-bottom: 10px; border: 1px solid #ccc;\"></div>\n<p><strong>Haz clic en el mapa para establecer la ubicación.</strong></p>\n\n<!-- Cargar la API de Google Maps (Reemplaza TU_API_KEY) -->\n<script src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyA2P1eBUfOvpeXBIWM5t5Drg3EjZc25Tzs&callback=initMap&libraries=places&v=weekly\" async defer></script>\n\n<script>\n// Variables globales\nlet map;\nlet marker;\nlet geocoder;\n\nfunction initMap() {\n    // Coordenadas iniciales\n    const initialLocation = { lat: 21.0038, lng: -89.6183 };\n    // Crear el mapa\n    map = new google.maps.Map(document.getElementById(\"map\"), {\n        zoom: 12,\n        center: initialLocation,\n        mapTypeId: google.maps.MapTypeId.ROADMAP\n    });\n    // Inicializar el geocoder\n    geocoder = new google.maps.Geocoder();\n    // Escuchar el evento de clic en el mapa\n    map.addListener('click', function(event) {\n        placeMarkerAndGeocode(event.latLng);\n    });\n}\n\nfunction placeMarkerAndGeocode(location) {\n    // Limpiar el marcador anterior si existe\n    if (marker) {\n        marker.setMap(null);\n    }\n    // Colocar un nuevo marcador\n    marker = new google.maps.Marker({\n        position: location,\n        map: map\n    });\n    // Centrar el mapa en la nueva ubicación\n    map.panTo(location);\n    // Obtener la dirección a partir de las coordenadas (Geocodificación Inversa)\n    geocoder.geocode({ 'location': location }, function(results, status) {\n        if (status === 'OK') {\n            if (results[0]) {\n                // Llenar los campos del formulario con los datos obtenidos\n                populateAddressFields(results[0]);\n            } else {\n                alert('No se encontraron resultados para esta ubicación.');\n            }\n        } else {\n            alert('Falló la geocodificación: ' + status);\n        }\n    });\n}\n\nfunction populateAddressFields(addressData) {\n    // Esta función descompone la respuesta de geocodificación y llena los campos.\n    // La estructura de 'address_components' puede variar, ¡debes ajustarla!\n    \n    let addressComponents = addressData.address_components;\n    let addressLookup = {};\n    \n    // Crear un objeto fácil de buscar a partir de los componentes\n    addressComponents.forEach(component => {\n        component.types.forEach(type => {\n            addressLookup[type] = component.long_name;\n        });\n    });\n    // Llenar los campos del formulario de PHPRunner.\n    // ¡IMPORTANTE! Reemplaza 'Editbox1' con los nombres REALES de tus campos.\n    // Puedes encontrar el nombre real del campo en la pestaña \"Fields\" de PHPRunner.\n    \n    // Usar getElementById o un selector por nombre\n    document.getElementById('value_estado_1').value = addressLookup['administrative_area_level_1'] || ''; // Estado\n    document.getElementById('value_ciudad_1').value = addressLookup['locality'] || addressLookup['administrative_area_level_2'] || ''; // Ciudad o Municipio\n    document.getElementById('value_cp_1').value = addressLookup['postal_code'] || ''; // Código Postal\n    document.getElementById('value_colonia_1').value = addressLookup['sublocality_level_1'] || addressLookup['neighborhood'] || ''; // Colonia\n    document.getElementById('value_calle_1').value = getRoute(addressComponents) || ''; // Calle\n}\n\n// Función de ayuda para obtener el nombre de la calle\nfunction getRoute(components) {\n    for (let i = 0; i < components.length; i++) {\n        if (components[i].types.includes('route')) {\n            return components[i].long_name;\n        }\n    }\n    return '';\n}\n// Inicializar el mapa cuando la página esté cargada\n// Google Maps llama a 'initMap' automáticamente por el callback en la URL de la API\n</script>",
+						"type": 0
+					},
+					"editedByRte": false
 				}
 			},
 			"dbProps": {},
@@ -2102,7 +2145,9 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"export_field"
+								"export_field",
+								"export_field1",
+								"export_field2"
 							]
 						}
 					},
@@ -2153,6 +2198,14 @@
 				},
 				"export_field": {
 					"field": "direccion",
+					"type": "export_field"
+				},
+				"export_field1": {
+					"field": "lat",
+					"type": "export_field"
+				},
+				"export_field2": {
+					"field": "lng",
 					"type": "export_field"
 				}
 			},
@@ -2641,7 +2694,9 @@
 							"model": "c3",
 							"items": [
 								"integrated_edit_field",
-								"integrated_edit_field1"
+								"integrated_edit_field1",
+								"integrated_edit_field2",
+								"integrated_edit_field3"
 							]
 						}
 					},
@@ -2677,6 +2732,16 @@
 				},
 				"integrated_edit_field1": {
 					"field": "estatusentrega",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field2": {
+					"field": "lat",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field3": {
+					"field": "lng",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				}
@@ -2789,7 +2854,8 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"menu"
+								"menu",
+								"search_panel"
 							]
 						}
 					},
@@ -2881,6 +2947,12 @@
 								},
 								{
 									"cell": "headcell_field9"
+								},
+								{
+									"cell": "headcell_field10"
+								},
+								{
+									"cell": "headcell_field11"
 								}
 							]
 						},
@@ -2922,6 +2994,12 @@
 								},
 								{
 									"cell": "cell_field6"
+								},
+								{
+									"cell": "cell_field7"
+								},
+								{
+									"cell": "cell_field8"
 								}
 							]
 						},
@@ -2963,6 +3041,12 @@
 								},
 								{
 									"cell": "footcell_field6"
+								},
+								{
+									"cell": "footcell_field7"
+								},
+								{
+									"cell": "footcell_field8"
 								}
 							]
 						}
@@ -3233,6 +3317,44 @@
 							"items": [],
 							"field": "chip",
 							"columnName": "field"
+						},
+						"headcell_field10": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label5"
+							],
+							"field": "lat"
+						},
+						"cell_field7": {
+							"model": "cell_field",
+							"items": [
+								"grid_field5"
+							],
+							"field": "lat"
+						},
+						"footcell_field7": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "lat"
+						},
+						"headcell_field11": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label6"
+							],
+							"field": "lng"
+						},
+						"cell_field8": {
+							"model": "cell_field",
+							"items": [
+								"grid_field6"
+							],
+							"field": "lng"
+						},
+						"footcell_field8": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "lng"
 						}
 					},
 					"deferredItems": [],
@@ -3267,6 +3389,9 @@
 						"edit_selected",
 						"export_selected",
 						"delete_selected",
+						"-9",
+						"show_search_panel",
+						"hide_search_panel",
 						"-8",
 						"export",
 						"-2",
@@ -3491,6 +3616,50 @@
 				},
 				"-8": {
 					"type": "-"
+				},
+				"grid_field5": {
+					"field": "lat",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label5": {
+					"type": "grid_field_label",
+					"field": "lat"
+				},
+				"grid_field6": {
+					"field": "lng",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label6": {
+					"type": "grid_field_label",
+					"field": "lng"
+				},
+				"search_panel": {
+					"type": "search_panel",
+					"items": [
+						"search_panel_field",
+						"search_panel_field1"
+					]
+				},
+				"show_search_panel": {
+					"type": "show_search_panel"
+				},
+				"-9": {
+					"type": "-"
+				},
+				"hide_search_panel": {
+					"type": "hide_search_panel"
+				},
+				"search_panel_field": {
+					"field": "lat",
+					"type": "search_panel_field"
+				},
+				"search_panel_field1": {
+					"field": "lng",
+					"type": "search_panel_field"
 				}
 			},
 			"dbProps": {},
@@ -3598,7 +3767,9 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"simple_grid_field"
+								"simple_grid_field",
+								"simple_grid_field1",
+								"simple_grid_field2"
 							]
 						}
 					},
@@ -3619,6 +3790,14 @@
 				"simple_grid_field": {
 					"field": "direccion",
 					"type": "simple_grid_field"
+				},
+				"simple_grid_field1": {
+					"field": "lat",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field2": {
+					"field": "lng",
+					"type": "simple_grid_field"
 				}
 			},
 			"dbProps": {},
@@ -3634,10 +3813,18 @@
 		}
 	],
 	"geoCoding": {
-		"enabled": false,
-		"latField": "",
-		"lonField": "",
-		"addressFields": []
+		"enabled": true,
+		"latField": "lat",
+		"lonField": "lng",
+		"addressFields": [
+			"calle",
+			"numeroext",
+			"numeroint",
+			"colonia",
+			"ciudad",
+			"estado",
+			"cp"
+		]
 	},
 	"caption": {
 		"English": "Solicitudes"

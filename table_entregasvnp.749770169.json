@@ -1,5 +1,5 @@
 {
-	"sql": "SELECT\r\n\tid,\r\n\testado,\r\n\tciudad,\r\n\tcp,\r\n\tcalle,\r\n\tnumeroext,\r\n\tnumeroint,\r\n\tcolonia,\r\n\tidsolicitud\r\nFROM\r\n\tentregasvnp",
+	"sql": "SELECT\r\n\tid,\r\n\testado,\r\n\tciudad,\r\n\tcp,\r\n\tcalle,\r\n\tnumeroext,\r\n\tnumeroint,\r\n\tcolonia,\r\n\tidsolicitud,\r\n\tlat,\r\n\tlng\r\nFROM\r\n\tentregasvnp",
 	"connId": "conn",
 	"originalTable": "entregasvnp",
 	"name": "entregasvnp",
@@ -163,6 +163,40 @@
 				"Spanish": "Idsolicitud"
 			},
 			"tableName": "entregasvnp"
+		},
+		{
+			"name": "lat",
+			"sqlExpression": "lat",
+			"index": 10,
+			"strField": "lat",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Lat"
+			},
+			"tableName": "entregasvnp"
+		},
+		{
+			"name": "lng",
+			"sqlExpression": "lng",
+			"index": 11,
+			"strField": "lng",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Lng"
+			},
+			"tableName": "entregasvnp"
 		}
 	],
 	"dbTableInfo": {
@@ -259,6 +293,28 @@
 			},
 			{
 				"name": "idsolicitud",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "lat",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "lng",
 				"type": 3,
 				"size": 11,
 				"scale": 0,
@@ -378,7 +434,9 @@
 								"integrated_edit_field4",
 								"integrated_edit_field5",
 								"integrated_edit_field6",
-								"integrated_edit_field7"
+								"integrated_edit_field7",
+								"integrated_edit_field8",
+								"integrated_edit_field9"
 							]
 						}
 					},
@@ -444,6 +502,16 @@
 				},
 				"integrated_edit_field7": {
 					"field": "idsolicitud",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field8": {
+					"field": "lat",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field9": {
+					"field": "lng",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				}
@@ -534,7 +602,9 @@
 								"export_field5",
 								"export_field6",
 								"export_field7",
-								"export_field8"
+								"export_field8",
+								"export_field9",
+								"export_field10"
 							]
 						}
 					},
@@ -617,6 +687,14 @@
 				},
 				"export_field8": {
 					"field": "idsolicitud",
+					"type": "export_field"
+				},
+				"export_field9": {
+					"field": "lat",
+					"type": "export_field"
+				},
+				"export_field10": {
+					"field": "lng",
 					"type": "export_field"
 				}
 			},
@@ -710,7 +788,9 @@
 								"import_field5",
 								"import_field6",
 								"import_field7",
-								"import_field8"
+								"import_field8",
+								"import_field9",
+								"import_field10"
 							]
 						}
 					},
@@ -756,6 +836,14 @@
 				},
 				"import_field8": {
 					"field": "idsolicitud",
+					"type": "import_field"
+				},
+				"import_field9": {
+					"field": "lat",
+					"type": "import_field"
+				},
+				"import_field10": {
+					"field": "lng",
 					"type": "import_field"
 				}
 			},
@@ -880,7 +968,9 @@
 								"integrated_edit_field4",
 								"integrated_edit_field5",
 								"integrated_edit_field6",
-								"integrated_edit_field7"
+								"integrated_edit_field7",
+								"integrated_edit_field8",
+								"integrated_edit_field9"
 							]
 						}
 					},
@@ -958,6 +1048,16 @@
 				},
 				"edit_view": {
 					"type": "edit_view"
+				},
+				"integrated_edit_field8": {
+					"field": "lat",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field9": {
+					"field": "lng",
+					"type": "integrated_edit_field",
+					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -1080,7 +1180,9 @@
 								"integrated_edit_field5",
 								"integrated_edit_field6",
 								"integrated_edit_field7",
-								"integrated_edit_field8"
+								"integrated_edit_field8",
+								"integrated_edit_field9",
+								"integrated_edit_field10"
 							]
 						}
 					},
@@ -1153,6 +1255,16 @@
 				},
 				"view_edit": {
 					"type": "view_edit"
+				},
+				"integrated_edit_field9": {
+					"field": "lat",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field10": {
+					"field": "lng",
+					"type": "integrated_edit_field",
+					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -1330,7 +1442,9 @@
 								"simple_grid_field5",
 								"simple_grid_field6",
 								"simple_grid_field7",
-								"simple_grid_field8"
+								"simple_grid_field8",
+								"simple_grid_field9",
+								"simple_grid_field10"
 							]
 						}
 					},
@@ -1418,6 +1532,8 @@
 					"type": "search_panel",
 					"items": [
 						"search_panel_field",
+						"search_panel_field10",
+						"search_panel_field9",
 						"search_panel_field8",
 						"search_panel_field7",
 						"search_panel_field6",
@@ -1561,6 +1677,22 @@
 				},
 				"adminarea_link": {
 					"type": "adminarea_link"
+				},
+				"simple_grid_field9": {
+					"field": "lat",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field10": {
+					"field": "lng",
+					"type": "simple_grid_field"
+				},
+				"search_panel_field9": {
+					"field": "lat",
+					"type": "search_panel_field"
+				},
+				"search_panel_field10": {
+					"field": "lng",
+					"type": "search_panel_field"
 				}
 			},
 			"dbProps": {},
@@ -1673,7 +1805,9 @@
 								"simple_grid_field5",
 								"simple_grid_field6",
 								"simple_grid_field7",
-								"simple_grid_field8"
+								"simple_grid_field8",
+								"simple_grid_field9",
+								"simple_grid_field10"
 							]
 						}
 					},
@@ -1725,6 +1859,14 @@
 				},
 				"simple_grid_field8": {
 					"field": "idsolicitud",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field9": {
+					"field": "lat",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field10": {
+					"field": "lng",
 					"type": "simple_grid_field"
 				}
 			},

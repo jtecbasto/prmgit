@@ -1,5 +1,5 @@
 {
-	"sql": "SELECT\r\n\tIdTienda,\r\n\tTienda,\r\n\tTipo,\r\n\tResp1,\r\n\tResp2,\r\n\tidcuentabanc,\r\n\tidregion,\r\n\tactiva,\r\n\tpvrmc,\r\n\tpvsms,\r\n\tclavepv,\r\n\tsubinvrmc,\r\n\tsubinvsms,\r\n\ttiendarmc,\r\n\tclavepvsms,\r\n\tidsector,\r\n\tidtiendaesquema,\r\n\tfechaapertura,\r\n\tidorigenpdv,\r\n\tnombreATT,\r\n\tidcentrocosto,\r\n\tnopresencial\r\nFROM\r\n\ttiendas",
+	"sql": "SELECT\r\n\tIdTienda,\r\n\tTienda,\r\n\tTipo,\r\n\tResp1,\r\n\tResp2,\r\n\tidcuentabanc,\r\n\tidregion,\r\n\tactiva,\r\n\tpvrmc,\r\n\tpvsms,\r\n\tclavepv,\r\n\tsubinvrmc,\r\n\tsubinvsms,\r\n\ttiendarmc,\r\n\tclavepvsms,\r\n\tidsector,\r\n\tidtiendaesquema,\r\n\tfechaapertura,\r\n\tidorigenpdv,\r\n\tnombreATT,\r\n\tidcentrocosto\r\nFROM\r\n\ttiendas",
 	"connId": "conn",
 	"originalTable": "tiendas",
 	"name": "tiendas",
@@ -372,23 +372,6 @@
 				"English": "Idcentrocosto"
 			},
 			"tableName": "tiendas"
-		},
-		{
-			"name": "nopresencial",
-			"sqlExpression": "nopresencial",
-			"index": 22,
-			"strField": "nopresencial",
-			"type": 2,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{}
-			],
-			"label": {
-				"Spanish": "Nopresencial"
-			},
-			"tableName": "tiendas"
 		}
 	],
 	"dbTableInfo": {
@@ -621,17 +604,6 @@
 				"size": 11,
 				"scale": 0,
 				"typeName": "int(11)",
-				"nullable": true,
-				"autoinc": false,
-				"defaultValueSQL": null,
-				"defaultValue": ""
-			},
-			{
-				"name": "nopresencial",
-				"type": 16,
-				"size": 4,
-				"scale": 0,
-				"typeName": "tinyint(4)",
 				"nullable": true,
 				"autoinc": false,
 				"defaultValueSQL": null,
@@ -2034,8 +2006,7 @@
 								"simple_grid_field17",
 								"simple_grid_field18",
 								"simple_grid_field19",
-								"simple_grid_field20",
-								"simple_grid_field21"
+								"simple_grid_field20"
 							]
 						}
 					},
@@ -2211,7 +2182,6 @@
 					"type": "search_panel",
 					"items": [
 						"search_panel_field",
-						"search_panel_field21",
 						"search_panel_field20",
 						"search_panel_field19",
 						"search_panel_field18",
@@ -2346,14 +2316,6 @@
 				},
 				"-2": {
 					"type": "-"
-				},
-				"simple_grid_field21": {
-					"field": "nopresencial",
-					"type": "simple_grid_field"
-				},
-				"search_panel_field21": {
-					"field": "nopresencial",
-					"type": "search_panel_field"
 				},
 				"username_button": {
 					"type": "username_button",
