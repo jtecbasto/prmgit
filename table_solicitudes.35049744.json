@@ -1279,7 +1279,7 @@
 		{
 			"eventId": "EVENT_BEFOREMOVENEXT_LIST",
 			"pageType": "list",
-			"code": "// $data = registro actual; $row = atributos HTML de la fila\r\n$st = (int)$data[\"estatusentrega\"];  // 2=Entregada, 3=Rechazada (ajusta si difiere)\r\nswitch ($st) {\r\n  case 2:  $cls = 'table-success'; break; // Entregada\r\n  case 3:  $cls = 'table-danger';  break; // Rechazada\r\n  default: $cls = 'table-warning';        // No entregada / otros\r\n}\r\n\r\nif (!isset($row[\"rowattrs\"])) $row[\"rowattrs\"] = '';\r\n$row[\"rowattrs\"] .= ' class=\"'.$cls.'\"';\r\n"
+			"code": "// $data = registro actual; $row = atributos HTML de la fila\r\n$st = (int)$data[\"estatusentrega\"];  // 2=Entregada, 3=Rechazada (ajusta si difiere)\r\nswitch ($st) {\r\n  case 2:  $cls = 'table-success'; break; // Entregada\r\n  case 3:  $cls = 'table-danger';  break; // Rechazada\r\n  default: $cls = 'table-warning';        // No entregada / otros\r\n}\r\n\r\nif (!isset($row[\"rowattrs\"])) $row[\"rowattrs\"] = '';\r\n$row[\"rowattrs\"] .= ' class=\"'.$cls.'\"';\r\n\r\nif($data['estatusentrega'] == 3) $record[\"css\"] = 'background:#FF3A30;color:white';"
 		}
 	],
 	"dbTableInfo": {
@@ -3178,7 +3178,8 @@
 								"grid_view"
 							],
 							"columnName": "list-icons",
-							"field": ""
+							"field": "",
+							"orientation": "vertical"
 						},
 						"footcell_icons": {
 							"model": "footcell_icons",
@@ -3323,38 +3324,44 @@
 							"items": [
 								"grid_field_label5"
 							],
-							"field": "lat"
+							"field": "lat",
+							"columnName": "field"
 						},
 						"cell_field7": {
 							"model": "cell_field",
 							"items": [
 								"grid_field5"
 							],
-							"field": "lat"
+							"field": "lat",
+							"columnName": "field"
 						},
 						"footcell_field7": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "lat"
+							"field": "lat",
+							"columnName": "field"
 						},
 						"headcell_field11": {
 							"model": "headcell_field",
 							"items": [
 								"grid_field_label6"
 							],
-							"field": "lng"
+							"field": "lng",
+							"columnName": "field"
 						},
 						"cell_field8": {
 							"model": "cell_field",
 							"items": [
 								"grid_field6"
 							],
-							"field": "lng"
+							"field": "lng",
+							"columnName": "field"
 						},
 						"footcell_field8": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "lng"
+							"field": "lng",
+							"columnName": "field"
 						}
 					},
 					"deferredItems": [],

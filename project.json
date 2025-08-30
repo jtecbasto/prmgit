@@ -1999,6 +1999,7 @@
 		}
 	],
 	"projectStyle": {
+		"sidebarColor": "light",
 		"sidebarTheme": "legacy",
 		"topbarTheme": "legacy",
 		"logoTheme": "legacy",
