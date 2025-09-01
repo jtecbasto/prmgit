@@ -1999,10 +1999,10 @@
 		}
 	],
 	"projectStyle": {
-		"sidebarColor": "light",
 		"sidebarTheme": "legacy",
-		"topbarTheme": "legacy",
-		"logoTheme": "legacy",
+		"topbarTheme": "lightblue",
+		"logoTheme": "info",
+		"topbarGradient": true,
 		"sidebarCustomThemeColor": "legacy",
 		"topbarCustomThemeColor": "legacy",
 		"logoCustomThemeColor": "legacy",
@@ -2019,6 +2019,10 @@
 		"gcEvenColor": "legacy",
 		"gcRolloverHighlightBg": "legacy",
 		"gcRolloverHighlightColor": "legacy"
+	},
+	"settingsTable": {
+		"connId": "",
+		"table": ""
 	},
 	"messages": {},
 	"projectLogo": {},
