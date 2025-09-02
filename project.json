@@ -33,6 +33,13 @@
 				"height": 292
 			},
 			{
+				"gid": 3847630651,
+				"y": 432,
+				"x": 459,
+				"width": 142.15625,
+				"height": 236
+			},
+			{
 				"gid": 4135059206,
 				"y": 10,
 				"x": 635,
@@ -282,13 +289,13 @@
 	"ftpLocations": [
 		{
 			"id": "ftploc",
-			"name": "FTP on admin@rocasamexico.com@ftp://ftp.rocasamexico.com:21",
+			"name": "rocasamexico.com",
 			"ftp": {
 				"username": "admin@rocasamexico.com",
 				"password": "",
 				"host": "ftp.rocasamexico.com",
 				"port": 21,
-				"pathname": "/public_html/prm1",
+				"pathname": "/public_html/prm",
 				"passive": true,
 				"secureType": 0,
 				"useCCC": false,
@@ -304,9 +311,7 @@
 				"enabled": false
 			},
 			"threads": 4,
-			"serverDbConnections": {
-				"conn": "New connection"
-			}
+			"serverDbConnections": {}
 		}
 	],
 	"lastFtpLocation": "ftploc",
@@ -381,6 +386,20 @@
 							"itemType": 2,
 							"linkType": 0,
 							"table": 1182658781,
+							"pageType": "list"
+						}
+					},
+					{
+						"id": "6",
+						"data": {
+							"name": {
+								"table": "logisticavnp",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 3847630651,
 							"pageType": "list"
 						}
 					}
@@ -467,7 +486,8 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"welcome_item2"
+								"welcome_item2",
+								"welcome_item"
 							]
 						}
 					},
@@ -521,6 +541,25 @@
 				},
 				"adminarea_link": {
 					"type": "adminarea_link"
+				},
+				"welcome_item": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "logisticavnp",
+					"linkPage": "list",
+					"linkText": {
+						"table": "logisticavnp",
+						"type": 6
+					},
+					"linkIcon": {
+						"glyph": "headphones"
+					},
+					"linkComments": {
+						"text": "Logisticavnp description",
+						"type": 0
+					},
+					"background": "#daa520",
+					"linkType": 0
 				}
 			},
 			"dbProps": {},

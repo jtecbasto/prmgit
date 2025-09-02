@@ -1,4 +1,4 @@
 {
 	"name": "fechaFn",
-	"serverCode": "$var=$_GET[\"FechaFn\"];\r\nif (empty($var)) $var=date('Y-m-d');\r\n$str= \"<input  id=edt_FechaFn type=date value=\".$var.\">\";\r\n//select values from database\r\necho $str;\r\n//Insert PHP variable into a javascript value...\r\n//which we later use in the JS onload event to set the dropdown box again so once page refreshes we don't lose the value that was selected in the first place (so we know what we selected)!\r\necho \"<script>window.FechaFn= '\" . $_GET[\"FechaFn\"]. \"';</script>\";"
+	"serverCode": "$var=$_GET[\"FechaFn\"];\r\nif (empty($var)) $var=date('Y-m-d');\r\n$str= \"<input  id=edt_FechaFn type=date value=\".$var.\">\";\r\n//select values from database\r\necho $str;\r\n//Insert PHP variable into a javascript value...\r\n//which we later use in the JS onload event to set the dropdown box again so once\r\n//page refreshes we don't lose the value that was selected in the first place (so we know what we selected)!\r\necho \"<script>window.FechaFn= '\" . $_GET[\"FechaFn\"]. \"';</script>\";"
 }
