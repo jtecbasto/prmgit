@@ -1245,7 +1245,7 @@
 				{}
 			],
 			"label": {
-				"Spanish": "Lat"
+				"Spanish": "Latitud"
 			},
 			"tableName": "entregasvnp"
 		},
@@ -1262,7 +1262,7 @@
 				{}
 			],
 			"label": {
-				"Spanish": "Lng"
+				"Spanish": "Longitud"
 			},
 			"tableName": "entregasvnp"
 		}
@@ -1881,7 +1881,9 @@
 							"items": [
 								"integrated_edit_field11",
 								"integrated_edit_field10",
-								"integrated_edit_field12"
+								"integrated_edit_field12",
+								"integrated_edit_field17",
+								"integrated_edit_field18"
 							]
 						},
 						"c3": {
@@ -2124,7 +2126,7 @@
 				"text": {
 					"type": "text",
 					"label": {
-						"text": "<div id=\"map\" style=\"height: 400px; width: 100%; margin-bottom: 10px; border: 1px solid #ccc;\"></div>\n<p><strong>Haz clic en el mapa para establecer la ubicación.</strong></p>\n\n<!-- Cargar Leaflet CSS & JS -->\n<link rel=\"stylesheet\" href=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.css\" />\n<script src=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.js\"></script>\n\n<script>\n// Variables globales\nlet map;\nlet marker;\n\nfunction initMap() {\n    // Coordenadas iniciales (Mérida, Yucatán)\n    const initialLocation = [21.0038, -89.6183];\n    \n    // Crear el mapa de OpenStreetMap con Leaflet\n    map = L.map('map').setView(initialLocation, 12);\n    \n    // Agregar las \"capas\" de OpenStreetMap\n    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {\n        attribution: '&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'\n    }).addTo(map);\n    \n    // 🔥 SOLUCIÓN: Esperar un momento y forzar el redimensionamiento\n    setTimeout(function() {\n        map.invalidateSize();\n    }, 100);\n    \n    // Escuchar el evento de clic en el mapa\n    map.on('click', function(e) {\n        placeMarkerAndGeocode(e.latlng);\n    });\n}\n\nfunction placeMarkerAndGeocode(latlng) {\n    // Limpiar el marcador anterior si existe\n    if (marker) {\n        map.removeLayer(marker);\n    }\n    \n    // Colocar un nuevo marcador\n    marker = L.marker(latlng).addTo(map);\n    \n    // Centrar el mapa en la nueva ubicación\n    map.setView(latlng, map.getZoom());\n    \n    // Hacer geocodificación inversa con Nominatim\n    var apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}&zoom=18&addressdetails=1`;\n    \n    // Hacer la petición HTTP\n    fetch(apiUrl)\n        .then(response => response.json())\n        .then(data => {\n            if (data && data.address) {\n                populateAddressFields(data.address, latlng);\n            } else {\n                alert('No se encontraron resultados para esta ubicación.');\n            }\n        })\n        .catch(error => {\n            console.error('Error en la geocodificación:', error);\n            alert('Falló la geocodificación.');\n        });\n}\n\nfunction populateAddressFields(address, latlng) {\n    // Llenar los campos del formulario\n    document.getElementById('value_estado_1').value = address.state || '';\n    document.getElementById('value_ciudad_1').value = address.city || address.town || address.village || '';\n    document.getElementById('value_cp_1').value = address.postcode || '';\n    document.getElementById('value_colonia_1').value = address.suburb || address.neighbourhood || '';\n    document.getElementById('value_calle_1').value = address.road || '';\n    \n    // Campos ocultos para latitud y longitud\n    if (document.getElementById('value_lat_1')) {\n        document.getElementById('value_lat_1').value = latlng.lat;\n    }\n    if (document.getElementById('value_lng_1')) {\n        document.getElementById('value_lng_1').value = latlng.lng;\n    }\n}\n\n// Inicializar el mapa cuando se cargue la página\nwindow.onload = initMap;\n</script>",
+						"text": "<div id=\"map\" style=\"height: 400px; width: 100%; margin-bottom: 10px; border: 1px solid #ccc;\"></div>\n<p><strong>Haz clic en el mapa para obtener los datos de la ubicación (si algún campo no se acompleta automáticamente, favor de escribirlo)</strong></p>\n\n<!-- Cargar Leaflet CSS & JS -->\n<link rel=\"stylesheet\" href=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.css\" />\n<script src=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.js\"></script>\n\n<script>\n// Variables globales\nlet map;\nlet marker;\nlet mapInitialized = false;\n\nfunction initMap() {\n    if (mapInitialized) {\n        setTimeout(() => map.invalidateSize(), 100);\n        return;\n    }\n    \n    const initialLocation = [21.0038, -89.6183];\n    map = L.map('map').setView(initialLocation, 12);\n    \n    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {\n        attribution: '&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'\n    }).addTo(map);\n    \n    mapInitialized = true;\n    \n    map.on('click', function(e) {\n        placeMarkerAndGeocode(e.latlng);\n    });\n    \n    setTimeout(() => map.invalidateSize(), 300);\n}\n\nfunction placeMarkerAndGeocode(latlng) {\n    if (marker) map.removeLayer(marker);\n    marker = L.marker(latlng).addTo(map);\n    map.setView(latlng, map.getZoom());\n    \n    var apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}&zoom=18&addressdetails=1`;\n    \n    fetch(apiUrl)\n        .then(response => response.json())\n        .then(data => {\n            if (data && data.address) {\n                populateAddressFields(data.address, latlng, data.display_name);\n            } else {\n                alert('No se encontraron resultados para esta ubicación.');\n            }\n        })\n        .catch(error => {\n            console.error('Error:', error);\n            alert('Falló la geocodificación.');\n        });\n}\n\n// 🔥 NUEVA FUNCIÓN: Extraer número de dirección\nfunction extractHouseNumber(fullAddress, roadName) {\n    if (!fullAddress || !roadName) return '';\n    \n    // Buscar patrones comunes de números\n    const patterns = [\n        /(\\d+)\\s*#/i,           // Número seguido de #\n        /#\\s*(\\d+)/i,            // # seguido de número\n        /(\\d+)\\s*$/i,            // Número al final\n        /(\\d+)\\s*[-–]\\s*\\d+/i,   // Rango de números (ej: 366-368)\n        /(\\d+)[a-zA-Z]?$/i       // Número con posible letra (ej: 366A)\n    ];\n    \n    for (const pattern of patterns) {\n        const match = fullAddress.match(pattern);\n        if (match && match[1]) {\n            return match[1];\n        }\n    }\n    \n    // Si no se encuentra con patrones, intentar con el campo house_number de Nominatim\n    return '';\n}\n\nfunction populateAddressFields(address, latlng, fullAddress = '') {\n    // Extraer el número de casa\n    const houseNumber = address.house_number || extractHouseNumber(fullAddress, address.road);\n    \n    // Llenar los campos del formulario\n    document.getElementById('value_estado_1').value = address.state || '';\n    document.getElementById('value_ciudad_1').value = address.city || address.town || address.village || '';\n    document.getElementById('value_cp_1').value = address.postcode || '';\n    document.getElementById('value_colonia_1').value = address.suburb || address.neighbourhood || '';\n    document.getElementById('value_calle_1').value = address.road || '';\n    \n    // 🔥 NUEVO: Llenar el número exterior\n    document.getElementById('value_numeroext_1').value = houseNumber;\n    \n    document.getElementById('value_lat_1').value = latlng.lat;\n    document.getElementById('value_lng_1').value = latlng.lng;\n    \n    console.log('Datos completos de Nominatim:', address);\n    console.log('Dirección completa:', fullAddress);\n    console.log('Número extraído:', houseNumber);\n}\n\n// 🔥 OBSERVAR CUANDO EL TAB Y SECTION SE HACEN VISIBLES\nfunction checkMapContainer() {\n    const mapContainer = document.getElementById('map');\n    if (mapContainer.offsetParent !== null && mapContainer.offsetWidth > 0) {\n        initMap();\n        return true;\n    }\n    return false;\n}\n\ndocument.addEventListener('DOMContentLoaded', function() {\n    const interval = setInterval(() => {\n        if (checkMapContainer()) {\n            clearInterval(interval);\n        }\n    }, 200);\n    \n    document.body.addEventListener('click', function(e) {\n        if (e.target.closest('[data-toggle=\"tab\"], .step-tab, .nav-link')) {\n            setTimeout(() => {\n                if (mapInitialized) map.invalidateSize();\n                else if (checkMapContainer()) console.log('Mapa inicializado desde click en tab');\n            }, 400);\n        }\n    });\n});\n\nwindow.addEventListener('resize', () => {\n    if (mapInitialized) setTimeout(() => map.invalidateSize(), 100);\n});\n\nconst observer = new MutationObserver(function(mutations) {\n    mutations.forEach(function(mutation) {\n        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {\n            setTimeout(() => {\n                if (mapInitialized) map.invalidateSize();\n            }, 200);\n        }\n    });\n});\n\nsetTimeout(() => {\n    const mapContainer = document.getElementById('map');\n    if (mapContainer) {\n        observer.observe(mapContainer, { attributes: true, attributeFilter: ['style'] });\n    }\n}, 1000);\n</script>",
 						"type": 0
 					},
 					"editedByRte": false
@@ -2134,6 +2136,16 @@
 				},
 				"step_nav": {
 					"type": "step_nav"
+				},
+				"integrated_edit_field17": {
+					"field": "lat",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field18": {
+					"field": "lng",
+					"type": "integrated_edit_field",
+					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -2642,7 +2654,9 @@
 							"items": [
 								"integrated_edit_field11",
 								"integrated_edit_field10",
-								"integrated_edit_field12"
+								"integrated_edit_field12",
+								"integrated_edit_field17",
+								"integrated_edit_field18"
 							]
 						},
 						"c3": {
@@ -2937,7 +2951,7 @@
 				"text": {
 					"type": "text",
 					"label": {
-						"text": "<div id=\"map\" style=\"height: 400px; width: 100%; margin-bottom: 10px; border: 1px solid #ccc;\"></div>\n<p><strong>Haz clic en el mapa para establecer la ubicación.</strong></p>\n\n<!-- Cargar la API de Google Maps (Reemplaza TU_API_KEY) -->\n<script src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyA2P1eBUfOvpeXBIWM5t5Drg3EjZc25Tzs&callback=initMap&libraries=places&v=weekly\" async defer></script>\n\n<script>\n// Variables globales\nlet map;\nlet marker;\nlet geocoder;\n\nfunction initMap() {\n    // Coordenadas iniciales\n    const initialLocation = { lat: 21.0038, lng: -89.6183 };\n    // Crear el mapa\n    map = new google.maps.Map(document.getElementById(\"map\"), {\n        zoom: 12,\n        center: initialLocation,\n        mapTypeId: google.maps.MapTypeId.ROADMAP\n    });\n    // Inicializar el geocoder\n    geocoder = new google.maps.Geocoder();\n    // Escuchar el evento de clic en el mapa\n    map.addListener('click', function(event) {\n        placeMarkerAndGeocode(event.latLng);\n    });\n}\n\nfunction placeMarkerAndGeocode(location) {\n    // Limpiar el marcador anterior si existe\n    if (marker) {\n        marker.setMap(null);\n    }\n    // Colocar un nuevo marcador\n    marker = new google.maps.Marker({\n        position: location,\n        map: map\n    });\n    // Centrar el mapa en la nueva ubicación\n    map.panTo(location);\n    // Obtener la dirección a partir de las coordenadas (Geocodificación Inversa)\n    geocoder.geocode({ 'location': location }, function(results, status) {\n        if (status === 'OK') {\n            if (results[0]) {\n                // Llenar los campos del formulario con los datos obtenidos\n                populateAddressFields(results[0]);\n            } else {\n                alert('No se encontraron resultados para esta ubicación.');\n            }\n        } else {\n            alert('Falló la geocodificación: ' + status);\n        }\n    });\n}\n\nfunction populateAddressFields(addressData) {\n    // Esta función descompone la respuesta de geocodificación y llena los campos.\n    // La estructura de 'address_components' puede variar, ¡debes ajustarla!\n    \n    let addressComponents = addressData.address_components;\n    let addressLookup = {};\n    \n    // Crear un objeto fácil de buscar a partir de los componentes\n    addressComponents.forEach(component => {\n        component.types.forEach(type => {\n            addressLookup[type] = component.long_name;\n        });\n    });\n    // Llenar los campos del formulario de PHPRunner.\n    // ¡IMPORTANTE! Reemplaza 'Editbox1' con los nombres REALES de tus campos.\n    // Puedes encontrar el nombre real del campo en la pestaña \"Fields\" de PHPRunner.\n    \n    // Usar getElementById o un selector por nombre\n    document.getElementById('value_estado_1').value = addressLookup['administrative_area_level_1'] || ''; // Estado\n    document.getElementById('value_ciudad_1').value = addressLookup['locality'] || addressLookup['administrative_area_level_2'] || ''; // Ciudad o Municipio\n    document.getElementById('value_cp_1').value = addressLookup['postal_code'] || ''; // Código Postal\n    document.getElementById('value_colonia_1').value = addressLookup['sublocality_level_1'] || addressLookup['neighborhood'] || ''; // Colonia\n    document.getElementById('value_calle_1').value = getRoute(addressComponents) || ''; // Calle\n}\n\n// Función de ayuda para obtener el nombre de la calle\nfunction getRoute(components) {\n    for (let i = 0; i < components.length; i++) {\n        if (components[i].types.includes('route')) {\n            return components[i].long_name;\n        }\n    }\n    return '';\n}\n// Inicializar el mapa cuando la página esté cargada\n// Google Maps llama a 'initMap' automáticamente por el callback en la URL de la API\n</script>",
+						"text": "<div id=\"map\" style=\"height: 400px; width: 100%; margin-bottom: 10px; border: 1px solid #ccc;\"></div>\n<p><strong>Haz clic en el mapa para obtener los datos de la ubicación (si algún campo no se acompleta automáticamente, favor de escribirlo)</strong></p>\n\n<!-- Cargar Leaflet CSS & JS -->\n<link rel=\"stylesheet\" href=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.css\" />\n<script src=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.js\"></script>\n\n<script>\n// Variables globales\nlet map;\nlet marker;\nlet mapInitialized = false;\n\nfunction initMap() {\n    if (mapInitialized) {\n        setTimeout(() => map.invalidateSize(), 100);\n        return;\n    }\n    \n    const initialLocation = [21.0038, -89.6183];\n    map = L.map('map').setView(initialLocation, 12);\n    \n    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {\n        attribution: '&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'\n    }).addTo(map);\n    \n    mapInitialized = true;\n    \n    map.on('click', function(e) {\n        placeMarkerAndGeocode(e.latlng);\n    });\n    \n    setTimeout(() => map.invalidateSize(), 300);\n}\n\nfunction placeMarkerAndGeocode(latlng) {\n    if (marker) map.removeLayer(marker);\n    marker = L.marker(latlng).addTo(map);\n    map.setView(latlng, map.getZoom());\n    \n    var apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}&zoom=18&addressdetails=1`;\n    \n    fetch(apiUrl)\n        .then(response => response.json())\n        .then(data => {\n            if (data && data.address) {\n                populateAddressFields(data.address, latlng, data.display_name);\n            } else {\n                alert('No se encontraron resultados para esta ubicación.');\n            }\n        })\n        .catch(error => {\n            console.error('Error:', error);\n            alert('Falló la geocodificación.');\n        });\n}\n\n// 🔥 NUEVA FUNCIÓN: Extraer número de dirección\nfunction extractHouseNumber(fullAddress, roadName) {\n    if (!fullAddress || !roadName) return '';\n    \n    // Buscar patrones comunes de números\n    const patterns = [\n        /(\\d+)\\s*#/i,           // Número seguido de #\n        /#\\s*(\\d+)/i,            // # seguido de número\n        /(\\d+)\\s*$/i,            // Número al final\n        /(\\d+)\\s*[-–]\\s*\\d+/i,   // Rango de números (ej: 366-368)\n        /(\\d+)[a-zA-Z]?$/i       // Número con posible letra (ej: 366A)\n    ];\n    \n    for (const pattern of patterns) {\n        const match = fullAddress.match(pattern);\n        if (match && match[1]) {\n            return match[1];\n        }\n    }\n    \n    // Si no se encuentra con patrones, intentar con el campo house_number de Nominatim\n    return '';\n}\n\nfunction populateAddressFields(address, latlng, fullAddress = '') {\n    // Extraer el número de casa\n    const houseNumber = address.house_number || extractHouseNumber(fullAddress, address.road);\n    \n    // Llenar los campos del formulario\n    document.getElementById('value_estado_1').value = address.state || '';\n    document.getElementById('value_ciudad_1').value = address.city || address.town || address.village || '';\n    document.getElementById('value_cp_1').value = address.postcode || '';\n    document.getElementById('value_colonia_1').value = address.suburb || address.neighbourhood || '';\n    document.getElementById('value_calle_1').value = address.road || '';\n    \n    // 🔥 NUEVO: Llenar el número exterior\n    document.getElementById('value_numeroext_1').value = houseNumber;\n    \n    document.getElementById('value_lat_1').value = latlng.lat;\n    document.getElementById('value_lng_1').value = latlng.lng;\n    \n    console.log('Datos completos de Nominatim:', address);\n    console.log('Dirección completa:', fullAddress);\n    console.log('Número extraído:', houseNumber);\n}\n\n// 🔥 OBSERVAR CUANDO EL TAB Y SECTION SE HACEN VISIBLES\nfunction checkMapContainer() {\n    const mapContainer = document.getElementById('map');\n    if (mapContainer.offsetParent !== null && mapContainer.offsetWidth > 0) {\n        initMap();\n        return true;\n    }\n    return false;\n}\n\ndocument.addEventListener('DOMContentLoaded', function() {\n    const interval = setInterval(() => {\n        if (checkMapContainer()) {\n            clearInterval(interval);\n        }\n    }, 200);\n    \n    document.body.addEventListener('click', function(e) {\n        if (e.target.closest('[data-toggle=\"tab\"], .step-tab, .nav-link')) {\n            setTimeout(() => {\n                if (mapInitialized) map.invalidateSize();\n                else if (checkMapContainer()) console.log('Mapa inicializado desde click en tab');\n            }, 400);\n        }\n    });\n});\n\nwindow.addEventListener('resize', () => {\n    if (mapInitialized) setTimeout(() => map.invalidateSize(), 100);\n});\n\nconst observer = new MutationObserver(function(mutations) {\n    mutations.forEach(function(mutation) {\n        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {\n            setTimeout(() => {\n                if (mapInitialized) map.invalidateSize();\n            }, 200);\n        }\n    });\n});\n\nsetTimeout(() => {\n    const mapContainer = document.getElementById('map');\n    if (mapContainer) {\n        observer.observe(mapContainer, { attributes: true, attributeFilter: ['style'] });\n    }\n}, 1000);\n</script>",
 						"type": 0
 					},
 					"editedByRte": false
@@ -2954,6 +2968,18 @@
 				},
 				"step_nav": {
 					"type": "step_nav"
+				},
+				"integrated_edit_field17": {
+					"field": "lat",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field18": {
+					"field": "lng",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
 				}
 			},
 			"dbProps": {},
@@ -4020,24 +4046,32 @@
 							"model": "cell_dpreview",
 							"items": [
 								"details_preview"
-							]
+							],
+							"columnName": "details",
+							"field": ""
 						},
 						"headcell_field10": {
 							"model": "headcell_field",
 							"items": [
 								"text2"
-							]
+							],
+							"columnName": "details",
+							"field": ""
 						},
 						"headcell_field11": {
 							"model": "cell_field",
 							"items": [
 								"grid_alldetails_link",
 								"grid_details_link"
-							]
+							],
+							"columnName": "details",
+							"field": ""
 						},
 						"headcell_field14": {
 							"model": "footcell_field",
-							"items": []
+							"items": [],
+							"columnName": "details",
+							"field": ""
 						}
 					},
 					"deferredItems": [],
@@ -5353,7 +5387,7 @@
 		}
 	],
 	"geoCoding": {
-		"enabled": true,
+		"enabled": false,
 		"latField": "lat",
 		"lonField": "lng",
 		"addressFields": [
@@ -5363,7 +5397,9 @@
 			"colonia",
 			"ciudad",
 			"estado",
-			"cp"
+			"cp",
+			"lat",
+			"lng"
 		]
 	},
 	"caption": {
