@@ -7,7 +7,7 @@
 			"asc": false
 		}
 	],
-	"sql": "SELECT\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tsolicitudes.estatusentrega,\n\tclientes.nombre,\n\tclientes.paterno,\n\tclientes.materno,\n\tentregasvnp.estado,\n\tentregasvnp.ciudad,\n\tentregasvnp.cp,\n\tentregasvnp.calle,\n\tentregasvnp.numeroext,\n\tentregasvnp.numeroint,\n\tentregasvnp.colonia,\n\tproductos.descripcion,\n\tCONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(\n    TRIM(CONCAT_WS(' ',\n      IFNULL(entregasvnp.numeroext,''),IFNULL(entregasvnp.calle,''), IFNULL(entregasvnp.numeroint,''),\n      IFNULL(entregasvnp.colonia,''), IFNULL(entregasvnp.cp,''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    )),\n    ' ', '+'\n  )) AS maps_url,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      if(IFNULL(entregasvnp.calle,'')='','',concat('C.',entregasvnp.calle)),IFNULL(concat('No.',entregasvnp.numeroext),''), IFNULL(concat('Int.',entregasvnp.numeroint),''),\n      IFNULL((entregasvnp.colonia),''), IFNULL(concat('C.P.',entregasvnp.cp),''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    ))) AS direccion,\n\tsolicitudes.idsolicitud,\n\tss.equipo,\n\tss.chip,\n\tentregasvnp.lat,\n\tentregasvnp.lng\nFROM\n\tsolicitudes\n\tLEFT OUTER JOIN clientes ON clientes.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp ON entregasvnp.idsolicitud = solicitudes.idsolicitud\n\tLEFT OUTER JOIN productos ON productos.idproducto = solicitudes.idproducto\n\tLEFT JOIN (select  idsolicitud,\n  MAX(CASE WHEN clasif = 'Equipo' THEN esnimei END) AS equipo,\n  MAX(CASE WHEN clasif = 'Chip'   THEN esnimei END) AS chip from (\nselect ss.idsolicitud,ss.esnimei,\"Equipo\" clasif  from compras c inner join seriessolicitadas ss \non c.noserie = ss.esnimei inner join productos p on c.codigoproducto=p.codigoiusa where p.clasif='Equipo'\nunion all\nselect ss.idsolicitud, esnimei, \"Chip\"   from compras c inner join seriessolicitadas ss\non c.noserie = ss.esnimei inner join productos p on c.codigoproducto=p.codigoiusa where p.clasif='Chip'\n) x group by idsolicitud\n) ss ON solicitudes.idsolicitud=ss.idsolicitud  \nWHERE\nsolicitudes.idtienda =2 and solicitudes.fecha between '20250801' and '20250831'\norder by idsolicitud desc",
+	"sql": "SELECT\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tsolicitudes.estatusentrega,\n\tclientes.nombre,\n\tclientes.paterno,\n\tclientes.materno,\n\tentregasvnp.estado,\n\tentregasvnp.ciudad,\n\tentregasvnp.cp,\n\tentregasvnp.calle,\n\tentregasvnp.numeroext,\n\tentregasvnp.numeroint,\n\tentregasvnp.colonia,\n\tproductos.descripcion,\n\tCONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(\n    TRIM(CONCAT_WS(' ',\n      IFNULL(entregasvnp.numeroext,''),IFNULL(entregasvnp.calle,''), IFNULL(entregasvnp.numeroint,''),\n      IFNULL(entregasvnp.colonia,''), IFNULL(entregasvnp.cp,''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    )),\n    ' ', '+'\n  )) AS maps_url,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      if(IFNULL(entregasvnp.calle,'')='','',concat('C.',entregasvnp.calle)),IFNULL(concat('No.',entregasvnp.numeroext),''), IFNULL(concat('Int.',entregasvnp.numeroint),''),\n      IFNULL((entregasvnp.colonia),''), IFNULL(concat('C.P.',entregasvnp.cp),''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    ))) AS direccion,\n\tsolicitudes.idsolicitud,\n\tss.equipo,\n\tss.chip,\n\tentregasvnp.lat,\n\tentregasvnp.lng\nFROM\n\tsolicitudes\n\tLEFT OUTER JOIN clientes ON clientes.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp ON entregasvnp.idsolicitud = solicitudes.idsolicitud\n\tLEFT OUTER JOIN productos ON productos.idproducto = solicitudes.idproducto\n\tLEFT JOIN (select  idsolicitud,\n  MAX(CASE WHEN clasif = 'Equipo' THEN esnimei END) AS equipo,\n  MAX(CASE WHEN clasif = 'Chip'   THEN esnimei END) AS chip from (\nselect ss.idsolicitud,ss.esnimei,\"Equipo\" clasif  from compras c inner join seriessolicitadas ss \non c.noserie = ss.esnimei inner join productos p on c.codigoproducto=p.codigoiusa where p.clasif='Equipo'\nunion all\nselect ss.idsolicitud, esnimei, \"Chip\"   from compras c inner join seriessolicitadas ss\non c.noserie = ss.esnimei inner join productos p on c.codigoproducto=p.codigoiusa where p.clasif='Chip'\n) x group by idsolicitud\n) ss ON solicitudes.idsolicitud=ss.idsolicitud  \nWHERE solicitudes.idtienda=2\norder by idsolicitud desc",
 	"connId": "conn",
 	"originalTable": "solicitudes",
 	"name": "solicitudes",
@@ -15,10 +15,22 @@
 	"dbType": 0,
 	"tableOwnerIdField": "idsolicitud",
 	"usersOwnerIdField": "ID",
+	"pageSizeRecords": 50,
+	"pageSizeSelectorRecords": [
+		"20",
+		"30",
+		"50",
+		"100",
+		"500",
+		"all"
+	],
 	"keyFields": [
 		"idsolicitud"
 	],
 	"detailsBadgeColor": "1e90ff",
+	"detailsTables": [
+		3847630651
+	],
 	"fields": [
 		{
 			"name": "idsolicitud",
@@ -90,10 +102,15 @@
 					"dateEditType": 11
 				},
 				{
-					"format": "Readonly",
+					"format": "Date",
 					"pageType": "search",
-					"dateEditType": 11
+					"dateEditType": 11,
+					"dateLastYearFactor": 1
 				}
+			],
+			"defaultSearchOption": "Between",
+			"searchOptions": [
+				"Between"
 			],
 			"label": {
 				"English": "Fecha"
@@ -980,7 +997,9 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"required": true
+				}
 			],
 			"label": {
 				"Spanish": "Estado"
@@ -997,7 +1016,9 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"required": true
+				}
 			],
 			"label": {
 				"Spanish": "Ciudad"
@@ -1031,7 +1052,9 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"required": true
+				}
 			],
 			"label": {
 				"Spanish": "Calle"
@@ -1048,7 +1071,9 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"required": true
+				}
 			],
 			"label": {
 				"Spanish": "# Ext"
@@ -1082,7 +1107,9 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"required": true
+				}
 			],
 			"label": {
 				"Spanish": "Colonia"
@@ -1225,10 +1252,12 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"required": true
+				}
 			],
 			"label": {
-				"Spanish": "Lat"
+				"Spanish": "Latitud"
 			},
 			"tableName": "entregasvnp"
 		},
@@ -1242,10 +1271,12 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"required": true
+				}
 			],
 			"label": {
-				"Spanish": "Lng"
+				"Spanish": "Longitud"
 			},
 			"tableName": "entregasvnp"
 		}
@@ -1264,7 +1295,7 @@
 		{
 			"eventId": "EVENT_JS_ONLOAD",
 			"pageType": "list",
-			"code": "/*var ctrlFecha = Runner.getControl(pageid, \"fecha\");\r\nctrlFecha.makeReadOnly;\r\n\r\n// ==================================================\r\n// EVENTO ONLOAD PARA LISTA EN PHPRUNNER 11\r\n// ==================================================\r\n\r\nfunction onLoad() {\r\n    // Esperar a que la lista se cargue completamente\r\n    setTimeout(function() {\r\n        aplicarSoloLecturaControles();\r\n        configurarObservadorEdicion();\r\n    }, 1000);\r\n}\r\n\r\n// ==================================================\r\n// FUNCIÓN PRINCIPAL PARA APLICAR SOLO LECTURA\r\n// ==================================================\r\n\r\nfunction aplicarSoloLecturaControles() {\r\n    // Lista de campos que deben ser solo lectura en edición\r\n    var camposSoloLectura = [\r\n        'fecha',       // campo fecha       \r\n        'idcliente',  // Campo idcliente\r\n        'descripcion', // Campo descripcion\r\n        'plazo',           // Campo estado\r\n        'orden'\r\n        // Agrega aquí tus campos específicos\r\n    ];\r\n    \r\n    // Aplicar a todos los campos de la lista\r\n    camposSoloLectura.forEach(function(campo) {\r\n        hacerCampoSoloLectura(campo);\r\n    });\r\n    \r\n    // También aplicar a elementos específicos por clase o ID\r\n    var elementosEspecificos = [\r\n        '.readonly-field',\r\n        '[data-readonly=\"true\"]',\r\n        '#campo_protegido'\r\n    ];\r\n    \r\n    elementosEspecificos.forEach(function(selector) {\r\n        var elementos = document.querySelectorAll(selector);\r\n        elementos.forEach(function(elemento) {\r\n            aplicarEstilosSoloLectura(elemento);\r\n        });\r\n    });\r\n}\r\n\r\n// ==================================================\r\n// FUNCIÓN PARA HACER UN CAMPO ESPECÍFICO SOLO LECTURA\r\n// ==================================================\r\n\r\nfunction hacerCampoSoloLectura(nombreCampo) {\r\n    // Buscar todos los elementos relacionados con el campo\r\n    var selectores = [\r\n        'input[name*=\"' + nombreCampo + '\"]',\r\n        'select[name*=\"' + nombreCampo + '\"]',\r\n        'textarea[name*=\"' + nombreCampo + '\"]',\r\n        '[data-field=\"' + nombreCampo + '\"] input',\r\n        '[data-field=\"' + nombreCampo + '\"] select',\r\n        '[data-field=\"' + nombreCampo + '\"] textarea',\r\n        '.field_' + nombreCampo + ' input',\r\n        '.field_' + nombreCampo + ' select',\r\n        '.field_' + nombreCampo + ' textarea'\r\n    ];\r\n    \r\n    selectores.forEach(function(selector) {\r\n        var elementos = document.querySelectorAll(selector);\r\n        \r\n        elementos.forEach(function(elemento) {\r\n            if (elemento && !elemento.closest('.view-mode')) {\r\n                elemento.setAttribute('readonly', 'true');\r\n                elemento.setAttribute('disabled', 'true');\r\n                aplicarEstilosSoloLectura(elemento);\r\n                \r\n                // Prevenir edición mediante eventos\r\n                elemento.addEventListener('mousedown', prevenirEdicion);\r\n                elemento.addEventListener('keydown', prevenirEdicion);\r\n            }\r\n        });\r\n    });\r\n}\r\n\r\n// ==================================================\r\n// ESTILOS Y COMPORTAMIENTO PARA SOLO LECTURA\r\n// ==================================================\r\n\r\nfunction aplicarEstilosSoloLectura(elemento) {\r\n    elemento.style.backgroundColor = '#f8f9fa';\r\n    elemento.style.borderColor = '#dee2e6';\r\n    elemento.style.color = '#6c757d';\r\n    elemento.style.cursor = 'not-allowed';\r\n    elemento.classList.add('campo-solo-lectura');\r\n}\r\n\r\nfunction prevenirEdicion(evento) {\r\n    evento.preventDefault();\r\n    evento.stopPropagation();\r\n    return false;\r\n}\r\n\r\n// ==================================================\r\n// OBSERVADOR PARA DETECTAR EDICIONES EN LÍNEA\r\n// ==================================================\r\n\r\nfunction configurarObservadorEdicion() {\r\n    // Observar cambios en el body para detectar modos de edición\r\n    var observer = new MutationObserver(function(mutations) {\r\n        mutations.forEach(function(mutation) {\r\n            if (mutation.addedNodes.length > 0) {\r\n                // Verificar si se activó el modo edición\r\n                var elementosEdicion = document.querySelectorAll('.edit-mode, .editing, [data-editing=\"true\"]');\r\n                if (elementosEdicion.length > 0) {\r\n                    setTimeout(aplicarSoloLecturaControles, 300);\r\n                }\r\n            }\r\n        });\r\n    });\r\n    \r\n    // Configurar el observador\r\n    observer.observe(document.body, {\r\n        childList: true,\r\n        subtree: true,\r\n        attributes: true,\r\n        attributeFilter: ['class', 'data-editing']\r\n    });\r\n    \r\n    // También escuchar eventos de clic en botones de edición\r\n    document.addEventListener('click', function(e) {\r\n        var botonEdicion = e.target.closest('[id*=\"edit\"], .edit-btn, .phpr-edit');\r\n        if (botonEdicion) {\r\n            setTimeout(aplicarSoloLecturaControles, 500);\r\n        }\r\n    });\r\n}\r\n\r\n// ==================================================\r\n// INICIALIZACIÓN AL CARGAR LA PÁGINA\r\n// ==================================================\r\n\r\n// Llamar a onLoad cuando el DOM esté listo\r\nif (document.readyState === 'loading') {\r\n    document.addEventListener('DOMContentLoaded', onLoad);\r\n} else {\r\n    onLoad();\r\n}\r\n\r\n// Re-aplicar cuando se redimensiona o hay cambios\r\nwindow.addEventListener('resize', function() {\r\n    setTimeout(aplicarSoloLecturaControles, 300);\r\n});\r\n\r\n// ==================================================\r\n// CSS ADICIONAL (opcional, agregar en Custom CSS)\r\n// ==================================================\r\n/*\r\n.campo-solo-lectura {\r\n    background-color: #f8f9fa !important;\r\n    border: 1px solid #dee2e6 !important;\r\n    color: #6c757d !important;\r\n    cursor: not-allowed !important;\r\n}\r\n\r\n.campo-solo-lectura:hover {\r\n    background-color: #e9ecef !important;\r\n}\r\n*/"
+			"code": "var fechaIn = document.getElementById('edt_FechaIn');\r\nvar fechaFn = document.getElementById('edt_FechaFn');\r\n\r\n// Función para obtener todos los parámetros actuales de la URL\r\nfunction getCurrentUrlParams() {\r\n    var urlParams = new URLSearchParams(window.location.search);\r\n    var params = {};\r\n    \r\n    // Preservar todos los parámetros existentes\r\n    for (var [key, value] of urlParams) {\r\n        params[key] = value;\r\n    }\r\n    \r\n    return params;\r\n}\r\n\r\n// Función para construir URL con parámetros preservados\r\nfunction buildUrlWithParams(baseUrl, newParams) {\r\n    var params = getCurrentUrlParams();\r\n    \r\n    // Actualizar con nuevos valores\r\n    Object.assign(params, newParams);\r\n    \r\n    // Construir query string\r\n    var queryString = Object.keys(params)\r\n        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))\r\n        .join('&');\r\n    \r\n    return baseUrl + '?' + queryString;\r\n}\r\n\r\nfunction actualizarFechas() {\r\n    var val1 = $(\"#edt_FechaIn\").val();\r\n    var val2 = $(\"#edt_FechaFn\").val();\r\n    \r\n    if(val2 < val1){\r\n        Swal.fire({\r\n            icon: \"error\",\r\n            title: \"La fecha final no puede ser menor a la fecha inicial\"\r\n        }).then(function(result) {\r\n            val2 = val1;\r\n            var newUrl = buildUrlWithParams('solicitudes_list.php', {\r\n                FechaIn: val1,\r\n                FechaFn: val2\r\n            });\r\n            window.location.href = newUrl;\r\n        });\r\n    } else {\r\n        var newUrl = buildUrlWithParams('solicitudes_list.php', {\r\n            FechaIn: val1,\r\n            FechaFn: val2\r\n        });\r\n        window.location.href = newUrl;\r\n    }\r\n}\r\n\r\nfechaIn.onchange = actualizarFechas;\r\nfechaFn.onchange = actualizarFechas;\r\n\r\n// Establecer valores iniciales desde URL\r\nvar urlParams = new URLSearchParams(window.location.search);\r\nif (urlParams.has('FechaIn')) document.getElementById(\"edt_FechaIn\").value = urlParams.get('FechaIn');\r\nif (urlParams.has('FechaFn')) document.getElementById(\"edt_FechaFn\").value = urlParams.get('FechaFn');\r\n\r\n// Interceptar eventos de PHPRunner para preservar fechas\r\n$(document).ready(function() {\r\n    // Interceptar búsqueda\r\n    $(document).on('click', '.search-button, .pagination a', function(e) {\r\n        e.preventDefault();\r\n        \r\n        var val1 = $(\"#edt_FechaIn\").val();\r\n        var val2 = $(\"#edt_FechaFn\").val();\r\n        var targetUrl = $(this).attr('href') || window.location.pathname;\r\n        \r\n        // Si es un enlace de paginación o búsqueda, preservar fechas\r\n        var newUrl = buildUrlWithParams(targetUrl, {\r\n            FechaIn: val1,\r\n            FechaFn: val2\r\n        });\r\n        \r\n        window.location.href = newUrl;\r\n    });\r\n    \r\n    // También interceptar submit del formulario de búsqueda\r\n    $('form').on('submit', function(e) {\r\n        var val1 = $(\"#edt_FechaIn\").val();\r\n        var val2 = $(\"#edt_FechaFn\").val();\r\n        \r\n        // Agregar campos ocultos con las fechas\r\n        $(this).append('<input type=\"hidden\" name=\"FechaIn\" value=\"' + val1 + '\">');\r\n        $(this).append('<input type=\"hidden\" name=\"FechaFn\" value=\"' + val2 + '\">');\r\n    });\r\n});\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n/*\r\nvar fechaIn = document.getElementById('edt_FechaIn');\r\nvar fechaFn = document.getElementById('edt_FechaFn');\r\n\r\nfunction actualizarFechas() {\r\n\tvar val1 = $(\"#edt_FechaIn\").val();\r\n\tvar val2 = $(\"#edt_FechaFn\").val();\r\n\tif(val2<val1){\r\n\t\tSwal.fire({\r\n\t\t  icon: \"error\",\r\n\t\t  title: \"La fecha final no puede ser menor a la fecha inicial\"\r\n\t\t}).then(function(result) {\r\n            // Esta función se ejecuta cuando el usuario cierra el modal\r\n            val2 = val1;\r\n            window.location.href = 'solicitudes_list.php?FechaIn='+val1+'&FechaFn='+val2;\r\n        });\r\n    } else {\r\n        // Si las fechas son correctas, redirigir inmediatamente\r\n        window.location.href = 'solicitudes_list.php?FechaIn=' + val1 + '&FechaFn='+val2;\r\n    }\r\n}\r\n\r\nfechaIn.onchange = actualizarFechas;\r\nfechaFn.onchange = actualizarFechas;\r\n\r\n// Si necesitas establecer valores iniciales desde los parámetros de la URL\r\nvar urlParams = new URLSearchParams(window.location.search);\r\nif (urlParams.has('FechaIn')) document.getElementById(\"edt_FechaIn\").value = urlParams.get('FechaIn');\r\nif (urlParams.has('FechaFn')) document.getElementById(\"edt_FechaFn\").value = urlParams.get('FechaFn');\r\n*/\r\n\r\n\r\n\r\n\r\n\r\n\r\n/*var ctrlFecha = Runner.getControl(pageid, \"fecha\");\r\nctrlFecha.makeReadOnly;\r\n\r\n// ==================================================\r\n// EVENTO ONLOAD PARA LISTA EN PHPRUNNER 11\r\n// ==================================================\r\n\r\nfunction onLoad() {\r\n    // Esperar a que la lista se cargue completamente\r\n    setTimeout(function() {\r\n        aplicarSoloLecturaControles();\r\n        configurarObservadorEdicion();\r\n    }, 1000);\r\n}\r\n\r\n// ==================================================\r\n// FUNCIÓN PRINCIPAL PARA APLICAR SOLO LECTURA\r\n// ==================================================\r\n\r\nfunction aplicarSoloLecturaControles() {\r\n    // Lista de campos que deben ser solo lectura en edición\r\n    var camposSoloLectura = [\r\n        'fecha',       // campo fecha       \r\n        'idcliente',  // Campo idcliente\r\n        'descripcion', // Campo descripcion\r\n        'plazo',           // Campo estado\r\n        'orden'\r\n        // Agrega aquí tus campos específicos\r\n    ];\r\n    \r\n    // Aplicar a todos los campos de la lista\r\n    camposSoloLectura.forEach(function(campo) {\r\n        hacerCampoSoloLectura(campo);\r\n    });\r\n    \r\n    // También aplicar a elementos específicos por clase o ID\r\n    var elementosEspecificos = [\r\n        '.readonly-field',\r\n        '[data-readonly=\"true\"]',\r\n        '#campo_protegido'\r\n    ];\r\n    \r\n    elementosEspecificos.forEach(function(selector) {\r\n        var elementos = document.querySelectorAll(selector);\r\n        elementos.forEach(function(elemento) {\r\n            aplicarEstilosSoloLectura(elemento);\r\n        });\r\n    });\r\n}\r\n\r\n// ==================================================\r\n// FUNCIÓN PARA HACER UN CAMPO ESPECÍFICO SOLO LECTURA\r\n// ==================================================\r\n\r\nfunction hacerCampoSoloLectura(nombreCampo) {\r\n    // Buscar todos los elementos relacionados con el campo\r\n    var selectores = [\r\n        'input[name*=\"' + nombreCampo + '\"]',\r\n        'select[name*=\"' + nombreCampo + '\"]',\r\n        'textarea[name*=\"' + nombreCampo + '\"]',\r\n        '[data-field=\"' + nombreCampo + '\"] input',\r\n        '[data-field=\"' + nombreCampo + '\"] select',\r\n        '[data-field=\"' + nombreCampo + '\"] textarea',\r\n        '.field_' + nombreCampo + ' input',\r\n        '.field_' + nombreCampo + ' select',\r\n        '.field_' + nombreCampo + ' textarea'\r\n    ];\r\n    \r\n    selectores.forEach(function(selector) {\r\n        var elementos = document.querySelectorAll(selector);\r\n        \r\n        elementos.forEach(function(elemento) {\r\n            if (elemento && !elemento.closest('.view-mode')) {\r\n                elemento.setAttribute('readonly', 'true');\r\n                elemento.setAttribute('disabled', 'true');\r\n                aplicarEstilosSoloLectura(elemento);\r\n                \r\n                // Prevenir edición mediante eventos\r\n                elemento.addEventListener('mousedown', prevenirEdicion);\r\n                elemento.addEventListener('keydown', prevenirEdicion);\r\n            }\r\n        });\r\n    });\r\n}\r\n\r\n// ==================================================\r\n// ESTILOS Y COMPORTAMIENTO PARA SOLO LECTURA\r\n// ==================================================\r\n\r\nfunction aplicarEstilosSoloLectura(elemento) {\r\n    elemento.style.backgroundColor = '#f8f9fa';\r\n    elemento.style.borderColor = '#dee2e6';\r\n    elemento.style.color = '#6c757d';\r\n    elemento.style.cursor = 'not-allowed';\r\n    elemento.classList.add('campo-solo-lectura');\r\n}\r\n\r\nfunction prevenirEdicion(evento) {\r\n    evento.preventDefault();\r\n    evento.stopPropagation();\r\n    return false;\r\n}\r\n\r\n// ==================================================\r\n// OBSERVADOR PARA DETECTAR EDICIONES EN LÍNEA\r\n// ==================================================\r\n\r\nfunction configurarObservadorEdicion() {\r\n    // Observar cambios en el body para detectar modos de edición\r\n    var observer = new MutationObserver(function(mutations) {\r\n        mutations.forEach(function(mutation) {\r\n            if (mutation.addedNodes.length > 0) {\r\n                // Verificar si se activó el modo edición\r\n                var elementosEdicion = document.querySelectorAll('.edit-mode, .editing, [data-editing=\"true\"]');\r\n                if (elementosEdicion.length > 0) {\r\n                    setTimeout(aplicarSoloLecturaControles, 300);\r\n                }\r\n            }\r\n        });\r\n    });\r\n    \r\n    // Configurar el observador\r\n    observer.observe(document.body, {\r\n        childList: true,\r\n        subtree: true,\r\n        attributes: true,\r\n        attributeFilter: ['class', 'data-editing']\r\n    });\r\n    \r\n    // También escuchar eventos de clic en botones de edición\r\n    document.addEventListener('click', function(e) {\r\n        var botonEdicion = e.target.closest('[id*=\"edit\"], .edit-btn, .phpr-edit');\r\n        if (botonEdicion) {\r\n            setTimeout(aplicarSoloLecturaControles, 500);\r\n        }\r\n    });\r\n}\r\n\r\n// ==================================================\r\n// INICIALIZACIÓN AL CARGAR LA PÁGINA\r\n// ==================================================\r\n\r\n// Llamar a onLoad cuando el DOM esté listo\r\nif (document.readyState === 'loading') {\r\n    document.addEventListener('DOMContentLoaded', onLoad);\r\n} else {\r\n    onLoad();\r\n}\r\n\r\n// Re-aplicar cuando se redimensiona o hay cambios\r\nwindow.addEventListener('resize', function() {\r\n    setTimeout(aplicarSoloLecturaControles, 300);\r\n});\r\n\r\n// ==================================================\r\n// CSS ADICIONAL (opcional, agregar en Custom CSS)\r\n// ==================================================\r\n/*\r\n.campo-solo-lectura {\r\n    background-color: #f8f9fa !important;\r\n    border: 1px solid #dee2e6 !important;\r\n    color: #6c757d !important;\r\n    cursor: not-allowed !important;\r\n}\r\n\r\n.campo-solo-lectura:hover {\r\n    background-color: #e9ecef !important;\r\n}\r\n*/"
 		},
 		{
 			"eventId": "EVENT_JS_ONLOAD",
@@ -1279,7 +1310,11 @@
 		{
 			"eventId": "EVENT_BEFOREMOVENEXT_LIST",
 			"pageType": "list",
-			"code": "// $data = registro actual; $row = atributos HTML de la fila\r\n$st = (int)$data[\"estatusentrega\"];  // 2=Entregada, 3=Rechazada (ajusta si difiere)\r\nswitch ($st) {\r\n  case 2:  $cls = 'table-success'; break; // Entregada\r\n  case 3:  $cls = 'table-danger';  break; // Rechazada\r\n  default: $cls = 'table-warning';        // No entregada / otros\r\n}\r\n\r\nif (!isset($row[\"rowattrs\"])) $row[\"rowattrs\"] = '';\r\n$row[\"rowattrs\"] .= ' class=\"'.$cls.'\"';\r\n\r\nif($data['estatusentrega'] == 3) $record[\"css\"] = 'background:#FF3A30;color:white';"
+			"code": "// $data = registro actual; $row = atributos HTML de la fila\r\n$st = (int)$data[\"estatusentrega\"];  // 2=Entregada, 3=Rechazada (ajusta si difiere)\r\nswitch ($st) {\r\n  case 2:  $cls = 'table-success'; break; // Entregada\r\n  case 3:  $cls = 'table-danger';  break; // Rechazada\r\n  default: $cls = 'table-warning';        // No entregada / otros\r\n}\r\n\r\nif (!isset($row[\"rowattrs\"])) $row[\"rowattrs\"] = '';\r\n$row[\"rowattrs\"] .= ' class=\"'.$cls.'\"';\r\n\r\nif($data['estatusentrega'] == 3){\r\n    $record[\"css\"] = 'background:#FF3A30';\r\n    $record['fecha_css'] = 'color:white';\r\n    $record['idcliente_css'] = 'color:white';\r\n    $record['descripcion_css'] = 'color:white';\r\n    $record['estatus_css'] = 'color:white';\r\n    $record['plazo_css'] = 'color:white';\r\n    $record['orden_css'] = 'color:white';\r\n    $record['maps_url_css'] = 'color:white';\r\n    $record['estatusentrega_css'] = 'color:white';\r\n    $record['equipo_css'] = 'color:white';\r\n    $record['chip_css'] = 'color:white';\r\n}\r\n"
+		},
+		{
+			"eventId": "EVENT_INIT_TABLE",
+			"code": "// Obtener fechas con valores por defecto coherentes\r\n$var1 = isset($_GET[\"FechaIn\"]) ? $_GET[\"FechaIn\"] : date('Y-m-d', strtotime('-30 days'));\r\n$var2 = isset($_GET[\"FechaFn\"]) ? $_GET[\"FechaFn\"] : date('Y-m-d');\r\n\r\n$query->addWhere(\"fecha between '\".$var1.\"' and '\".$var2.\"'\");"
 		}
 	],
 	"dbTableInfo": {
@@ -1641,6 +1676,14 @@
 								}
 							],
 							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
 						}
 					],
 					"cells": {
@@ -1648,6 +1691,12 @@
 							"model": "c1",
 							"items": [
 								"add_message"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"step_nav"
 							]
 						}
 					},
@@ -1670,6 +1719,7 @@
 						"c1": {
 							"model": "c1",
 							"items": [
+								"next_step",
 								"add_save",
 								"add_reset",
 								"add_back_list",
@@ -1697,6 +1747,1328 @@
 							"model": "c1",
 							"items": [
 								"add_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c3",
+									"rowspan": 1
+								},
+								{
+									"cell": "c",
+									"rowspan": 1
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c3": {
+							"model": "c3",
+							"items": [
+								"section"
+							],
+							"border": [
+								{
+									"side": "",
+									"width": "0"
+								}
+							],
+							"padding": {
+								"right": "10px"
+							}
+						},
+						"c": {
+							"model": "c3",
+							"items": [
+								"section1"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				},
+				"section": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field3",
+								"integrated_edit_field4",
+								"integrated_edit_field5",
+								"integrated_edit_field1",
+								"integrated_edit_field6",
+								"integrated_edit_field9"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				},
+				"section1": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field",
+								"integrated_edit_field2",
+								"integrated_edit_field7",
+								"integrated_edit_field8"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				},
+				"step2": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c",
+									"colspan": 2
+								}
+							]
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c2"
+								},
+								{
+									"cell": "c4"
+								}
+							]
+						}
+					],
+					"cells": {
+						"c": {
+							"model": "c1",
+							"items": [
+								"text"
+							],
+							"align": "center"
+						},
+						"c2": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field13",
+								"integrated_edit_field14",
+								"integrated_edit_field15",
+								"integrated_edit_field16"
+							]
+						},
+						"c4": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field11",
+								"integrated_edit_field10",
+								"integrated_edit_field12",
+								"integrated_edit_field17",
+								"integrated_edit_field18"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				}
+			},
+			"items": {
+				"add_header": {
+					"type": "add_header"
+				},
+				"add_back_list": {
+					"type": "add_back_list"
+				},
+				"add_cancel": {
+					"type": "add_cancel"
+				},
+				"add_message": {
+					"type": "add_message"
+				},
+				"add_save": {
+					"type": "add_save"
+				},
+				"add_reset": {
+					"type": "add_reset"
+				},
+				"integrated_edit_field3": {
+					"field": "idcliente",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "idcliente",
+						"table": "solicitudes",
+						"type": 5
+					}
+				},
+				"integrated_edit_field": {
+					"field": "idproducto",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "idproducto",
+						"table": "solicitudes",
+						"type": 5
+					}
+				},
+				"integrated_edit_field2": {
+					"field": "idplan",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "idplan",
+						"table": "solicitudes",
+						"type": 5
+					}
+				},
+				"integrated_edit_field1": {
+					"field": "nombre",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "nombre",
+						"table": "solicitudes",
+						"type": 5
+					},
+					"label": {
+						"field": "nombre",
+						"table": "solicitudes",
+						"type": 3
+					}
+				},
+				"integrated_edit_field4": {
+					"field": "paterno",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "paterno",
+						"table": "solicitudes",
+						"type": 5
+					}
+				},
+				"integrated_edit_field5": {
+					"field": "materno",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "materno",
+						"table": "solicitudes",
+						"type": 5
+					}
+				},
+				"integrated_edit_field6": {
+					"field": "rfc",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field7": {
+					"field": "orden",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "orden",
+						"table": "solicitudes",
+						"type": 5
+					}
+				},
+				"integrated_edit_field8": {
+					"field": "plazo",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "plazo",
+						"table": "solicitudes",
+						"type": 5
+					}
+				},
+				"integrated_edit_field9": {
+					"field": "idcli",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"section": {
+					"type": "section",
+					"title": {
+						"type": 0,
+						"text": "Datos del cliente"
+					},
+					"location": "section",
+					"bsStyle": "default",
+					"panelType": 3,
+					"headerBg": "#a0dcf5",
+					"headerColor": "",
+					"bodyBg": "",
+					"bodyColor": "",
+					"panelBorder": null,
+					"borderColor": ""
+				},
+				"section1": {
+					"type": "section",
+					"title": {
+						"type": 0,
+						"text": "Datos de la solicitud"
+					},
+					"location": "section1",
+					"bsStyle": "default",
+					"panelType": 3,
+					"headerBg": "#72d6f9",
+					"headerColor": "",
+					"bodyBg": "",
+					"bodyColor": "",
+					"panelBorder": null,
+					"borderColor": ""
+				},
+				"integrated_edit_field10": {
+					"field": "estado",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field11": {
+					"field": "ciudad",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field12": {
+					"field": "cp",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field13": {
+					"field": "calle",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field14": {
+					"field": "numeroext",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field15": {
+					"field": "numeroint",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field16": {
+					"field": "colonia",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"text": {
+					"type": "text",
+					"label": {
+						"text": "<div id=\"map\" style=\"height: 400px; width: 100%; margin-bottom: 10px; border: 1px solid #ccc;\"></div>\n<p><strong>Haz clic en el mapa para obtener los datos de la ubicación (si algún campo no se acompleta automáticamente, favor de escribirlo)</strong></p>\n\n<!-- Cargar Leaflet CSS & JS -->\n<link rel=\"stylesheet\" href=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.css\" />\n<script src=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.js\"></script>\n\n<script>\n// Variables globales\nlet map;\nlet marker;\nlet mapInitialized = false;\n\nfunction initMap() {\n    if (mapInitialized) {\n        setTimeout(() => map.invalidateSize(), 100);\n        return;\n    }\n    \n    const initialLocation = [21.0038, -89.6183];\n    map = L.map('map').setView(initialLocation, 12);\n    \n    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {\n        attribution: '&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'\n    }).addTo(map);\n    \n    mapInitialized = true;\n    \n    map.on('click', function(e) {\n        placeMarkerAndGeocode(e.latlng);\n    });\n    \n    setTimeout(() => map.invalidateSize(), 300);\n}\n\nfunction placeMarkerAndGeocode(latlng) {\n    if (marker) map.removeLayer(marker);\n    marker = L.marker(latlng).addTo(map);\n    map.setView(latlng, map.getZoom());\n    \n    var apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}&zoom=18&addressdetails=1`;\n    \n    fetch(apiUrl)\n        .then(response => response.json())\n        .then(data => {\n            if (data && data.address) {\n                populateAddressFields(data.address, latlng, data.display_name);\n            } else {\n                alert('No se encontraron resultados para esta ubicación.');\n            }\n        })\n        .catch(error => {\n            console.error('Error:', error);\n            alert('Falló la geocodificación.');\n        });\n}\n\n// 🔥 NUEVA FUNCIÓN: Extraer número de dirección\nfunction extractHouseNumber(fullAddress, roadName) {\n    if (!fullAddress || !roadName) return '';\n    \n    // Buscar patrones comunes de números\n    const patterns = [\n        /(?:No\\.|Num|#)\\s*(\\d+)/i,    // No. 366, Num 366, #366\n        /(\\d+)\\s*(?:#|No\\.|Num)/i,     // 366 #, 366 No.\n        /(\\d+)\\s*[-–]\\s*\\d+/i,         // 366-368\n        /(\\d+)[a-zA-Z]?$/i,            // 366, 366A\n        /^(\\d+)\\s+/i                   // 366 Calle 30\n    ];\n    \n    for (const pattern of patterns) {\n        const match = fullAddress.match(pattern);\n        if (match && match[1]) {\n            return match[1];\n        }\n    }\n    \n    // Si no se encuentra con patrones, intentar con el campo house_number de Nominatim\n    return '';\n}\n\nfunction populateAddressFields(address, latlng, fullAddress = '') {\n    // Extraer el número de casa\n    const houseNumber = address.house_number || extractHouseNumber(fullAddress, address.road);\n    \n    // Llenar los campos del formulario\n    document.getElementById('value_estado_1').value = address.state || '';\n    document.getElementById('value_ciudad_1').value = address.city || address.town || address.village || '';\n    document.getElementById('value_cp_1').value = address.postcode || '';\n    document.getElementById('value_colonia_1').value = address.suburb || address.neighbourhood || '';\n    document.getElementById('value_calle_1').value = address.road || '';\n    \n    // 🔥 NUEVO: Llenar el número exterior\n    document.getElementById('value_numeroext_1').value = houseNumber;\n    \n    document.getElementById('value_lat_1').value = latlng.lat;\n    document.getElementById('value_lng_1').value = latlng.lng;\n    \n    console.log('Datos completos de Nominatim:', address);\n    console.log('Dirección completa:', fullAddress);\n    console.log('Número extraído:', houseNumber);\n}\n\n// 🔥 OBSERVAR CUANDO EL TAB Y SECTION SE HACEN VISIBLES\nfunction checkMapContainer() {\n    const mapContainer = document.getElementById('map');\n    if (mapContainer.offsetParent !== null && mapContainer.offsetWidth > 0) {\n        initMap();\n        return true;\n    }\n    return false;\n}\n\ndocument.addEventListener('DOMContentLoaded', function() {\n    const interval = setInterval(() => {\n        if (checkMapContainer()) {\n            clearInterval(interval);\n        }\n    }, 200);\n    \n    document.body.addEventListener('click', function(e) {\n        if (e.target.closest('[data-toggle=\"tab\"], .step-tab, .nav-link')) {\n            setTimeout(() => {\n                if (mapInitialized) map.invalidateSize();\n                else if (checkMapContainer()) console.log('Mapa inicializado desde click en tab');\n            }, 400);\n        }\n    });\n});\n\nwindow.addEventListener('resize', () => {\n    if (mapInitialized) setTimeout(() => map.invalidateSize(), 100);\n});\n\nconst observer = new MutationObserver(function(mutations) {\n    mutations.forEach(function(mutation) {\n        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {\n            setTimeout(() => {\n                if (mapInitialized) map.invalidateSize();\n            }, 200);\n        }\n    });\n});\n\nsetTimeout(() => {\n    const mapContainer = document.getElementById('map');\n    if (mapContainer) {\n        observer.observe(mapContainer, { attributes: true, attributeFilter: ['style'] });\n    }\n}, 1000);\n</script>",
+						"type": 0
+					},
+					"editedByRte": false
+				},
+				"next_step": {
+					"type": "next_step"
+				},
+				"step_nav": {
+					"type": "step_nav"
+				},
+				"integrated_edit_field17": {
+					"field": "lat",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field18": {
+					"field": "lng",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				}
+			},
+			"dbProps": {},
+			"steps": [
+				{
+					"location": "grid",
+					"label": {
+						"text": "Datos iniciales",
+						"type": 0
+					}
+				},
+				{
+					"location": "step2",
+					"label": {
+						"text": "Datos de la Entrega",
+						"type": 0
+					}
+				}
+			],
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "export",
+			"type": "export",
+			"layoutId": "first",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"supertop": {
+					"modelId": "panel-top",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "export-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"export_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "export-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"export_field",
+								"export_field1",
+								"export_field2"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"footer": {
+					"modelId": "export-footer",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"export_export",
+								"export_cancel"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"export_header": {
+					"type": "export_header"
+				},
+				"export_export": {
+					"type": "export_export"
+				},
+				"export_cancel": {
+					"type": "export_cancel"
+				},
+				"export_field": {
+					"field": "direccion",
+					"type": "export_field"
+				},
+				"export_field1": {
+					"field": "lat",
+					"type": "export_field"
+				},
+				"export_field2": {
+					"field": "lng",
+					"type": "export_field"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {},
+			"exportFormat": 2,
+			"exportDelimiter": ",",
+			"exportSelectDelimiter": false,
+			"exportSelectFields": false
+		},
+		{
+			"id": "import",
+			"type": "import",
+			"layoutId": "first",
+			"disabled": true,
+			"default": 0,
+			"forms": {
+				"supertop": {
+					"modelId": "panel-top",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "import-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"import_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "import-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"import_header": {
+					"type": "import_header"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "edit",
+			"type": "edit",
+			"layoutId": "nomenu",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "edit-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"edit_message",
+								"snippet"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"step_nav"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "edit-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"next_step",
+								"edit_save",
+								"edit_back_list",
+								"edit_close"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"hamburger"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "edit-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"edit_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c3",
+									"rowspan": 1
+								},
+								{
+									"cell": "c",
+									"rowspan": 1
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c3": {
+							"model": "c3",
+							"items": [
+								"section"
+							],
+							"border": [
+								{
+									"side": "",
+									"width": "0"
+								}
+							],
+							"padding": {
+								"right": "10px"
+							}
+						},
+						"c": {
+							"model": "c3",
+							"items": [
+								"section1"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				},
+				"section": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field3",
+								"integrated_edit_field4",
+								"integrated_edit_field5",
+								"integrated_edit_field1",
+								"integrated_edit_field6",
+								"integrated_edit_field9"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				},
+				"section1": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field",
+								"integrated_edit_field2",
+								"integrated_edit_field7",
+								"integrated_edit_field8"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				},
+				"step2": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c",
+									"colspan": 2
+								}
+							]
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c2"
+								},
+								{
+									"cell": "c4"
+								}
+							]
+						}
+					],
+					"cells": {
+						"c": {
+							"model": "c1",
+							"items": [
+								"text"
+							],
+							"align": "center"
+						},
+						"c2": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field13",
+								"integrated_edit_field14",
+								"integrated_edit_field15",
+								"integrated_edit_field16"
+							]
+						},
+						"c4": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field11",
+								"integrated_edit_field10",
+								"integrated_edit_field12",
+								"integrated_edit_field17",
+								"integrated_edit_field18"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				},
+				"step3": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field19"
+							],
+							"align": "center"
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				},
+				"step4": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"details_preview"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				}
+			},
+			"items": {
+				"edit_header": {
+					"type": "edit_header"
+				},
+				"hamburger": {
+					"type": "hamburger",
+					"items": [
+						"edit_reset",
+						"edit_view"
+					]
+				},
+				"edit_reset": {
+					"type": "edit_reset"
+				},
+				"edit_message": {
+					"type": "edit_message"
+				},
+				"edit_save": {
+					"type": "edit_save"
+				},
+				"edit_back_list": {
+					"type": "edit_back_list"
+				},
+				"edit_close": {
+					"type": "edit_close"
+				},
+				"edit_view": {
+					"type": "edit_view"
+				},
+				"section": {
+					"type": "section",
+					"title": {
+						"type": 0,
+						"text": "Datos del cliente"
+					},
+					"location": "section",
+					"bsStyle": "default",
+					"panelType": 3,
+					"headerBg": "#a0dcf5",
+					"headerColor": "",
+					"bodyBg": "",
+					"bodyColor": "",
+					"panelBorder": null,
+					"borderColor": ""
+				},
+				"integrated_edit_field3": {
+					"field": "idcliente",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "idcliente",
+						"table": "solicitudes",
+						"type": 5
+					},
+					"updateOnEdit": false
+				},
+				"integrated_edit_field4": {
+					"field": "paterno",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "paterno",
+						"table": "solicitudes",
+						"type": 5
+					},
+					"updateOnEdit": false
+				},
+				"integrated_edit_field5": {
+					"field": "materno",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "materno",
+						"table": "solicitudes",
+						"type": 5
+					},
+					"updateOnEdit": false
+				},
+				"integrated_edit_field1": {
+					"field": "nombre",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "nombre",
+						"table": "solicitudes",
+						"type": 5
+					},
+					"label": {
+						"field": "nombre",
+						"table": "solicitudes",
+						"type": 3
+					},
+					"updateOnEdit": false
+				},
+				"integrated_edit_field6": {
+					"field": "rfc",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field9": {
+					"field": "idcli",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"section1": {
+					"type": "section",
+					"title": {
+						"type": 0,
+						"text": "Datos de la solicitud"
+					},
+					"location": "section1",
+					"bsStyle": "default",
+					"panelType": 3,
+					"headerBg": "#72d6f9",
+					"headerColor": "",
+					"bodyBg": "",
+					"bodyColor": "",
+					"panelBorder": null,
+					"borderColor": ""
+				},
+				"integrated_edit_field": {
+					"field": "idproducto",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "idproducto",
+						"table": "solicitudes",
+						"type": 5
+					},
+					"updateOnEdit": false
+				},
+				"integrated_edit_field2": {
+					"field": "idplan",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "idplan",
+						"table": "solicitudes",
+						"type": 5
+					},
+					"updateOnEdit": false
+				},
+				"integrated_edit_field7": {
+					"field": "orden",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "orden",
+						"table": "solicitudes",
+						"type": 5
+					},
+					"updateOnEdit": false
+				},
+				"integrated_edit_field8": {
+					"field": "plazo",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "plazo",
+						"table": "solicitudes",
+						"type": 5
+					},
+					"updateOnEdit": false
+				},
+				"integrated_edit_field13": {
+					"field": "calle",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field14": {
+					"field": "numeroext",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field15": {
+					"field": "numeroint",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field16": {
+					"field": "colonia",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field11": {
+					"field": "ciudad",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field10": {
+					"field": "estado",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field12": {
+					"field": "cp",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"text": {
+					"type": "text",
+					"label": {
+						"text": "<div id=\"map\" style=\"height: 400px; width: 100%; margin-bottom: 10px; border: 1px solid #ccc;\"></div>\n<p><strong>Haz clic en el mapa para obtener los datos de la ubicación (si algún campo no se acompleta automáticamente, favor de escribirlo)</strong></p>\n\n<!-- Cargar Leaflet CSS & JS -->\n<link rel=\"stylesheet\" href=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.css\" />\n<script src=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.js\"></script>\n\n<script>\n// Variables globales\nlet map;\nlet marker;\nlet mapInitialized = false;\n\nfunction initMap() {\n    if (mapInitialized) {\n        setTimeout(() => map.invalidateSize(), 100);\n        return;\n    }\n    \n    const initialLocation = [21.0038, -89.6183];\n    map = L.map('map').setView(initialLocation, 12);\n    \n    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {\n        attribution: '&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'\n    }).addTo(map);\n    \n    mapInitialized = true;\n    \n    map.on('click', function(e) {\n        placeMarkerAndGeocode(e.latlng);\n    });\n    \n    setTimeout(() => map.invalidateSize(), 300);\n}\n\nfunction placeMarkerAndGeocode(latlng) {\n    if (marker) map.removeLayer(marker);\n    marker = L.marker(latlng).addTo(map);\n    map.setView(latlng, map.getZoom());\n    \n    var apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}&zoom=18&addressdetails=1`;\n    \n    fetch(apiUrl)\n        .then(response => response.json())\n        .then(data => {\n            if (data && data.address) {\n                populateAddressFields(data.address, latlng, data.display_name);\n            } else {\n                alert('No se encontraron resultados para esta ubicación.');\n            }\n        })\n        .catch(error => {\n            console.error('Error:', error);\n            alert('Falló la geocodificación.');\n        });\n}\n\n// 🔥 NUEVA FUNCIÓN: Extraer número de dirección\nfunction extractHouseNumber(fullAddress, roadName) {\n    if (!fullAddress || !roadName) return '';\n    \n    // Buscar patrones comunes de números\n    const patterns = [\n        /(?:No\\.|Num|#)\\s*(\\d+)/i,    // No. 366, Num 366, #366\n        /(\\d+)\\s*(?:#|No\\.|Num)/i,     // 366 #, 366 No.\n        /(\\d+)\\s*[-–]\\s*\\d+/i,         // 366-368\n        /(\\d+)[a-zA-Z]?$/i,            // 366, 366A\n        /^(\\d+)\\s+/i                   // 366 Calle 30\n    ];\n    \n    for (const pattern of patterns) {\n        const match = fullAddress.match(pattern);\n        if (match && match[1]) {\n            return match[1];\n        }\n    }\n    \n    // Si no se encuentra con patrones, intentar con el campo house_number de Nominatim\n    return '';\n}\n\nfunction populateAddressFields(address, latlng, fullAddress = '') {\n    // Extraer el número de casa\n    const houseNumber = address.house_number || extractHouseNumber(fullAddress, address.road);\n    \n    // Llenar los campos del formulario\n    document.getElementById('value_estado_1').value = address.state || '';\n    document.getElementById('value_ciudad_1').value = address.city || address.town || address.village || '';\n    document.getElementById('value_cp_1').value = address.postcode || '';\n    document.getElementById('value_colonia_1').value = address.suburb || address.neighbourhood || '';\n    document.getElementById('value_calle_1').value = address.road || '';\n    \n    // 🔥 NUEVO: Llenar el número exterior\n    document.getElementById('value_numeroext_1').value = houseNumber;\n    \n    document.getElementById('value_lat_1').value = latlng.lat;\n    document.getElementById('value_lng_1').value = latlng.lng;\n    \n    console.log('Datos completos de Nominatim:', address);\n    console.log('Dirección completa:', fullAddress);\n    console.log('Número extraído:', houseNumber);\n}\n\n// 🔥 OBSERVAR CUANDO EL TAB Y SECTION SE HACEN VISIBLES\nfunction checkMapContainer() {\n    const mapContainer = document.getElementById('map');\n    if (mapContainer.offsetParent !== null && mapContainer.offsetWidth > 0) {\n        initMap();\n        return true;\n    }\n    return false;\n}\n\ndocument.addEventListener('DOMContentLoaded', function() {\n    const interval = setInterval(() => {\n        if (checkMapContainer()) {\n            clearInterval(interval);\n        }\n    }, 200);\n    \n    document.body.addEventListener('click', function(e) {\n        if (e.target.closest('[data-toggle=\"tab\"], .step-tab, .nav-link')) {\n            setTimeout(() => {\n                if (mapInitialized) map.invalidateSize();\n                else if (checkMapContainer()) console.log('Mapa inicializado desde click en tab');\n            }, 400);\n        }\n    });\n});\n\nwindow.addEventListener('resize', () => {\n    if (mapInitialized) setTimeout(() => map.invalidateSize(), 100);\n});\n\nconst observer = new MutationObserver(function(mutations) {\n    mutations.forEach(function(mutation) {\n        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {\n            setTimeout(() => {\n                if (mapInitialized) map.invalidateSize();\n            }, 200);\n        }\n    });\n});\n\nsetTimeout(() => {\n    const mapContainer = document.getElementById('map');\n    if (mapContainer) {\n        observer.observe(mapContainer, { attributes: true, attributeFilter: ['style'] });\n    }\n}, 1000);\n</script>",
+						"type": 0
+					},
+					"editedByRte": false
+				},
+				"details_preview": {
+					"type": "details_preview",
+					"table": 3847630651,
+					"items": [],
+					"popup": false,
+					"pageId": "list"
+				},
+				"next_step": {
+					"type": "next_step"
+				},
+				"step_nav": {
+					"type": "step_nav"
+				},
+				"integrated_edit_field17": {
+					"field": "lat",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field18": {
+					"field": "lng",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field19": {
+					"field": "estatus",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"snippet": {
+					"type": "snippet",
+					"eventGid": 1797818547
+				}
+			},
+			"dbProps": {},
+			"steps": [
+				{
+					"location": "grid",
+					"label": {
+						"text": "Datos iniciales",
+						"type": 0
+					}
+				},
+				{
+					"location": "step2",
+					"label": {
+						"text": "Datos de la Entrega",
+						"type": 0
+					}
+				},
+				{
+					"location": "step3",
+					"label": {
+						"text": "Estatus P. Fraudes",
+						"type": 0
+					}
+				},
+				{
+					"location": "step4",
+					"label": {
+						"text": "Estatus Logística",
+						"type": 0
+					}
+				}
+			],
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "view",
+			"type": "view",
+			"layoutId": "nomenu",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "view-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1",
+									"colspan": 2
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "view-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"view_back_list",
+								"view_close"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"hamburger"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "view-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"view_header"
 							]
 						}
 					},
@@ -1862,23 +3234,39 @@
 				}
 			},
 			"items": {
-				"add_header": {
-					"type": "add_header"
+				"view_header": {
+					"type": "view_header"
 				},
-				"add_back_list": {
-					"type": "add_back_list"
+				"view_back_list": {
+					"type": "view_back_list"
 				},
-				"add_cancel": {
-					"type": "add_cancel"
+				"view_close": {
+					"type": "view_close"
 				},
-				"add_message": {
-					"type": "add_message"
+				"hamburger": {
+					"type": "hamburger",
+					"items": [
+						"view_edit"
+					]
 				},
-				"add_save": {
-					"type": "add_save"
+				"view_edit": {
+					"type": "view_edit"
 				},
-				"add_reset": {
-					"type": "add_reset"
+				"section": {
+					"type": "section",
+					"title": {
+						"type": 0,
+						"text": "Datos del cliente"
+					},
+					"location": "section",
+					"bsStyle": "default",
+					"panelType": 3,
+					"headerBg": "#a0dcf5",
+					"headerColor": "",
+					"bodyBg": "",
+					"bodyColor": "",
+					"panelBorder": null,
+					"borderColor": ""
 				},
 				"integrated_edit_field3": {
 					"field": "idcliente",
@@ -1888,41 +3276,6 @@
 						"field": "idcliente",
 						"table": "solicitudes",
 						"type": 5
-					}
-				},
-				"integrated_edit_field": {
-					"field": "idproducto",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"placeholder": {
-						"field": "idproducto",
-						"table": "solicitudes",
-						"type": 5
-					}
-				},
-				"integrated_edit_field2": {
-					"field": "idplan",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"placeholder": {
-						"field": "idplan",
-						"table": "solicitudes",
-						"type": 5
-					}
-				},
-				"integrated_edit_field1": {
-					"field": "nombre",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"placeholder": {
-						"field": "nombre",
-						"table": "solicitudes",
-						"type": 5
-					},
-					"label": {
-						"field": "nombre",
-						"table": "solicitudes",
-						"type": 3
 					}
 				},
 				"integrated_edit_field4": {
@@ -1945,10 +3298,66 @@
 						"type": 5
 					}
 				},
+				"integrated_edit_field1": {
+					"field": "nombre",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "nombre",
+						"table": "solicitudes",
+						"type": 5
+					},
+					"label": {
+						"field": "nombre",
+						"table": "solicitudes",
+						"type": 3
+					}
+				},
 				"integrated_edit_field6": {
 					"field": "rfc",
 					"type": "integrated_edit_field",
 					"orientation": 0
+				},
+				"integrated_edit_field9": {
+					"field": "idcli",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"section1": {
+					"type": "section",
+					"title": {
+						"type": 0,
+						"text": "Datos de la solicitud"
+					},
+					"location": "section1",
+					"bsStyle": "default",
+					"panelType": 3,
+					"headerBg": "#72d6f9",
+					"headerColor": "",
+					"bodyBg": "",
+					"bodyColor": "",
+					"panelBorder": null,
+					"borderColor": ""
+				},
+				"integrated_edit_field": {
+					"field": "idproducto",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "idproducto",
+						"table": "solicitudes",
+						"type": 5
+					}
+				},
+				"integrated_edit_field2": {
+					"field": "idplan",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"placeholder": {
+						"field": "idplan",
+						"table": "solicitudes",
+						"type": 5
+					}
 				},
 				"integrated_edit_field7": {
 					"field": "orden",
@@ -1970,43 +3379,6 @@
 						"type": 5
 					}
 				},
-				"integrated_edit_field9": {
-					"field": "idcli",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"section": {
-					"type": "section",
-					"title": {
-						"type": 0,
-						"text": "Datos del cliente"
-					},
-					"location": "section",
-					"bsStyle": "default",
-					"panelType": 3,
-					"headerBg": "#a0dcf5",
-					"headerColor": "",
-					"bodyBg": "",
-					"bodyColor": "",
-					"panelBorder": null,
-					"borderColor": ""
-				},
-				"section1": {
-					"type": "section",
-					"title": {
-						"type": 0,
-						"text": "Datos de la solicitud"
-					},
-					"location": "section1",
-					"bsStyle": "default",
-					"panelType": 3,
-					"headerBg": "#72d6f9",
-					"headerColor": "",
-					"bodyBg": "",
-					"bodyColor": "",
-					"panelBorder": null,
-					"borderColor": ""
-				},
 				"section2": {
 					"type": "section",
 					"title": {
@@ -2023,21 +3395,6 @@
 					"panelBorder": null,
 					"borderColor": ""
 				},
-				"integrated_edit_field10": {
-					"field": "estado",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field11": {
-					"field": "ciudad",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field12": {
-					"field": "cp",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
 				"integrated_edit_field13": {
 					"field": "calle",
 					"type": "integrated_edit_field",
@@ -2055,6 +3412,21 @@
 				},
 				"integrated_edit_field16": {
 					"field": "colonia",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field11": {
+					"field": "ciudad",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field10": {
+					"field": "estado",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field12": {
+					"field": "cp",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
@@ -2065,685 +3437,6 @@
 						"type": 0
 					},
 					"editedByRte": false
-				}
-			},
-			"dbProps": {},
-			"version": 13,
-			"imageItem": {
-				"type": "page_image"
-			},
-			"imageBgColor": "#f2f2f2",
-			"controlsBgColor": "white",
-			"imagePosition": "right",
-			"listTotals": 1,
-			"title": {}
-		},
-		{
-			"id": "export",
-			"type": "export",
-			"layoutId": "first",
-			"disabled": false,
-			"default": 0,
-			"forms": {
-				"supertop": {
-					"modelId": "panel-top",
-					"grid": [
-						{
-							"cells": [
-								{
-									"cell": "c1"
-								}
-							],
-							"section": ""
-						}
-					],
-					"cells": {
-						"c1": {
-							"model": "c1",
-							"items": []
-						}
-					},
-					"deferredItems": [],
-					"recsPerRow": 1
-				},
-				"top": {
-					"modelId": "export-header",
-					"grid": [
-						{
-							"cells": [
-								{
-									"cell": "c1"
-								}
-							],
-							"section": ""
-						}
-					],
-					"cells": {
-						"c1": {
-							"model": "c1",
-							"items": [
-								"export_header"
-							]
-						}
-					},
-					"deferredItems": [],
-					"recsPerRow": 1
-				},
-				"grid": {
-					"modelId": "export-grid",
-					"grid": [
-						{
-							"cells": [
-								{
-									"cell": "c1"
-								}
-							],
-							"section": ""
-						}
-					],
-					"cells": {
-						"c1": {
-							"model": "c1",
-							"items": [
-								"export_field",
-								"export_field1",
-								"export_field2"
-							]
-						}
-					},
-					"deferredItems": [],
-					"recsPerRow": 1
-				},
-				"footer": {
-					"modelId": "export-footer",
-					"grid": [
-						{
-							"cells": [
-								{
-									"cell": "c1"
-								},
-								{
-									"cell": "c2"
-								}
-							],
-							"section": ""
-						}
-					],
-					"cells": {
-						"c1": {
-							"model": "c1",
-							"items": []
-						},
-						"c2": {
-							"model": "c2",
-							"items": [
-								"export_export",
-								"export_cancel"
-							]
-						}
-					},
-					"deferredItems": [],
-					"recsPerRow": 1
-				}
-			},
-			"items": {
-				"export_header": {
-					"type": "export_header"
-				},
-				"export_export": {
-					"type": "export_export"
-				},
-				"export_cancel": {
-					"type": "export_cancel"
-				},
-				"export_field": {
-					"field": "direccion",
-					"type": "export_field"
-				},
-				"export_field1": {
-					"field": "lat",
-					"type": "export_field"
-				},
-				"export_field2": {
-					"field": "lng",
-					"type": "export_field"
-				}
-			},
-			"dbProps": {},
-			"version": 13,
-			"imageItem": {
-				"type": "page_image"
-			},
-			"imageBgColor": "#f2f2f2",
-			"controlsBgColor": "white",
-			"imagePosition": "right",
-			"listTotals": 1,
-			"title": {},
-			"exportFormat": 2,
-			"exportDelimiter": ",",
-			"exportSelectDelimiter": false,
-			"exportSelectFields": false
-		},
-		{
-			"id": "import",
-			"type": "import",
-			"layoutId": "first",
-			"disabled": false,
-			"default": 0,
-			"forms": {
-				"supertop": {
-					"modelId": "panel-top",
-					"grid": [
-						{
-							"cells": [
-								{
-									"cell": "c1"
-								}
-							],
-							"section": ""
-						}
-					],
-					"cells": {
-						"c1": {
-							"model": "c1",
-							"items": []
-						}
-					},
-					"deferredItems": [],
-					"recsPerRow": 1
-				},
-				"top": {
-					"modelId": "import-header",
-					"grid": [
-						{
-							"cells": [
-								{
-									"cell": "c1"
-								}
-							],
-							"section": ""
-						}
-					],
-					"cells": {
-						"c1": {
-							"model": "c1",
-							"items": [
-								"import_header"
-							]
-						}
-					},
-					"deferredItems": [],
-					"recsPerRow": 1
-				},
-				"grid": {
-					"modelId": "import-grid",
-					"grid": [
-						{
-							"cells": [
-								{
-									"cell": "c1"
-								}
-							],
-							"section": ""
-						}
-					],
-					"cells": {
-						"c1": {
-							"model": "c1",
-							"items": []
-						}
-					},
-					"deferredItems": [],
-					"recsPerRow": 1
-				}
-			},
-			"items": {
-				"import_header": {
-					"type": "import_header"
-				}
-			},
-			"dbProps": {},
-			"version": 13,
-			"imageItem": {
-				"type": "page_image"
-			},
-			"imageBgColor": "#f2f2f2",
-			"controlsBgColor": "white",
-			"imagePosition": "right",
-			"listTotals": 1,
-			"title": {}
-		},
-		{
-			"id": "edit",
-			"type": "edit",
-			"layoutId": "nomenu",
-			"disabled": false,
-			"default": 0,
-			"forms": {
-				"above-grid": {
-					"modelId": "edit-above-grid",
-					"grid": [
-						{
-							"cells": [
-								{
-									"cell": "c1"
-								}
-							],
-							"section": ""
-						}
-					],
-					"cells": {
-						"c1": {
-							"model": "c1",
-							"items": [
-								"edit_message"
-							]
-						}
-					},
-					"deferredItems": [],
-					"recsPerRow": 1
-				},
-				"below-grid": {
-					"modelId": "edit-below-grid",
-					"grid": [
-						{
-							"cells": [
-								{
-									"cell": "c1"
-								},
-								{
-									"cell": "c2"
-								}
-							],
-							"section": ""
-						}
-					],
-					"cells": {
-						"c1": {
-							"model": "c1",
-							"items": [
-								"edit_save",
-								"edit_back_list",
-								"edit_close"
-							]
-						},
-						"c2": {
-							"model": "c2",
-							"items": [
-								"hamburger"
-							]
-						}
-					},
-					"deferredItems": [],
-					"recsPerRow": 1
-				},
-				"top": {
-					"modelId": "edit-header",
-					"grid": [
-						{
-							"cells": [
-								{
-									"cell": "c1"
-								}
-							],
-							"section": ""
-						}
-					],
-					"cells": {
-						"c1": {
-							"model": "c1",
-							"items": [
-								"edit_header"
-							]
-						}
-					},
-					"deferredItems": [],
-					"recsPerRow": 1
-				},
-				"grid": {
-					"modelId": "simple-edit",
-					"grid": [
-						{
-							"cells": [
-								{
-									"cell": "c3"
-								}
-							],
-							"section": ""
-						}
-					],
-					"cells": {
-						"c3": {
-							"model": "c3",
-							"items": [
-								"integrated_edit_field",
-								"integrated_edit_field1",
-								"integrated_edit_field2",
-								"integrated_edit_field3",
-								"integrated_edit_field4",
-								"integrated_edit_field5",
-								"integrated_edit_field6",
-								"integrated_edit_field7",
-								"integrated_edit_field8",
-								"integrated_edit_field9",
-								"integrated_edit_field10",
-								"integrated_edit_field11",
-								"integrated_edit_field12",
-								"integrated_edit_field13",
-								"integrated_edit_field14",
-								"integrated_edit_field15",
-								"integrated_edit_field16",
-								"integrated_edit_field17"
-							]
-						}
-					},
-					"deferredItems": [],
-					"columnCount": 1,
-					"inlineLabels": false,
-					"separateLabels": false
-				}
-			},
-			"items": {
-				"edit_header": {
-					"type": "edit_header"
-				},
-				"hamburger": {
-					"type": "hamburger",
-					"items": [
-						"edit_reset",
-						"edit_view"
-					]
-				},
-				"edit_reset": {
-					"type": "edit_reset"
-				},
-				"edit_message": {
-					"type": "edit_message"
-				},
-				"edit_save": {
-					"type": "edit_save"
-				},
-				"edit_back_list": {
-					"type": "edit_back_list"
-				},
-				"edit_close": {
-					"type": "edit_close"
-				},
-				"edit_view": {
-					"type": "edit_view"
-				},
-				"integrated_edit_field": {
-					"field": "idcliente",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field1": {
-					"field": "idproducto",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field2": {
-					"field": "idplan",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field3": {
-					"field": "orden",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field4": {
-					"field": "plazo",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field5": {
-					"field": "rfc",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field6": {
-					"field": "idcli",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field7": {
-					"field": "nombre",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field8": {
-					"field": "paterno",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field9": {
-					"field": "materno",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field10": {
-					"field": "estado",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field11": {
-					"field": "ciudad",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field12": {
-					"field": "cp",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field13": {
-					"field": "calle",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field14": {
-					"field": "numeroext",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field15": {
-					"field": "numeroint",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field16": {
-					"field": "colonia",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field17": {
-					"field": "estatusentrega",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				}
-			},
-			"dbProps": {},
-			"version": 13,
-			"imageItem": {
-				"type": "page_image"
-			},
-			"imageBgColor": "#f2f2f2",
-			"controlsBgColor": "white",
-			"imagePosition": "right",
-			"listTotals": 1,
-			"title": {}
-		},
-		{
-			"id": "view",
-			"type": "view",
-			"layoutId": "nomenu",
-			"disabled": false,
-			"default": 0,
-			"forms": {
-				"above-grid": {
-					"modelId": "view-above-grid",
-					"grid": [
-						{
-							"cells": [
-								{
-									"cell": "c1",
-									"colspan": 2
-								}
-							],
-							"section": ""
-						}
-					],
-					"cells": {
-						"c1": {
-							"model": "c1",
-							"items": []
-						}
-					},
-					"deferredItems": [],
-					"recsPerRow": 1
-				},
-				"below-grid": {
-					"modelId": "view-below-grid",
-					"grid": [
-						{
-							"cells": [
-								{
-									"cell": "c1"
-								},
-								{
-									"cell": "c2"
-								}
-							],
-							"section": ""
-						}
-					],
-					"cells": {
-						"c1": {
-							"model": "c1",
-							"items": [
-								"view_back_list",
-								"view_close"
-							]
-						},
-						"c2": {
-							"model": "c2",
-							"items": [
-								"hamburger"
-							]
-						}
-					},
-					"deferredItems": [],
-					"recsPerRow": 1
-				},
-				"top": {
-					"modelId": "view-header",
-					"grid": [
-						{
-							"cells": [
-								{
-									"cell": "c1"
-								}
-							],
-							"section": ""
-						}
-					],
-					"cells": {
-						"c1": {
-							"model": "c1",
-							"items": [
-								"view_header"
-							]
-						}
-					},
-					"deferredItems": [],
-					"recsPerRow": 1
-				},
-				"grid": {
-					"modelId": "simple-edit",
-					"grid": [
-						{
-							"cells": [
-								{
-									"cell": "c3"
-								}
-							],
-							"section": ""
-						}
-					],
-					"cells": {
-						"c3": {
-							"model": "c3",
-							"items": [
-								"integrated_edit_field",
-								"integrated_edit_field1",
-								"integrated_edit_field2",
-								"integrated_edit_field3"
-							]
-						}
-					},
-					"deferredItems": [],
-					"columnCount": 1,
-					"inlineLabels": false,
-					"separateLabels": false
-				}
-			},
-			"items": {
-				"view_header": {
-					"type": "view_header"
-				},
-				"view_back_list": {
-					"type": "view_back_list"
-				},
-				"view_close": {
-					"type": "view_close"
-				},
-				"hamburger": {
-					"type": "hamburger",
-					"items": [
-						"view_edit"
-					]
-				},
-				"view_edit": {
-					"type": "view_edit"
-				},
-				"integrated_edit_field": {
-					"field": "direccion",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field1": {
-					"field": "estatusentrega",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field2": {
-					"field": "lat",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field3": {
-					"field": "lng",
-					"type": "integrated_edit_field",
-					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -2792,6 +3485,10 @@
 						"c2": {
 							"model": "c2",
 							"items": [
+								"text1",
+								"snippet",
+								"text",
+								"snippet1",
 								"details_found",
 								"page_size",
 								"print_panel"
@@ -2855,7 +3552,7 @@
 							"model": "c1",
 							"items": [
 								"menu",
-								"search_panel"
+								"filter_panel"
 							]
 						}
 					},
@@ -2950,9 +3647,6 @@
 								},
 								{
 									"cell": "headcell_field10"
-								},
-								{
-									"cell": "headcell_field11"
 								}
 							]
 						},
@@ -2996,12 +3690,18 @@
 									"cell": "cell_field6"
 								},
 								{
-									"cell": "cell_field7"
-								},
-								{
-									"cell": "cell_field8"
+									"cell": "headcell_field11"
 								}
 							]
+						},
+						{
+							"cells": [
+								{
+									"cell": "cell_dpreview",
+									"colspan": 13
+								}
+							],
+							"section": "body"
 						},
 						{
 							"section": "foot",
@@ -3043,10 +3743,7 @@
 									"cell": "footcell_field6"
 								},
 								{
-									"cell": "footcell_field7"
-								},
-								{
-									"cell": "footcell_field8"
+									"cell": "headcell_field14"
 								}
 							]
 						}
@@ -3319,49 +4016,36 @@
 							"field": "chip",
 							"columnName": "field"
 						},
+						"cell_dpreview": {
+							"model": "cell_dpreview",
+							"items": [
+								"details_preview"
+							],
+							"columnName": "details",
+							"field": ""
+						},
 						"headcell_field10": {
 							"model": "headcell_field",
 							"items": [
-								"grid_field_label5"
+								"text2"
 							],
-							"field": "lat",
-							"columnName": "field"
-						},
-						"cell_field7": {
-							"model": "cell_field",
-							"items": [
-								"grid_field5"
-							],
-							"field": "lat",
-							"columnName": "field"
-						},
-						"footcell_field7": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "lat",
-							"columnName": "field"
+							"columnName": "details",
+							"field": ""
 						},
 						"headcell_field11": {
-							"model": "headcell_field",
-							"items": [
-								"grid_field_label6"
-							],
-							"field": "lng",
-							"columnName": "field"
-						},
-						"cell_field8": {
 							"model": "cell_field",
 							"items": [
-								"grid_field6"
+								"grid_alldetails_link",
+								"grid_details_link"
 							],
-							"field": "lng",
-							"columnName": "field"
+							"columnName": "details",
+							"field": ""
 						},
-						"footcell_field8": {
+						"headcell_field14": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "lng",
-							"columnName": "field"
+							"columnName": "details",
+							"field": ""
 						}
 					},
 					"deferredItems": [],
@@ -3396,13 +4080,10 @@
 						"edit_selected",
 						"export_selected",
 						"delete_selected",
+						"-10",
+						"advsearch_link",
 						"-9",
-						"show_search_panel",
-						"hide_search_panel",
-						"-8",
-						"export",
-						"-2",
-						"import"
+						"export"
 					]
 				},
 				"expand_menu_button": {
@@ -3426,28 +4107,8 @@
 				"-1": {
 					"type": "-"
 				},
-				"import": {
-					"type": "import"
-				},
 				"-2": {
 					"type": "-"
-				},
-				"print_panel": {
-					"type": "print_panel",
-					"items": [
-						"print_scope",
-						"print_records",
-						"print_button"
-					]
-				},
-				"print_scope": {
-					"type": "print_scope"
-				},
-				"print_button": {
-					"type": "print_button"
-				},
-				"print_records": {
-					"type": "print_records"
 				},
 				"delete": {
 					"type": "delete"
@@ -3624,55 +4285,91 @@
 				"-8": {
 					"type": "-"
 				},
-				"grid_field5": {
-					"field": "lat",
-					"type": "grid_field",
-					"inlineEdit": false,
-					"inlineAdd": false
-				},
-				"grid_field_label5": {
-					"type": "grid_field_label",
-					"field": "lat"
-				},
-				"grid_field6": {
-					"field": "lng",
-					"type": "grid_field",
-					"inlineEdit": false,
-					"inlineAdd": false
-				},
-				"grid_field_label6": {
-					"type": "grid_field_label",
-					"field": "lng"
-				},
-				"search_panel": {
-					"type": "search_panel",
-					"items": [
-						"search_panel_field",
-						"search_panel_field1"
-					]
-				},
-				"show_search_panel": {
-					"type": "show_search_panel"
-				},
 				"-9": {
 					"type": "-"
 				},
-				"hide_search_panel": {
-					"type": "hide_search_panel"
+				"snippet": {
+					"type": "snippet",
+					"eventGid": 3482841917
 				},
-				"search_panel_field": {
-					"field": "lat",
-					"type": "search_panel_field"
+				"text": {
+					"type": "text",
+					"label": {
+						"text": "-",
+						"type": 0
+					},
+					"editedByRte": false
 				},
-				"search_panel_field1": {
-					"field": "lng",
-					"type": "search_panel_field"
+				"snippet1": {
+					"type": "snippet",
+					"eventGid": 1209004018
+				},
+				"filter_panel": {
+					"type": "filter_panel",
+					"items": []
+				},
+				"advsearch_link": {
+					"type": "advsearch_link"
+				},
+				"-10": {
+					"type": "-"
+				},
+				"text1": {
+					"type": "text",
+					"label": {
+						"type": 0,
+						"text": "Rango de fechas: "
+					},
+					"editedByRte": false
+				},
+				"grid_alldetails_link": {
+					"type": "grid_alldetails_link",
+					"icon": {
+						"glyph": "th-list"
+					}
+				},
+				"grid_details_link": {
+					"type": "grid_details_link",
+					"table": 3847630651,
+					"badge": true,
+					"hideIfNone": true,
+					"showCount": true
+				},
+				"print_panel": {
+					"type": "print_panel",
+					"items": [
+						"print_details"
+					]
+				},
+				"print_details": {
+					"type": "print_details",
+					"tables": {
+						"3847630651": true
+					}
+				},
+				"details_preview": {
+					"type": "details_preview",
+					"table": 3847630651,
+					"items": [],
+					"popup": false,
+					"hideEmptyPreview": false,
+					"proceedLink": false,
+					"pageId": "listado"
+				},
+				"text2": {
+					"type": "text",
+					"label": {
+						"text": "Logística",
+						"type": 0
+					},
+					"editedByRte": false
 				}
 			},
 			"dbProps": {},
 			"spreadsheetGrid": false,
 			"autoAddNewRecord": false,
 			"version": 13,
+			"pageWidth": "full",
 			"imageItem": {
 				"type": "page_image"
 			},
@@ -3687,7 +4384,7 @@
 			"id": "print",
 			"type": "print",
 			"layoutId": "basic",
-			"disabled": false,
+			"disabled": true,
 			"default": 0,
 			"forms": {
 				"above-grid": {
@@ -3768,6 +4465,14 @@
 								}
 							],
 							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
 						}
 					],
 					"cells": {
@@ -3777,6 +4482,12 @@
 								"simple_grid_field",
 								"simple_grid_field1",
 								"simple_grid_field2"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"details_preview"
 							]
 						}
 					},
@@ -3805,6 +4516,836 @@
 				"simple_grid_field2": {
 					"field": "lng",
 					"type": "simple_grid_field"
+				},
+				"details_preview": {
+					"type": "details_preview",
+					"table": 3847630651,
+					"items": [],
+					"popup": false
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "search",
+			"type": "search",
+			"layoutId": "nomenu",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "search-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1",
+									"colspan": 2
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "search-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"search_search",
+								"search_reset",
+								"search_back_list",
+								"search_cancel"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "search-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"search_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-search",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c3"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c3": {
+							"model": "c3",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"separateLabels": false
+				}
+			},
+			"items": {
+				"search_header": {
+					"type": "search_header"
+				},
+				"search_reset": {
+					"type": "search_reset"
+				},
+				"search_back_list": {
+					"type": "search_back_list"
+				},
+				"search_search": {
+					"type": "search_search"
+				},
+				"search_cancel": {
+					"type": "search_cancel"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "masterlist",
+			"type": "masterlist",
+			"layoutId": "masterlist",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "empty-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "empty-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "masterlist-top",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"back_master",
+								"masterlist_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"simple_grid_field",
+								"simple_grid_field1",
+								"simple_grid_field2",
+								"simple_grid_field3",
+								"simple_grid_field4",
+								"simple_grid_field5",
+								"simple_grid_field6",
+								"simple_grid_field7",
+								"simple_grid_field8",
+								"simple_grid_field9",
+								"simple_grid_field10",
+								"simple_grid_field11",
+								"simple_grid_field12",
+								"simple_grid_field13",
+								"simple_grid_field14",
+								"simple_grid_field15",
+								"simple_grid_field16",
+								"simple_grid_field17",
+								"simple_grid_field18",
+								"simple_grid_field19",
+								"simple_grid_field20",
+								"simple_grid_field21",
+								"simple_grid_field22",
+								"simple_grid_field23",
+								"simple_grid_field24",
+								"simple_grid_field25",
+								"simple_grid_field26",
+								"simple_grid_field27",
+								"simple_grid_field28",
+								"simple_grid_field29",
+								"simple_grid_field30",
+								"simple_grid_field31",
+								"simple_grid_field32",
+								"simple_grid_field33",
+								"simple_grid_field34",
+								"simple_grid_field35",
+								"simple_grid_field36",
+								"simple_grid_field37",
+								"simple_grid_field38",
+								"simple_grid_field39",
+								"simple_grid_field40",
+								"simple_grid_field41",
+								"simple_grid_field42",
+								"simple_grid_field43",
+								"simple_grid_field44",
+								"simple_grid_field45",
+								"simple_grid_field46"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"masterlist_header": {
+					"type": "masterlist_header"
+				},
+				"back_master": {
+					"type": "back_master"
+				},
+				"simple_grid_field": {
+					"field": "idsolicitud",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field1": {
+					"field": "idtipoventa",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field2": {
+					"field": "fecha",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field3": {
+					"field": "fechacaptura",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field4": {
+					"field": "idcliente",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field5": {
+					"field": "idproducto",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field6": {
+					"field": "idplan",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field7": {
+					"field": "usuario",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field8": {
+					"field": "idtienda",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field9": {
+					"field": "fechamodif",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field10": {
+					"field": "orden",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field11": {
+					"field": "solicitudimg",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field12": {
+					"field": "estatus",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field13": {
+					"field": "idsolrazon",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field14": {
+					"field": "importeatt",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field15": {
+					"field": "importesms",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field16": {
+					"field": "plazo",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field17": {
+					"field": "observaciones",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field18": {
+					"field": "equipoincluido",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field19": {
+					"field": "rfc",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field20": {
+					"field": "idtratamiento",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field21": {
+					"field": "riesgo",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field22": {
+					"field": "observacionest",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field23": {
+					"field": "idcli",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field24": {
+					"field": "fecha1avta",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field25": {
+					"field": "idplan1avta",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field26": {
+					"field": "dn1avta",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field27": {
+					"field": "idproceso",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field28": {
+					"field": "idorigenventa",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field29": {
+					"field": "nombre",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field30": {
+					"field": "paterno",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field31": {
+					"field": "materno",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field32": {
+					"field": "estado",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field33": {
+					"field": "ciudad",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field34": {
+					"field": "cp",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field35": {
+					"field": "calle",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field36": {
+					"field": "numeroext",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field37": {
+					"field": "numeroint",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field38": {
+					"field": "colonia",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field39": {
+					"field": "descripcion",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field40": {
+					"field": "maps_url",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field41": {
+					"field": "direccion",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field42": {
+					"field": "estatusentrega",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field43": {
+					"field": "equipo",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field44": {
+					"field": "chip",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field45": {
+					"field": "lat",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field46": {
+					"field": "lng",
+					"type": "simple_grid_field"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "masterprint",
+			"type": "masterprint",
+			"layoutId": "masterprint",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "empty-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "empty-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "masterlist-top",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"masterprint_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"simple_grid_field",
+								"simple_grid_field1",
+								"simple_grid_field2",
+								"simple_grid_field3",
+								"simple_grid_field4",
+								"simple_grid_field5",
+								"simple_grid_field6",
+								"simple_grid_field7",
+								"simple_grid_field8",
+								"simple_grid_field9",
+								"simple_grid_field10",
+								"simple_grid_field11",
+								"simple_grid_field12",
+								"simple_grid_field13",
+								"simple_grid_field14",
+								"simple_grid_field15",
+								"simple_grid_field16",
+								"simple_grid_field17",
+								"simple_grid_field18",
+								"simple_grid_field19",
+								"simple_grid_field20",
+								"simple_grid_field21",
+								"simple_grid_field22",
+								"simple_grid_field23",
+								"simple_grid_field24",
+								"simple_grid_field25",
+								"simple_grid_field26",
+								"simple_grid_field27",
+								"simple_grid_field28",
+								"simple_grid_field29",
+								"simple_grid_field30",
+								"simple_grid_field31",
+								"simple_grid_field32",
+								"simple_grid_field33",
+								"simple_grid_field34",
+								"simple_grid_field35",
+								"simple_grid_field36",
+								"simple_grid_field37",
+								"simple_grid_field38",
+								"simple_grid_field39",
+								"simple_grid_field40",
+								"simple_grid_field41",
+								"simple_grid_field42",
+								"simple_grid_field43",
+								"simple_grid_field44",
+								"simple_grid_field45",
+								"simple_grid_field46"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"masterprint_header": {
+					"type": "masterprint_header"
+				},
+				"simple_grid_field": {
+					"field": "idsolicitud",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field1": {
+					"field": "idtipoventa",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field2": {
+					"field": "fecha",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field3": {
+					"field": "fechacaptura",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field4": {
+					"field": "idcliente",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field5": {
+					"field": "idproducto",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field6": {
+					"field": "idplan",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field7": {
+					"field": "usuario",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field8": {
+					"field": "idtienda",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field9": {
+					"field": "fechamodif",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field10": {
+					"field": "orden",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field11": {
+					"field": "solicitudimg",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field12": {
+					"field": "estatus",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field13": {
+					"field": "idsolrazon",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field14": {
+					"field": "importeatt",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field15": {
+					"field": "importesms",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field16": {
+					"field": "plazo",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field17": {
+					"field": "observaciones",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field18": {
+					"field": "equipoincluido",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field19": {
+					"field": "rfc",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field20": {
+					"field": "idtratamiento",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field21": {
+					"field": "riesgo",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field22": {
+					"field": "observacionest",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field23": {
+					"field": "idcli",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field24": {
+					"field": "fecha1avta",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field25": {
+					"field": "idplan1avta",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field26": {
+					"field": "dn1avta",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field27": {
+					"field": "idproceso",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field28": {
+					"field": "idorigenventa",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field29": {
+					"field": "nombre",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field30": {
+					"field": "paterno",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field31": {
+					"field": "materno",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field32": {
+					"field": "estado",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field33": {
+					"field": "ciudad",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field34": {
+					"field": "cp",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field35": {
+					"field": "calle",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field36": {
+					"field": "numeroext",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field37": {
+					"field": "numeroint",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field38": {
+					"field": "colonia",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field39": {
+					"field": "descripcion",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field40": {
+					"field": "maps_url",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field41": {
+					"field": "direccion",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field42": {
+					"field": "estatusentrega",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field43": {
+					"field": "equipo",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field44": {
+					"field": "chip",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field45": {
+					"field": "lat",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field46": {
+					"field": "lng",
+					"type": "simple_grid_field"
 				}
 			},
 			"dbProps": {},
@@ -3820,7 +5361,7 @@
 		}
 	],
 	"geoCoding": {
-		"enabled": true,
+		"enabled": false,
 		"latField": "lat",
 		"lonField": "lng",
 		"addressFields": [
@@ -3830,7 +5371,9 @@
 			"colonia",
 			"ciudad",
 			"estado",
-			"cp"
+			"cp",
+			"lat",
+			"lng"
 		]
 	},
 	"caption": {

@@ -33,6 +33,13 @@
 				"height": 292
 			},
 			{
+				"gid": 3847630651,
+				"y": 432,
+				"x": 459,
+				"width": 142.15625,
+				"height": 236
+			},
+			{
 				"gid": 4135059206,
 				"y": 10,
 				"x": 635,
@@ -282,13 +289,13 @@
 	"ftpLocations": [
 		{
 			"id": "ftploc",
-			"name": "FTP on admin@rocasamexico.com@ftp://ftp.rocasamexico.com:21",
+			"name": "rocasamexico.com",
 			"ftp": {
 				"username": "admin@rocasamexico.com",
 				"password": "",
 				"host": "ftp.rocasamexico.com",
 				"port": 21,
-				"pathname": "/public_html/prm1",
+				"pathname": "/public_html/prm",
 				"passive": true,
 				"secureType": 0,
 				"useCCC": false,
@@ -304,9 +311,7 @@
 				"enabled": false
 			},
 			"threads": 4,
-			"serverDbConnections": {
-				"conn": "New connection"
-			}
+			"serverDbConnections": {}
 		}
 	],
 	"lastFtpLocation": "ftploc",
@@ -331,9 +336,6 @@
 		}
 	],
 	"defaultConnID": "conn",
-	"mapSettings": {
-		"apikey": "AIzaSyA2P1eBUfOvpeXBIWM5t5Drg3EjZc25Tzs"
-	},
 	"menus": [
 		{
 			"id": "main",
@@ -381,6 +383,20 @@
 							"itemType": 2,
 							"linkType": 0,
 							"table": 1182658781,
+							"pageType": "list"
+						}
+					},
+					{
+						"id": "6",
+						"data": {
+							"name": {
+								"table": "logisticavnp",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 3847630651,
 							"pageType": "list"
 						}
 					}
@@ -1999,10 +2015,10 @@
 		}
 	],
 	"projectStyle": {
-		"sidebarColor": "light",
 		"sidebarTheme": "legacy",
-		"topbarTheme": "legacy",
-		"logoTheme": "legacy",
+		"topbarTheme": "lightblue",
+		"logoTheme": "info",
+		"topbarGradient": true,
 		"sidebarCustomThemeColor": "legacy",
 		"topbarCustomThemeColor": "legacy",
 		"logoCustomThemeColor": "legacy",
@@ -2019,6 +2035,10 @@
 		"gcEvenColor": "legacy",
 		"gcRolloverHighlightBg": "legacy",
 		"gcRolloverHighlightColor": "legacy"
+	},
+	"settingsTable": {
+		"connId": "",
+		"table": ""
 	},
 	"messages": {},
 	"projectLogo": {},
