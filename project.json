@@ -483,8 +483,7 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"welcome_item2",
-								"welcome_item"
+								"welcome_item2"
 							]
 						}
 					},
@@ -538,25 +537,6 @@
 				},
 				"adminarea_link": {
 					"type": "adminarea_link"
-				},
-				"welcome_item": {
-					"type": "welcome_item",
-					"linkUrl": "",
-					"linkTable": "logisticavnp",
-					"linkPage": "list",
-					"linkText": {
-						"table": "logisticavnp",
-						"type": 6
-					},
-					"linkIcon": {
-						"glyph": "headphones"
-					},
-					"linkComments": {
-						"text": "Logisticavnp description",
-						"type": 0
-					},
-					"background": "#daa520",
-					"linkType": 0
 				}
 			},
 			"dbProps": {},

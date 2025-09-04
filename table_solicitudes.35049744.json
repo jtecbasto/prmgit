@@ -997,7 +997,9 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"required": true
+				}
 			],
 			"label": {
 				"Spanish": "Estado"
@@ -1014,7 +1016,9 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"required": true
+				}
 			],
 			"label": {
 				"Spanish": "Ciudad"
@@ -1048,7 +1052,9 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"required": true
+				}
 			],
 			"label": {
 				"Spanish": "Calle"
@@ -1065,7 +1071,9 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"required": true
+				}
 			],
 			"label": {
 				"Spanish": "# Ext"
@@ -1099,7 +1107,9 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"required": true
+				}
 			],
 			"label": {
 				"Spanish": "Colonia"
@@ -1242,7 +1252,9 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"required": true
+				}
 			],
 			"label": {
 				"Spanish": "Latitud"
@@ -1259,7 +1271,9 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"required": true
+				}
 			],
 			"label": {
 				"Spanish": "Longitud"
@@ -1842,32 +1856,39 @@
 					"inlineLabels": false,
 					"separateLabels": false
 				},
-				"section2": {
+				"step2": {
 					"modelId": "simple-edit",
 					"grid": [
 						{
 							"section": "",
 							"cells": [
 								{
-									"cell": "c3",
+									"cell": "c",
 									"colspan": 2
 								}
 							]
 						},
 						{
+							"section": "",
 							"cells": [
 								{
-									"cell": "c1"
+									"cell": "c2"
 								},
 								{
-									"cell": "c"
+									"cell": "c4"
 								}
-							],
-							"section": ""
+							]
 						}
 					],
 					"cells": {
-						"c1": {
+						"c": {
+							"model": "c1",
+							"items": [
+								"text"
+							],
+							"align": "center"
+						},
+						"c2": {
 							"model": "c1",
 							"items": [
 								"integrated_edit_field13",
@@ -1876,7 +1897,7 @@
 								"integrated_edit_field16"
 							]
 						},
-						"c": {
+						"c4": {
 							"model": "c1",
 							"items": [
 								"integrated_edit_field11",
@@ -1885,39 +1906,6 @@
 								"integrated_edit_field17",
 								"integrated_edit_field18"
 							]
-						},
-						"c3": {
-							"model": "c1",
-							"items": [
-								"text"
-							],
-							"align": "center"
-						}
-					},
-					"deferredItems": [],
-					"columnCount": 1,
-					"inlineLabels": false,
-					"separateLabels": false
-				},
-				"step2": {
-					"modelId": "simple-edit",
-					"grid": [
-						{
-							"cells": [
-								{
-									"cell": "c1"
-								}
-							],
-							"section": ""
-						}
-					],
-					"cells": {
-						"c1": {
-							"model": "c1",
-							"items": [
-								"section2"
-							],
-							"align": "center"
 						}
 					},
 					"deferredItems": [],
@@ -2072,22 +2060,6 @@
 					"panelBorder": null,
 					"borderColor": ""
 				},
-				"section2": {
-					"type": "section",
-					"title": {
-						"type": 0,
-						"text": "Datos de entrega"
-					},
-					"location": "section2",
-					"bsStyle": "default",
-					"panelType": 3,
-					"headerBg": "#44bee9",
-					"headerColor": "",
-					"bodyBg": "",
-					"bodyColor": "",
-					"panelBorder": null,
-					"borderColor": ""
-				},
 				"integrated_edit_field10": {
 					"field": "estado",
 					"type": "integrated_edit_field",
@@ -2153,14 +2125,14 @@
 				{
 					"location": "grid",
 					"label": {
-						"text": "step1",
+						"text": "Datos iniciales",
 						"type": 0
 					}
 				},
 				{
 					"location": "step2",
 					"label": {
-						"text": "step2",
+						"text": "Datos de la Entrega",
 						"type": 0
 					}
 				}
@@ -2441,7 +2413,8 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"edit_message"
+								"edit_message",
+								"snippet"
 							]
 						},
 						"c2": {
@@ -2615,32 +2588,39 @@
 					"inlineLabels": false,
 					"separateLabels": false
 				},
-				"section2": {
+				"step2": {
 					"modelId": "simple-edit",
 					"grid": [
 						{
 							"section": "",
 							"cells": [
 								{
-									"cell": "c3",
+									"cell": "c",
 									"colspan": 2
 								}
 							]
 						},
 						{
+							"section": "",
 							"cells": [
 								{
-									"cell": "c1"
+									"cell": "c2"
 								},
 								{
-									"cell": "c"
+									"cell": "c4"
 								}
-							],
-							"section": ""
+							]
 						}
 					],
 					"cells": {
-						"c1": {
+						"c": {
+							"model": "c1",
+							"items": [
+								"text"
+							],
+							"align": "center"
+						},
+						"c2": {
 							"model": "c1",
 							"items": [
 								"integrated_edit_field13",
@@ -2649,7 +2629,7 @@
 								"integrated_edit_field16"
 							]
 						},
-						"c": {
+						"c4": {
 							"model": "c1",
 							"items": [
 								"integrated_edit_field11",
@@ -2658,39 +2638,6 @@
 								"integrated_edit_field17",
 								"integrated_edit_field18"
 							]
-						},
-						"c3": {
-							"model": "c1",
-							"items": [
-								"text"
-							],
-							"align": "center"
-						}
-					},
-					"deferredItems": [],
-					"columnCount": 1,
-					"inlineLabels": false,
-					"separateLabels": false
-				},
-				"step2": {
-					"modelId": "simple-edit",
-					"grid": [
-						{
-							"cells": [
-								{
-									"cell": "c1"
-								}
-							],
-							"section": ""
-						}
-					],
-					"cells": {
-						"c1": {
-							"model": "c1",
-							"items": [
-								"section2"
-							],
-							"align": "center"
 						}
 					},
 					"deferredItems": [],
@@ -2916,22 +2863,6 @@
 					},
 					"updateOnEdit": false
 				},
-				"section2": {
-					"type": "section",
-					"title": {
-						"type": 0,
-						"text": "Datos de entrega"
-					},
-					"location": "section2",
-					"bsStyle": "default",
-					"panelType": 3,
-					"headerBg": "#44bee9",
-					"headerColor": "",
-					"bodyBg": "",
-					"bodyColor": "",
-					"panelBorder": null,
-					"borderColor": ""
-				},
 				"integrated_edit_field13": {
 					"field": "calle",
 					"type": "integrated_edit_field",
@@ -3012,6 +2943,10 @@
 					"type": "integrated_edit_field",
 					"orientation": 0,
 					"updateOnEdit": false
+				},
+				"snippet": {
+					"type": "snippet",
+					"eventGid": 1797818547
 				}
 			},
 			"dbProps": {},
@@ -3019,28 +2954,28 @@
 				{
 					"location": "grid",
 					"label": {
-						"text": "step1",
+						"text": "Datos iniciales",
 						"type": 0
 					}
 				},
 				{
 					"location": "step2",
 					"label": {
-						"text": "step2",
+						"text": "Datos de la Entrega",
 						"type": 0
 					}
 				},
 				{
 					"location": "step3",
 					"label": {
-						"text": "step3",
+						"text": "Estatus P. Fraudes",
 						"type": 0
 					}
 				},
 				{
 					"location": "step4",
 					"label": {
-						"text": "step4",
+						"text": "Estatus Logística",
 						"type": 0
 					}
 				}
