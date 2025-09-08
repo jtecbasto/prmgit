@@ -1,5 +1,5 @@
 {
-	"sql": "  SELECT\n\tproductos.idproducto,\n\tproductos.codigoIUSA,\n\tproductos.descripcion,\n\tCOUNT(idproducto) AS saldo\nFROM\n\tcompras\n\tLEFT OUTER JOIN ventas AS v ON v.esnimei = compras.noserie\n\tLEFT OUTER JOIN movimientos AS m ON m.esnimei = compras.noserie\n\tLEFT OUTER JOIN seriessolicitadas ss ON compras.noserie=ss.esnimei\n\tINNER JOIN productos ON productos.codigoIUSA = compras.codigoproducto\nWHERE\n(v.esnimei is null AND m.esnimei is null and ss.esnimei is null) AND productos.Clasif ='Equipo' AND compras.tienda =2 and compras.clasif=2\nGROUP BY\n\tproductos.idproducto\n",
+	"sql": "SELECT L.idproducto, L.codigoIUSA, L.descripcion, L.saldo\r\nFROM (\r\n  SELECT p.idproducto, p.codigoIUSA, p.descripcion, s.saldo\r\n  FROM (\r\n    SELECT c.codigoproducto, COUNT(*) AS saldo\r\n    FROM compras c\r\n    WHERE c.tienda=2 AND c.clasif=2\r\n      AND NOT EXISTS (SELECT 1 FROM ventas v WHERE v.esnimei=c.noserie)\r\n      AND NOT EXISTS (SELECT 1 FROM movimientos m WHERE m.esnimei=c.noserie)\r\n      AND NOT EXISTS (SELECT 1 FROM seriessolicitadas ss WHERE ss.esnimei=c.noserie)\r\n    GROUP BY c.codigoproducto\r\n  ) s\r\n  JOIN productos p\r\n    ON p.codigoIUSA = s.codigoproducto AND p.Clasif='Equipo'\r\n\r\n  UNION ALL\r\n\r\n  SELECT p2.idproducto, p2.codigoIUSA, p2.descripcion, 0\r\n  FROM productos p2\r\n  WHERE p2.idproducto = :session.IDACTUAL           -- aquí tu prueba\r\n) AS L\r\n-- opcional: si temes duplicados cuando 1738 sí tiene saldo\r\n-- GROUP BY L.idproducto, L.codigoIUSA, L.descripcion\r\n--         ; -- y si agruparas, usa MAX(L.saldo) saldo\r\n",
 	"connId": "conn",
 	"originalTable": "productos",
 	"name": "productos",
@@ -12,7 +12,7 @@
 	"fields": [
 		{
 			"name": "idproducto",
-			"sqlExpression": "productos.idproducto",
+			"sqlExpression": "L.idproducto",
 			"index": 1,
 			"strField": "idproducto",
 			"type": 3,
@@ -26,11 +26,11 @@
 			"label": {
 				"Spanish": "Idproducto"
 			},
-			"tableName": "productos"
+			"tableName": ""
 		},
 		{
 			"name": "codigoIUSA",
-			"sqlExpression": "productos.codigoIUSA",
+			"sqlExpression": "L.codigoIUSA",
 			"index": 2,
 			"strField": "codigoIUSA",
 			"type": 200,
@@ -43,11 +43,11 @@
 			"label": {
 				"Spanish": "Codigo"
 			},
-			"tableName": "productos"
+			"tableName": ""
 		},
 		{
 			"name": "descripcion",
-			"sqlExpression": "productos.descripcion",
+			"sqlExpression": "L.descripcion",
 			"index": 3,
 			"strField": "descripcion",
 			"type": 200,
@@ -60,11 +60,11 @@
 			"label": {
 				"Spanish": "Descripcion"
 			},
-			"tableName": "productos"
+			"tableName": ""
 		},
 		{
 			"name": "saldo",
-			"sqlExpression": "COUNT(idproducto)",
+			"sqlExpression": "L.saldo",
 			"index": 4,
 			"strField": "saldo",
 			"type": 3,

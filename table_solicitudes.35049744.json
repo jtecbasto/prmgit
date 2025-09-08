@@ -1,13 +1,5 @@
 {
-	"orderInfo": [
-		{
-			"index": 43,
-			"field": "estatusentrega",
-			"expr": "solicitudes.idsolicitud",
-			"asc": false
-		}
-	],
-	"sql": "SELECT\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tsolicitudes.estatusentrega,\n\tclientes.nombre,\n\tclientes.paterno,\n\tclientes.materno,\n\tentregasvnp.estado,\n\tentregasvnp.ciudad,\n\tentregasvnp.cp,\n\tentregasvnp.calle,\n\tentregasvnp.numeroext,\n\tentregasvnp.numeroint,\n\tentregasvnp.colonia,\n\tproductos.descripcion,\n\tCONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(\n    TRIM(CONCAT_WS(' ',\n      IFNULL(entregasvnp.numeroext,''),IFNULL(entregasvnp.calle,''), IFNULL(entregasvnp.numeroint,''),\n      IFNULL(entregasvnp.colonia,''), IFNULL(entregasvnp.cp,''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    )),\n    ' ', '+'\n  )) AS maps_url,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      if(IFNULL(entregasvnp.calle,'')='','',concat('C.',entregasvnp.calle)),IFNULL(concat('No.',entregasvnp.numeroext),''), IFNULL(concat('Int.',entregasvnp.numeroint),''),\n      IFNULL((entregasvnp.colonia),''), IFNULL(concat('C.P.',entregasvnp.cp),''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    ))) AS direccion,\n\tsolicitudes.idsolicitud,\n\tss.equipo,\n\tss.chip,\n\tentregasvnp.lat,\n\tentregasvnp.lng\nFROM\n\tsolicitudes\n\tLEFT OUTER JOIN clientes ON clientes.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp ON entregasvnp.idsolicitud = solicitudes.idsolicitud\n\tLEFT OUTER JOIN productos ON productos.idproducto = solicitudes.idproducto\n\tLEFT JOIN (select  idsolicitud,\n  MAX(CASE WHEN clasif = 'Equipo' THEN esnimei END) AS equipo,\n  MAX(CASE WHEN clasif = 'Chip'   THEN esnimei END) AS chip from (\nselect ss.idsolicitud,ss.esnimei,\"Equipo\" clasif  from compras c inner join seriessolicitadas ss \non c.noserie = ss.esnimei inner join productos p on c.codigoproducto=p.codigoiusa where p.clasif='Equipo'\nunion all\nselect ss.idsolicitud, esnimei, \"Chip\"   from compras c inner join seriessolicitadas ss\non c.noserie = ss.esnimei inner join productos p on c.codigoproducto=p.codigoiusa where p.clasif='Chip'\n) x group by idsolicitud\n) ss ON solicitudes.idsolicitud=ss.idsolicitud  \nWHERE solicitudes.idtienda=2\norder by idsolicitud desc",
+	"sql": "SELECT\n\ts.idtipoventa,\n\ts.fecha,\n\ts.fechacaptura,\n\ts.idcliente,\n\ts.idproducto,\n\ts.idplan,\n\ts.usuario,\n\ts.idtienda,\n\ts.fechamodif,\n\ts.orden,\n\ts.solicitudimg,\n\ts.estatus,\n\ts.idsolrazon,\n\ts.importeatt,\n\ts.importesms,\n\ts.plazo,\n\ts.observaciones,\n\ts.equipoincluido,\n\ts.rfc,\n\ts.idtratamiento,\n\ts.riesgo,\n\ts.observacionest,\n\ts.idcli,\n\ts.fecha1avta,\n\ts.idplan1avta,\n\ts.dn1avta,\n\ts.idproceso,\n\ts.idorigenventa,\n\ts.estatusentrega,\n\tcte.nombre,\n\tcte.paterno,\n\tcte.materno,\n\tev.estado,\n\tev.ciudad,\n\tev.cp,\n\tev.calle,\n\tev.numeroext,\n\tev.numeroint,\n\tev.colonia,\n\tp.descripcion,\n\tCONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(TRIM(CONCAT_WS(' ',\n             IFNULL(ev.numeroext,''),IFNULL(ev.calle,''),IFNULL(ev.numeroint,''),\n             IFNULL(ev.colonia,''),IFNULL(ev.cp,''),IFNULL(ev.ciudad,''),IFNULL(ev.estado,'')\n           )),' ','+')) AS maps_url,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      IF(IFNULL(ev.calle,'')='','', CONCAT('C.',ev.calle)),\n      IFNULL(CONCAT('No.',ev.numeroext),''),\n      IFNULL(CONCAT('Int.',ev.numeroint),''),\n      IFNULL(ev.colonia,''), IFNULL(CONCAT('C.P.',ev.cp),''),\n      IFNULL(ev.ciudad,''), IFNULL(ev.estado,'')\n    ))) AS direccion,\n\ts.idsolicitud,\n\tss.equipo,\n\tss.chip,\n\tev.lat,\n\tev.lng\nFROM\n\tsolicitudes AS s\n\tLEFT OUTER JOIN clientes AS cte ON cte.idcliente = s.idcliente\n\tLEFT OUTER JOIN entregasvnp AS ev ON ev.idsolicitud = s.idsolicitud\n\tLEFT OUTER JOIN productos AS p ON p.idproducto = s.idproducto\n\tLEFT OUTER JOIN (SELECT\n\tss.idsolicitud,\n\tMAX(CASE WHEN pr.clasif = 'Equipo' THEN ss.esnimei END) AS equipo,\n\tMAX(CASE WHEN pr.clasif = 'Chip'   THEN ss.esnimei END) AS chip\nFROM\n\tseriessolicitadas AS ss\n\tINNER JOIN compras AS cp ON cp.noserie = ss.esnimei\n\tINNER JOIN productos AS pr ON pr.codigoIUSA = cp.codigoproducto\nGROUP BY\n\tss.idsolicitud\n) AS ss ON ss.idsolicitud = s.idsolicitud\nWHERE\n s.idtienda = 2\n\n",
 	"connId": "conn",
 	"originalTable": "solicitudes",
 	"name": "solicitudes",
@@ -34,7 +26,7 @@
 	"fields": [
 		{
 			"name": "idsolicitud",
-			"sqlExpression": "solicitudes.idsolicitud",
+			"sqlExpression": "s.idsolicitud",
 			"index": 43,
 			"strField": "idsolicitud",
 			"type": 3,
@@ -52,7 +44,7 @@
 		},
 		{
 			"name": "idtipoventa",
-			"sqlExpression": "solicitudes.idtipoventa",
+			"sqlExpression": "s.idtipoventa",
 			"index": 1,
 			"strField": "idtipoventa",
 			"type": 3,
@@ -69,7 +61,7 @@
 		},
 		{
 			"name": "fecha",
-			"sqlExpression": "solicitudes.fecha",
+			"sqlExpression": "s.fecha",
 			"index": 2,
 			"strField": "fecha",
 			"type": 7,
@@ -119,7 +111,7 @@
 		},
 		{
 			"name": "fechacaptura",
-			"sqlExpression": "solicitudes.fechacaptura",
+			"sqlExpression": "s.fechacaptura",
 			"index": 3,
 			"strField": "fechacaptura",
 			"type": 135,
@@ -141,7 +133,7 @@
 		},
 		{
 			"name": "idcliente",
-			"sqlExpression": "solicitudes.idcliente",
+			"sqlExpression": "s.idcliente",
 			"index": 4,
 			"strField": "idcliente",
 			"type": 3,
@@ -334,7 +326,7 @@
 		},
 		{
 			"name": "idproducto",
-			"sqlExpression": "solicitudes.idproducto",
+			"sqlExpression": "s.idproducto",
 			"index": 5,
 			"strField": "idproducto",
 			"type": 3,
@@ -410,7 +402,7 @@
 		},
 		{
 			"name": "idplan",
-			"sqlExpression": "solicitudes.idplan",
+			"sqlExpression": "s.idplan",
 			"index": 6,
 			"strField": "idplan",
 			"type": 3,
@@ -439,7 +431,7 @@
 		},
 		{
 			"name": "usuario",
-			"sqlExpression": "solicitudes.usuario",
+			"sqlExpression": "s.usuario",
 			"index": 7,
 			"strField": "usuario",
 			"type": 200,
@@ -456,7 +448,7 @@
 		},
 		{
 			"name": "idtienda",
-			"sqlExpression": "solicitudes.idtienda",
+			"sqlExpression": "s.idtienda",
 			"index": 8,
 			"strField": "idtienda",
 			"type": 3,
@@ -473,7 +465,7 @@
 		},
 		{
 			"name": "fechamodif",
-			"sqlExpression": "solicitudes.fechamodif",
+			"sqlExpression": "s.fechamodif",
 			"index": 9,
 			"strField": "fechamodif",
 			"type": 135,
@@ -495,7 +487,7 @@
 		},
 		{
 			"name": "orden",
-			"sqlExpression": "solicitudes.orden",
+			"sqlExpression": "s.orden",
 			"index": 10,
 			"strField": "orden",
 			"type": 200,
@@ -534,7 +526,7 @@
 		},
 		{
 			"name": "solicitudimg",
-			"sqlExpression": "solicitudes.solicitudimg",
+			"sqlExpression": "s.solicitudimg",
 			"index": 11,
 			"strField": "solicitudimg",
 			"type": 201,
@@ -553,7 +545,7 @@
 		},
 		{
 			"name": "estatus",
-			"sqlExpression": "solicitudes.estatus",
+			"sqlExpression": "s.estatus",
 			"index": 12,
 			"strField": "estatus",
 			"type": 200,
@@ -577,7 +569,7 @@
 		},
 		{
 			"name": "idsolrazon",
-			"sqlExpression": "solicitudes.idsolrazon",
+			"sqlExpression": "s.idsolrazon",
 			"index": 13,
 			"strField": "idsolrazon",
 			"type": 3,
@@ -594,7 +586,7 @@
 		},
 		{
 			"name": "importeatt",
-			"sqlExpression": "solicitudes.importeatt",
+			"sqlExpression": "s.importeatt",
 			"index": 14,
 			"strField": "importeatt",
 			"type": 5,
@@ -613,7 +605,7 @@
 		},
 		{
 			"name": "importesms",
-			"sqlExpression": "solicitudes.importesms",
+			"sqlExpression": "s.importesms",
 			"index": 15,
 			"strField": "importesms",
 			"type": 5,
@@ -632,7 +624,7 @@
 		},
 		{
 			"name": "plazo",
-			"sqlExpression": "solicitudes.plazo",
+			"sqlExpression": "s.plazo",
 			"index": 16,
 			"strField": "plazo",
 			"type": 2,
@@ -690,7 +682,7 @@
 		},
 		{
 			"name": "observaciones",
-			"sqlExpression": "solicitudes.observaciones",
+			"sqlExpression": "s.observaciones",
 			"index": 17,
 			"strField": "observaciones",
 			"type": 200,
@@ -725,7 +717,7 @@
 		},
 		{
 			"name": "equipoincluido",
-			"sqlExpression": "solicitudes.equipoincluido",
+			"sqlExpression": "s.equipoincluido",
 			"index": 18,
 			"strField": "equipoincluido",
 			"type": 2,
@@ -742,7 +734,7 @@
 		},
 		{
 			"name": "rfc",
-			"sqlExpression": "solicitudes.rfc",
+			"sqlExpression": "s.rfc",
 			"index": 19,
 			"strField": "rfc",
 			"type": 200,
@@ -761,7 +753,7 @@
 		},
 		{
 			"name": "idtratamiento",
-			"sqlExpression": "solicitudes.idtratamiento",
+			"sqlExpression": "s.idtratamiento",
 			"index": 20,
 			"strField": "idtratamiento",
 			"type": 3,
@@ -778,7 +770,7 @@
 		},
 		{
 			"name": "riesgo",
-			"sqlExpression": "solicitudes.riesgo",
+			"sqlExpression": "s.riesgo",
 			"index": 21,
 			"strField": "riesgo",
 			"type": 129,
@@ -798,7 +790,7 @@
 		},
 		{
 			"name": "observacionest",
-			"sqlExpression": "solicitudes.observacionest",
+			"sqlExpression": "s.observacionest",
 			"index": 22,
 			"strField": "observacionest",
 			"type": 200,
@@ -815,7 +807,7 @@
 		},
 		{
 			"name": "idcli",
-			"sqlExpression": "solicitudes.idcli",
+			"sqlExpression": "s.idcli",
 			"index": 23,
 			"strField": "idcli",
 			"type": 200,
@@ -833,7 +825,7 @@
 		},
 		{
 			"name": "fecha1avta",
-			"sqlExpression": "solicitudes.fecha1avta",
+			"sqlExpression": "s.fecha1avta",
 			"index": 24,
 			"strField": "fecha1avta",
 			"type": 7,
@@ -855,7 +847,7 @@
 		},
 		{
 			"name": "idplan1avta",
-			"sqlExpression": "solicitudes.idplan1avta",
+			"sqlExpression": "s.idplan1avta",
 			"index": 25,
 			"strField": "idplan1avta",
 			"type": 3,
@@ -872,7 +864,7 @@
 		},
 		{
 			"name": "dn1avta",
-			"sqlExpression": "solicitudes.dn1avta",
+			"sqlExpression": "s.dn1avta",
 			"index": 26,
 			"strField": "dn1avta",
 			"type": 200,
@@ -889,7 +881,7 @@
 		},
 		{
 			"name": "idproceso",
-			"sqlExpression": "solicitudes.idproceso",
+			"sqlExpression": "s.idproceso",
 			"index": 27,
 			"strField": "idproceso",
 			"type": 2,
@@ -906,7 +898,7 @@
 		},
 		{
 			"name": "idorigenventa",
-			"sqlExpression": "solicitudes.idorigenventa",
+			"sqlExpression": "s.idorigenventa",
 			"index": 28,
 			"strField": "idorigenventa",
 			"type": 3,
@@ -923,7 +915,7 @@
 		},
 		{
 			"name": "nombre",
-			"sqlExpression": "clientes.nombre",
+			"sqlExpression": "cte.nombre",
 			"index": 30,
 			"strField": "nombre",
 			"type": 200,
@@ -945,7 +937,7 @@
 		},
 		{
 			"name": "paterno",
-			"sqlExpression": "clientes.paterno",
+			"sqlExpression": "cte.paterno",
 			"index": 31,
 			"strField": "paterno",
 			"type": 200,
@@ -967,7 +959,7 @@
 		},
 		{
 			"name": "materno",
-			"sqlExpression": "clientes.materno",
+			"sqlExpression": "cte.materno",
 			"index": 32,
 			"strField": "materno",
 			"type": 200,
@@ -989,7 +981,7 @@
 		},
 		{
 			"name": "estado",
-			"sqlExpression": "entregasvnp.estado",
+			"sqlExpression": "ev.estado",
 			"index": 33,
 			"strField": "estado",
 			"type": 200,
@@ -1008,7 +1000,7 @@
 		},
 		{
 			"name": "ciudad",
-			"sqlExpression": "entregasvnp.ciudad",
+			"sqlExpression": "ev.ciudad",
 			"index": 34,
 			"strField": "ciudad",
 			"type": 200,
@@ -1027,7 +1019,7 @@
 		},
 		{
 			"name": "cp",
-			"sqlExpression": "entregasvnp.cp",
+			"sqlExpression": "ev.cp",
 			"index": 35,
 			"strField": "cp",
 			"type": 200,
@@ -1044,7 +1036,7 @@
 		},
 		{
 			"name": "calle",
-			"sqlExpression": "entregasvnp.calle",
+			"sqlExpression": "ev.calle",
 			"index": 36,
 			"strField": "calle",
 			"type": 200,
@@ -1063,7 +1055,7 @@
 		},
 		{
 			"name": "numeroext",
-			"sqlExpression": "entregasvnp.numeroext",
+			"sqlExpression": "ev.numeroext",
 			"index": 37,
 			"strField": "numeroext",
 			"type": 200,
@@ -1082,7 +1074,7 @@
 		},
 		{
 			"name": "numeroint",
-			"sqlExpression": "entregasvnp.numeroint",
+			"sqlExpression": "ev.numeroint",
 			"index": 38,
 			"strField": "numeroint",
 			"type": 200,
@@ -1099,7 +1091,7 @@
 		},
 		{
 			"name": "colonia",
-			"sqlExpression": "entregasvnp.colonia",
+			"sqlExpression": "ev.colonia",
 			"index": 39,
 			"strField": "colonia",
 			"type": 200,
@@ -1118,7 +1110,7 @@
 		},
 		{
 			"name": "descripcion",
-			"sqlExpression": "productos.descripcion",
+			"sqlExpression": "p.descripcion",
 			"index": 40,
 			"strField": "descripcion",
 			"type": 200,
@@ -1137,7 +1129,7 @@
 		},
 		{
 			"name": "maps_url",
-			"sqlExpression": "CONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(\n    TRIM(CONCAT_WS(' ',\n      IFNULL(entregasvnp.numeroext,''),IFNULL(entregasvnp.calle,''), IFNULL(entregasvnp.numeroint,''),\n      IFNULL(entregasvnp.colonia,''), IFNULL(entregasvnp.cp,''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    )),\n    ' ', '+'\n  ))",
+			"sqlExpression": "CONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(TRIM(CONCAT_WS(' ',\n             IFNULL(ev.numeroext,''),IFNULL(ev.calle,''),IFNULL(ev.numeroint,''),\n             IFNULL(ev.colonia,''),IFNULL(ev.cp,''),IFNULL(ev.ciudad,''),IFNULL(ev.estado,'')\n           )),' ','+'))",
 			"index": 41,
 			"strField": "maps_url",
 			"type": 200,
@@ -1163,7 +1155,7 @@
 		},
 		{
 			"name": "direccion",
-			"sqlExpression": "CONCAT(TRIM(CONCAT_WS(' ',\n      if(IFNULL(entregasvnp.calle,'')='','',concat('C.',entregasvnp.calle)),IFNULL(concat('No.',entregasvnp.numeroext),''), IFNULL(concat('Int.',entregasvnp.numeroint),''),\n      IFNULL((entregasvnp.colonia),''), IFNULL(concat('C.P.',entregasvnp.cp),''), IFNULL(entregasvnp.ciudad,''), IFNULL(entregasvnp.estado,'')\n    )))",
+			"sqlExpression": "CONCAT(TRIM(CONCAT_WS(' ',\n      IF(IFNULL(ev.calle,'')='','', CONCAT('C.',ev.calle)),\n      IFNULL(CONCAT('No.',ev.numeroext),''),\n      IFNULL(CONCAT('Int.',ev.numeroint),''),\n      IFNULL(ev.colonia,''), IFNULL(CONCAT('C.P.',ev.cp),''),\n      IFNULL(ev.ciudad,''), IFNULL(ev.estado,'')\n    )))",
 			"index": 42,
 			"strField": "direccion",
 			"type": 200,
@@ -1183,7 +1175,7 @@
 		},
 		{
 			"name": "estatusentrega",
-			"sqlExpression": "solicitudes.estatusentrega",
+			"sqlExpression": "s.estatusentrega",
 			"index": 29,
 			"strField": "estatusentrega",
 			"type": 3,
@@ -1244,7 +1236,7 @@
 		},
 		{
 			"name": "lat",
-			"sqlExpression": "entregasvnp.lat",
+			"sqlExpression": "ev.lat",
 			"index": 46,
 			"strField": "lat",
 			"type": 3,
@@ -1263,7 +1255,7 @@
 		},
 		{
 			"name": "lng",
-			"sqlExpression": "entregasvnp.lng",
+			"sqlExpression": "ev.lng",
 			"index": 47,
 			"strField": "lng",
 			"type": 3,
@@ -1281,6 +1273,9 @@
 			"tableName": "entregasvnp"
 		}
 	],
+	"whereTabs": [
+		{}
+	],
 	"eventHandlers": [
 		{
 			"eventId": "EVENT_AFTERADD",
@@ -1295,7 +1290,7 @@
 		{
 			"eventId": "EVENT_JS_ONLOAD",
 			"pageType": "list",
-			"code": "var fechaIn = document.getElementById('edt_FechaIn');\r\nvar fechaFn = document.getElementById('edt_FechaFn');\r\n\r\n// Función para obtener todos los parámetros actuales de la URL\r\nfunction getCurrentUrlParams() {\r\n    var urlParams = new URLSearchParams(window.location.search);\r\n    var params = {};\r\n    \r\n    // Preservar todos los parámetros existentes\r\n    for (var [key, value] of urlParams) {\r\n        params[key] = value;\r\n    }\r\n    \r\n    return params;\r\n}\r\n\r\n// Función para construir URL con parámetros preservados\r\nfunction buildUrlWithParams(baseUrl, newParams) {\r\n    var params = getCurrentUrlParams();\r\n    \r\n    // Actualizar con nuevos valores\r\n    Object.assign(params, newParams);\r\n    \r\n    // Construir query string\r\n    var queryString = Object.keys(params)\r\n        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))\r\n        .join('&');\r\n    \r\n    return baseUrl + '?' + queryString;\r\n}\r\n\r\nfunction actualizarFechas() {\r\n    var val1 = $(\"#edt_FechaIn\").val();\r\n    var val2 = $(\"#edt_FechaFn\").val();\r\n    \r\n    if(val2 < val1){\r\n        Swal.fire({\r\n            icon: \"error\",\r\n            title: \"La fecha final no puede ser menor a la fecha inicial\"\r\n        }).then(function(result) {\r\n            val2 = val1;\r\n            var newUrl = buildUrlWithParams('solicitudes_list.php', {\r\n                FechaIn: val1,\r\n                FechaFn: val2\r\n            });\r\n            window.location.href = newUrl;\r\n        });\r\n    } else {\r\n        var newUrl = buildUrlWithParams('solicitudes_list.php', {\r\n            FechaIn: val1,\r\n            FechaFn: val2\r\n        });\r\n        window.location.href = newUrl;\r\n    }\r\n}\r\n\r\nfechaIn.onchange = actualizarFechas;\r\nfechaFn.onchange = actualizarFechas;\r\n\r\n// Establecer valores iniciales desde URL\r\nvar urlParams = new URLSearchParams(window.location.search);\r\nif (urlParams.has('FechaIn')) document.getElementById(\"edt_FechaIn\").value = urlParams.get('FechaIn');\r\nif (urlParams.has('FechaFn')) document.getElementById(\"edt_FechaFn\").value = urlParams.get('FechaFn');\r\n\r\n// Interceptar eventos de PHPRunner para preservar fechas\r\n$(document).ready(function() {\r\n    // Interceptar búsqueda\r\n    $(document).on('click', '.search-button, .pagination a', function(e) {\r\n        e.preventDefault();\r\n        \r\n        var val1 = $(\"#edt_FechaIn\").val();\r\n        var val2 = $(\"#edt_FechaFn\").val();\r\n        var targetUrl = $(this).attr('href') || window.location.pathname;\r\n        \r\n        // Si es un enlace de paginación o búsqueda, preservar fechas\r\n        var newUrl = buildUrlWithParams(targetUrl, {\r\n            FechaIn: val1,\r\n            FechaFn: val2\r\n        });\r\n        \r\n        window.location.href = newUrl;\r\n    });\r\n    \r\n    // También interceptar submit del formulario de búsqueda\r\n    $('form').on('submit', function(e) {\r\n        var val1 = $(\"#edt_FechaIn\").val();\r\n        var val2 = $(\"#edt_FechaFn\").val();\r\n        \r\n        // Agregar campos ocultos con las fechas\r\n        $(this).append('<input type=\"hidden\" name=\"FechaIn\" value=\"' + val1 + '\">');\r\n        $(this).append('<input type=\"hidden\" name=\"FechaFn\" value=\"' + val2 + '\">');\r\n    });\r\n});\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n/*\r\nvar fechaIn = document.getElementById('edt_FechaIn');\r\nvar fechaFn = document.getElementById('edt_FechaFn');\r\n\r\nfunction actualizarFechas() {\r\n\tvar val1 = $(\"#edt_FechaIn\").val();\r\n\tvar val2 = $(\"#edt_FechaFn\").val();\r\n\tif(val2<val1){\r\n\t\tSwal.fire({\r\n\t\t  icon: \"error\",\r\n\t\t  title: \"La fecha final no puede ser menor a la fecha inicial\"\r\n\t\t}).then(function(result) {\r\n            // Esta función se ejecuta cuando el usuario cierra el modal\r\n            val2 = val1;\r\n            window.location.href = 'solicitudes_list.php?FechaIn='+val1+'&FechaFn='+val2;\r\n        });\r\n    } else {\r\n        // Si las fechas son correctas, redirigir inmediatamente\r\n        window.location.href = 'solicitudes_list.php?FechaIn=' + val1 + '&FechaFn='+val2;\r\n    }\r\n}\r\n\r\nfechaIn.onchange = actualizarFechas;\r\nfechaFn.onchange = actualizarFechas;\r\n\r\n// Si necesitas establecer valores iniciales desde los parámetros de la URL\r\nvar urlParams = new URLSearchParams(window.location.search);\r\nif (urlParams.has('FechaIn')) document.getElementById(\"edt_FechaIn\").value = urlParams.get('FechaIn');\r\nif (urlParams.has('FechaFn')) document.getElementById(\"edt_FechaFn\").value = urlParams.get('FechaFn');\r\n*/\r\n\r\n\r\n\r\n\r\n\r\n\r\n/*var ctrlFecha = Runner.getControl(pageid, \"fecha\");\r\nctrlFecha.makeReadOnly;\r\n\r\n// ==================================================\r\n// EVENTO ONLOAD PARA LISTA EN PHPRUNNER 11\r\n// ==================================================\r\n\r\nfunction onLoad() {\r\n    // Esperar a que la lista se cargue completamente\r\n    setTimeout(function() {\r\n        aplicarSoloLecturaControles();\r\n        configurarObservadorEdicion();\r\n    }, 1000);\r\n}\r\n\r\n// ==================================================\r\n// FUNCIÓN PRINCIPAL PARA APLICAR SOLO LECTURA\r\n// ==================================================\r\n\r\nfunction aplicarSoloLecturaControles() {\r\n    // Lista de campos que deben ser solo lectura en edición\r\n    var camposSoloLectura = [\r\n        'fecha',       // campo fecha       \r\n        'idcliente',  // Campo idcliente\r\n        'descripcion', // Campo descripcion\r\n        'plazo',           // Campo estado\r\n        'orden'\r\n        // Agrega aquí tus campos específicos\r\n    ];\r\n    \r\n    // Aplicar a todos los campos de la lista\r\n    camposSoloLectura.forEach(function(campo) {\r\n        hacerCampoSoloLectura(campo);\r\n    });\r\n    \r\n    // También aplicar a elementos específicos por clase o ID\r\n    var elementosEspecificos = [\r\n        '.readonly-field',\r\n        '[data-readonly=\"true\"]',\r\n        '#campo_protegido'\r\n    ];\r\n    \r\n    elementosEspecificos.forEach(function(selector) {\r\n        var elementos = document.querySelectorAll(selector);\r\n        elementos.forEach(function(elemento) {\r\n            aplicarEstilosSoloLectura(elemento);\r\n        });\r\n    });\r\n}\r\n\r\n// ==================================================\r\n// FUNCIÓN PARA HACER UN CAMPO ESPECÍFICO SOLO LECTURA\r\n// ==================================================\r\n\r\nfunction hacerCampoSoloLectura(nombreCampo) {\r\n    // Buscar todos los elementos relacionados con el campo\r\n    var selectores = [\r\n        'input[name*=\"' + nombreCampo + '\"]',\r\n        'select[name*=\"' + nombreCampo + '\"]',\r\n        'textarea[name*=\"' + nombreCampo + '\"]',\r\n        '[data-field=\"' + nombreCampo + '\"] input',\r\n        '[data-field=\"' + nombreCampo + '\"] select',\r\n        '[data-field=\"' + nombreCampo + '\"] textarea',\r\n        '.field_' + nombreCampo + ' input',\r\n        '.field_' + nombreCampo + ' select',\r\n        '.field_' + nombreCampo + ' textarea'\r\n    ];\r\n    \r\n    selectores.forEach(function(selector) {\r\n        var elementos = document.querySelectorAll(selector);\r\n        \r\n        elementos.forEach(function(elemento) {\r\n            if (elemento && !elemento.closest('.view-mode')) {\r\n                elemento.setAttribute('readonly', 'true');\r\n                elemento.setAttribute('disabled', 'true');\r\n                aplicarEstilosSoloLectura(elemento);\r\n                \r\n                // Prevenir edición mediante eventos\r\n                elemento.addEventListener('mousedown', prevenirEdicion);\r\n                elemento.addEventListener('keydown', prevenirEdicion);\r\n            }\r\n        });\r\n    });\r\n}\r\n\r\n// ==================================================\r\n// ESTILOS Y COMPORTAMIENTO PARA SOLO LECTURA\r\n// ==================================================\r\n\r\nfunction aplicarEstilosSoloLectura(elemento) {\r\n    elemento.style.backgroundColor = '#f8f9fa';\r\n    elemento.style.borderColor = '#dee2e6';\r\n    elemento.style.color = '#6c757d';\r\n    elemento.style.cursor = 'not-allowed';\r\n    elemento.classList.add('campo-solo-lectura');\r\n}\r\n\r\nfunction prevenirEdicion(evento) {\r\n    evento.preventDefault();\r\n    evento.stopPropagation();\r\n    return false;\r\n}\r\n\r\n// ==================================================\r\n// OBSERVADOR PARA DETECTAR EDICIONES EN LÍNEA\r\n// ==================================================\r\n\r\nfunction configurarObservadorEdicion() {\r\n    // Observar cambios en el body para detectar modos de edición\r\n    var observer = new MutationObserver(function(mutations) {\r\n        mutations.forEach(function(mutation) {\r\n            if (mutation.addedNodes.length > 0) {\r\n                // Verificar si se activó el modo edición\r\n                var elementosEdicion = document.querySelectorAll('.edit-mode, .editing, [data-editing=\"true\"]');\r\n                if (elementosEdicion.length > 0) {\r\n                    setTimeout(aplicarSoloLecturaControles, 300);\r\n                }\r\n            }\r\n        });\r\n    });\r\n    \r\n    // Configurar el observador\r\n    observer.observe(document.body, {\r\n        childList: true,\r\n        subtree: true,\r\n        attributes: true,\r\n        attributeFilter: ['class', 'data-editing']\r\n    });\r\n    \r\n    // También escuchar eventos de clic en botones de edición\r\n    document.addEventListener('click', function(e) {\r\n        var botonEdicion = e.target.closest('[id*=\"edit\"], .edit-btn, .phpr-edit');\r\n        if (botonEdicion) {\r\n            setTimeout(aplicarSoloLecturaControles, 500);\r\n        }\r\n    });\r\n}\r\n\r\n// ==================================================\r\n// INICIALIZACIÓN AL CARGAR LA PÁGINA\r\n// ==================================================\r\n\r\n// Llamar a onLoad cuando el DOM esté listo\r\nif (document.readyState === 'loading') {\r\n    document.addEventListener('DOMContentLoaded', onLoad);\r\n} else {\r\n    onLoad();\r\n}\r\n\r\n// Re-aplicar cuando se redimensiona o hay cambios\r\nwindow.addEventListener('resize', function() {\r\n    setTimeout(aplicarSoloLecturaControles, 300);\r\n});\r\n\r\n// ==================================================\r\n// CSS ADICIONAL (opcional, agregar en Custom CSS)\r\n// ==================================================\r\n/*\r\n.campo-solo-lectura {\r\n    background-color: #f8f9fa !important;\r\n    border: 1px solid #dee2e6 !important;\r\n    color: #6c757d !important;\r\n    cursor: not-allowed !important;\r\n}\r\n\r\n.campo-solo-lectura:hover {\r\n    background-color: #e9ecef !important;\r\n}\r\n*/"
+			"code": "/*var fechaIn = document.getElementById('edt_FechaIn');\r\nvar fechaFn = document.getElementById('edt_FechaFn');\r\n\r\n// Función para obtener todos los parámetros actuales de la URL\r\nfunction getCurrentUrlParams() {\r\n    var urlParams = new URLSearchParams(window.location.search);\r\n    var params = {};\r\n    \r\n    // Preservar todos los parámetros existentes\r\n    for (var [key, value] of urlParams) {\r\n        params[key] = value;\r\n    }\r\n    \r\n    return params;\r\n}\r\n\r\n// Función para construir URL con parámetros preservados\r\nfunction buildUrlWithParams(baseUrl, newParams) {\r\n    var params = getCurrentUrlParams();\r\n    \r\n    // Actualizar con nuevos valores\r\n    Object.assign(params, newParams);\r\n    \r\n    // Construir query string\r\n    var queryString = Object.keys(params)\r\n        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))\r\n        .join('&');\r\n    \r\n    return baseUrl + '?' + queryString;\r\n}\r\n\r\nfunction actualizarFechas() {\r\n    var val1 = $(\"#edt_FechaIn\").val();\r\n    var val2 = $(\"#edt_FechaFn\").val();\r\n    \r\n    if(val2 < val1){\r\n        Swal.fire({\r\n            icon: \"error\",\r\n            title: \"La fecha final no puede ser menor a la fecha inicial\"\r\n        }).then(function(result) {\r\n            val2 = val1;\r\n            var newUrl = buildUrlWithParams('solicitudes_list.php', {\r\n                FechaIn: val1,\r\n                FechaFn: val2\r\n            });\r\n            window.location.href = newUrl;\r\n        });\r\n    } else {\r\n        var newUrl = buildUrlWithParams('solicitudes_list.php', {\r\n            FechaIn: val1,\r\n            FechaFn: val2\r\n        });\r\n        window.location.href = newUrl;\r\n    }\r\n}\r\n\r\nfechaIn.onchange = actualizarFechas;\r\nfechaFn.onchange = actualizarFechas;\r\n\r\n// Establecer valores iniciales desde URL\r\nvar urlParams = new URLSearchParams(window.location.search);\r\nif (urlParams.has('FechaIn')) document.getElementById(\"edt_FechaIn\").value = urlParams.get('FechaIn');\r\nif (urlParams.has('FechaFn')) document.getElementById(\"edt_FechaFn\").value = urlParams.get('FechaFn');\r\n\r\n// Interceptar eventos de PHPRunner para preservar fechas\r\n$(document).ready(function() {\r\n    // Interceptar búsqueda\r\n    $(document).on('click', '.search-button, .pagination a', function(e) {\r\n        e.preventDefault();\r\n        \r\n        var val1 = $(\"#edt_FechaIn\").val();\r\n        var val2 = $(\"#edt_FechaFn\").val();\r\n        var targetUrl = $(this).attr('href') || window.location.pathname;\r\n        \r\n        // Si es un enlace de paginación o búsqueda, preservar fechas\r\n        var newUrl = buildUrlWithParams(targetUrl, {\r\n            FechaIn: val1,\r\n            FechaFn: val2\r\n        });\r\n        \r\n        window.location.href = newUrl;\r\n    });\r\n    \r\n    // También interceptar submit del formulario de búsqueda\r\n    $('form').on('submit', function(e) {\r\n        var val1 = $(\"#edt_FechaIn\").val();\r\n        var val2 = $(\"#edt_FechaFn\").val();\r\n        \r\n        // Agregar campos ocultos con las fechas\r\n        $(this).append('<input type=\"hidden\" name=\"FechaIn\" value=\"' + val1 + '\">');\r\n        $(this).append('<input type=\"hidden\" name=\"FechaFn\" value=\"' + val2 + '\">');\r\n    });\r\n});\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n/*\r\nvar fechaIn = document.getElementById('edt_FechaIn');\r\nvar fechaFn = document.getElementById('edt_FechaFn');\r\n\r\nfunction actualizarFechas() {\r\n\tvar val1 = $(\"#edt_FechaIn\").val();\r\n\tvar val2 = $(\"#edt_FechaFn\").val();\r\n\tif(val2<val1){\r\n\t\tSwal.fire({\r\n\t\t  icon: \"error\",\r\n\t\t  title: \"La fecha final no puede ser menor a la fecha inicial\"\r\n\t\t}).then(function(result) {\r\n            // Esta función se ejecuta cuando el usuario cierra el modal\r\n            val2 = val1;\r\n            window.location.href = 'solicitudes_list.php?FechaIn='+val1+'&FechaFn='+val2;\r\n        });\r\n    } else {\r\n        // Si las fechas son correctas, redirigir inmediatamente\r\n        window.location.href = 'solicitudes_list.php?FechaIn=' + val1 + '&FechaFn='+val2;\r\n    }\r\n}\r\n\r\nfechaIn.onchange = actualizarFechas;\r\nfechaFn.onchange = actualizarFechas;\r\n\r\n// Si necesitas establecer valores iniciales desde los parámetros de la URL\r\nvar urlParams = new URLSearchParams(window.location.search);\r\nif (urlParams.has('FechaIn')) document.getElementById(\"edt_FechaIn\").value = urlParams.get('FechaIn');\r\nif (urlParams.has('FechaFn')) document.getElementById(\"edt_FechaFn\").value = urlParams.get('FechaFn');\r\n*/\r\n\r\n\r\n\r\n\r\n\r\n\r\n/*var ctrlFecha = Runner.getControl(pageid, \"fecha\");\r\nctrlFecha.makeReadOnly;\r\n\r\n// ==================================================\r\n// EVENTO ONLOAD PARA LISTA EN PHPRUNNER 11\r\n// ==================================================\r\n\r\nfunction onLoad() {\r\n    // Esperar a que la lista se cargue completamente\r\n    setTimeout(function() {\r\n        aplicarSoloLecturaControles();\r\n        configurarObservadorEdicion();\r\n    }, 1000);\r\n}\r\n\r\n// ==================================================\r\n// FUNCIÓN PRINCIPAL PARA APLICAR SOLO LECTURA\r\n// ==================================================\r\n\r\nfunction aplicarSoloLecturaControles() {\r\n    // Lista de campos que deben ser solo lectura en edición\r\n    var camposSoloLectura = [\r\n        'fecha',       // campo fecha       \r\n        'idcliente',  // Campo idcliente\r\n        'descripcion', // Campo descripcion\r\n        'plazo',           // Campo estado\r\n        'orden'\r\n        // Agrega aquí tus campos específicos\r\n    ];\r\n    \r\n    // Aplicar a todos los campos de la lista\r\n    camposSoloLectura.forEach(function(campo) {\r\n        hacerCampoSoloLectura(campo);\r\n    });\r\n    \r\n    // También aplicar a elementos específicos por clase o ID\r\n    var elementosEspecificos = [\r\n        '.readonly-field',\r\n        '[data-readonly=\"true\"]',\r\n        '#campo_protegido'\r\n    ];\r\n    \r\n    elementosEspecificos.forEach(function(selector) {\r\n        var elementos = document.querySelectorAll(selector);\r\n        elementos.forEach(function(elemento) {\r\n            aplicarEstilosSoloLectura(elemento);\r\n        });\r\n    });\r\n}\r\n\r\n// ==================================================\r\n// FUNCIÓN PARA HACER UN CAMPO ESPECÍFICO SOLO LECTURA\r\n// ==================================================\r\n\r\nfunction hacerCampoSoloLectura(nombreCampo) {\r\n    // Buscar todos los elementos relacionados con el campo\r\n    var selectores = [\r\n        'input[name*=\"' + nombreCampo + '\"]',\r\n        'select[name*=\"' + nombreCampo + '\"]',\r\n        'textarea[name*=\"' + nombreCampo + '\"]',\r\n        '[data-field=\"' + nombreCampo + '\"] input',\r\n        '[data-field=\"' + nombreCampo + '\"] select',\r\n        '[data-field=\"' + nombreCampo + '\"] textarea',\r\n        '.field_' + nombreCampo + ' input',\r\n        '.field_' + nombreCampo + ' select',\r\n        '.field_' + nombreCampo + ' textarea'\r\n    ];\r\n    \r\n    selectores.forEach(function(selector) {\r\n        var elementos = document.querySelectorAll(selector);\r\n        \r\n        elementos.forEach(function(elemento) {\r\n            if (elemento && !elemento.closest('.view-mode')) {\r\n                elemento.setAttribute('readonly', 'true');\r\n                elemento.setAttribute('disabled', 'true');\r\n                aplicarEstilosSoloLectura(elemento);\r\n                \r\n                // Prevenir edición mediante eventos\r\n                elemento.addEventListener('mousedown', prevenirEdicion);\r\n                elemento.addEventListener('keydown', prevenirEdicion);\r\n            }\r\n        });\r\n    });\r\n}\r\n\r\n// ==================================================\r\n// ESTILOS Y COMPORTAMIENTO PARA SOLO LECTURA\r\n// ==================================================\r\n\r\nfunction aplicarEstilosSoloLectura(elemento) {\r\n    elemento.style.backgroundColor = '#f8f9fa';\r\n    elemento.style.borderColor = '#dee2e6';\r\n    elemento.style.color = '#6c757d';\r\n    elemento.style.cursor = 'not-allowed';\r\n    elemento.classList.add('campo-solo-lectura');\r\n}\r\n\r\nfunction prevenirEdicion(evento) {\r\n    evento.preventDefault();\r\n    evento.stopPropagation();\r\n    return false;\r\n}\r\n\r\n// ==================================================\r\n// OBSERVADOR PARA DETECTAR EDICIONES EN LÍNEA\r\n// ==================================================\r\n\r\nfunction configurarObservadorEdicion() {\r\n    // Observar cambios en el body para detectar modos de edición\r\n    var observer = new MutationObserver(function(mutations) {\r\n        mutations.forEach(function(mutation) {\r\n            if (mutation.addedNodes.length > 0) {\r\n                // Verificar si se activó el modo edición\r\n                var elementosEdicion = document.querySelectorAll('.edit-mode, .editing, [data-editing=\"true\"]');\r\n                if (elementosEdicion.length > 0) {\r\n                    setTimeout(aplicarSoloLecturaControles, 300);\r\n                }\r\n            }\r\n        });\r\n    });\r\n    \r\n    // Configurar el observador\r\n    observer.observe(document.body, {\r\n        childList: true,\r\n        subtree: true,\r\n        attributes: true,\r\n        attributeFilter: ['class', 'data-editing']\r\n    });\r\n    \r\n    // También escuchar eventos de clic en botones de edición\r\n    document.addEventListener('click', function(e) {\r\n        var botonEdicion = e.target.closest('[id*=\"edit\"], .edit-btn, .phpr-edit');\r\n        if (botonEdicion) {\r\n            setTimeout(aplicarSoloLecturaControles, 500);\r\n        }\r\n    });\r\n}\r\n\r\n// ==================================================\r\n// INICIALIZACIÓN AL CARGAR LA PÁGINA\r\n// ==================================================\r\n\r\n// Llamar a onLoad cuando el DOM esté listo\r\nif (document.readyState === 'loading') {\r\n    document.addEventListener('DOMContentLoaded', onLoad);\r\n} else {\r\n    onLoad();\r\n}\r\n\r\n// Re-aplicar cuando se redimensiona o hay cambios\r\nwindow.addEventListener('resize', function() {\r\n    setTimeout(aplicarSoloLecturaControles, 300);\r\n});\r\n\r\n// ==================================================\r\n// CSS ADICIONAL (opcional, agregar en Custom CSS)\r\n// ==================================================\r\n/*\r\n.campo-solo-lectura {\r\n    background-color: #f8f9fa !important;\r\n    border: 1px solid #dee2e6 !important;\r\n    color: #6c757d !important;\r\n    cursor: not-allowed !important;\r\n}\r\n\r\n.campo-solo-lectura:hover {\r\n    background-color: #e9ecef !important;\r\n}\r\n*/\r\n\r\n\r\n\r\nfunction redirigirReporte() {\r\n  var val2 = $(\"#edt_FechaIn\").val();\r\n  var val3 = $(\"#edt_FechaFn\").val();\r\n\r\n  \r\n  window.location.href = 'solicitudes_list.php?FechaIn=' + val2 +\r\n                           '&FechaFn=' + val3;\r\n}\r\n// Asignar evento a todos los campos\r\n$(\"#edt_FechaIn, #edt_FechaFn\")\r\n  .on(\"change\", redirigirReporte);\r\n\r\n"
 		},
 		{
 			"eventId": "EVENT_JS_ONLOAD",
@@ -1313,8 +1308,19 @@
 			"code": "// $data = registro actual; $row = atributos HTML de la fila\r\n$st = (int)$data[\"estatusentrega\"];  // 2=Entregada, 3=Rechazada (ajusta si difiere)\r\nswitch ($st) {\r\n  case 2:  $cls = 'table-success'; break; // Entregada\r\n  case 3:  $cls = 'table-danger';  break; // Rechazada\r\n  default: $cls = 'table-warning';        // No entregada / otros\r\n}\r\n\r\nif (!isset($row[\"rowattrs\"])) $row[\"rowattrs\"] = '';\r\n$row[\"rowattrs\"] .= ' class=\"'.$cls.'\"';\r\n\r\nif($data['estatusentrega'] == 3){\r\n    $record[\"css\"] = 'background:#FF3A30';\r\n    $record['fecha_css'] = 'color:white';\r\n    $record['idcliente_css'] = 'color:white';\r\n    $record['descripcion_css'] = 'color:white';\r\n    $record['estatus_css'] = 'color:white';\r\n    $record['plazo_css'] = 'color:white';\r\n    $record['orden_css'] = 'color:white';\r\n    $record['maps_url_css'] = 'color:white';\r\n    $record['estatusentrega_css'] = 'color:white';\r\n    $record['equipo_css'] = 'color:white';\r\n    $record['chip_css'] = 'color:white';\r\n}\r\n"
 		},
 		{
-			"eventId": "EVENT_INIT_TABLE",
-			"code": "// Obtener fechas con valores por defecto coherentes\r\n$var1 = isset($_GET[\"FechaIn\"]) ? $_GET[\"FechaIn\"] : date('Y-m-d', strtotime('-30 days'));\r\n$var2 = isset($_GET[\"FechaFn\"]) ? $_GET[\"FechaFn\"] : date('Y-m-d');\r\n\r\n$query->addWhere(\"fecha between '\".$var1.\"' and '\".$var2.\"'\");"
+			"eventId": "EVENT_BEFORESHOW_EDIT",
+			"pageType": "edit",
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n\n// Edit page -> Before display\n// Guarda el producto actual en sesión para el SQL del lookup\n$_SESSION[\"IDACTUAL\"] = isset($values[\"idproducto\"]) ? (int)$values[\"idproducto\"] : 0;\n\n\n\n\n\n"
+		},
+		{
+			"eventId": "EVENT_BEFOREQUERY_LIST",
+			"pageType": "list",
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n// Filtro dinámico por rango de fechas almacenado en sesión\n//$fechaInicio = $_SESSION[\"fecha_inicio\"];\n//$fechaFin = $_SESSION[\"fecha_fin\"];\n/*\nif (isset($_SESSION['FechaIn']) && isset($_SESSION['FechaFn'])) {\n$var1 = isset($_GET[\"FechaIn\"]) ? $_GET[\"FechaIn\"] : date('Y-m-d', strtotime('-30 days'));\n$var2 = isset($_GET[\"FechaFn\"]) ? $_GET[\"FechaFn\"] : date('Y-m-d');\n\n$_SESSION['FechaIn']=$var1;\n$_SESSION['FechaFn']=$var2; } \nelse {\n    $var1 = $_SESSION['FechaIn'];\n    $var2 = $_SESSION['FechaFn'];\n}\n\nif ($var1 && $var2) {\n    if ($strWhereClause != \"\") {\n        $strWhereClause .= \" AND \";\n    }\n    $strWhereClause .= \" fecha BETWEEN '\" . db_addslashes($var1) . \"' \n                        AND '\" . db_addslashes($var2) . \"'\";\n}\n*/\n\n// Before SQL Query (List)\n// Parámetros: &$strSQL, &$strWhereClause, &$strOrderBy, $pageObject\n\n// 1) Tomar fechas en este orden de prioridad: GET -> SESSION -> defaults\n$in  = isset($_GET['FechaIn']) ? $_GET['FechaIn'] : ( isset($_SESSION['FechaIn']) ? $_SESSION['FechaIn'] : date('Y-m-d', strtotime('-30 days')) );\n$fn  = isset($_GET['FechaFn']) ? $_GET['FechaFn'] : ( isset($_SESSION['FechaFn']) ? $_SESSION['FechaFn'] : date('Y-m-d') );\n\n// 2) Validar formato (YYYY-MM-DD); si no es válido, poner defaults\n$check = function($d){\n    $dt = DateTime::createFromFormat('Y-m-d', $d);\n    return $dt && $dt->format('Y-m-d') === $d;\n};\nif( !$check($in) ) $in = date('Y-m-d', strtotime('-30 days'));\nif( !$check($fn) ) $fn = date('Y-m-d');\n\n// 3) Si el usuario invirtió el rango, corregir (swap)\nif( $in > $fn ){\n    $tmp = $in; $in = $fn; $fn = $tmp;\n}\n\n// 4) Guardar en sesión (para siguientes cargas)\n$_SESSION['FechaIn'] = $in;\n$_SESSION['FechaFn'] = $fn;\n\n// 5) Construir el WHERE\n//    - Si tu campo 'fecha' es DATE, BETWEEN es inclusivo y esto basta.\n//    - Si fuese DATETIME y quieres incluir todo el día final, usa <= DATE_ADD($fn, INTERVAL 1 DAY)\nif( $strWhereClause != \"\" ) {\n    $strWhereClause .= \" AND \";\n}\n$strWhereClause .= \" fecha BETWEEN \" . add_db_quotes(\"fecha\", $in) . \" AND \" . add_db_quotes(\"fecha\", $fn);\n\n// Para depurar:\n// LogInfo(\"Rango aplicado: $in a $fn\");\n// LogInfo(\"WHERE: \".$strWhereClause);\n"
+		},
+		{
+			"eventId": "EVENT_BEFORESHOW_ADD",
+			"pageType": "add",
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n// Valores de texto\n$pageObject->setProxyValue(\"value_ciudad_1\", \"MERIDA\");\n$pageObject->setProxyValue(\"value_estado_1\", \"YUCATAN\");\n\n// Coordenadas por defecto\n$pageObject->setProxyValue(\"value_lat_1\", \"21.1619\");\n$pageObject->setProxyValue(\"value_lng_1\", \"-89.6793\");\n"
 		}
 	],
 	"dbTableInfo": {
@@ -2098,7 +2104,7 @@
 				"text": {
 					"type": "text",
 					"label": {
-						"text": "<div id=\"map\" style=\"height: 400px; width: 100%; margin-bottom: 10px; border: 1px solid #ccc;\"></div>\n<p><strong>Haz clic en el mapa para obtener los datos de la ubicación (si algún campo no se acompleta automáticamente, favor de escribirlo)</strong></p>\n\n<!-- Cargar Leaflet CSS & JS -->\n<link rel=\"stylesheet\" href=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.css\" />\n<script src=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.js\"></script>\n\n<script>\n// Variables globales\nlet map;\nlet marker;\nlet mapInitialized = false;\n\nfunction initMap() {\n    if (mapInitialized) {\n        setTimeout(() => map.invalidateSize(), 100);\n        return;\n    }\n    \n    const initialLocation = [21.0038, -89.6183];\n    map = L.map('map').setView(initialLocation, 12);\n    \n    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {\n        attribution: '&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'\n    }).addTo(map);\n    \n    mapInitialized = true;\n    \n    map.on('click', function(e) {\n        placeMarkerAndGeocode(e.latlng);\n    });\n    \n    setTimeout(() => map.invalidateSize(), 300);\n}\n\nfunction placeMarkerAndGeocode(latlng) {\n    if (marker) map.removeLayer(marker);\n    marker = L.marker(latlng).addTo(map);\n    map.setView(latlng, map.getZoom());\n    \n    var apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}&zoom=18&addressdetails=1`;\n    \n    fetch(apiUrl)\n        .then(response => response.json())\n        .then(data => {\n            if (data && data.address) {\n                populateAddressFields(data.address, latlng, data.display_name);\n            } else {\n                alert('No se encontraron resultados para esta ubicación.');\n            }\n        })\n        .catch(error => {\n            console.error('Error:', error);\n            alert('Falló la geocodificación.');\n        });\n}\n\n// 🔥 NUEVA FUNCIÓN: Extraer número de dirección\nfunction extractHouseNumber(fullAddress, roadName) {\n    if (!fullAddress || !roadName) return '';\n    \n    // Buscar patrones comunes de números\n    const patterns = [\n        /(?:No\\.|Num|#)\\s*(\\d+)/i,    // No. 366, Num 366, #366\n        /(\\d+)\\s*(?:#|No\\.|Num)/i,     // 366 #, 366 No.\n        /(\\d+)\\s*[-–]\\s*\\d+/i,         // 366-368\n        /(\\d+)[a-zA-Z]?$/i,            // 366, 366A\n        /^(\\d+)\\s+/i                   // 366 Calle 30\n    ];\n    \n    for (const pattern of patterns) {\n        const match = fullAddress.match(pattern);\n        if (match && match[1]) {\n            return match[1];\n        }\n    }\n    \n    // Si no se encuentra con patrones, intentar con el campo house_number de Nominatim\n    return '';\n}\n\nfunction populateAddressFields(address, latlng, fullAddress = '') {\n    // Extraer el número de casa\n    const houseNumber = address.house_number || extractHouseNumber(fullAddress, address.road);\n    \n    // Llenar los campos del formulario\n    document.getElementById('value_estado_1').value = address.state || '';\n    document.getElementById('value_ciudad_1').value = address.city || address.town || address.village || '';\n    document.getElementById('value_cp_1').value = address.postcode || '';\n    document.getElementById('value_colonia_1').value = address.suburb || address.neighbourhood || '';\n    document.getElementById('value_calle_1').value = address.road || '';\n    \n    // 🔥 NUEVO: Llenar el número exterior\n    document.getElementById('value_numeroext_1').value = houseNumber;\n    \n    document.getElementById('value_lat_1').value = latlng.lat;\n    document.getElementById('value_lng_1').value = latlng.lng;\n    \n    console.log('Datos completos de Nominatim:', address);\n    console.log('Dirección completa:', fullAddress);\n    console.log('Número extraído:', houseNumber);\n}\n\n// 🔥 OBSERVAR CUANDO EL TAB Y SECTION SE HACEN VISIBLES\nfunction checkMapContainer() {\n    const mapContainer = document.getElementById('map');\n    if (mapContainer.offsetParent !== null && mapContainer.offsetWidth > 0) {\n        initMap();\n        return true;\n    }\n    return false;\n}\n\ndocument.addEventListener('DOMContentLoaded', function() {\n    const interval = setInterval(() => {\n        if (checkMapContainer()) {\n            clearInterval(interval);\n        }\n    }, 200);\n    \n    document.body.addEventListener('click', function(e) {\n        if (e.target.closest('[data-toggle=\"tab\"], .step-tab, .nav-link')) {\n            setTimeout(() => {\n                if (mapInitialized) map.invalidateSize();\n                else if (checkMapContainer()) console.log('Mapa inicializado desde click en tab');\n            }, 400);\n        }\n    });\n});\n\nwindow.addEventListener('resize', () => {\n    if (mapInitialized) setTimeout(() => map.invalidateSize(), 100);\n});\n\nconst observer = new MutationObserver(function(mutations) {\n    mutations.forEach(function(mutation) {\n        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {\n            setTimeout(() => {\n                if (mapInitialized) map.invalidateSize();\n            }, 200);\n        }\n    });\n});\n\nsetTimeout(() => {\n    const mapContainer = document.getElementById('map');\n    if (mapContainer) {\n        observer.observe(mapContainer, { attributes: true, attributeFilter: ['style'] });\n    }\n}, 1000);\n</script>",
+						"text": "<div id=\"map\" style=\"height: 400px; width: 100%; margin-bottom: 10px; border: 1px solid #ccc;\"></div>\n<p><strong>Haz clic en el mapa para obtener los datos de la ubicación (si algún campo no se acompleta automáticamente, favor de escribirlo)</strong></p>\n\n<!-- Cargar Leaflet CSS & JS -->\n<link rel=\"stylesheet\" href=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.css\" />\n<script src=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.js\"></script>\n\n<script>\n// Variables globales\nlet map;\nlet marker;\nlet mapInitialized = false;\n\nfunction initMap() {\n    if (mapInitialized) {\n        setTimeout(() => map.invalidateSize(), 100);\n        return;\n    }\n    \n    const initialLocation = [21.0038, -89.6183];\n    map = L.map('map').setView(initialLocation, 12);\n    \n    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {\n        attribution: '&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'\n    }).addTo(map);\n    \n    mapInitialized = true;\n    \n    map.on('click', function(e) {\n        placeMarkerAndGeocode(e.latlng);\n    });\n    \n    setTimeout(() => map.invalidateSize(), 300);\n}\n\nfunction placeMarkerAndGeocode(latlng) {\n    if (marker) map.removeLayer(marker);\n    marker = L.marker(latlng).addTo(map);\n    map.setView(latlng, map.getZoom());\n    \n    var apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}&zoom=18&addressdetails=1`;\n    \n    fetch(apiUrl)\n        .then(response => response.json())\n        .then(data => {\n            if (data && data.address) {\n                populateAddressFields(data.address, latlng, data.display_name);\n            } else {\n                alert('No se encontraron resultados para esta ubicación.');\n            }\n        })\n        .catch(error => {\n            console.error('Error:', error);\n            alert('Falló la geocodificación.');\n        });\n}\n\n// 🔥 NUEVA FUNCIÓN: Extraer número de dirección\nfunction extractHouseNumber(fullAddress, roadName) {\n    if (!fullAddress || !roadName) return '';\n    \n    // Buscar patrones comunes de números\n    const patterns = [\n        /(?:No\\.|Num|#)\\s*(\\d+)/i,    // No. 366, Num 366, #366\n        /(\\d+)\\s*(?:#|No\\.|Num)/i,     // 366 #, 366 No.\n        /(\\d+)\\s*[-–]\\s*\\d+/i,         // 366-368\n        /(\\d+)[a-zA-Z]?$/i,            // 366, 366A\n        /^(\\d+)\\s+/i                   // 366 Calle 30\n    ];\n    \n    for (const pattern of patterns) {\n        const match = fullAddress.match(pattern);\n        if (match && match[1]) {\n            return match[1];\n        }\n    }\n    \n    // Si no se encuentra con patrones, intentar con el campo house_number de Nominatim\n    return '';\n}\n\nfunction populateAddressFields(address, latlng, fullAddress = '') {\n    // Extraer el número de casa\n    const houseNumber = address.house_number || extractHouseNumber(fullAddress, address.road);\n    \n    // Llenar los campos del formulario\n    document.getElementById('value_estado_1').value = address.state || '';\n    document.getElementById('value_ciudad_1').value = address.city || address.town || address.village || '';\n    document.getElementById('value_cp_1').value = address.postcode || '';\n    document.getElementById('value_colonia_1').value = address.suburb || address.neighbourhood || '';\n    document.getElementById('value_calle_1').value = address.road || '';\n    \n    // 🔥 NUEVO: Llenar el número exterior\n    document.getElementById('value_numeroext_1').value = houseNumber;\n    \n    document.getElementById('value_lat_1').value = latlng.lat;\n    document.getElementById('value_lng_1').value = latlng.lng;\n    \n    console.log('Datos completos de Nominatim:', address);\n    console.log('Dirección completa:', fullAddress);\n    console.log('Número extraído:', houseNumber);\n}\n\n// 🔥 OBSERVAR CUANDO EL TAB Y SECTION SE HACEN VISIBLES\nfunction checkMapContainer() {\n    const mapContainer = document.getElementById('map');\n    if (mapContainer.offsetParent !== null && mapContainer.offsetWidth > 0) {\n        initMap();\n        return true;\n    }\n    return false;\n}\n\ndocument.addEventListener('DOMContentLoaded', function() {\n    const interval = setInterval(() => {\n        if (checkMapContainer()) {\n            clearInterval(interval);\n        }\n    }, 200);\n    \n    document.body.addEventListener('click', function(e) {\n        if (e.target.closest('[data-toggle=\"tab\"], .step-tab, .nav-link')) {\n            setTimeout(() => {\n                if (mapInitialized) map.invalidateSize();\n                else if (checkMapContainer()) console.log('Mapa inicializado desde click en tab');\n            }, 400);\n        }\n    });\n});\n\nwindow.addEventListener('resize', () => {\n    if (mapInitialized) setTimeout(() => map.invalidateSize(), 100);\n});\n\nconst observer = new MutationObserver(function(mutations) {\n    mutations.forEach(function(mutation) {\n        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {\n            setTimeout(() => {\n                if (mapInitialized) map.invalidateSize();\n            }, 200);\n        }\n    });\n});\n\nsetTimeout(() => {\n    const mapContainer = document.getElementById('map');\n    if (mapContainer) {\n        observer.observe(mapContainer, { attributes: true, attributeFilter: ['style'] });\n    }\n}, 1000);\n</script>\n\n\n\n\n\n\n<script>\n(function(){\n  // ====== HELPERS ======\n  const $id = (id) => document.getElementById(id);\n  const safeTrim = (v) => (v || '').toString().trim();\n\n  function buildAddressFromFields(){\n    const calle   = safeTrim($id('value_calle_1')?.value);\n    const numero  = safeTrim($id('value_numeroext_1')?.value);\n    const col     = safeTrim($id('value_colonia_1')?.value);\n    const ciudad  = safeTrim($id('value_ciudad_1')?.value);\n    const estado  = safeTrim($id('value_estado_1')?.value);\n    const cp      = safeTrim($id('value_cp_1')?.value);\n    const parts = [\n      numero && calle ? `${calle} ${numero}` : calle || '',\n      col, ciudad, estado, cp, 'México'\n    ].filter(Boolean);\n    return parts.join(', ');\n  }\n\n  function updateMarkerAndView(lat, lng, zoomIfNeeded = false){\n    if (!mapInitialized) initMap();\n    const latlng = L.latLng(lat, lng);\n    if (marker) { marker.setLatLng(latlng); }\n    else { marker = L.marker(latlng).addTo(map); }\n    if (zoomIfNeeded) map.setView(latlng, 17); else map.panTo(latlng);\n  }\n\n  function isValidLatLng(lat, lng){\n    const nlat = Number(lat), nlng = Number(lng);\n    return Number.isFinite(nlat) && Number.isFinite(nlng)\n      && nlat <= 90 && nlat >= -90 && nlng <= 180 && nlng >= -180;\n  }\n\n  function debounce(fn, ms){\n    let t; return function(...args){ clearTimeout(t); t = setTimeout(() => fn.apply(this, args), ms); };\n  }\n\n  async function geocodeAddressAndUpdate(){\n    const q = buildAddressFromFields();\n    if (!q) return;\n    const url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&countrycodes=mx&q=${encodeURIComponent(q)}`;\n    try {\n      const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });\n      const data = await resp.json();\n      if (Array.isArray(data) && data.length > 0){\n        const best = data[0];\n        const lat = parseFloat(best.lat), lon = parseFloat(best.lon);\n        if (isValidLatLng(lat, lon)){\n          if ($id('value_lat_1')) $id('value_lat_1').value = lat;\n          if ($id('value_lng_1')) $id('value_lng_1').value = lon;\n          updateMarkerAndView(lat, lon, true);\n        }\n      } else {\n        console.warn('No hubo resultados para:', q);\n      }\n    } catch (e) {\n      console.error('Error geocodificando:', e);\n    }\n  }\n\n  function attachFieldListeners(){\n    const onLatLngChange = debounce(() => {\n      const lat = safeTrim($id('value_lat_1')?.value);\n      const lng = safeTrim($id('value_lng_1')?.value);\n      if (isValidLatLng(lat, lng)) updateMarkerAndView(Number(lat), Number(lng), true);\n    }, 300);\n    ['value_lat_1','value_lng_1'].forEach(id => {\n      const el = $id(id); if (!el) return;\n      el.addEventListener('input', onLatLngChange);\n      el.addEventListener('blur',  onLatLngChange);\n    });\n\n    const onAddressChange = debounce(() => { geocodeAddressAndUpdate(); }, 600);\n    ['value_calle_1','value_numeroext_1','value_colonia_1','value_ciudad_1','value_estado_1','value_cp_1']\n      .forEach(id => {\n        const el = $id(id); if (!el) return;\n        el.addEventListener('input', onAddressChange);\n        el.addEventListener('blur',  onAddressChange);\n      });\n  }\n\n  document.addEventListener('DOMContentLoaded', () => {\n    attachFieldListeners();\n    const lat = safeTrim($id('value_lat_1')?.value);\n    const lng = safeTrim($id('value_lng_1')?.value);\n    if (isValidLatLng(lat, lng)){\n      updateMarkerAndView(Number(lat), Number(lng), true);\n    } else {\n      const anyAddress =\n        safeTrim($id('value_calle_1')?.value) ||\n        safeTrim($id('value_colonia_1')?.value) ||\n        safeTrim($id('value_ciudad_1')?.value) ||\n        safeTrim($id('value_estado_1')?.value) ||\n        safeTrim($id('value_cp_1')?.value);\n      if (anyAddress) geocodeAddressAndUpdate();\n    }\n  });\n})();\n</script>\n",
 						"type": 0
 					},
 					"editedByRte": false
@@ -2908,7 +2914,7 @@
 				"text": {
 					"type": "text",
 					"label": {
-						"text": "<div id=\"map\" style=\"height: 400px; width: 100%; margin-bottom: 10px; border: 1px solid #ccc;\"></div>\n<p><strong>Haz clic en el mapa para obtener los datos de la ubicación (si algún campo no se acompleta automáticamente, favor de escribirlo)</strong></p>\n\n<!-- Cargar Leaflet CSS & JS -->\n<link rel=\"stylesheet\" href=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.css\" />\n<script src=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.js\"></script>\n\n<script>\n// Variables globales\nlet map;\nlet marker;\nlet mapInitialized = false;\n\nfunction initMap() {\n    if (mapInitialized) {\n        setTimeout(() => map.invalidateSize(), 100);\n        return;\n    }\n    \n    const initialLocation = [21.0038, -89.6183];\n    map = L.map('map').setView(initialLocation, 12);\n    \n    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {\n        attribution: '&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'\n    }).addTo(map);\n    \n    mapInitialized = true;\n    \n    map.on('click', function(e) {\n        placeMarkerAndGeocode(e.latlng);\n    });\n    \n    setTimeout(() => map.invalidateSize(), 300);\n}\n\nfunction placeMarkerAndGeocode(latlng) {\n    if (marker) map.removeLayer(marker);\n    marker = L.marker(latlng).addTo(map);\n    map.setView(latlng, map.getZoom());\n    \n    var apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}&zoom=18&addressdetails=1`;\n    \n    fetch(apiUrl)\n        .then(response => response.json())\n        .then(data => {\n            if (data && data.address) {\n                populateAddressFields(data.address, latlng, data.display_name);\n            } else {\n                alert('No se encontraron resultados para esta ubicación.');\n            }\n        })\n        .catch(error => {\n            console.error('Error:', error);\n            alert('Falló la geocodificación.');\n        });\n}\n\n// 🔥 NUEVA FUNCIÓN: Extraer número de dirección\nfunction extractHouseNumber(fullAddress, roadName) {\n    if (!fullAddress || !roadName) return '';\n    \n    // Buscar patrones comunes de números\n    const patterns = [\n        /(?:No\\.|Num|#)\\s*(\\d+)/i,    // No. 366, Num 366, #366\n        /(\\d+)\\s*(?:#|No\\.|Num)/i,     // 366 #, 366 No.\n        /(\\d+)\\s*[-–]\\s*\\d+/i,         // 366-368\n        /(\\d+)[a-zA-Z]?$/i,            // 366, 366A\n        /^(\\d+)\\s+/i                   // 366 Calle 30\n    ];\n    \n    for (const pattern of patterns) {\n        const match = fullAddress.match(pattern);\n        if (match && match[1]) {\n            return match[1];\n        }\n    }\n    \n    // Si no se encuentra con patrones, intentar con el campo house_number de Nominatim\n    return '';\n}\n\nfunction populateAddressFields(address, latlng, fullAddress = '') {\n    // Extraer el número de casa\n    const houseNumber = address.house_number || extractHouseNumber(fullAddress, address.road);\n    \n    // Llenar los campos del formulario\n    document.getElementById('value_estado_1').value = address.state || '';\n    document.getElementById('value_ciudad_1').value = address.city || address.town || address.village || '';\n    document.getElementById('value_cp_1').value = address.postcode || '';\n    document.getElementById('value_colonia_1').value = address.suburb || address.neighbourhood || '';\n    document.getElementById('value_calle_1').value = address.road || '';\n    \n    // 🔥 NUEVO: Llenar el número exterior\n    document.getElementById('value_numeroext_1').value = houseNumber;\n    \n    document.getElementById('value_lat_1').value = latlng.lat;\n    document.getElementById('value_lng_1').value = latlng.lng;\n    \n    console.log('Datos completos de Nominatim:', address);\n    console.log('Dirección completa:', fullAddress);\n    console.log('Número extraído:', houseNumber);\n}\n\n// 🔥 OBSERVAR CUANDO EL TAB Y SECTION SE HACEN VISIBLES\nfunction checkMapContainer() {\n    const mapContainer = document.getElementById('map');\n    if (mapContainer.offsetParent !== null && mapContainer.offsetWidth > 0) {\n        initMap();\n        return true;\n    }\n    return false;\n}\n\ndocument.addEventListener('DOMContentLoaded', function() {\n    const interval = setInterval(() => {\n        if (checkMapContainer()) {\n            clearInterval(interval);\n        }\n    }, 200);\n    \n    document.body.addEventListener('click', function(e) {\n        if (e.target.closest('[data-toggle=\"tab\"], .step-tab, .nav-link')) {\n            setTimeout(() => {\n                if (mapInitialized) map.invalidateSize();\n                else if (checkMapContainer()) console.log('Mapa inicializado desde click en tab');\n            }, 400);\n        }\n    });\n});\n\nwindow.addEventListener('resize', () => {\n    if (mapInitialized) setTimeout(() => map.invalidateSize(), 100);\n});\n\nconst observer = new MutationObserver(function(mutations) {\n    mutations.forEach(function(mutation) {\n        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {\n            setTimeout(() => {\n                if (mapInitialized) map.invalidateSize();\n            }, 200);\n        }\n    });\n});\n\nsetTimeout(() => {\n    const mapContainer = document.getElementById('map');\n    if (mapContainer) {\n        observer.observe(mapContainer, { attributes: true, attributeFilter: ['style'] });\n    }\n}, 1000);\n</script>",
+						"text": "<div id=\"map\" style=\"height: 400px; width: 100%; margin-bottom: 10px; border: 1px solid #ccc;\"></div>\n<p><strong>Haz clic en el mapa para obtener los datos de la ubicación (si algún campo no se acompleta automáticamente, favor de escribirlo)</strong></p>\n\n<!-- Cargar Leaflet CSS & JS -->\n<link rel=\"stylesheet\" href=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.css\" />\n<script src=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.js\"></script>\n\n<script>\n// Variables globales\nlet map;\nlet marker;\nlet mapInitialized = false;\n\nfunction initMap() {\n    if (mapInitialized) {\n        setTimeout(() => map.invalidateSize(), 100);\n        return;\n    }\n    \n    const initialLocation = [21.0038, -89.6183];\n    map = L.map('map').setView(initialLocation, 12);\n    \n    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {\n        attribution: '&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'\n    }).addTo(map);\n    \n    mapInitialized = true;\n    \n    map.on('click', function(e) {\n        placeMarkerAndGeocode(e.latlng);\n    });\n    \n    setTimeout(() => map.invalidateSize(), 300);\n}\n\nfunction placeMarkerAndGeocode(latlng) {\n    if (marker) map.removeLayer(marker);\n    marker = L.marker(latlng).addTo(map);\n    map.setView(latlng, map.getZoom());\n    \n    var apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}&zoom=18&addressdetails=1`;\n    \n    fetch(apiUrl)\n        .then(response => response.json())\n        .then(data => {\n            if (data && data.address) {\n                populateAddressFields(data.address, latlng, data.display_name);\n            } else {\n                alert('No se encontraron resultados para esta ubicación.');\n            }\n        })\n        .catch(error => {\n            console.error('Error:', error);\n            alert('Falló la geocodificación.');\n        });\n}\n\n// 🔥 NUEVA FUNCIÓN: Extraer número de dirección\nfunction extractHouseNumber(fullAddress, roadName) {\n    if (!fullAddress || !roadName) return '';\n    \n    // Buscar patrones comunes de números\n    const patterns = [\n        /(?:No\\.|Num|#)\\s*(\\d+)/i,    // No. 366, Num 366, #366\n        /(\\d+)\\s*(?:#|No\\.|Num)/i,     // 366 #, 366 No.\n        /(\\d+)\\s*[-–]\\s*\\d+/i,         // 366-368\n        /(\\d+)[a-zA-Z]?$/i,            // 366, 366A\n        /^(\\d+)\\s+/i                   // 366 Calle 30\n    ];\n    \n    for (const pattern of patterns) {\n        const match = fullAddress.match(pattern);\n        if (match && match[1]) {\n            return match[1];\n        }\n    }\n    \n    // Si no se encuentra con patrones, intentar con el campo house_number de Nominatim\n    return '';\n}\n\nfunction populateAddressFields(address, latlng, fullAddress = '') {\n    // Extraer el número de casa\n    const houseNumber = address.house_number || extractHouseNumber(fullAddress, address.road);\n    \n    // Llenar los campos del formulario\n    document.getElementById('value_estado_1').value = address.state || '';\n    document.getElementById('value_ciudad_1').value = address.city || address.town || address.village || '';\n    document.getElementById('value_cp_1').value = address.postcode || '';\n    document.getElementById('value_colonia_1').value = address.suburb || address.neighbourhood || '';\n    document.getElementById('value_calle_1').value = address.road || '';\n    \n    // 🔥 NUEVO: Llenar el número exterior\n    document.getElementById('value_numeroext_1').value = houseNumber;\n    \n    document.getElementById('value_lat_1').value = latlng.lat;\n    document.getElementById('value_lng_1').value = latlng.lng;\n    \n    console.log('Datos completos de Nominatim:', address);\n    console.log('Dirección completa:', fullAddress);\n    console.log('Número extraído:', houseNumber);\n}\n\n// 🔥 OBSERVAR CUANDO EL TAB Y SECTION SE HACEN VISIBLES\nfunction checkMapContainer() {\n    const mapContainer = document.getElementById('map');\n    if (mapContainer.offsetParent !== null && mapContainer.offsetWidth > 0) {\n        initMap();\n        return true;\n    }\n    return false;\n}\n\ndocument.addEventListener('DOMContentLoaded', function() {\n    const interval = setInterval(() => {\n        if (checkMapContainer()) {\n            clearInterval(interval);\n        }\n    }, 200);\n    \n    document.body.addEventListener('click', function(e) {\n        if (e.target.closest('[data-toggle=\"tab\"], .step-tab, .nav-link')) {\n            setTimeout(() => {\n                if (mapInitialized) map.invalidateSize();\n                else if (checkMapContainer()) console.log('Mapa inicializado desde click en tab');\n            }, 400);\n        }\n    });\n});\n\nwindow.addEventListener('resize', () => {\n    if (mapInitialized) setTimeout(() => map.invalidateSize(), 100);\n});\n\nconst observer = new MutationObserver(function(mutations) {\n    mutations.forEach(function(mutation) {\n        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {\n            setTimeout(() => {\n                if (mapInitialized) map.invalidateSize();\n            }, 200);\n        }\n    });\n});\n\nsetTimeout(() => {\n    const mapContainer = document.getElementById('map');\n    if (mapContainer) {\n        observer.observe(mapContainer, { attributes: true, attributeFilter: ['style'] });\n    }\n}, 1000);\n</script>\n\n\n\n\n\n<script>\n(function(){\n  // ====== CONFIGURA AQUÍ LOS IDs DE TUS CAMPOS ======\n  const IDS = {\n    calle:     'value_calle_1',\n    numext:    'value_numeroext_1',\n    numint:    'value_numint_1',       // <-- AJUSTA este si tu \"interior\" tiene otro id\n    colonia:   'value_colonia_1',\n    ciudad:    'value_ciudad_1',\n    estado:    'value_estado_1',\n    cp:        'value_cp_1',\n    lat:       'value_lat_1',\n    lng:       'value_lng_1'\n  };\n\n  // ====== HELPERS ======\n  const $id = (id) => document.getElementById(id);\n  const safeTrim = (v) => (v || '').toString().trim();\n  const isValidLatLng = (lat, lng) => {\n    const a = Number(lat), b = Number(lng);\n    return Number.isFinite(a) && Number.isFinite(b) && a<=90 && a>=-90 && b<=180 && b>=-180;\n  };\n  function debounce(fn, ms){ let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), ms); }; }\n\n  // Estado para controlar geocoding\n  let lastGeocodedQuery = '';\n  let geocodeAbort = null;\n\n  // Arma la query con TODOS los campos que importan\n  function buildAddressFromFields(){\n    const calle   = safeTrim($id(IDS.calle)?.value);\n    const numext  = safeTrim($id(IDS.numext)?.value);\n    const numint  = safeTrim($id(IDS.numint)?.value);   // interior opcional\n    const col     = safeTrim($id(IDS.colonia)?.value);\n    const ciudad  = safeTrim($id(IDS.ciudad)?.value);\n    const estado  = safeTrim($id(IDS.estado)?.value);\n    const cp      = safeTrim($id(IDS.cp)?.value);\n\n    // Construcción típica en MX\n    const linea1 = [calle, numext, numint ? `Int ${numint}` : ''].filter(Boolean).join(' ');\n    const parts = [\n      linea1,\n      col,\n      ciudad,\n      estado,\n      cp,\n      'México'\n    ].filter(Boolean);\n\n    return parts.join(', ');\n  }\n\n  // Mapa/marker (usa tus variables globales existentes)\n  function clearMarker(){\n    if (marker) { map.removeLayer(marker); marker = null; }\n  }\n  function updateMarkerAndView(lat, lng, zoomIfNeeded = true){\n    if (!mapInitialized) initMap();\n    const latlng = L.latLng(lat, lng);\n    if (marker) marker.setLatLng(latlng);\n    else marker = L.marker(latlng).addTo(map);\n    if (zoomIfNeeded) map.setView(latlng, 17); else map.panTo(latlng);\n  }\n\n  // ====== GEOCODING con cancelación ======\n  async function geocodeAddressAndUpdate(force=false){\n    const q = buildAddressFromFields();\n    if (!q) return;\n\n    // Evita repetir la misma búsqueda a menos que \"force\"\n    if (!force && q === lastGeocodedQuery) return;\n\n    // Cancela petición anterior si sigue en vuelo\n    if (geocodeAbort) geocodeAbort.abort();\n    geocodeAbort = new AbortController();\n\n    try {\n      const url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&countrycodes=mx&q=${encodeURIComponent(q)}`;\n      const resp = await fetch(url, { signal: geocodeAbort.signal, headers: { 'Accept': 'application/json' } });\n      const data = await resp.json();\n\n      if (Array.isArray(data) && data.length){\n        const best = data[0];\n        const lat = parseFloat(best.lat), lon = parseFloat(best.lon);\n        if (isValidLatLng(lat, lon)){\n          // Actualiza campos lat/lng (ya que son los que “mandan”)\n          if ($id(IDS.lat)) $id(IDS.lat).value = lat;\n          if ($id(IDS.lng)) $id(IDS.lng).value = lon;\n          updateMarkerAndView(lat, lon, true);\n          lastGeocodedQuery = q;\n        } else {\n          console.warn('Geocoding devolvió coords inválidas:', best);\n        }\n      } else {\n        console.warn('Sin resultados para:', q);\n      }\n    } catch(e){\n      if (e.name !== 'AbortError') console.error('Error geocodificando:', e);\n    } finally {\n      geocodeAbort = null;\n    }\n  }\n\n  // ====== LISTENERS ======\n  function attachListeners(){\n    // 1) Si el usuario cambia la DIRECCIÓN:\n    //    - vaciamos lat/lng (marcamos “stale”)\n    //    - quitamos el marcador (opcional pero útil)\n    //    - disparamos geocoding con debounce\n    const onAddressChange = debounce(() => {\n      // Si el usuario escribió algo en la dirección, invalidamos coords actuales\n      if ($id(IDS.lat)) $id(IDS.lat).value = '';\n      if ($id(IDS.lng)) $id(IDS.lng).value = '';\n      clearMarker();\n      geocodeAddressAndUpdate();\n    }, 600);\n\n    [\n      IDS.calle, IDS.numext, IDS.numint, IDS.colonia,\n      IDS.ciudad, IDS.estado, IDS.cp\n    ].forEach(id => {\n      const el = $id(id);\n      if (!el) return;\n      el.addEventListener('input', onAddressChange);\n      el.addEventListener('blur',  onAddressChange);\n      // Nota: 'change' también puede servir si tus controles no disparan 'input'\n      el.addEventListener('change', onAddressChange);\n    });\n\n    // 2) Si el usuario cambia lat/lng manualmente, manda el marcador ahí\n    const onLatLngChange = debounce(() => {\n      const lat = safeTrim($id(IDS.lat)?.value);\n      const lng = safeTrim($id(IDS.lng)?.value);\n      if (isValidLatLng(lat, lng)){\n        updateMarkerAndView(Number(lat), Number(lng), true);\n      }\n    }, 300);\n\n    [IDS.lat, IDS.lng].forEach(id => {\n      const el = $id(id);\n      if (!el) return;\n      el.addEventListener('input', onLatLngChange);\n      el.addEventListener('blur',  onLatLngChange);\n      el.addEventListener('change', onLatLngChange);\n    });\n  }\n\n  // ====== INICIO ======\n  document.addEventListener('DOMContentLoaded', () => {\n    attachListeners();\n\n    // Al abrir (Add), si ya tienes lat/lng por defecto, centra ahí\n    const lat = safeTrim($id(IDS.lat)?.value);\n    const lng = safeTrim($id(IDS.lng)?.value);\n    if (isValidLatLng(lat, lng)){\n      updateMarkerAndView(Number(lat), Number(lng), true);\n    } else {\n      // Si no hay coords pero sí dirección por defecto, fuerza una geocodificación inicial\n      const hasAnyAddress =\n        safeTrim($id(IDS.calle)?.value) ||\n        safeTrim($id(IDS.numext)?.value) ||\n        safeTrim($id(IDS.numint)?.value) ||\n        safeTrim($id(IDS.colonia)?.value) ||\n        safeTrim($id(IDS.ciudad)?.value) ||\n        safeTrim($id(IDS.estado)?.value) ||\n        safeTrim($id(IDS.cp)?.value);\n\n      if (hasAnyAddress) geocodeAddressAndUpdate(true);\n    }\n  });\n})();\n</script>\n",
 						"type": 0
 					},
 					"editedByRte": false
@@ -3551,8 +3557,7 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"menu",
-								"filter_panel"
+								"menu"
 							]
 						}
 					},
@@ -3876,7 +3881,7 @@
 							],
 							"columnName": "list-icons",
 							"field": "",
-							"orientation": "vertical"
+							"orientation": "horizontal"
 						},
 						"footcell_icons": {
 							"model": "footcell_icons",
@@ -4303,10 +4308,6 @@
 				"snippet1": {
 					"type": "snippet",
 					"eventGid": 1209004018
-				},
-				"filter_panel": {
-					"type": "filter_panel",
-					"items": []
 				},
 				"advsearch_link": {
 					"type": "advsearch_link"

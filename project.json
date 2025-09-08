@@ -289,13 +289,13 @@
 	"ftpLocations": [
 		{
 			"id": "ftploc",
-			"name": "rocasamexico.com",
+			"name": "FTP on admin@rocasamexico.com@ftp://ftp.rocasamexico.com:21",
 			"ftp": {
 				"username": "admin@rocasamexico.com",
 				"password": "",
 				"host": "ftp.rocasamexico.com",
 				"port": 21,
-				"pathname": "/public_html/prm",
+				"pathname": "/public_html/prm1",
 				"passive": true,
 				"secureType": 0,
 				"useCCC": false,
@@ -311,7 +311,9 @@
 				"enabled": false
 			},
 			"threads": 4,
-			"serverDbConnections": {}
+			"serverDbConnections": {
+				"conn": "New connection"
+			}
 		}
 	],
 	"lastFtpLocation": "ftploc",
