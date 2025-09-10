@@ -1321,6 +1321,11 @@
 			"eventId": "EVENT_BEFORESHOW_ADD",
 			"pageType": "add",
 			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n// Valores de texto\n$pageObject->setProxyValue(\"value_ciudad_1\", \"MERIDA\");\n$pageObject->setProxyValue(\"value_estado_1\", \"YUCATAN\");\n\n// Coordenadas por defecto\n$pageObject->setProxyValue(\"value_lat_1\", \"21.1619\");\n$pageObject->setProxyValue(\"value_lng_1\", \"-89.6793\");\n"
+		},
+		{
+			"eventId": "EVENT_BEFOREEDIT",
+			"pageType": "edit",
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n\nDB::Exec(\"START TRANSACTION\", $conn);\n\n\n$values[\"fecha\"]=date('Y-m-d');\n$values[\"idtienda\"]=2;  //Tienda no presencial\n$values[\"idtipoventa\"]=5; //Renovación Tradicional (Equipo y Chip)\n$values[\"estatus\"]=\"ACTUALIZADA\";\n$values[\"equipoincluido\"]=1;\n$values[\"usuario\"]=$_SESSION[\"UserID\"];\n\n\n$camposExtra = [\"nombre\",\"paterno\",\"materno\",\"estado\",\"ciudad\",\"cp\",\"calle\",\"numeroext\",\"numeroint\",\"colonia\"];\n\n\n// Helpers para armar valores seguros\nfunction q($v){               // cadenas/fechas: 'valor' o NULL\n  return (isset($v) && $v !== '' ? db_prepare_string($v) : \"NULL\");\n}\nfunction qi($v){              // enteros: número o NULL\n  return (isset($v) && $v !== '' ? (int)$v : \"NULL\");\n}\nfunction qb($v){              // booleano/bit: 0/1\n  return (!empty($v) ? 1 : 0);\n}\n\n$idsolicitud = qi($oldvalues['idsolicitud']) ;\n\n// Construcción del UPDATE\n$sqlMain = \"UPDATE solicitudes SET estatus =\" . q($values['estatus']) .\", idcliente = \". qi($values['idcliente']) .\n\", idproducto = \".qi($values['idproducto'])     .\", idplan = \".    qi($values['idplan'])         .\", orden =  \" .   q($values['orden']) .\n\", plazo = \".  qi($values['plazo']) .\", rfc = \".     q($values['rfc'])  .\", idcli = \".    qi($values['idcli']) . \" WHERE idsolicitud = \" . $idsolicitud   ;\n\nif (!DB::Exec($sqlMain, $conn)) {\n    DB::Exec(\"ROLLBACK\", $conn);\n    $message = \"No se pudo actualizar la solicitud: \".db_error($conn);\n    return false;               // el form queda con los valores\n}\n//$idsolicitud = db_insertid($conn);\n\n\n\n\n\n$extras = [];\nforeach ($camposExtra as $f) {\n    if (array_key_exists($f, $values)) {\n        $extras[$f] = $values[$f];\n        unset($values[$f]);             // <- evita \"Unknown column ...\" en el INSERT de solicitudes\n    } else {\n        // Si alguno lo pones como \"Custom field\" (no ligado a DB), recupéralo del POST:\n        $pv = postvalue($f);\n        if ($pv !== null) $extras[$f] = $pv;\n    }\n}\n\n// Guarda en sesión, indexado por el id de la página para evitar choques con otras pestañas\n$_SESSION['solicitudes_add_extras'] = $_SESSION['solicitudes_add_extras'] ?? [];\n$_SESSION['solicitudes_add_extras'][$pageObject->id] = $extras;\n\n// Continúa con el insert normal en solicitudes\n\n\n $sql = sprintf(\"DELETE FROM seriessolicitadas WHERE idsolicitud =\". $idsolicitud );\n     if (!DB::Exec($sql, $conn)) {\n        DB::Exec(\"ROLLBACK\", $conn);\n        $message = \"error en las series solicitadas: \".db_error($conn);\n        return false;               // el form NO pierde lo tecleado\n    }\n\n \n\n\n$strSQLExists=\"SELECT\ncompras.noserie\nFROM compras\nLEFT OUTER JOIN ventas v ON compras.noserie = v.esnimei\nLEFT OUTER JOIN movimientos m ON compras.noserie = m.esnimei\nLEFT OUTER JOIN seriessolicitadas ss on compras.noserie=ss.esnimei     \nLEFT OUTER JOIN (SELECT t.esnimei,t.tiendadestino,t.`fecharecepcion` FROM traspasosdet t INNER JOIN (SELECT MAX(idtraspasodet) idtraspaso FROM traspasosdet GROUP BY esnimei) t1 ON t.idtraspasodet=t1.idtraspaso) t ON compras.noserie=t.esnimei\nINNER JOIN productos ON compras.codigoproducto = productos.codigoIUSA\nWHERE   v.esnimei is null and m.esnimei is null and ss.esnimei is null and (t. esnimei is null or t.fecharecepcion is not null and t.fecharecepcion<>'0000-00-00')\n  and compras.tienda=2 and compras.clasif = 2 and productos.Clasif='Equipo' AND productos.idproducto=\". $values['idproducto']. \" LIMIT 1 \";\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\n\nif (!$data)\n{\n\t\t$message=\"No existe saldo en el inventario para el producto seleccionado \". $sql;\n\treturn false;\n\n} else {\n    $_SESSION[\"esnimei\"] = $data['noserie'];\n}\n\n\n$strSQLExists=\"SELECT\ncompras.noserie\nFROM compras\nLEFT OUTER JOIN ventas v ON compras.noserie = v.esnimei\nLEFT OUTER JOIN movimientos m ON compras.noserie = m.esnimei\nLEFT OUTER JOIN seriessolicitadas ss on compras.noserie=ss.esnimei     \nLEFT OUTER JOIN (SELECT t.esnimei,t.tiendadestino,t.`fecharecepcion` FROM traspasosdet t INNER JOIN (SELECT MAX(idtraspasodet) idtraspaso FROM traspasosdet GROUP BY esnimei) t1 ON t.idtraspasodet=t1.idtraspaso) t ON compras.noserie=t.esnimei\nINNER JOIN productos ON compras.codigoproducto = productos.codigoIUSA\nWHERE   v.esnimei is null and m.esnimei is null  and ss.esnimei is null and (t. esnimei is null or t.fecharecepcion is not null and t.fecharecepcion<>'0000-00-00')\n  and compras.tienda=2 and compras.clasif = 2 and productos.Clasif='Chip' LIMIT 1 \";\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\n\nif (!$data)\n{\n\t\t$message=\"No existe saldo en el inventario de simcards\";\n\treturn false;\n\n} else {\n    $_SESSION[\"simcard\"] = $data['noserie'];\n}\n\n\n$extras = $_SESSION['solicitudes_add_extras'][$pageObject->id] ?? [];\nunset($_SESSION['solicitudes_add_extras'][$pageObject->id]);\n\n// Ya tienes $keys[\"idsolicitud\"] del registro insertado en solicitudes\n//$idsolicitud = (int)$keys[\"idsolicitud\"];\n\n// EJEMPLO: insertar dirección de entrega en entregasvnp usando los extras\n$strSQLExists=\"SELECT\nidsolicitud FROM entregasvnp WHERE idsolicitud = \". $idsolicitud ;\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\n\nif ($data)\n{\n\t\tif (!empty($extras)) {\n    $sql = sprintf(\n        \"UPDATE entregasvnp SET idsolicitud = \" . qi($values['idsolicitud']) . \", estado = \". db_prepare_string($extras[\"estado\"]    ?? \"\").\", ciudad = \" . db_prepare_string($extras[\"ciudad\"]    ?? \"\") .\n        \", cp = \" .db_prepare_string($extras[\"cp\"]        ?? \"\").\" , calle = \".db_prepare_string($extras[\"calle\"]     ?? \"\").\" , numeroext = \". db_prepare_string($extras[\"numeroext\"] ?? \"\") .\n        \", numeroint = \". db_prepare_string($extras[\"numeroint\"] ?? \"\") .\" , colonia = \". db_prepare_string($extras[\"colonia\"]   ?? \"\").\" WHERE idsolicitud = \". $idsolicitud ) ;\n\n    if (!DB::Exec($sql, $conn)) {\n        DB::Exec(\"ROLLBACK\", $conn);\n        $message = \"No se pudo actualizar los datos de entrega: \".db_error($conn);\n        return false;               // el form NO pierde lo tecleado\n    }\n  //  db_exec($sql, $conn);\n}\n\n} else {\n    if (!empty($extras)) {\n    $sql = sprintf(\n        \"INSERT INTO entregasvnp (idsolicitud, estado, ciudad, cp, calle, numeroext, numeroint, colonia)\n         VALUES (%d, %s, %s, %d, %s, %s, %s, %s)\",\n        $idsolicitud,\n        db_prepare_string($extras[\"estado\"]    ?? \"\"),\n        db_prepare_string($extras[\"ciudad\"]    ?? \"\"),\n        db_prepare_string($extras[\"cp\"]        ?? \"\"),\n        db_prepare_string($extras[\"calle\"]     ?? \"\"),\n        db_prepare_string($extras[\"numeroext\"] ?? \"\"),\n        db_prepare_string($extras[\"numeroint\"] ?? \"\"),\n        db_prepare_string($extras[\"colonia\"]   ?? \"\")\n    );\n    if (!DB::Exec($sql, $conn)) {\n        DB::Exec(\"ROLLBACK\", $conn);\n        $message = \"No se pudo guardar la entrega: \".db_error($conn);\n        return false;               // el form NO pierde lo tecleado\n    }\n  //  db_exec($sql, $conn);\n}\n}\n\n\n \n    $esnimei = $_SESSION[\"esnimei\"] ?? null;\n    if (!empty($esnimei)) {\n           $sql = sprintf(\n               \n            \"INSERT INTO seriessolicitadas (idsolicitud, esnimei)\n             VALUES (%d, %s)\",\n            $idsolicitud,\n            db_prepare_string($esnimei    ?? \"\")\n        );\n    if (!DB::Exec($sql, $conn)) {\n        DB::Exec(\"ROLLBACK\", $conn);\n        $message = \"No se pudo guardar el equipo: \".db_error($conn);\n        return false;               // el form NO pierde lo tecleado\n    }\n    \n    }\n    \n    $simcard = $_SESSION[\"simcard\"] ?? null;\n    if (!empty($esnimei)) {\n           $sql = sprintf(\n            \"INSERT INTO seriessolicitadas (idsolicitud, esnimei)\n             VALUES (%d, %s)\",\n            $idsolicitud,\n            db_prepare_string($simcard    ?? \"\")\n        );\n    if (!DB::Exec($sql, $conn)) {\n        DB::Exec(\"ROLLBACK\", $conn);\n        $message = \"No se pudo guardar el sincard: \".db_error($conn);\n        return false;               // el form NO pierde lo tecleado\n    }\n    \n    }\n\nDB::Exec(\"COMMIT\", $conn);\n\n// “flash message” en sesión para mostrarlo en verde tras el redirect\n$_SESSION['flash_ok'] = \"Solicitud #{$idsolicitud} guardada correctamente.\";\n\n// Redirige a la página Add (form limpio)\nheader(\"Location: \".$pageObject->shortTableName.\"_add.php?new=1\");\nexit;\n\n\n\n\nreturn false;\n"
 		}
 	],
 	"dbTableInfo": {
@@ -2393,7 +2398,7 @@
 			"type": "edit",
 			"layoutId": "nomenu",
 			"disabled": false,
-			"default": 0,
+			"default": 1,
 			"forms": {
 				"above-grid": {
 					"modelId": "edit-above-grid",
@@ -2616,6 +2621,15 @@
 									"cell": "c4"
 								}
 							]
+						},
+						{
+							"cells": [
+								{
+									"cell": "c3",
+									"colspan": 2
+								}
+							],
+							"section": ""
 						}
 					],
 					"cells": {
@@ -2644,57 +2658,10 @@
 								"integrated_edit_field17",
 								"integrated_edit_field18"
 							]
-						}
-					},
-					"deferredItems": [],
-					"columnCount": 1,
-					"inlineLabels": false,
-					"separateLabels": false
-				},
-				"step3": {
-					"modelId": "simple-edit",
-					"grid": [
-						{
-							"cells": [
-								{
-									"cell": "c1"
-								}
-							],
-							"section": ""
-						}
-					],
-					"cells": {
-						"c1": {
-							"model": "c1",
-							"items": [
-								"integrated_edit_field19"
-							],
-							"align": "center"
-						}
-					},
-					"deferredItems": [],
-					"columnCount": 1,
-					"inlineLabels": false,
-					"separateLabels": false
-				},
-				"step4": {
-					"modelId": "simple-edit",
-					"grid": [
-						{
-							"cells": [
-								{
-									"cell": "c1"
-								}
-							],
-							"section": ""
-						}
-					],
-					"cells": {
-						"c1": {
-							"model": "c1",
-							"items": [
-								"details_preview"
-							]
+						},
+						"c3": {
+							"model": "c3",
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -2919,13 +2886,6 @@
 					},
 					"editedByRte": false
 				},
-				"details_preview": {
-					"type": "details_preview",
-					"table": 3847630651,
-					"items": [],
-					"popup": false,
-					"pageId": "list"
-				},
 				"next_step": {
 					"type": "next_step"
 				},
@@ -2940,12 +2900,6 @@
 				},
 				"integrated_edit_field18": {
 					"field": "lng",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field19": {
-					"field": "estatus",
 					"type": "integrated_edit_field",
 					"orientation": 0,
 					"updateOnEdit": false
@@ -2968,20 +2922,6 @@
 					"location": "step2",
 					"label": {
 						"text": "Datos de la Entrega",
-						"type": 0
-					}
-				},
-				{
-					"location": "step3",
-					"label": {
-						"text": "Estatus P. Fraudes",
-						"type": 0
-					}
-				},
-				{
-					"location": "step4",
-					"label": {
-						"text": "Estatus Logística",
 						"type": 0
 					}
 				}
@@ -5360,6 +5300,179 @@
 				"simple_grid_field46": {
 					"field": "lng",
 					"type": "simple_grid_field"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "edit1",
+			"type": "edit",
+			"layoutId": "nomenu",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "edit-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"edit_message"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "edit-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"edit_save",
+								"edit_back_list",
+								"edit_close"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"hamburger"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "edit-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"edit_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c3"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"details_preview"
+							]
+						},
+						"c3": {
+							"model": "c3",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				}
+			},
+			"items": {
+				"edit_header": {
+					"type": "edit_header"
+				},
+				"hamburger": {
+					"type": "hamburger",
+					"items": [
+						"edit_reset",
+						"edit_view"
+					]
+				},
+				"edit_reset": {
+					"type": "edit_reset"
+				},
+				"edit_message": {
+					"type": "edit_message"
+				},
+				"edit_save": {
+					"type": "edit_save"
+				},
+				"edit_back_list": {
+					"type": "edit_back_list"
+				},
+				"edit_close": {
+					"type": "edit_close"
+				},
+				"edit_view": {
+					"type": "edit_view"
+				},
+				"details_preview": {
+					"type": "details_preview",
+					"table": 3847630651,
+					"items": [],
+					"popup": false,
+					"pageId": "list"
 				}
 			},
 			"dbProps": {},
