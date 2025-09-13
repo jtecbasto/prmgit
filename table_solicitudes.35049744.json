@@ -1290,7 +1290,7 @@
 		{
 			"eventId": "EVENT_JS_ONLOAD",
 			"pageType": "list",
-			"code": "/*var fechaIn = document.getElementById('edt_FechaIn');\r\nvar fechaFn = document.getElementById('edt_FechaFn');\r\n\r\n// Función para obtener todos los parámetros actuales de la URL\r\nfunction getCurrentUrlParams() {\r\n    var urlParams = new URLSearchParams(window.location.search);\r\n    var params = {};\r\n    \r\n    // Preservar todos los parámetros existentes\r\n    for (var [key, value] of urlParams) {\r\n        params[key] = value;\r\n    }\r\n    \r\n    return params;\r\n}\r\n\r\n// Función para construir URL con parámetros preservados\r\nfunction buildUrlWithParams(baseUrl, newParams) {\r\n    var params = getCurrentUrlParams();\r\n    \r\n    // Actualizar con nuevos valores\r\n    Object.assign(params, newParams);\r\n    \r\n    // Construir query string\r\n    var queryString = Object.keys(params)\r\n        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))\r\n        .join('&');\r\n    \r\n    return baseUrl + '?' + queryString;\r\n}\r\n\r\nfunction actualizarFechas() {\r\n    var val1 = $(\"#edt_FechaIn\").val();\r\n    var val2 = $(\"#edt_FechaFn\").val();\r\n    \r\n    if(val2 < val1){\r\n        Swal.fire({\r\n            icon: \"error\",\r\n            title: \"La fecha final no puede ser menor a la fecha inicial\"\r\n        }).then(function(result) {\r\n            val2 = val1;\r\n            var newUrl = buildUrlWithParams('solicitudes_list.php', {\r\n                FechaIn: val1,\r\n                FechaFn: val2\r\n            });\r\n            window.location.href = newUrl;\r\n        });\r\n    } else {\r\n        var newUrl = buildUrlWithParams('solicitudes_list.php', {\r\n            FechaIn: val1,\r\n            FechaFn: val2\r\n        });\r\n        window.location.href = newUrl;\r\n    }\r\n}\r\n\r\nfechaIn.onchange = actualizarFechas;\r\nfechaFn.onchange = actualizarFechas;\r\n\r\n// Establecer valores iniciales desde URL\r\nvar urlParams = new URLSearchParams(window.location.search);\r\nif (urlParams.has('FechaIn')) document.getElementById(\"edt_FechaIn\").value = urlParams.get('FechaIn');\r\nif (urlParams.has('FechaFn')) document.getElementById(\"edt_FechaFn\").value = urlParams.get('FechaFn');\r\n\r\n// Interceptar eventos de PHPRunner para preservar fechas\r\n$(document).ready(function() {\r\n    // Interceptar búsqueda\r\n    $(document).on('click', '.search-button, .pagination a', function(e) {\r\n        e.preventDefault();\r\n        \r\n        var val1 = $(\"#edt_FechaIn\").val();\r\n        var val2 = $(\"#edt_FechaFn\").val();\r\n        var targetUrl = $(this).attr('href') || window.location.pathname;\r\n        \r\n        // Si es un enlace de paginación o búsqueda, preservar fechas\r\n        var newUrl = buildUrlWithParams(targetUrl, {\r\n            FechaIn: val1,\r\n            FechaFn: val2\r\n        });\r\n        \r\n        window.location.href = newUrl;\r\n    });\r\n    \r\n    // También interceptar submit del formulario de búsqueda\r\n    $('form').on('submit', function(e) {\r\n        var val1 = $(\"#edt_FechaIn\").val();\r\n        var val2 = $(\"#edt_FechaFn\").val();\r\n        \r\n        // Agregar campos ocultos con las fechas\r\n        $(this).append('<input type=\"hidden\" name=\"FechaIn\" value=\"' + val1 + '\">');\r\n        $(this).append('<input type=\"hidden\" name=\"FechaFn\" value=\"' + val2 + '\">');\r\n    });\r\n});\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n/*\r\nvar fechaIn = document.getElementById('edt_FechaIn');\r\nvar fechaFn = document.getElementById('edt_FechaFn');\r\n\r\nfunction actualizarFechas() {\r\n\tvar val1 = $(\"#edt_FechaIn\").val();\r\n\tvar val2 = $(\"#edt_FechaFn\").val();\r\n\tif(val2<val1){\r\n\t\tSwal.fire({\r\n\t\t  icon: \"error\",\r\n\t\t  title: \"La fecha final no puede ser menor a la fecha inicial\"\r\n\t\t}).then(function(result) {\r\n            // Esta función se ejecuta cuando el usuario cierra el modal\r\n            val2 = val1;\r\n            window.location.href = 'solicitudes_list.php?FechaIn='+val1+'&FechaFn='+val2;\r\n        });\r\n    } else {\r\n        // Si las fechas son correctas, redirigir inmediatamente\r\n        window.location.href = 'solicitudes_list.php?FechaIn=' + val1 + '&FechaFn='+val2;\r\n    }\r\n}\r\n\r\nfechaIn.onchange = actualizarFechas;\r\nfechaFn.onchange = actualizarFechas;\r\n\r\n// Si necesitas establecer valores iniciales desde los parámetros de la URL\r\nvar urlParams = new URLSearchParams(window.location.search);\r\nif (urlParams.has('FechaIn')) document.getElementById(\"edt_FechaIn\").value = urlParams.get('FechaIn');\r\nif (urlParams.has('FechaFn')) document.getElementById(\"edt_FechaFn\").value = urlParams.get('FechaFn');\r\n*/\r\n\r\n\r\n\r\n\r\n\r\n\r\n/*var ctrlFecha = Runner.getControl(pageid, \"fecha\");\r\nctrlFecha.makeReadOnly;\r\n\r\n// ==================================================\r\n// EVENTO ONLOAD PARA LISTA EN PHPRUNNER 11\r\n// ==================================================\r\n\r\nfunction onLoad() {\r\n    // Esperar a que la lista se cargue completamente\r\n    setTimeout(function() {\r\n        aplicarSoloLecturaControles();\r\n        configurarObservadorEdicion();\r\n    }, 1000);\r\n}\r\n\r\n// ==================================================\r\n// FUNCIÓN PRINCIPAL PARA APLICAR SOLO LECTURA\r\n// ==================================================\r\n\r\nfunction aplicarSoloLecturaControles() {\r\n    // Lista de campos que deben ser solo lectura en edición\r\n    var camposSoloLectura = [\r\n        'fecha',       // campo fecha       \r\n        'idcliente',  // Campo idcliente\r\n        'descripcion', // Campo descripcion\r\n        'plazo',           // Campo estado\r\n        'orden'\r\n        // Agrega aquí tus campos específicos\r\n    ];\r\n    \r\n    // Aplicar a todos los campos de la lista\r\n    camposSoloLectura.forEach(function(campo) {\r\n        hacerCampoSoloLectura(campo);\r\n    });\r\n    \r\n    // También aplicar a elementos específicos por clase o ID\r\n    var elementosEspecificos = [\r\n        '.readonly-field',\r\n        '[data-readonly=\"true\"]',\r\n        '#campo_protegido'\r\n    ];\r\n    \r\n    elementosEspecificos.forEach(function(selector) {\r\n        var elementos = document.querySelectorAll(selector);\r\n        elementos.forEach(function(elemento) {\r\n            aplicarEstilosSoloLectura(elemento);\r\n        });\r\n    });\r\n}\r\n\r\n// ==================================================\r\n// FUNCIÓN PARA HACER UN CAMPO ESPECÍFICO SOLO LECTURA\r\n// ==================================================\r\n\r\nfunction hacerCampoSoloLectura(nombreCampo) {\r\n    // Buscar todos los elementos relacionados con el campo\r\n    var selectores = [\r\n        'input[name*=\"' + nombreCampo + '\"]',\r\n        'select[name*=\"' + nombreCampo + '\"]',\r\n        'textarea[name*=\"' + nombreCampo + '\"]',\r\n        '[data-field=\"' + nombreCampo + '\"] input',\r\n        '[data-field=\"' + nombreCampo + '\"] select',\r\n        '[data-field=\"' + nombreCampo + '\"] textarea',\r\n        '.field_' + nombreCampo + ' input',\r\n        '.field_' + nombreCampo + ' select',\r\n        '.field_' + nombreCampo + ' textarea'\r\n    ];\r\n    \r\n    selectores.forEach(function(selector) {\r\n        var elementos = document.querySelectorAll(selector);\r\n        \r\n        elementos.forEach(function(elemento) {\r\n            if (elemento && !elemento.closest('.view-mode')) {\r\n                elemento.setAttribute('readonly', 'true');\r\n                elemento.setAttribute('disabled', 'true');\r\n                aplicarEstilosSoloLectura(elemento);\r\n                \r\n                // Prevenir edición mediante eventos\r\n                elemento.addEventListener('mousedown', prevenirEdicion);\r\n                elemento.addEventListener('keydown', prevenirEdicion);\r\n            }\r\n        });\r\n    });\r\n}\r\n\r\n// ==================================================\r\n// ESTILOS Y COMPORTAMIENTO PARA SOLO LECTURA\r\n// ==================================================\r\n\r\nfunction aplicarEstilosSoloLectura(elemento) {\r\n    elemento.style.backgroundColor = '#f8f9fa';\r\n    elemento.style.borderColor = '#dee2e6';\r\n    elemento.style.color = '#6c757d';\r\n    elemento.style.cursor = 'not-allowed';\r\n    elemento.classList.add('campo-solo-lectura');\r\n}\r\n\r\nfunction prevenirEdicion(evento) {\r\n    evento.preventDefault();\r\n    evento.stopPropagation();\r\n    return false;\r\n}\r\n\r\n// ==================================================\r\n// OBSERVADOR PARA DETECTAR EDICIONES EN LÍNEA\r\n// ==================================================\r\n\r\nfunction configurarObservadorEdicion() {\r\n    // Observar cambios en el body para detectar modos de edición\r\n    var observer = new MutationObserver(function(mutations) {\r\n        mutations.forEach(function(mutation) {\r\n            if (mutation.addedNodes.length > 0) {\r\n                // Verificar si se activó el modo edición\r\n                var elementosEdicion = document.querySelectorAll('.edit-mode, .editing, [data-editing=\"true\"]');\r\n                if (elementosEdicion.length > 0) {\r\n                    setTimeout(aplicarSoloLecturaControles, 300);\r\n                }\r\n            }\r\n        });\r\n    });\r\n    \r\n    // Configurar el observador\r\n    observer.observe(document.body, {\r\n        childList: true,\r\n        subtree: true,\r\n        attributes: true,\r\n        attributeFilter: ['class', 'data-editing']\r\n    });\r\n    \r\n    // También escuchar eventos de clic en botones de edición\r\n    document.addEventListener('click', function(e) {\r\n        var botonEdicion = e.target.closest('[id*=\"edit\"], .edit-btn, .phpr-edit');\r\n        if (botonEdicion) {\r\n            setTimeout(aplicarSoloLecturaControles, 500);\r\n        }\r\n    });\r\n}\r\n\r\n// ==================================================\r\n// INICIALIZACIÓN AL CARGAR LA PÁGINA\r\n// ==================================================\r\n\r\n// Llamar a onLoad cuando el DOM esté listo\r\nif (document.readyState === 'loading') {\r\n    document.addEventListener('DOMContentLoaded', onLoad);\r\n} else {\r\n    onLoad();\r\n}\r\n\r\n// Re-aplicar cuando se redimensiona o hay cambios\r\nwindow.addEventListener('resize', function() {\r\n    setTimeout(aplicarSoloLecturaControles, 300);\r\n});\r\n\r\n// ==================================================\r\n// CSS ADICIONAL (opcional, agregar en Custom CSS)\r\n// ==================================================\r\n/*\r\n.campo-solo-lectura {\r\n    background-color: #f8f9fa !important;\r\n    border: 1px solid #dee2e6 !important;\r\n    color: #6c757d !important;\r\n    cursor: not-allowed !important;\r\n}\r\n\r\n.campo-solo-lectura:hover {\r\n    background-color: #e9ecef !important;\r\n}\r\n*/\r\n\r\n\r\n\r\nfunction redirigirReporte() {\r\n  var val2 = $(\"#edt_FechaIn\").val();\r\n  var val3 = $(\"#edt_FechaFn\").val();\r\n\r\n  \r\n  window.location.href = 'solicitudes_list.php?FechaIn=' + val2 +\r\n                           '&FechaFn=' + val3;\r\n}\r\n// Asignar evento a todos los campos\r\n$(\"#edt_FechaIn, #edt_FechaFn\")\r\n  .on(\"change\", redirigirReporte);\r\n\r\n"
+			"code": "/*(function(){\r\n  console.log('[solicitudes list] onLoad handler armado');\r\n\r\n  document.addEventListener('click', function(e){\r\n    // Ubica el <a> del botón Edit según tu HTML\r\n    var a = e.target && (\r\n      e.target.closest('span[data-itemtype=\"grid_edit\"] a') ||\r\n      e.target.closest('a[href*=\"solicitudes_edit.php\"]') ||\r\n      e.target.closest('a[href*=\"_edit.php\"]')\r\n    );\r\n    if(!a) return;\r\n\r\n    var raw = a.getAttribute('href') || a.getAttribute('data-href') || '';\r\n    if(!raw) return;\r\n\r\n    // Construye URL absoluta y ajusta el parámetro page=edit1\r\n    // (URL maneja bien & y &amp;)\r\n    var url = new URL(raw, document.baseURI);\r\n\r\n    // Solo si es la página de edición de solicitudes\r\n    if (/\\/solicitudes_edit\\.php$/i.test(url.pathname)) {\r\n      url.searchParams.set('page', 'edit1'); // fuerza page=edit1\r\n    } else {\r\n      // Si fuera otro *_edit.php, también lo soportamos\r\n      url.searchParams.set('page', 'edit1');\r\n    }\r\n\r\n    // Bloquea navegación original y redirige a la alterna\r\n    e.preventDefault();\r\n    e.stopPropagation();\r\n    e.stopImmediatePropagation();\r\n\r\n    window.location.assign(url.toString());\r\n  }, true); // CAPTURE=true para ganar a otros listeners\r\n})();\r\n\r\n*/\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n(function(){\r\n  var $ = jQuery;\r\n\r\n  // Cambia el selector al *itemid* real del botón Logistic (data-itemid=\"logistic_btn\")\r\n  $(document).on('click', 'span[data-itemid=\"logistic_btn\"] a', function(ev){\r\n    ev.preventDefault(); ev.stopPropagation();\r\n\r\n    var row = $(this).closest('tr');\r\n\r\n    // Tomamos el href del Edit estándar de ESTA fila (tiene las keys correctas)\r\n    var hrefEdit = row.find('span[data-itemtype=\"grid_edit\"] a').attr('href') || '';\r\n    if (!hrefEdit) { alert('No se pudo localizar el enlace Edit de la fila.'); return; }\r\n\r\n    var urlObj = new URL(hrefEdit, document.baseURI);\r\n    // Forzamos page=edit1 y conservamos editid1, editid2, etc.\r\n    urlObj.searchParams.set('page','edit1');\r\n\r\n    window.location.assign(urlObj.toString());\r\n  });\r\n})();\r\n\r\n\r\n\r\n\r\n\r\nfunction redirigirReporte() {\r\n  var val2 = $(\"#edt_FechaIn\").val();\r\n  var val3 = $(\"#edt_FechaFn\").val();\r\n\r\n  \r\n  window.location.href = 'solicitudes_list.php?FechaIn=' + val2 +\r\n                           '&FechaFn=' + val3;\r\n}\r\n// Asignar evento a todos los campos\r\n$(\"#edt_FechaIn, #edt_FechaFn\")\r\n  .on(\"change\", redirigirReporte);\r\n\r\n\r\n\r\n\r\n\r\n\r\n"
 		},
 		{
 			"eventId": "EVENT_JS_ONLOAD",
@@ -1315,7 +1315,7 @@
 		{
 			"eventId": "EVENT_BEFOREQUERY_LIST",
 			"pageType": "list",
-			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n// Filtro dinámico por rango de fechas almacenado en sesión\n//$fechaInicio = $_SESSION[\"fecha_inicio\"];\n//$fechaFin = $_SESSION[\"fecha_fin\"];\n/*\nif (isset($_SESSION['FechaIn']) && isset($_SESSION['FechaFn'])) {\n$var1 = isset($_GET[\"FechaIn\"]) ? $_GET[\"FechaIn\"] : date('Y-m-d', strtotime('-30 days'));\n$var2 = isset($_GET[\"FechaFn\"]) ? $_GET[\"FechaFn\"] : date('Y-m-d');\n\n$_SESSION['FechaIn']=$var1;\n$_SESSION['FechaFn']=$var2; } \nelse {\n    $var1 = $_SESSION['FechaIn'];\n    $var2 = $_SESSION['FechaFn'];\n}\n\nif ($var1 && $var2) {\n    if ($strWhereClause != \"\") {\n        $strWhereClause .= \" AND \";\n    }\n    $strWhereClause .= \" fecha BETWEEN '\" . db_addslashes($var1) . \"' \n                        AND '\" . db_addslashes($var2) . \"'\";\n}\n*/\n\n// Before SQL Query (List)\n// Parámetros: &$strSQL, &$strWhereClause, &$strOrderBy, $pageObject\n\n// 1) Tomar fechas en este orden de prioridad: GET -> SESSION -> defaults\n$in  = isset($_GET['FechaIn']) ? $_GET['FechaIn'] : ( isset($_SESSION['FechaIn']) ? $_SESSION['FechaIn'] : date('Y-m-d', strtotime('-30 days')) );\n$fn  = isset($_GET['FechaFn']) ? $_GET['FechaFn'] : ( isset($_SESSION['FechaFn']) ? $_SESSION['FechaFn'] : date('Y-m-d') );\n\n// 2) Validar formato (YYYY-MM-DD); si no es válido, poner defaults\n$check = function($d){\n    $dt = DateTime::createFromFormat('Y-m-d', $d);\n    return $dt && $dt->format('Y-m-d') === $d;\n};\nif( !$check($in) ) $in = date('Y-m-d', strtotime('-30 days'));\nif( !$check($fn) ) $fn = date('Y-m-d');\n\n// 3) Si el usuario invirtió el rango, corregir (swap)\nif( $in > $fn ){\n    $tmp = $in; $in = $fn; $fn = $tmp;\n}\n\n// 4) Guardar en sesión (para siguientes cargas)\n$_SESSION['FechaIn'] = $in;\n$_SESSION['FechaFn'] = $fn;\n\n// 5) Construir el WHERE\n//    - Si tu campo 'fecha' es DATE, BETWEEN es inclusivo y esto basta.\n//    - Si fuese DATETIME y quieres incluir todo el día final, usa <= DATE_ADD($fn, INTERVAL 1 DAY)\nif( $strWhereClause != \"\" ) {\n    $strWhereClause .= \" AND \";\n}\n$strWhereClause .= \" fecha BETWEEN \" . add_db_quotes(\"fecha\", $in) . \" AND \" . add_db_quotes(\"fecha\", $fn);\n\n// Para depurar:\n// LogInfo(\"Rango aplicado: $in a $fn\");\n// LogInfo(\"WHERE: \".$strWhereClause);\n"
+			"code": "\nswitch (true) {\n\n\t//case ($_SESSION[\"Acceso\"]===0 OR strtoupper($_SESSION['UserID'])=='ADMIN'):\n\tcase ( strtoupper($_SESSION['UserID'])=='ADMIN'):\n\t\t\t\t\tbreak;\n\t\tcase (strtoupper($_SESSION[\"Label\"])=='VALIDADOR'):\n    //   $strWhereClause=WhereAdd($strWhereClause,\"solicitudes.idtipoventa in (1,11,21,22)\");\n\t       break;\n\t\t\t\n\t\t\tcase ($_SESSION[\"Acceso\"]==1):\n       $strWhereClause=WhereAdd($strWhereClause,\"/*solicitudes.idtipoventa not in (1,11,21,22) and*/ solicitudes.idtienda=\".$_SESSION[\"Tienda\"]); /*solicitado por Diego*/\n \n        break;\n  /* case ($_SESSION[\"Acceso\"]==2):\n\t\t\t\t\n         $strWhereClause=WhereAdd($strWhereClause,\"solicitudes.idtipoventa>1 AND solicitudes.idtienda=\".$_SESSION[\"Tienda\"]);\n        break;*/\n    case ($_SESSION[\"Acceso\"]===10 ):\n        $strWhereClause=whereAdd($strWhereClause,\" solicitudes.idtienda in (\nselect distinct t.idtienda from tiendas t inner join\n userssectores us on t.idsector=us.idsector\n where username='\".$_SESSION[\"UserID\"].\"')\");\n        break;\n\t\tdefault:\n\t\t\t\t$strWhereClause=whereAdd($strWhereClause,\"solicitudes.usuario='\".$_SESSION['UserID'].\"'\");\n\t\t\t\tbreak;\n}\n\n\n\n\n\n\n\n// 1) Tomar fechas en este orden de prioridad: GET -> SESSION -> defaults\n$in  = isset($_GET['FechaIn']) ? $_GET['FechaIn'] : ( isset($_SESSION['FechaIn']) ? $_SESSION['FechaIn'] : date('Y-m-d', strtotime('-30 days')) );\n$fn  = isset($_GET['FechaFn']) ? $_GET['FechaFn'] : ( isset($_SESSION['FechaFn']) ? $_SESSION['FechaFn'] : date('Y-m-d') );\n\n// 2) Validar formato (YYYY-MM-DD); si no es válido, poner defaults\n$check = function($d){\n    $dt = DateTime::createFromFormat('Y-m-d', $d);\n    return $dt && $dt->format('Y-m-d') === $d;\n};\nif( !$check($in) ) $in = date('Y-m-d', strtotime('-30 days'));\nif( !$check($fn) ) $fn = date('Y-m-d');\n\n// 3) Si el usuario invirtió el rango, corregir (swap)\nif( $in > $fn ){\n    $tmp = $in; $in = $fn; $fn = $tmp;\n}\n\n// 4) Guardar en sesión (para siguientes cargas)\n$_SESSION['FechaIn'] = $in;\n$_SESSION['FechaFn'] = $fn;\n\n// 5) Construir el WHERE\n//    - Si tu campo 'fecha' es DATE, BETWEEN es inclusivo y esto basta.\n//    - Si fuese DATETIME y quieres incluir todo el día final, usa <= DATE_ADD($fn, INTERVAL 1 DAY)\nif( $strWhereClause != \"\" ) {\n    $strWhereClause .= \" AND \";\n}\n$strWhereClause .= \" fecha BETWEEN \" . add_db_quotes(\"fecha\", $in) . \" AND \" . add_db_quotes(\"fecha\", $fn);\n\n// Para depurar:\n// LogInfo(\"Rango aplicado: $in a $fn\");\n// LogInfo(\"WHERE: \".$strWhereClause);\n"
 		},
 		{
 			"eventId": "EVENT_BEFORESHOW_ADD",
@@ -1326,6 +1326,16 @@
 			"eventId": "EVENT_BEFOREEDIT",
 			"pageType": "edit",
 			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n\nDB::Exec(\"START TRANSACTION\", $conn);\n\n\n$values[\"fecha\"]=date('Y-m-d');\n$values[\"idtienda\"]=2;  //Tienda no presencial\n$values[\"idtipoventa\"]=5; //Renovación Tradicional (Equipo y Chip)\n$values[\"estatus\"]=\"ACTUALIZADA\";\n$values[\"equipoincluido\"]=1;\n$values[\"usuario\"]=$_SESSION[\"UserID\"];\n\n\n$camposExtra = [\"nombre\",\"paterno\",\"materno\",\"estado\",\"ciudad\",\"cp\",\"calle\",\"numeroext\",\"numeroint\",\"colonia\"];\n\n\n// Helpers para armar valores seguros\nfunction q($v){               // cadenas/fechas: 'valor' o NULL\n  return (isset($v) && $v !== '' ? db_prepare_string($v) : \"NULL\");\n}\nfunction qi($v){              // enteros: número o NULL\n  return (isset($v) && $v !== '' ? (int)$v : \"NULL\");\n}\nfunction qb($v){              // booleano/bit: 0/1\n  return (!empty($v) ? 1 : 0);\n}\n\n$idsolicitud = qi($oldvalues['idsolicitud']) ;\n\n// Construcción del UPDATE\n$sqlMain = \"UPDATE solicitudes SET estatus =\" . q($values['estatus']) .\", idcliente = \". qi($values['idcliente']) .\n\", idproducto = \".qi($values['idproducto'])     .\", idplan = \".    qi($values['idplan'])         .\", orden =  \" .   q($values['orden']) .\n\", plazo = \".  qi($values['plazo']) .\", rfc = \".     q($values['rfc'])  .\", idcli = \".    qi($values['idcli']) . \" WHERE idsolicitud = \" . $idsolicitud   ;\n\nif (!DB::Exec($sqlMain, $conn)) {\n    DB::Exec(\"ROLLBACK\", $conn);\n    $message = \"No se pudo actualizar la solicitud: \".db_error($conn);\n    return false;               // el form queda con los valores\n}\n//$idsolicitud = db_insertid($conn);\n\n\n\n\n\n$extras = [];\nforeach ($camposExtra as $f) {\n    if (array_key_exists($f, $values)) {\n        $extras[$f] = $values[$f];\n        unset($values[$f]);             // <- evita \"Unknown column ...\" en el INSERT de solicitudes\n    } else {\n        // Si alguno lo pones como \"Custom field\" (no ligado a DB), recupéralo del POST:\n        $pv = postvalue($f);\n        if ($pv !== null) $extras[$f] = $pv;\n    }\n}\n\n// Guarda en sesión, indexado por el id de la página para evitar choques con otras pestañas\n$_SESSION['solicitudes_add_extras'] = $_SESSION['solicitudes_add_extras'] ?? [];\n$_SESSION['solicitudes_add_extras'][$pageObject->id] = $extras;\n\n// Continúa con el insert normal en solicitudes\n\n\n $sql = sprintf(\"DELETE FROM seriessolicitadas WHERE idsolicitud =\". $idsolicitud );\n     if (!DB::Exec($sql, $conn)) {\n        DB::Exec(\"ROLLBACK\", $conn);\n        $message = \"error en las series solicitadas: \".db_error($conn);\n        return false;               // el form NO pierde lo tecleado\n    }\n\n \n\n\n$strSQLExists=\"SELECT\ncompras.noserie\nFROM compras\nLEFT OUTER JOIN ventas v ON compras.noserie = v.esnimei\nLEFT OUTER JOIN movimientos m ON compras.noserie = m.esnimei\nLEFT OUTER JOIN seriessolicitadas ss on compras.noserie=ss.esnimei     \nLEFT OUTER JOIN (SELECT t.esnimei,t.tiendadestino,t.`fecharecepcion` FROM traspasosdet t INNER JOIN (SELECT MAX(idtraspasodet) idtraspaso FROM traspasosdet GROUP BY esnimei) t1 ON t.idtraspasodet=t1.idtraspaso) t ON compras.noserie=t.esnimei\nINNER JOIN productos ON compras.codigoproducto = productos.codigoIUSA\nWHERE   v.esnimei is null and m.esnimei is null and ss.esnimei is null and (t. esnimei is null or t.fecharecepcion is not null and t.fecharecepcion<>'0000-00-00')\n  and compras.tienda=2 and compras.clasif = 2 and productos.Clasif='Equipo' AND productos.idproducto=\". $values['idproducto']. \" LIMIT 1 \";\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\n\nif (!$data)\n{\n\t\t$message=\"No existe saldo en el inventario para el producto seleccionado \". $sql;\n\treturn false;\n\n} else {\n    $_SESSION[\"esnimei\"] = $data['noserie'];\n}\n\n\n$strSQLExists=\"SELECT\ncompras.noserie\nFROM compras\nLEFT OUTER JOIN ventas v ON compras.noserie = v.esnimei\nLEFT OUTER JOIN movimientos m ON compras.noserie = m.esnimei\nLEFT OUTER JOIN seriessolicitadas ss on compras.noserie=ss.esnimei     \nLEFT OUTER JOIN (SELECT t.esnimei,t.tiendadestino,t.`fecharecepcion` FROM traspasosdet t INNER JOIN (SELECT MAX(idtraspasodet) idtraspaso FROM traspasosdet GROUP BY esnimei) t1 ON t.idtraspasodet=t1.idtraspaso) t ON compras.noserie=t.esnimei\nINNER JOIN productos ON compras.codigoproducto = productos.codigoIUSA\nWHERE   v.esnimei is null and m.esnimei is null  and ss.esnimei is null and (t. esnimei is null or t.fecharecepcion is not null and t.fecharecepcion<>'0000-00-00')\n  and compras.tienda=2 and compras.clasif = 2 and productos.Clasif='Chip' LIMIT 1 \";\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\n\nif (!$data)\n{\n\t\t$message=\"No existe saldo en el inventario de simcards\";\n\treturn false;\n\n} else {\n    $_SESSION[\"simcard\"] = $data['noserie'];\n}\n\n\n$extras = $_SESSION['solicitudes_add_extras'][$pageObject->id] ?? [];\nunset($_SESSION['solicitudes_add_extras'][$pageObject->id]);\n\n// Ya tienes $keys[\"idsolicitud\"] del registro insertado en solicitudes\n//$idsolicitud = (int)$keys[\"idsolicitud\"];\n\n// EJEMPLO: insertar dirección de entrega en entregasvnp usando los extras\n$strSQLExists=\"SELECT\nidsolicitud FROM entregasvnp WHERE idsolicitud = \". $idsolicitud ;\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\n\nif ($data)\n{\n\t\tif (!empty($extras)) {\n    $sql = sprintf(\n        \"UPDATE entregasvnp SET idsolicitud = \" . qi($values['idsolicitud']) . \", estado = \". db_prepare_string($extras[\"estado\"]    ?? \"\").\", ciudad = \" . db_prepare_string($extras[\"ciudad\"]    ?? \"\") .\n        \", cp = \" .db_prepare_string($extras[\"cp\"]        ?? \"\").\" , calle = \".db_prepare_string($extras[\"calle\"]     ?? \"\").\" , numeroext = \". db_prepare_string($extras[\"numeroext\"] ?? \"\") .\n        \", numeroint = \". db_prepare_string($extras[\"numeroint\"] ?? \"\") .\" , colonia = \". db_prepare_string($extras[\"colonia\"]   ?? \"\").\" WHERE idsolicitud = \". $idsolicitud ) ;\n\n    if (!DB::Exec($sql, $conn)) {\n        DB::Exec(\"ROLLBACK\", $conn);\n        $message = \"No se pudo actualizar los datos de entrega: \".db_error($conn);\n        return false;               // el form NO pierde lo tecleado\n    }\n  //  db_exec($sql, $conn);\n}\n\n} else {\n    if (!empty($extras)) {\n    $sql = sprintf(\n        \"INSERT INTO entregasvnp (idsolicitud, estado, ciudad, cp, calle, numeroext, numeroint, colonia)\n         VALUES (%d, %s, %s, %d, %s, %s, %s, %s)\",\n        $idsolicitud,\n        db_prepare_string($extras[\"estado\"]    ?? \"\"),\n        db_prepare_string($extras[\"ciudad\"]    ?? \"\"),\n        db_prepare_string($extras[\"cp\"]        ?? \"\"),\n        db_prepare_string($extras[\"calle\"]     ?? \"\"),\n        db_prepare_string($extras[\"numeroext\"] ?? \"\"),\n        db_prepare_string($extras[\"numeroint\"] ?? \"\"),\n        db_prepare_string($extras[\"colonia\"]   ?? \"\")\n    );\n    if (!DB::Exec($sql, $conn)) {\n        DB::Exec(\"ROLLBACK\", $conn);\n        $message = \"No se pudo guardar la entrega: \".db_error($conn);\n        return false;               // el form NO pierde lo tecleado\n    }\n  //  db_exec($sql, $conn);\n}\n}\n\n\n \n    $esnimei = $_SESSION[\"esnimei\"] ?? null;\n    if (!empty($esnimei)) {\n           $sql = sprintf(\n               \n            \"INSERT INTO seriessolicitadas (idsolicitud, esnimei)\n             VALUES (%d, %s)\",\n            $idsolicitud,\n            db_prepare_string($esnimei    ?? \"\")\n        );\n    if (!DB::Exec($sql, $conn)) {\n        DB::Exec(\"ROLLBACK\", $conn);\n        $message = \"No se pudo guardar el equipo: \".db_error($conn);\n        return false;               // el form NO pierde lo tecleado\n    }\n    \n    }\n    \n    $simcard = $_SESSION[\"simcard\"] ?? null;\n    if (!empty($esnimei)) {\n           $sql = sprintf(\n            \"INSERT INTO seriessolicitadas (idsolicitud, esnimei)\n             VALUES (%d, %s)\",\n            $idsolicitud,\n            db_prepare_string($simcard    ?? \"\")\n        );\n    if (!DB::Exec($sql, $conn)) {\n        DB::Exec(\"ROLLBACK\", $conn);\n        $message = \"No se pudo guardar el sincard: \".db_error($conn);\n        return false;               // el form NO pierde lo tecleado\n    }\n    \n    }\n\nDB::Exec(\"COMMIT\", $conn);\n\n// “flash message” en sesión para mostrarlo en verde tras el redirect\n$_SESSION['flash_ok'] = \"Solicitud #{$idsolicitud} guardada correctamente.\";\n\n// Redirige a la página Add (form limpio)\nheader(\"Location: \".$pageObject->shortTableName.\"_add.php?new=1\");\nexit;\n\n\n\n\nreturn false;\n"
+		},
+		{
+			"eventId": "EVENT_BEFOREPROCESSROW_LIST",
+			"pageType": "list",
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n// $data = datos del registro actual\n// $record = atributos HTML de la fila (puedes modificar botones, links, etc.)\n// $pageObject = objeto de página\n\n// Events → List page → Before record processed($data, &$record, &$pageObject)\n\n// 1) Construir las keys del registro actual (soporta PK compuesta)\n\n// solicitud → List → Before record processed($data, &$record, &$pageObject)\n\n// Keys para la URL (soporta PK compuesta)\n$params = [];\n$i = 1;\nforeach( $pageObject->pSet->getTableKeys() as $pk ){\n  $params[] = \"editid\".$i.\"=\".rawurlencode($data[$pk]);\n  $i++;\n}\n$q = implode(\"&\", $params);\n\n// Decide en servidor\n$userId  = isset($_SESSION['UserID']) ? strtoupper((string)$_SESSION['UserID']) : '';\n$isAdmin = ($userId === 'ADMIN');\n\n$dest = GetTableLink(\"solicitudes\", $isAdmin ? \"edit1\" : \"edit\") . \"?\" . $q;\n\n// Edit no-popup: usa href (también seteo data-href por si el tema lo usa)\n$attr = 'href=\"'.runner_htmlspecialchars($dest).'\" data-href=\"'.runner_htmlspecialchars($dest).'\" class=\"rnr-editlink\"';\n$record[\"editlink_attrs\"]       = $attr;\n$record[\"editlink_attrs_icon\"]  = $attr;   // si el tema muestra icono aparte\n$record[\"editlink_button_attrs\"]= $attr;   // por si renderiza un botón\n"
+		},
+		{
+			"eventId": "EVENT_BEFORESHOW_LIST",
+			"pageType": "list",
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n// Detecta ADMIN y otras banderas servidor-side\n// Detecta ADMIN y otras banderas servidor-side\n// --- Reglas de acceso ---\n$userId      = isset($_SESSION['UserID']) ? strtoupper((string)$_SESSION['UserID']) : '';\n$isAdmin     = ($userId === 'ADMIN');\n$isValidador = (isset($_SESSION['Label'])  && $_SESSION['Label'] === 'VALIDADOR');\n$hasAcceso   = (isset($_SESSION['Acceso']) && intval($_SESSION['Acceso']) === 1);\n\n// Cambia la condición a tu gusto:\n$allowLogistic =  $isAdmin || ($isValidador && $hasAcceso);\n\n// IMPORTANTE: usa el *itemid* real del botón en el diseñador (Builder).\n// Te recomiendo renombrarlo a \"logistic_btn\". Si en tu HTML ves data-itemid=\"custom_button\",\n// entonces cambia \"logistic_btn\" por \"custom_button\".\nif (!$allowLogistic) {\n    $pageObject->hideItem(\"logistic_btn\");   // oculta la columna/botón para ese usuario\n} else {\n    // lo exponemos por si quieres usarlo del lado cliente (opcional)\n    $pageObject->setProxyValue(\"allowLogistic\", true);\n}\n\n\n\n"
 		}
 	],
 	"dbTableInfo": {
@@ -2398,7 +2408,7 @@
 			"type": "edit",
 			"layoutId": "nomenu",
 			"disabled": false,
-			"default": 1,
+			"default": 7,
 			"forms": {
 				"above-grid": {
 					"modelId": "edit-above-grid",
@@ -3416,6 +3426,17 @@
 								}
 							],
 							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c3"
+								},
+								{
+									"cell": "c4"
+								}
+							],
+							"section": ""
 						}
 					],
 					"cells": {
@@ -3439,6 +3460,14 @@
 								"page_size",
 								"print_panel"
 							]
+						},
+						"c3": {
+							"model": "c3",
+							"items": []
+						},
+						"c4": {
+							"model": "c4",
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -3491,7 +3520,8 @@
 						"c0": {
 							"model": "c0",
 							"items": [
-								"logo"
+								"logo",
+								"expand_button"
 							]
 						},
 						"c1": {
@@ -3713,8 +3743,8 @@
 						"footcell_field2": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "fecha",
-							"columnName": "field"
+							"columnName": "field",
+							"field": "fecha"
 						},
 						"headcell_field4": {
 							"model": "headcell_field",
@@ -3735,8 +3765,8 @@
 						"footcell_field4": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "descripcion",
-							"columnName": "field"
+							"columnName": "field",
+							"field": "descripcion"
 						},
 						"headcell_field12": {
 							"model": "headcell_field",
@@ -3757,8 +3787,8 @@
 						"footcell_field12": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "estatus",
-							"columnName": "field"
+							"columnName": "field",
+							"field": "estatus"
 						},
 						"headcell_field16": {
 							"model": "headcell_field",
@@ -3779,8 +3809,8 @@
 						"footcell_field16": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "plazo",
-							"columnName": "field"
+							"columnName": "field",
+							"field": "plazo"
 						},
 						"headcell_checkbox": {
 							"model": "headcell_checkbox",
@@ -3818,11 +3848,11 @@
 								"grid_inline_save",
 								"grid_inline_cancel",
 								"grid_view",
-								"custom_button"
+								"logistic_btn"
 							],
+							"orientation": "horizontal",
 							"columnName": "list-icons",
-							"field": "",
-							"orientation": "horizontal"
+							"field": ""
 						},
 						"footcell_icons": {
 							"model": "footcell_icons",
@@ -3849,24 +3879,24 @@
 						"footcell_field": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "orden",
-							"columnName": "field"
+							"columnName": "field",
+							"field": "orden"
 						},
 						"headcell_field3": {
 							"model": "headcell_field",
 							"items": [
 								"simple_grid_field33"
 							],
-							"columnName": "field",
-							"field": "idcliente"
+							"field": "idcliente",
+							"columnName": "field"
 						},
 						"headcell_field5": {
 							"model": "cell_field",
 							"items": [
 								"simple_grid_field4"
 							],
-							"columnName": "field",
-							"field": "idcliente"
+							"field": "idcliente",
+							"columnName": "field"
 						},
 						"headcell_field6": {
 							"model": "footcell_field",
@@ -3893,8 +3923,8 @@
 						"footcell_field1": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "maps_url",
-							"columnName": "field"
+							"columnName": "field",
+							"field": "maps_url"
 						},
 						"headcell_field7": {
 							"model": "headcell_field",
@@ -3915,8 +3945,8 @@
 						"footcell_field3": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "estatusentrega",
-							"columnName": "field"
+							"columnName": "field",
+							"field": "estatusentrega"
 						},
 						"headcell_field8": {
 							"model": "headcell_field",
@@ -3937,8 +3967,8 @@
 						"footcell_field5": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "equipo",
-							"columnName": "field"
+							"columnName": "field",
+							"field": "equipo"
 						},
 						"headcell_field9": {
 							"model": "headcell_field",
@@ -3959,14 +3989,12 @@
 						"footcell_field6": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "chip",
-							"columnName": "field"
+							"columnName": "field",
+							"field": "chip"
 						},
 						"cell_dpreview": {
 							"model": "cell_dpreview",
-							"items": [
-								"details_preview"
-							],
+							"items": [],
 							"columnName": "details",
 							"field": ""
 						},
@@ -3981,7 +4009,6 @@
 						"headcell_field11": {
 							"model": "cell_field",
 							"items": [
-								"grid_alldetails_link",
 								"grid_details_link"
 							],
 							"columnName": "details",
@@ -4125,7 +4152,10 @@
 					}
 				},
 				"grid_view": {
-					"type": "grid_view"
+					"type": "grid_view",
+					"icon": {
+						"glyph": "search"
+					}
 				},
 				"username_button": {
 					"type": "username_button",
@@ -4267,18 +4297,13 @@
 					},
 					"editedByRte": false
 				},
-				"grid_alldetails_link": {
-					"type": "grid_alldetails_link",
-					"icon": {
-						"glyph": "th-list"
-					}
-				},
 				"grid_details_link": {
 					"type": "grid_details_link",
 					"table": 3847630651,
 					"badge": true,
 					"hideIfNone": true,
-					"showCount": true
+					"showCount": true,
+					"icon": {}
 				},
 				"print_panel": {
 					"type": "print_panel",
@@ -4292,15 +4317,6 @@
 						"3847630651": true
 					}
 				},
-				"details_preview": {
-					"type": "details_preview",
-					"table": 3847630651,
-					"items": [],
-					"popup": false,
-					"hideEmptyPreview": false,
-					"proceedLink": false,
-					"pageId": "listado"
-				},
 				"text2": {
 					"type": "text",
 					"label": {
@@ -4309,14 +4325,18 @@
 					},
 					"editedByRte": false
 				},
-				"custom_button": {
-					"type": "custom_button",
-					"eventGid": 1034594571,
-					"label": {
-						"text": "Button",
-						"type": 0
+				"expand_button": {
+					"type": "expand_button"
+				},
+				"logistic_btn": {
+					"type": "grid_edit",
+					"icon": {
+						"glyph": "phone"
 					},
-					"icon": {}
+					"tooltip": {
+						"type": 0,
+						"text": "Logística"
+					}
 				}
 			},
 			"dbProps": {},
@@ -5318,7 +5338,7 @@
 			"type": "edit",
 			"layoutId": "nomenu",
 			"disabled": false,
-			"default": 0,
+			"default": 6,
 			"forms": {
 				"above-grid": {
 					"modelId": "edit-above-grid",

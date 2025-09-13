@@ -361,7 +361,21 @@
 						}
 					},
 					{
-						"id": "4",
+						"id": "8",
+						"data": {
+							"name": {
+								"text": "Solicitudes2",
+								"type": 0
+							},
+							"pageId": "edit1",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 35049744,
+							"pageType": "edit"
+						}
+					},
+					{
+						"id": "7",
 						"data": {
 							"name": {
 								"table": "productos",

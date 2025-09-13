@@ -1,7 +1,7 @@
 {
 	"type": "EVENT_BUTTON",
 	"name": "Button",
-	"serverCode": "// Put your code here.\n\n$result[\"txt\"] = $params[\"txt\"].\" world!\";\n",
-	"beforeJsCode": "// Put your code here.\n\nparams[\"txt\"] = \"Hello\";\najax.setMessage(\"Sending request to server...\");\n // Uncomment the following line to prevent execution of \"Server\" and \"Client After\" events.\n // return false;",
-	"afterJsCode": "// Put your code here.\n\nvar message = result[\"txt\"] + \" !!!\";\najax.setMessage(message);\n"
+	"serverCode": "\n",
+	"beforeJsCode": "// === CLIENT CODE: botón \"Logistic\" por fila ===\r\nvar pageObj = this.pageObj;\r\n\r\n// Obtén las keys del registro clickeado\r\nvar keys = this.getKeys ? this.getKeys() : Runner.getSelectedKeys(pageObj.pageid);\r\nif (!keys || !Object.keys(keys).length) {\r\n  swal('Atención','Selecciona un registro.','warning');\r\n  return;\r\n}\r\n\r\n// Arma editid1=..., editid2=... (PK compuesta soportada)\r\nvar params = [];\r\nvar i = 1;\r\nObject.keys(keys).forEach(function(k){\r\n  params.push('editid'+(i++)+'='+encodeURIComponent(keys[k]));\r\n});\r\n\r\n// Navega a la página alterna\r\nvar url = 'solicitudes_edit.php?page=edit1&' + params.join('&');\r\nwindow.location.href = url;\r\n",
+	"afterJsCode": "\n"
 }
