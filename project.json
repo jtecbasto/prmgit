@@ -5,13 +5,6 @@
 	"mainDiagram": {
 		"tables": [
 			{
-				"gid": 3030998547,
-				"y": 345,
-				"x": 1110,
-				"width": 149.15625,
-				"height": 400
-			},
-			{
 				"gid": 1358825431,
 				"y": 425,
 				"x": 170,
@@ -112,7 +105,6 @@
 		]
 	},
 	"securitySettings": {
-		"loginDataSource": "serviciosmoviles_users",
 		"loginForm": 0,
 		"dynamicPermissions": true,
 		"dpTablePrefix": "serviciosmoviles_",
@@ -128,15 +120,15 @@
 				},
 				"code": "00",
 				"table": {
-					"connId": "conn",
-					"table": "serviciosmoviles_users"
+					"connId": "",
+					"table": ""
 				},
-				"usernameField": "username",
-				"passwordField": "password",
-				"emailField": "email",
+				"usernameField": null,
+				"passwordField": null,
+				"emailField": null,
 				"extUserIdField": null,
-				"fullnameField": "fullname",
-				"userpicField": "",
+				"fullnameField": null,
+				"userpicField": null,
 				"userGroupField": "username",
 				"activationField": "active",
 				"resetTokenField": "˂Create new˃",
@@ -331,9 +323,10 @@
 				"customConnections": [
 					{
 						"name": "New connection",
-						"code": "$host = 'rocasamexico.com';\n$user = 'rocasamexico_admin';\n$pwd = 'Tecno2023+';\n$port = 3306;\n$sys_dbname = 'rocasamexico_pruebas';"
+						"code": "$host = 'rocasamexico.com';\n$user = 'rocasamexico_admin';\n$pwd = 'Rocas@Mexico.2025**';\n$port = 3306;\n$sys_dbname = 'rocasamexico_prm';"
 					}
-				]
+				],
+				"selectedCustomConn": "New connection"
 			}
 		}
 	],
@@ -2031,6 +2024,7 @@
 		}
 	],
 	"projectStyle": {
+		"theme": "superhero",
 		"sidebarTheme": "legacy",
 		"topbarTheme": "lightblue",
 		"logoTheme": "info",
@@ -2038,6 +2032,7 @@
 		"sidebarCustomThemeColor": "legacy",
 		"topbarCustomThemeColor": "legacy",
 		"logoCustomThemeColor": "legacy",
+		"customCss": "/* HOVER global */\r\nbody.function-edit .form-control:hover,\r\nbody.function-add  .form-control:hover{\r\n  background: #ececec !important;\r\n  border-bottom-color: rgba(0,0,0,.87) !important;\r\n}\r\n\r\n/* FOCUS global */\r\nbody.function-edit .form-control:focus,\r\nbody.function-add  .form-control:focus{\r\n\r\n                    border-color: #0366d6;\r\n                    outline: none;\r\n                    box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;\r\n}\r\n\r\n/* Evita que afecte a checkbox/radio/file/range */\r\nbody.function-edit input.form-control[type=checkbox],\r\nbody.function-edit input.form-control[type=radio],\r\nbody.function-edit input.form-control[type=file],\r\nbody.function-edit input.form-control[type=range],\r\nbody.function-add  input.form-control[type=checkbox],\r\nbody.function-add  input.form-control[type=radio],\r\nbody.function-add  input.form-control[type=file],\r\nbody.function-add  input.form-control[type=range]{\r\n  background: transparent !important;\r\n  border: none !important;\r\n}\r\n\r\n.form-control:disabled,\r\n.form-control[readonly]{\r\n  background: #eeeeee !important;\r\n  border-bottom-color: rgba(0,0,0,.12) !important;\r\n  color: rgba(0,0,0,.45) !important;\r\n  cursor: not-allowed;\r\n}\r\n",
 		"gpHeaderBg": "legacy",
 		"gpHeaderColor": "legacy",
 		"gpFooterBg": "legacy",
