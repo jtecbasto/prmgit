@@ -482,14 +482,12 @@
 						"c3": {
 							"model": "c3",
 							"items": [
-								"integrated_edit_field",
 								"integrated_edit_field1",
 								"integrated_edit_field2",
+								"integrated_edit_field",
 								"integrated_edit_field3",
 								"integrated_edit_field4",
-								"integrated_edit_field5",
 								"integrated_edit_field6",
-								"integrated_edit_field7",
 								"integrated_edit_field9",
 								"integrated_edit_field10"
 							]
@@ -545,18 +543,8 @@
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
-				"integrated_edit_field5": {
-					"field": "telefono",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
 				"integrated_edit_field6": {
 					"field": "email",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field7": {
-					"field": "moral",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
@@ -649,19 +637,15 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"export_field",
 								"export_field1",
 								"export_field2",
 								"export_field3",
 								"export_field4",
 								"export_field5",
-								"export_field6",
 								"export_field7",
-								"export_field8",
 								"export_field9",
 								"export_field10",
-								"export_field11",
-								"export_field12"
+								"export_field11"
 							]
 						}
 					},
@@ -710,10 +694,6 @@
 				"export_cancel": {
 					"type": "export_cancel"
 				},
-				"export_field": {
-					"field": "idcliente",
-					"type": "export_field"
-				},
 				"export_field1": {
 					"field": "nombre",
 					"type": "export_field"
@@ -734,16 +714,8 @@
 					"field": "estado",
 					"type": "export_field"
 				},
-				"export_field6": {
-					"field": "telefono",
-					"type": "export_field"
-				},
 				"export_field7": {
 					"field": "email",
-					"type": "export_field"
-				},
-				"export_field8": {
-					"field": "moral",
 					"type": "export_field"
 				},
 				"export_field9": {
@@ -756,10 +728,6 @@
 				},
 				"export_field11": {
 					"field": "rfc",
-					"type": "export_field"
-				},
-				"export_field12": {
-					"field": "nombre_completo",
 					"type": "export_field"
 				}
 			},
@@ -845,19 +813,14 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"import_field",
 								"import_field1",
 								"import_field2",
 								"import_field3",
 								"import_field4",
 								"import_field5",
-								"import_field6",
 								"import_field7",
-								"import_field8",
-								"import_field9",
 								"import_field10",
-								"import_field11",
-								"import_field12"
+								"import_field11"
 							]
 						}
 					},
@@ -868,10 +831,6 @@
 			"items": {
 				"import_header": {
 					"type": "import_header"
-				},
-				"import_field": {
-					"field": "idcliente",
-					"type": "import_field"
 				},
 				"import_field1": {
 					"field": "nombre",
@@ -893,20 +852,8 @@
 					"field": "estado",
 					"type": "import_field"
 				},
-				"import_field6": {
-					"field": "telefono",
-					"type": "import_field"
-				},
 				"import_field7": {
 					"field": "email",
-					"type": "import_field"
-				},
-				"import_field8": {
-					"field": "moral",
-					"type": "import_field"
-				},
-				"import_field9": {
-					"field": "usuario",
 					"type": "import_field"
 				},
 				"import_field10": {
@@ -915,10 +862,6 @@
 				},
 				"import_field11": {
 					"field": "rfc",
-					"type": "import_field"
-				},
-				"import_field12": {
-					"field": "nombre_completo",
 					"type": "import_field"
 				}
 			},
@@ -1036,18 +979,14 @@
 						"c3": {
 							"model": "c3",
 							"items": [
-								"integrated_edit_field",
 								"integrated_edit_field1",
 								"integrated_edit_field2",
+								"integrated_edit_field",
 								"integrated_edit_field3",
 								"integrated_edit_field4",
-								"integrated_edit_field5",
 								"integrated_edit_field6",
-								"integrated_edit_field7",
-								"integrated_edit_field8",
 								"integrated_edit_field9",
-								"integrated_edit_field10",
-								"integrated_edit_field11"
+								"integrated_edit_field10"
 							]
 						}
 					},
@@ -1113,26 +1052,8 @@
 					"orientation": 0,
 					"updateOnEdit": false
 				},
-				"integrated_edit_field5": {
-					"field": "telefono",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
 				"integrated_edit_field6": {
 					"field": "email",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field7": {
-					"field": "moral",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field8": {
-					"field": "usuario",
 					"type": "integrated_edit_field",
 					"orientation": 0,
 					"updateOnEdit": false
@@ -1151,12 +1072,6 @@
 				},
 				"edit_view": {
 					"type": "edit_view"
-				},
-				"integrated_edit_field11": {
-					"field": "nombre_completo",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
 				}
 			},
 			"dbProps": {},
@@ -1271,19 +1186,14 @@
 						"c3": {
 							"model": "c3",
 							"items": [
-								"integrated_edit_field",
 								"integrated_edit_field1",
 								"integrated_edit_field2",
 								"integrated_edit_field3",
 								"integrated_edit_field4",
 								"integrated_edit_field5",
-								"integrated_edit_field6",
 								"integrated_edit_field7",
-								"integrated_edit_field8",
-								"integrated_edit_field9",
 								"integrated_edit_field10",
-								"integrated_edit_field11",
-								"integrated_edit_field12"
+								"integrated_edit_field11"
 							]
 						}
 					},
@@ -1302,11 +1212,6 @@
 				},
 				"view_close": {
 					"type": "view_close"
-				},
-				"integrated_edit_field": {
-					"field": "idcliente",
-					"type": "integrated_edit_field",
-					"orientation": 0
 				},
 				"integrated_edit_field1": {
 					"field": "nombre",
@@ -1333,23 +1238,8 @@
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
-				"integrated_edit_field6": {
-					"field": "telefono",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
 				"integrated_edit_field7": {
 					"field": "email",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field8": {
-					"field": "moral",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field9": {
-					"field": "usuario",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
@@ -1371,11 +1261,6 @@
 				},
 				"view_edit": {
 					"type": "view_edit"
-				},
-				"integrated_edit_field12": {
-					"field": "nombre_completo",
-					"type": "integrated_edit_field",
-					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -1484,8 +1369,7 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"menu",
-								"search_panel"
+								"menu"
 							]
 						}
 					},
@@ -1595,14 +1479,14 @@
 						"headcell_field11": {
 							"model": "headcell_field",
 							"items": [
-								"simple_grid_field24"
+								"simple_grid_field25"
 							],
 							"field": "rfc"
 						},
 						"cell_field11": {
 							"model": "cell_field",
 							"items": [
-								"simple_grid_field11"
+								"simple_grid_field12"
 							],
 							"field": "rfc"
 						},
@@ -1614,14 +1498,14 @@
 						"headcell_field12": {
 							"model": "headcell_field",
 							"items": [
-								"simple_grid_field25"
+								"simple_grid_field24"
 							],
 							"field": "nombre_completo"
 						},
 						"cell_field12": {
 							"model": "cell_field",
 							"items": [
-								"simple_grid_field12"
+								"simple_grid_field11"
 							],
 							"field": "nombre_completo"
 						},
@@ -1688,32 +1572,16 @@
 				"details_found": {
 					"type": "details_found"
 				},
-				"search_panel": {
-					"type": "search_panel",
-					"items": [
-						"search_panel_field12"
-					],
-					"_flexiblePanel": true
-				},
 				"list_options": {
 					"type": "list_options",
 					"items": [
 						"export_selected",
 						"delete_selected",
 						"-1",
-						"show_search_panel",
-						"hide_search_panel",
-						"-",
 						"export",
 						"-2",
 						"import"
 					]
-				},
-				"show_search_panel": {
-					"type": "show_search_panel"
-				},
-				"hide_search_panel": {
-					"type": "hide_search_panel"
 				},
 				"expand_menu_button": {
 					"type": "expand_menu_button"
@@ -1764,10 +1632,6 @@
 				},
 				"delete_selected": {
 					"type": "delete_selected"
-				},
-				"search_panel_field12": {
-					"field": "nombre_completo",
-					"type": "search_panel_field"
 				},
 				"simple_grid_field11": {
 					"field": "rfc",
@@ -1925,19 +1789,14 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"simple_grid_field",
 								"simple_grid_field1",
 								"simple_grid_field2",
 								"simple_grid_field3",
 								"simple_grid_field4",
 								"simple_grid_field5",
-								"simple_grid_field6",
 								"simple_grid_field7",
-								"simple_grid_field8",
-								"simple_grid_field9",
 								"simple_grid_field10",
-								"simple_grid_field11",
-								"simple_grid_field12"
+								"simple_grid_field11"
 							]
 						}
 					},
@@ -1954,10 +1813,6 @@
 				},
 				"print_pages": {
 					"type": "print_pages"
-				},
-				"simple_grid_field": {
-					"field": "idcliente",
-					"type": "simple_grid_field"
 				},
 				"simple_grid_field1": {
 					"field": "nombre",
@@ -1979,20 +1834,8 @@
 					"field": "estado",
 					"type": "simple_grid_field"
 				},
-				"simple_grid_field6": {
-					"field": "telefono",
-					"type": "simple_grid_field"
-				},
 				"simple_grid_field7": {
 					"field": "email",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field8": {
-					"field": "moral",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field9": {
-					"field": "usuario",
 					"type": "simple_grid_field"
 				},
 				"simple_grid_field10": {
@@ -2001,10 +1844,6 @@
 				},
 				"simple_grid_field11": {
 					"field": "rfc",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field12": {
-					"field": "nombre_completo",
 					"type": "simple_grid_field"
 				}
 			},

@@ -105,6 +105,7 @@
 		]
 	},
 	"securitySettings": {
+		"loginDataSource": "serviciosmoviles_users",
 		"loginForm": 0,
 		"dynamicPermissions": true,
 		"dpTablePrefix": "serviciosmoviles_",
@@ -120,15 +121,15 @@
 				},
 				"code": "00",
 				"table": {
-					"connId": "",
-					"table": ""
+					"connId": "conn",
+					"table": "serviciosmoviles_users"
 				},
-				"usernameField": null,
-				"passwordField": null,
-				"emailField": null,
+				"usernameField": "username",
+				"passwordField": "password",
+				"emailField": "email",
 				"extUserIdField": null,
-				"fullnameField": null,
-				"userpicField": null,
+				"fullnameField": "fullname",
+				"userpicField": "",
 				"userGroupField": "username",
 				"activationField": "active",
 				"resetTokenField": "˂Create new˃",
@@ -318,7 +319,7 @@
 		{
 			"id": "conn",
 			"name": "servicio_mov at localhost",
-			"connString": "mysql;rocasamexico.com;rocasamexico_admin;Tecno2023+;;rocasamexico_pruebas;;1",
+			"connString": "mysql;rocasamexico.com;rocasamexico_admin;Rocas@Mexico.2025**;;rocasamexico_pruebas;;1",
 			"buildParams": {
 				"customConnections": [
 					{
@@ -2024,7 +2025,8 @@
 		}
 	],
 	"projectStyle": {
-		"theme": "superhero",
+		"theme": "sandstone",
+		"sidebarColor": "light",
 		"sidebarTheme": "legacy",
 		"topbarTheme": "lightblue",
 		"logoTheme": "info",
