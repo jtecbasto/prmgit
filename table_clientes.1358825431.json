@@ -1481,69 +1481,87 @@
 							"items": [
 								"simple_grid_field25"
 							],
-							"field": "rfc"
+							"field": "nombre_completo",
+							"columnName": "field"
 						},
 						"cell_field11": {
 							"model": "cell_field",
 							"items": [
 								"simple_grid_field12"
 							],
-							"field": "rfc"
+							"field": "nombre_completo",
+							"columnName": "field"
 						},
 						"footcell_field11": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "rfc"
+							"field": "nombre_completo",
+							"columnName": "field"
 						},
 						"headcell_field12": {
 							"model": "headcell_field",
 							"items": [
 								"simple_grid_field24"
 							],
-							"field": "nombre_completo"
+							"field": "rfc",
+							"columnName": "field"
 						},
 						"cell_field12": {
 							"model": "cell_field",
 							"items": [
 								"simple_grid_field11"
 							],
-							"field": "nombre_completo"
+							"field": "rfc",
+							"columnName": "field"
 						},
 						"footcell_field12": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "nombre_completo"
+							"field": "rfc",
+							"columnName": "field"
 						},
 						"headcell_checkbox": {
 							"model": "headcell_checkbox",
 							"items": [
 								"grid_checkbox_head"
-							]
+							],
+							"columnName": "checkbox",
+							"field": ""
 						},
 						"cell_checkbox": {
 							"model": "cell_checkbox",
 							"items": [
 								"grid_checkbox"
-							]
+							],
+							"columnName": "checkbox",
+							"field": ""
 						},
 						"footcell_checkbox": {
 							"model": "footcell_checkbox",
-							"items": []
+							"items": [],
+							"columnName": "checkbox",
+							"field": ""
 						},
 						"headcell_icons": {
 							"model": "headcell_icons",
-							"items": []
+							"items": [],
+							"columnName": "list-icons",
+							"field": ""
 						},
 						"cell_icons": {
 							"model": "cell_icons",
 							"items": [
 								"grid_edit",
 								"grid_view"
-							]
+							],
+							"columnName": "list-icons",
+							"field": ""
 						},
 						"footcell_icons": {
 							"model": "footcell_icons",
-							"items": []
+							"items": [],
+							"columnName": "list-icons",
+							"field": ""
 						}
 					},
 					"deferredItems": [],
