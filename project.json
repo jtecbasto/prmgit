@@ -5,6 +5,13 @@
 	"mainDiagram": {
 		"tables": [
 			{
+				"gid": 3030998547,
+				"y": 345,
+				"x": 1070,
+				"width": 149.15625,
+				"height": 400
+			},
+			{
 				"gid": 1358825431,
 				"y": 425,
 				"x": 170,
@@ -319,7 +326,7 @@
 		{
 			"id": "conn",
 			"name": "servicio_mov at localhost",
-			"connString": "mysql;rocasamexico.com;rocasamexico_admin;Rocas@Mexico.2025**;;rocasamexico_pruebas;;1",
+			"connString": "mysql;rocasamexico.com;rocasamexico_admin;Rocas@Mexico.2025**;;rocasamexico_prm;;1",
 			"buildParams": {
 				"customConnections": [
 					{
