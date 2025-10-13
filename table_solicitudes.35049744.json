@@ -7,7 +7,7 @@
 			"asc": false
 		}
 	],
-	"sql": "SELECT\n\ts.idtipoventa,\n\ts.fecha,\n\ts.fechacaptura,\n\ts.idcliente,\n\ts.idproducto,\n\ts.idplan,\n\ts.usuario,\n\ts.idtienda,\n\ts.fechamodif,\n\ts.orden,\n\ts.solicitudimg,\n\ts.estatus,\n\ts.idsolrazon,\n\ts.importeatt,\n\ts.importesms,\n\ts.plazo,\n\ts.observaciones,\n\ts.equipoincluido,\n\ts.rfc,\n\ts.idtratamiento,\n\ts.riesgo,\n\ts.observacionest,\n\ts.idcli,\n\ts.fecha1avta,\n\ts.idplan1avta,\n\ts.dn1avta,\n\ts.idproceso,\n\ts.idorigenventa,\n\ts.estatusentrega,\n\tcte.nombre,\n\tcte.paterno,\n\tcte.materno,\n\tev.estado,\n\tev.ciudad,\n\tev.cp,\n\tev.calle,\n\tev.numeroext,\n\tev.numeroint,\n\tev.colonia,\n\tp.descripcion,\n\tCONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(TRIM(CONCAT_WS(' ',\n             IFNULL(ev.numeroext,''),IFNULL(ev.calle,''),IFNULL(ev.numeroint,''),\n             IFNULL(ev.colonia,''),IFNULL(ev.cp,''),IFNULL(ev.ciudad,''),IFNULL(ev.estado,'')\n           )),' ','+')) AS maps_url,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      IF(IFNULL(ev.calle,'')='','', CONCAT('C.',ev.calle)),\n      IFNULL(CONCAT('No.',ev.numeroext),''),\n      IFNULL(CONCAT('Int.',ev.numeroint),''),\n      IFNULL(ev.colonia,''), IFNULL(CONCAT('C.P.',ev.cp),''),\n      IFNULL(ev.ciudad,''), IFNULL(ev.estado,'')\n    ))) AS direccion,\n\ts.idsolicitud,\n\tss.equipo noserie,\n\tss.chip,\n\tev.lat,\n\tev.lng,\n\ts.session_data_json\nFROM\n\tsolicitudes AS s\n\tLEFT OUTER JOIN clientes AS cte ON cte.idcliente = s.idcliente\n\tLEFT OUTER JOIN entregasvnp AS ev ON ev.idsolicitud = s.idsolicitud\n\tLEFT OUTER JOIN productos AS p ON p.idproducto = s.idproducto\n\tLEFT OUTER JOIN (SELECT\n\tss.idsolicitud,\n\tMAX(CASE WHEN pr.clasif = 'Equipo' THEN ss.esnimei END) AS equipo,\n\tMAX(CASE WHEN pr.clasif = 'Chip'   THEN ss.esnimei END) AS chip\nFROM\n\tseriessolicitadas AS ss\n\tINNER JOIN compras AS cp ON cp.noserie = ss.esnimei\n\tINNER JOIN productos AS pr ON pr.codigoIUSA = cp.codigoproducto\nGROUP BY\n\tss.idsolicitud\n) AS ss ON ss.idsolicitud = s.idsolicitud\nWHERE\n s.idtienda = 2 order by s.idsolicitud desc\n\n",
+	"sql": "SELECT\n\ts.idtipoventa,\n\ts.fecha,\n\ts.fechacaptura,\n\ts.idcliente,\n\ts.idproducto,\n\ts.idplan,\n\ts.usuario,\n\ts.idtienda,\n\ts.fechamodif,\n\ts.orden,\n\ts.solicitudimg,\n\ts.estatus,\n\ts.idsolrazon,\n\ts.importeatt,\n\ts.importesms,\n\ts.plazo,\n\ts.observaciones,\n\ts.equipoincluido,\n\ts.rfc,\n\ts.idtratamiento,\n\ts.riesgo,\n\ts.observacionest,\n\ts.idcli,\n\ts.fecha1avta,\n\ts.idplan1avta,\n\ts.dn1avta,\n\ts.idproceso,\n\ts.idorigenventa,\n\ts.estatusentrega,\n\tcte.nombre,\n\tcte.paterno,\n\tcte.materno,\n\tev.estado,\n\tev.ciudad,\n\tev.cp,\n\tev.calle,\n\tev.numeroext,\n\tev.numeroint,\n\tev.colonia,\n\tp.descripcion,\n\tCONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(TRIM(CONCAT_WS(' ',\n             IFNULL(ev.numeroext,''),IFNULL(ev.calle,''),IFNULL(ev.numeroint,''),\n             IFNULL(ev.colonia,''),IFNULL(ev.cp,''),IFNULL(ev.ciudad,''),IFNULL(ev.estado,'')\n           )),' ','+')) AS maps_url,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      IF(IFNULL(ev.calle,'')='','', CONCAT('C.',ev.calle)),\n      IFNULL(CONCAT('No.',ev.numeroext),''),\n      IFNULL(CONCAT('Int.',ev.numeroint),''),\n      IFNULL(ev.colonia,''), IFNULL(CONCAT('C.P.',ev.cp),''),\n      IFNULL(ev.ciudad,''), IFNULL(ev.estado,'')\n    ))) AS direccion,\n\ts.idsolicitud,\n\tss.equipo noserie,\n\tss.chip,\n\tev.lat,\n\tev.lng\nFROM\n\tsolicitudes AS s\n\tLEFT OUTER JOIN clientes AS cte ON cte.idcliente = s.idcliente\n\tLEFT OUTER JOIN entregasvnp AS ev ON ev.idsolicitud = s.idsolicitud\n\tLEFT OUTER JOIN productos AS p ON p.idproducto = s.idproducto\n\tLEFT OUTER JOIN (SELECT\n\tss.idsolicitud,\n\tMAX(CASE WHEN pr.clasif = 'Equipo' THEN ss.esnimei END) AS equipo,\n\tMAX(CASE WHEN pr.clasif = 'Chip'   THEN ss.esnimei END) AS chip\nFROM\n\tseriessolicitadas AS ss\n\tINNER JOIN compras AS cp ON cp.noserie = ss.esnimei\n\tINNER JOIN productos AS pr ON pr.codigoIUSA = cp.codigoproducto\nGROUP BY\n\tss.idsolicitud\n) AS ss ON ss.idsolicitud = s.idsolicitud\nWHERE\n s.idtienda = 2 order by s.idsolicitud desc\n\n",
 	"connId": "conn",
 	"originalTable": "solicitudes",
 	"name": "solicitudes",
@@ -262,18 +262,6 @@
 						{
 							"masterField": "cliente_id",
 							"lookupField": "idcliente"
-						},
-						{
-							"masterField": "estado",
-							"lookupField": "estado"
-						},
-						{
-							"masterField": "ciudad",
-							"lookupField": "ciudad"
-						},
-						{
-							"masterField": "cp",
-							"lookupField": "idcp"
 						}
 					]
 				},
@@ -1273,34 +1261,12 @@
 				"Spanish": "IMEI"
 			},
 			"tableName": ""
-		},
-		{
-			"name": "session_data_json",
-			"sqlExpression": "s.session_data_json",
-			"index": 48,
-			"strField": "session_data_json",
-			"type": 201,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{}
-			],
-			"label": {
-				"Spanish": ""
-			},
-			"tableName": ""
 		}
 	],
 	"whereTabs": [
 		{}
 	],
 	"eventHandlers": [
-		{
-			"eventId": "EVENT_AFTERADD",
-			"pageType": "add",
-			"code": "/*\n// Events → Add → After record added\nglobal $conn;\n\n//********************************************************************************\n//Se inicia la trasancción\n\nDB::Exec(\"SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED\", $conn);\n\n// Inicia transacción\nDB::Exec(\"START TRANSACTION\", $conn);\n\n// marca en sesión por si necesitas saber que hay una txn abierta\n$_SESSION['add_txn_started'] = true;\n\n//**********************************************************************************\n\n\n$ok = true;\n$err = \"\";\n\n// PK del registro principal recién insertado\n$pk = (int)$keys[\"idsolicitud\"];  // ajusta al nombre real\n\n\n\n\n// Recupera y limpia el stash\n$extras = $_SESSION['solicitudes_add_extras'][$pageObject->id] ?? [];\nunset($_SESSION['solicitudes_add_extras'][$pageObject->id]);\n\n// Ya tienes $keys[\"idsolicitud\"] del registro insertado en solicitudes\n$idsolicitud = (int)$keys[\"idsolicitud\"];\n\n// EJEMPLO: insertar dirección de entrega en entregasvnp usando los extras\nif (!empty($extras)) {\n    $sql = sprintf(\n        \"INSERT INTO entregasvnp (idsolicitud, estado, ciudad, cp, calle, numeroext, numeroint, colonia)\n         VALUES (%d, %s, %s, %d, %s, %s, %s, %s)\",\n        $idsolicitud,\n        db_prepare_string($extras[\"estado\"]    ?? \"\"),\n        db_prepare_string($extras[\"ciudad\"]    ?? \"\"),\n        db_prepare_string($extras[\"cp\"]        ?? \"\"),\n        db_prepare_string($extras[\"calle\"]     ?? \"\"),\n        db_prepare_string($extras[\"numeroext\"] ?? \"\"),\n        db_prepare_string($extras[\"numeroint\"] ?? \"\"),\n        db_prepare_string($extras[\"colonia\"]   ?? \"\")\n    );\n    $ok = DB::Exec($sql, $conn) !== false;\n    if(!$ok){ $err = db_error($conn); }\n\n  //  db_exec($sql, $conn);\n}\n\nif($ok){\n    $esnimei = $_SESSION[\"esnimei\"] ?? null;\n    if (!empty($esnimei)) {\n           $sql = sprintf(\n            \"INSERT INTO seriessolicitadas (idsolicitud, esnimei)\n             VALUES (%d, %s)\",\n            $idsolicitud,\n            db_prepare_string($esnimei    ?? \"\")\n        );\n        db_exec($sql, $conn);\n    \n    }\n    \n    $simcard = $_SESSION[\"simcard\"] ?? null;\n    if (!empty($esnimei)) {\n           $sql = sprintf(\n            \"INSERT INTO seriessolicitadas (idsolicitud, esnimei)\n             VALUES (%d, %s)\",\n            $idsolicitud,\n            db_prepare_string($simcard    ?? \"\")\n        );\n        db_exec($sql, $conn);\n    \n    }\n}\n// Si quieres log/debug:\n// file_put_contents(\"extras_log.txt\", date('c').\" PID:\".$pageObject->id.\" \".json_encode($extras,JSON_UNESCAPED_UNICODE).PHP_EOL, FILE_APPEND);\n\nif($ok){\n  DB::Exec(\"COMMIT\", $conn);\n  DB::Exec(\"SET autocommit=1\", $conn); // higiene (opcional)\n} else {\n  DB::Exec(\"ROLLBACK\", $conn);\n  DB::Exec(\"SET autocommit=1\", $conn);\n\n  // informa al usuario y evita que parezca “éxito”\n  // para Add normal:\n  $_SESSION[\"last_error\"] = \"No se pudo completar la operación: \".$err;\n  header(\"Location: \".$pageObject->shortTableName.\"_add.php?message=rollback\"); // ajusta ruta\n  exit;\n}\n*/\n\n\n\n\n\n\n\n\n// En el evento AfterProcessAdd de la tabla Solicitudes\n\n// En el evento AfterProcessAdd de la tabla 'solicitudes'\n\n// En el evento AfterProcessAdd de la tabla 'solicitudes'\n\n// En el evento AfterProcessAdd de la tabla 'solicitudes'\n\n// En el evento AfterProcessAdd de la tabla 'solicitudes'\n/*\nglobal $pageObject;\n\n// 1. Verificar si hay datos guardados\nif (isset($_SESSION[\"add_data_temp\"])) {\n    \n    $temp_values = $_SESSION[\"add_data_temp\"];\n    \n    // 🛑 CRÍTICO FINAL: Inyectar los valores en el array de sesión interna de PHPRunner para la página.\n    // Esto simula que los valores fueron cargados por defecto o por un filtro de la sesión.\n    \n    $session_key = $pageObject->shortTableName . \"_add\"; // e.g., \"solicitudes_add\"\n    \n    // Asegura que la clave exista\n    $_SESSION[$session_key] = $_SESSION[$session_key] ?? [];\n    \n    // Fusiona los valores temporales en la sesión de la página\n    $_SESSION[$session_key] = array_merge($_SESSION[$session_key], $temp_values);\n    \n    \n    // Opcional, pero mantener para los lookups\n    $pageObject->data = array_merge($pageObject->data, $temp_values);\n    \n    // La inyección en controlsData debe seguir estando, aunque a estas alturas es más un seguro.\n    foreach ($temp_values as $fldName => $fldValue) {\n        if (isset($pageObject->controlsData['details'][$fldName])) {\n            $pageObject->controlsData['details'][$fldName]['value'] = $fldValue;\n            \n            $deliveryFields = [\"estado\", \"ciudad\", \"cp\", \"calle\", \"numeroext\", \"numeroint\", \"colonia\", \"noserie\"];\n            if (in_array($fldName, $deliveryFields)) {\n                 $pageObject->controlsData['details'][$fldName]['text'] = $fldValue;\n            }\n        }\n    }\n    \n    // Limpieza de sesión de datos fallidos (mantén esta limpieza para evitar que se pegue a la siguiente alta)\n    unset($_SESSION[\"add_data_temp\"]);\n}*/\n\n\n// En el evento AfterProcessAdd de la tabla 'solicitudes'\n/*\nglobal $pageObject;\n\n// 🛑 AGREGAR DEPURACIÓN AQUÍ 🛑\n$log_content = date('Y-m-d H:i:s') . \" - AfterProcessAdd ejecutado.\\n\";\nfile_put_contents('debug_log.txt', $log_content, FILE_APPEND);\n// 🛑 FIN DEPURACIÓN 🛑\n\n// Verificar si hay datos guardados de un intento de adición fallido\nif (isset($_SESSION[\"add_data_temp\"])) {\n    \n    // 🛑 AGREGAR DEPURACIÓN AQUÍ 🛑\n    $log_content = date('Y-m-d H:i:s') . \" - Sesión 'add_data_temp' ENCONTRADA. Contenido:\\n\" . var_export($_SESSION[\"add_data_temp\"], true) . \"\\n---\\n\";\n    file_put_contents('debug_log.txt', $log_content, FILE_APPEND);\n    // 🛑 FIN DEPURACIÓN 🛑\n    \n    // ... (Tu lógica de recuperación aquí) ...\n    \n    // Limpieza de sesión\n    unset($_SESSION[\"add_data_temp\"]);\n}*/"
-		},
 		{
 			"eventId": "EVENT_BEFOREADD",
 			"pageType": "add",
@@ -1339,7 +1305,7 @@
 		{
 			"eventId": "EVENT_BEFORESHOW_ADD",
 			"pageType": "add",
-			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n\n    // Si hay datos “rescatados” de un intento fallido, se los paso al cliente\n\n\n// —— solicitudes_add: Before display ——\n\n// Si vienes de un fallo, expón los datos al cliente\n/*if ( isset($_SESSION['add_data_temp']) && is_array($_SESSION['add_data_temp']) ) {\n\t$pageObject->setProxyValue(\"prefill_from_session\", $_SESSION['add_data_temp']);\n\t// (Opcional) mensaje visual\n\t$xt->assign(\"message\", \"Se recuperaron los datos del intento anterior que no se alcanzó a guardar.\");\n\t$xt->assign(\"message_class\", \"alert-warning\");\n}\n\n// (Opcional) si traes un \"flash_ok\" de éxito previo, muéstralo y bórralo\nif( isset($_SESSION['flash_ok']) ){\n\t$xt->assign(\"message\", $_SESSION['flash_ok']);\n\t$xt->assign(\"message_class\", \"alert-success\");\n\tunset($_SESSION['flash_ok']);\n}\n\n\n\n\n// Valores de texto\n$pageObject->setProxyValue(\"value_ciudad_1\", \"MERIDA\");\n$pageObject->setProxyValue(\"value_estado_1\", \"YUCATAN\");\n\n// Coordenadas por defecto\n$pageObject->setProxyValue(\"value_lat_1\", \"21.1619\");\n$pageObject->setProxyValue(\"value_lng_1\", \"-89.6793\");\n\n*/\n// Si vienes de un fallo, cargar datos en session_data_json\nif (isset($_SESSION['add_data_temp']) && is_array($_SESSION['add_data_temp'])) {\n    // Convertir a JSON y pre-cargar en el campo oculto\n    $recoveryData = $_SESSION['add_data_temp'];\n    \n    // Setear cada campo directamente\n    foreach ($recoveryData as $field => $value) {\n        if ($value !== null && $value !== '') {\n            $pageObject->setProxyValue(\"value_{$field}_1\", $value);\n        }\n    }\n    \n    // IMPORTANTE: También cargar en session_data_json para que el JS lo procese\n    $pageObject->setProxyValue(\"value_session_data_json_1\", json_encode($recoveryData));\n    \n    // Mensaje visual\n    $xt->assign(\"message\", \"⚠️ Se recuperaron los datos del intento anterior. Por favor revise y guarde nuevamente.\");\n    $xt->assign(\"message_class\", \"alert-warning\");\n    \n    // NO borrar aún - solo después de éxito\n    // unset($_SESSION['add_data_temp']);\n}\n\n// Flash de éxito\nif (isset($_SESSION['flash_ok'])) {\n    $xt->assign(\"message\", $_SESSION['flash_ok']);\n    $xt->assign(\"message_class\", \"alert-success\");\n    unset($_SESSION['flash_ok']);\n    // Limpiar datos temporales SOLO en éxito\n    unset($_SESSION['add_data_temp']);\n}\n\n// Valores por defecto (solo si NO hay recuperación)\n/*\nif (!isset($_SESSION['add_data_temp'])) {\n    $pageObject->setProxyValue(\"value_ciudad_1\", \"MERIDA\");\n    $pageObject->setProxyValue(\"value_estado_1\", \"YUCATAN\");\n    $pageObject->setProxyValue(\"value_lat_1\", \"21.1619\");\n    $pageObject->setProxyValue(\"value_lng_1\", \"-89.6793\");\n}*/"
+			"code": "\n// Si vienes de un fallo, cargar datos en session_data_json\nif (isset($_SESSION['add_data_temp']) && is_array($_SESSION['add_data_temp'])) {\n    // Convertir a JSON y pre-cargar en el campo oculto\n    $recoveryData = $_SESSION['add_data_temp'];\n    \n    // Setear cada campo directamente\n    foreach ($recoveryData as $field => $value) {\n        if ($value !== null && $value !== '') {\n            $pageObject->setProxyValue(\"value_{$field}_1\", $value);\n        }\n    }\n    \n    // IMPORTANTE: También cargar en session_data_json para que el JS lo procese\n   // $pageObject->setProxyValue(\"value_session_data_json_1\", json_encode($recoveryData));\n    \n    // Mensaje visual\n    $xt->assign(\"message\", \"⚠️ Se recuperaron los datos del intento anterior. Por favor revise y guarde nuevamente.\");\n    $xt->assign(\"message_class\", \"alert-warning\");\n    \n    // NO borrar aún - solo después de éxito\n    // unset($_SESSION['add_data_temp']);\n}\n\n// Flash de éxito\nif (isset($_SESSION['flash_ok'])) {\n    $xt->assign(\"message\", $_SESSION['flash_ok']);\n    $xt->assign(\"message_class\", \"alert-success\");\n    unset($_SESSION['flash_ok']);\n    // Limpiar datos temporales SOLO en éxito\n    unset($_SESSION['add_data_temp']);\n}\n\n"
 		},
 		{
 			"eventId": "EVENT_BEFOREEDIT",
@@ -1359,12 +1325,17 @@
 		{
 			"eventId": "EVENT_BEFOREPROCESS_ADD",
 			"pageType": "add",
-			"code": "// En el evento BeforeProcessAdd de la tabla 'solicitudes'\n\n// En el evento BeforeProcessAdd de la tabla 'solicitudes'\n// En el evento BeforeProcessAdd de la tabla 'solicitudes'\n\nglobal $pageObject;\n$session_key = $pageObject->shortTableName . \"_add\"; \n$debug_file = 'debug_log.txt';\n\n\n// 🛑 PASO DE LIMPIEZA: Limpiar datos de sesión si es una carga de página \"limpia\" 🛑\n// Si existe la variable de datos fallidos Y el método de la solicitud es GET (navegación por enlace),\n// asumimos que el usuario no viene de un reenvío fallido y limpiamos la sesión.\nif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_SESSION[\"add_data_temp\"])) {\n    // Los datos son de una sesión de error anterior, pero estamos en una navegación nueva.\n    unset($_SESSION[\"add_data_temp\"]);\n}\n\n// En el evento BeforeProcessAdd de la tabla 'solicitudes'\n\n"
+			"code": "// En el evento BeforeProcessAdd de la tabla 'solicitudes'\n\n// En el evento BeforeProcessAdd de la tabla 'solicitudes'\n// En el evento BeforeProcessAdd de la tabla 'solicitudes'\n// En el evento BeforeProcessAdd de la tabla 'solicitudes'\n// En el evento BeforeProcessAdd de la tabla 'solicitudes'\n\nglobal $pageObject;\n$session_key = $pageObject->shortTableName . \"_add\"; \n\nif ($_SERVER['REQUEST_METHOD'] === 'GET') {\n    \n    // 1. Limpieza de sesiones del servidor\n    if (isset($_SESSION[\"add_data_temp\"])) {\n        unset($_SESSION[\"add_data_temp\"]);\n    }\n    if (isset($_SESSION[$session_key])) {\n        unset($_SESSION[$session_key]);\n    }\n    \n    // 🛑 CRÍTICO: Inyección de código JS bloqueante 🛑\n    // Definimos una variable global para DESACTIVAR la recuperación de borrador.\n    $js_control_code = \"\n        <script type='text/javascript'>\n            window.SKIP_RECOVERY = true;\n            console.log('Modo de recuperacion DESACTIVADO.');\n            // De todas formas, limpiamos el sessionStorage para el futuro.\n            sessionStorage.removeItem('solicitud_vnp_draft'); \n        </script>\n    \";\n    \n    // Inyectar al inicio del header para la máxima prioridad\n    $pageObject->header = $js_control_code . ($pageObject->header ?? ''); \n}"
 		},
 		{
 			"eventId": "EVENT_JS_ONLOAD",
 			"pageType": "add",
-			"code": "window.STORAGE_KEY = 'solicitud_vnp_draft';\r\nwindow.FIELDS = ['estado','ciudad','colonia','calle','numeroext','numeroint','noserie','idproducto'];\r\nwindow.ENDPOINT = 'serial_reserve.php';\r\nwindow.__res_noserie = null;\r\nwindow.__recovering = false;\r\n\r\nsetTimeout(function(){\r\n  var ctrl = Runner.getControl(pageid, 'idproducto');\r\n  if (!ctrl) {\r\n    console.error('No se encontro control idproducto');\r\n    return;\r\n  }\r\n  \r\n  ctrl.on('change', function(){\r\n    var productId = ctrl.getValue();\r\n    if (!productId) return;\r\n    \r\n    if (window.__recovering) {\r\n      console.log('Modo recuperacion activo');\r\n      return;\r\n    }\r\n    \r\n    var prevSerie = $('#value_noserie_'+pageid).val();\r\n    if (prevSerie && window.__res_noserie === prevSerie) {\r\n      $.post(window.ENDPOINT, {action:'release', noserie: window.__res_noserie});\r\n      window.__res_noserie = null;\r\n    }\r\n    \r\n    $('#value_noserie_'+pageid).val('');\r\n    \r\n    $.post(window.ENDPOINT, {\r\n      action: 'reserve_by_product',\r\n      product_id: productId\r\n    }, function(resp){\r\n      if (resp.ok) {\r\n        $('#value_noserie_'+pageid).val(resp.noserie);\r\n        \r\n        var ctrlSerie = Runner.getControl(pageid, 'noserie');\r\n        if (ctrlSerie && ctrlSerie.setValue) {\r\n          ctrlSerie.setValue(resp.noserie);\r\n        }\r\n        \r\n        window.__res_noserie = resp.noserie;\r\n        \r\n        var draft = {};\r\n        for (var i = 0; i < window.FIELDS.length; i++) {\r\n          var f = window.FIELDS[i];\r\n          var val = $('#value_'+f+'_'+pageid).val();\r\n          if (val) draft[f] = val;\r\n        }\r\n        sessionStorage.setItem(window.STORAGE_KEY, JSON.stringify(draft));\r\n        \r\n        console.log('Serie reservada:', resp.noserie);\r\n      } else if (resp.error === 'no-stock') {\r\n        alert('No hay series disponibles para este producto.');\r\n        ctrl.setValue('');\r\n      } else {\r\n        alert('No se pudo reservar serie.');\r\n      }\r\n    }, 'json').fail(function(){\r\n      alert('Error de comunicacion.');\r\n    });\r\n  });\r\n  \r\n  setInterval(function(){\r\n    if (window.__recovering) return;\r\n    \r\n    var draft = {};\r\n    for (var i = 0; i < window.FIELDS.length; i++) {\r\n      var f = window.FIELDS[i];\r\n      var val = $('#value_'+f+'_'+pageid).val();\r\n      if (val) draft[f] = val;\r\n    }\r\n    sessionStorage.setItem(window.STORAGE_KEY, JSON.stringify(draft));\r\n  }, 5000);\r\n  \r\n  window.addEventListener('beforeunload', function(){\r\n    if (window.__res_noserie) {\r\n      navigator.sendBeacon(window.ENDPOINT, new URLSearchParams({\r\n        action: 'release',\r\n        noserie: window.__res_noserie\r\n      }));\r\n    }\r\n  });\r\n}, 500);\r\n\r\n// --- LÓGICA DE RECUPERACIÓN DE BORRADOR (Añadir al final del código existente) ---\r\n\r\nvar draftJson = sessionStorage.getItem(window.STORAGE_KEY);\r\n\r\nif (draftJson) {\r\n    try {\r\n        var draft = JSON.parse(draftJson);\r\n        window.__recovering = true; // Activa el modo recuperación (para evitar re-reservas accidentales)\r\n\r\n        console.log('Recuperando borrador:', draft);\r\n\r\n        for (var f in draft) {\r\n            if (draft.hasOwnProperty(f)) {\r\n                    var value = draft[f];\r\n                    var ctrl = Runner.getControl(pageid, f);\r\n                    \r\n                    // 1. Inyección para controles Runner (Lookups y campos complejos)\r\n                    if (ctrl && typeof ctrl.setControlValue === 'function') {\r\n                        // Si tiene la función, úsala (esto funciona para idproducto)\r\n                        ctrl.setControlValue(value);\r\n                    } \r\n                    // 2. Inyección para campos simples, de texto, solo lectura (noserie, calle)\r\n                    else {\r\n                        // Usar jQuery para inyectar directamente el valor en el campo HTML.\r\n                        // Este método es robusto y funciona incluso si el campo es de solo lectura.\r\n                        var inputElement = $('#value_' + f + '_' + pageid);\r\n                        \r\n                        if (inputElement.length) {\r\n                            inputElement.val(value);\r\n                            \r\n                            // Disparar el evento 'change' si es necesario (para actualizar visualización o lógica)\r\n                            inputElement.trigger('change'); \r\n                            \r\n                            // Si el campo es noserie, actualiza la variable global de reserva\r\n                            if (f === 'noserie' && value) {\r\n                                window.__res_noserie = value; \r\n                                console.log('Serie recuperada de borrador (vía jQuery):', value);\r\n                            }\r\n                        }\r\n                    }\r\n            }\r\n        }\r\n        \r\n        // 4. Limpiar el borrador solo después de haber rellenado el formulario con éxito\r\n        // Esto previene que se cargue en futuras páginas limpias.\r\n        sessionStorage.removeItem(window.STORAGE_KEY);\r\n        \r\n    } catch (e) {\r\n        console.error('Error al parsear el borrador de sessionStorage:', e);\r\n        sessionStorage.removeItem(window.STORAGE_KEY);\r\n    }\r\n}\r\n\r\n\r\n// --- DENTRO DEL BUCLE DE RECUPERACIÓN (for var f in draft) ---\r\n\r\n"
+			"code": "window.STORAGE_KEY = 'solicitud_vnp_draft';\r\nwindow.FIELDS = [\r\n    'idcliente', 'idproducto', 'idplan', 'orden', 'plazo', 'rfc', 'idcli', \r\n    'estado', 'ciudad', 'colonia', 'calle', 'numeroext', 'numeroint', 'noserie'\r\n]; \r\nwindow.ENDPOINT = 'serial_reserve.php';\r\nwindow.__res_noserie = null; \r\nwindow.__recovering = false; \r\n\r\n// TIEMPO MÁXIMO DE VALIDEZ DEL BORRADOR: 2 horas (7,200,000 milisegundos)\r\nconst MAX_DRAFT_AGE_MS = 2 * 60 * 60 * 1000; \r\n\r\nfunction fillFieldAndTrigger(fieldName, value) {\r\n    var inputElement = $('#value_' + fieldName + '_' + pageid);\r\n    if (inputElement.length) {\r\n        inputElement.val(value);\r\n        inputElement.trigger('change');\r\n        inputElement.trigger('keyup'); \r\n    }\r\n}\r\n\r\n// =================================================================\r\n// 🛑 NUEVO: Solución BFcache con pageshow (Fuera del setTimeout) 🛑\r\n// =================================================================\r\nwindow.addEventListener('pageshow', function(event) {\r\n    // Si event.persisted es true, la página se cargó desde la caché del navegador\r\n    if (event.persisted) { \r\n        // Si no hay borrador en sessionStorage, la página DEBE estar vacía\r\n        if (!sessionStorage.getItem(window.STORAGE_KEY)) {\r\n            console.log('Restauración de BFcache detectada. Forzando la limpieza de campos.');\r\n            \r\n            // Recorrer todos los campos y forzar su vaciado y actualización\r\n            window.FIELDS.forEach(function(f) {\r\n                var inputElement = $('#value_' + f + '_' + pageid);\r\n                if (inputElement.length) {\r\n                    inputElement.val('');\r\n                    inputElement.trigger('change');\r\n                }\r\n            });\r\n        }\r\n    }\r\n});\r\n\r\n\r\nsetTimeout(function(){\r\n    var ctrlProd = Runner.getControl(pageid, 'idproducto');\r\n    if (!ctrlProd) return;\r\n\r\n    // =================================================================\r\n    // 1. LÓGICA DE RECUPERACIÓN Y CADUCIDAD\r\n    // =================================================================\r\n    var draftJson = sessionStorage.getItem(window.STORAGE_KEY);\r\n    \r\n    if (draftJson) {\r\n        try {\r\n            var draft = JSON.parse(draftJson);\r\n            var currentTime = new Date().getTime();\r\n\r\n            // VERIFICACIÓN DE CADUCIDAD\r\n            if (draft.timestamp && (currentTime - draft.timestamp > MAX_DRAFT_AGE_MS)) {\r\n                console.log('Borrador encontrado, pero ha caducado. Eliminando.');\r\n                sessionStorage.removeItem(window.STORAGE_KEY);\r\n                return; \r\n            }\r\n            \r\n            // Si la bandera SKIP_RECOVERY está presente (limpieza de servidor), saltar\r\n            if (window.SKIP_RECOVERY) {\r\n                console.log('Recuperación omitida por bandera de carga limpia.');\r\n                sessionStorage.removeItem(window.STORAGE_KEY);\r\n                return; \r\n            }\r\n\r\n            // Continúa con la recuperación normal\r\n            window.__recovering = true; \r\n\r\n            for (var f in draft) {\r\n                if (draft.hasOwnProperty(f) && f !== 'timestamp') {\r\n                    var value = draft[f];\r\n                    var ctrl = Runner.getControl(pageid, f);\r\n\r\n                    // DOBLE VÍA DE INYECCIÓN\r\n                    if (ctrl && typeof ctrl.setControlValue === 'function') {\r\n                        ctrl.setControlValue(value);\r\n                    } else {\r\n                        fillFieldAndTrigger(f, value);\r\n                    }\r\n\r\n                    if (f === 'noserie' && value) {\r\n                        window.__res_noserie = value; \r\n                    }\r\n                }\r\n            }\r\n            \r\n            // Limpieza del borrador DESPUÉS de una recuperación exitosa.\r\n            sessionStorage.removeItem(window.STORAGE_KEY);\r\n            setTimeout(function() {\r\n                 window.__recovering = false; \r\n            }, 100); \r\n\r\n        } catch (e) {\r\n            console.error('Error al parsear el borrador de sessionStorage:', e);\r\n            sessionStorage.removeItem(window.STORAGE_KEY);\r\n        }\r\n    }\r\n\r\n    // =================================================================\r\n    // 2. LÓGICA DE RESERVA DE SERIE (Evento 'change' de idproducto)\r\n    // =================================================================\r\n    ctrlProd.on('change', function(){\r\n        var productId = ctrlProd.getValue();\r\n        if (!productId) return;\r\n        \r\n        if (window.__recovering) {\r\n            console.log('Modo recuperación activo, saltando reserva.');\r\n            return;\r\n        }\r\n        \r\n        // Lógica de liberación de serie anterior...\r\n        var prevSerie = $('#value_noserie_'+pageid).val();\r\n        if (prevSerie && window.__res_noserie === prevSerie) {\r\n            $.post(window.ENDPOINT, {action:'release', noserie: window.__res_noserie});\r\n            window.__res_noserie = null;\r\n        }\r\n        \r\n        $('#value_noserie_'+pageid).val('');\r\n        \r\n        // Solicitud de reserva de nueva serie\r\n        $.post(window.ENDPOINT, {\r\n            action: 'reserve_by_product',\r\n            product_id: productId\r\n        }, function(resp){\r\n            if (resp.ok) {\r\n                fillFieldAndTrigger('noserie', resp.noserie);\r\n                window.__res_noserie = resp.noserie;\r\n            } else if (resp.error === 'no-stock') {\r\n                alert('No hay series disponibles para este producto.');\r\n                ctrlProd.setValue('');\r\n            } else {\r\n                alert('No se pudo reservar serie.');\r\n            }\r\n        }, 'json').fail(function(){\r\n            alert('Error de comunicación.');\r\n        });\r\n    });\r\n\r\n    // =================================================================\r\n    // 3. LÓGICA DE AUTOGUARDADO PERIÓDICO (Guarda el timestamp)\r\n    // =================================================================\r\n    setInterval(function(){\r\n        if (window.__recovering) return;\r\n        \r\n        var draft = {};\r\n        for (var i = 0; i < window.FIELDS.length; i++) {\r\n            var f = window.FIELDS[i];\r\n            var val = $('#value_'+f+'_'+pageid).val();\r\n            if (val) draft[f] = val; \r\n        }\r\n        \r\n        draft.timestamp = new Date().getTime(); \r\n        \r\n        sessionStorage.setItem(window.STORAGE_KEY, JSON.stringify(draft));\r\n    }, 5000); \r\n    \r\n    \r\n    // =================================================================\r\n    // 4. LÓGICA DE LIBERACIÓN DE SERIE (al cerrar la pestaña)\r\n    // =================================================================\r\n    window.addEventListener('beforeunload', function(){\r\n        if (window.__res_noserie) {\r\n            navigator.sendBeacon(window.ENDPOINT, new URLSearchParams({\r\n                action: 'release',\r\n                noserie: window.__res_noserie\r\n            }));\r\n        }\r\n    });\r\n\r\n    // =================================================================\r\n    // 5. LÓGICA DE LIMPIEZA AL CANCELAR (Botón Volver a la lista)\r\n    // =================================================================\r\n    $('#backButton1').on('click', function(e) {\r\n        // Detener la navegación por defecto\r\n        e.preventDefault(); \r\n        \r\n        var listPageUrl = \"solicitudes_list.php\"; \r\n        \r\n        // 1. Liberar la serie reservada\r\n        if (window.__res_noserie) {\r\n            navigator.sendBeacon(window.ENDPOINT, new URLSearchParams({\r\n                action: 'release',\r\n                noserie: window.__res_noserie\r\n            }));\r\n            window.__res_noserie = null;\r\n        }\r\n\r\n        // 2. Limpiar el borrador garantizado\r\n        if (sessionStorage.getItem(window.STORAGE_KEY)) {\r\n            sessionStorage.removeItem(window.STORAGE_KEY);\r\n        }\r\n        \r\n        // 3. Navegar manualmente DESPUÉS de la limpieza\r\n        window.location.href = listPageUrl;\r\n    });\r\n\r\n}, 500);"
+		},
+		{
+			"eventId": "EVENT_AFTERADD",
+			"pageType": "add",
+			"code": "// En el evento AfterAdd de la tabla 'solicitudes'\n\nglobal $pageObject;\n\n// 🛑 Inyectamos código JS que se ejecuta antes de la redirección. 🛑\n// Esto garantiza que el borrador se elimine del navegador del usuario.\n$js_clear_code = \"\n    <script type='text/javascript'>\n        console.log('Guardado exitoso. Borrando borrador de sessionStorage.');\n        sessionStorage.removeItem('solicitud_vnp_draft'); \n    </script>\n\";\n\n// Inyectar el código de limpieza. Usamos la propiedad 'header' para asegurar la ejecución temprana.\n// Nota: La propiedad 'header' debe ser accedida o definida antes del cierre de este evento\n// para que el framework la incluya en el output de la redirección.\n$pageObject->header = $js_clear_code . ($pageObject->header ?? '');\n\n// Nota: Si el AfterAdd está configurado para mostrar la página de Ver, esto funcionará.\n// Si está configurado para redireccionar, la ejecución del JS es menos segura, \n// pero suele ser suficiente para borrar la clave.\n\n"
 		}
 	],
 	"dbTableInfo": {
@@ -1945,8 +1916,7 @@
 								"integrated_edit_field16",
 								"integrated_edit_field13",
 								"integrated_edit_field14",
-								"integrated_edit_field15",
-								"integrated_edit_field21"
+								"integrated_edit_field15"
 							]
 						},
 						"c4": {
@@ -2171,17 +2141,6 @@
 					"field": "idtipoventa",
 					"type": "integrated_edit_field",
 					"orientation": 0
-				},
-				"integrated_edit_field21": {
-					"field": "session_data_json",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"label": {
-						"field": "session_data_json",
-						"table": "solicitudes",
-						"type": 3
-					},
-					"customCSS": "/* Put  your custom CSS code here */\n\n"
 				}
 			},
 			"dbProps": {},
@@ -2281,8 +2240,7 @@
 							"items": [
 								"export_field",
 								"export_field1",
-								"export_field2",
-								"export_field3"
+								"export_field2"
 							]
 						}
 					},
@@ -2341,10 +2299,6 @@
 				},
 				"export_field2": {
 					"field": "lng",
-					"type": "export_field"
-				},
-				"export_field3": {
-					"field": "session_data_json",
 					"type": "export_field"
 				}
 			},
@@ -2576,8 +2530,7 @@
 							"model": "c3",
 							"items": [
 								"section",
-								"integrated_edit_field19",
-								"integrated_edit_field21"
+								"integrated_edit_field19"
 							],
 							"border": [
 								{
@@ -2976,12 +2929,6 @@
 				},
 				"integrated_edit_field20": {
 					"field": "idtipoventa",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field21": {
-					"field": "session_data_json",
 					"type": "integrated_edit_field",
 					"orientation": 0,
 					"updateOnEdit": false
@@ -4730,8 +4677,7 @@
 						"c3": {
 							"model": "c3",
 							"items": [
-								"integrated_search_field",
-								"integrated_search_field1"
+								"integrated_search_field"
 							]
 						}
 					},
@@ -4757,11 +4703,6 @@
 				},
 				"integrated_search_field": {
 					"field": "noserie",
-					"type": "integrated_search_field",
-					"orientation": 0
-				},
-				"integrated_search_field1": {
-					"field": "session_data_json",
 					"type": "integrated_search_field",
 					"orientation": 0
 				}
@@ -4912,8 +4853,7 @@
 								"simple_grid_field44",
 								"simple_grid_field45",
 								"simple_grid_field46",
-								"simple_grid_field43",
-								"simple_grid_field47"
+								"simple_grid_field43"
 							]
 						}
 					},
@@ -5115,10 +5055,6 @@
 				"simple_grid_field43": {
 					"field": "noserie",
 					"type": "simple_grid_field"
-				},
-				"simple_grid_field47": {
-					"field": "session_data_json",
-					"type": "simple_grid_field"
 				}
 			},
 			"dbProps": {},
@@ -5266,8 +5202,7 @@
 								"simple_grid_field44",
 								"simple_grid_field45",
 								"simple_grid_field46",
-								"simple_grid_field43",
-								"simple_grid_field47"
+								"simple_grid_field43"
 							]
 						}
 					},
@@ -5465,10 +5400,6 @@
 				},
 				"simple_grid_field43": {
 					"field": "noserie",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field47": {
-					"field": "session_data_json",
 					"type": "simple_grid_field"
 				}
 			},
