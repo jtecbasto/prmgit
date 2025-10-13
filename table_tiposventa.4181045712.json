@@ -1,20 +1,20 @@
 {
-	"sql": "SELECT L.idproducto, L.codigoIUSA, L.descripcion, L.saldo\r\nFROM (\r\n  SELECT p.idproducto, p.codigoIUSA, p.descripcion, s.saldo\r\n  FROM (\r\n    SELECT c.codigoproducto, COUNT(*) AS saldo\r\n    FROM compras c\r\n    WHERE c.tienda=2 AND c.clasif=2\r\n      AND NOT EXISTS (SELECT 1 FROM ventas v WHERE v.esnimei=c.noserie)\r\n      AND NOT EXISTS (SELECT 1 FROM movimientos m WHERE m.esnimei=c.noserie)\r\n      AND NOT EXISTS (SELECT 1 FROM seriessolicitadas ss WHERE ss.esnimei=c.noserie)\r\n      AND NOT EXISTS (SELECT 1 FROM seriesreservadas sr WHERE sr.noserie=c.noserie)\r\n    GROUP BY c.codigoproducto\r\n  ) s\r\n  JOIN productos p\r\n    ON p.codigoIUSA = s.codigoproducto AND p.Clasif='Equipo'\r\n\r\n/*  UNION ALL\r\n\r\n SELECT p2.idproducto, p2.codigoIUSA, p2.descripcion, 0\r\n  FROM productos p2\r\n  WHERE p2.idproducto = :session.IDACTUAL */          -- aquí tu prueba\r\n) AS L\r\n-- opcional: si temes duplicados cuando 1738 sí tiene saldo\r\n-- GROUP BY L.idproducto, L.codigoIUSA, L.descripcion\r\n--         ; -- y si agruparas, usa MAX(L.saldo) saldo\r\n",
+	"sql": "SELECT\r\n\tidtipoventa,\r\n\ttipoventa,\r\n\tvalor,\r\n\tclase,\r\n\tgtipoventa,\r\n\tidgtipoventa,\r\n\ttipoventaant,\r\n\tuso,\r\n\tidgplan,\r\n\tidmtipoventa\r\nFROM\r\n\ttiposventa",
 	"connId": "conn",
-	"originalTable": "productos",
-	"name": "productos",
-	"shortTableName": "productos",
+	"originalTable": "tiposventa",
+	"name": "tiposventa",
+	"shortTableName": "tiposventa",
 	"dbType": 0,
 	"keyFields": [
-		"idproducto"
+		"idtipoventa"
 	],
-	"detailsBadgeColor": "bc8f8f",
+	"detailsBadgeColor": "cd853f",
 	"fields": [
 		{
-			"name": "idproducto",
-			"sqlExpression": "L.idproducto",
+			"name": "idtipoventa",
+			"sqlExpression": "idtipoventa",
 			"index": 1,
-			"strField": "idproducto",
+			"strField": "idtipoventa",
 			"type": 3,
 			"autoinc": true,
 			"viewFormats": [
@@ -24,15 +24,15 @@
 				{}
 			],
 			"label": {
-				"Spanish": "Idproducto"
+				"Spanish": "Idtipoventa"
 			},
-			"tableName": ""
+			"tableName": "tiposventa"
 		},
 		{
-			"name": "codigoIUSA",
-			"sqlExpression": "L.codigoIUSA",
+			"name": "tipoventa",
+			"sqlExpression": "tipoventa",
 			"index": 2,
-			"strField": "codigoIUSA",
+			"strField": "tipoventa",
 			"type": 200,
 			"viewFormats": [
 				{}
@@ -41,15 +41,58 @@
 				{}
 			],
 			"label": {
-				"Spanish": "Codigo"
+				"Spanish": "Tipoventa"
 			},
-			"tableName": ""
+			"tableName": "tiposventa"
 		},
 		{
-			"name": "descripcion",
-			"sqlExpression": "L.descripcion",
+			"name": "valor",
+			"sqlExpression": "valor",
 			"index": 3,
-			"strField": "descripcion",
+			"strField": "valor",
+			"type": 14,
+			"viewFormats": [
+				{
+					"format": "Number"
+				}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Valor"
+			},
+			"tableName": "tiposventa"
+		},
+		{
+			"name": "clase",
+			"sqlExpression": "clase",
+			"index": 4,
+			"strField": "clase",
+			"type": 129,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Lookup wizard",
+					"lookupType": 0,
+					"lookupValues": [
+						"Teléfono y Chip",
+						"Solo Chip"
+					]
+				}
+			],
+			"label": {
+				"Spanish": "Clase"
+			},
+			"tableName": "tiposventa"
+		},
+		{
+			"name": "gtipoventa",
+			"sqlExpression": "gtipoventa",
+			"index": 5,
+			"strField": "gtipoventa",
 			"type": 200,
 			"viewFormats": [
 				{}
@@ -58,15 +101,15 @@
 				{}
 			],
 			"label": {
-				"Spanish": "Descripcion"
+				"Spanish": "Gtipoventa"
 			},
-			"tableName": ""
+			"tableName": "tiposventa"
 		},
 		{
-			"name": "saldo",
-			"sqlExpression": "L.saldo",
-			"index": 4,
-			"strField": "saldo",
+			"name": "idgtipoventa",
+			"sqlExpression": "idgtipoventa",
+			"index": 6,
+			"strField": "idgtipoventa",
 			"type": 3,
 			"viewFormats": [
 				{}
@@ -75,9 +118,77 @@
 				{}
 			],
 			"label": {
-				"Spanish": "Saldo"
+				"Spanish": "Idgtipoventa"
 			},
-			"tableName": ""
+			"tableName": "tiposventa"
+		},
+		{
+			"name": "tipoventaant",
+			"sqlExpression": "tipoventaant",
+			"index": 7,
+			"strField": "tipoventaant",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Tipoventaant"
+			},
+			"tableName": "tiposventa"
+		},
+		{
+			"name": "uso",
+			"sqlExpression": "uso",
+			"index": 8,
+			"strField": "uso",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Uso"
+			},
+			"tableName": "tiposventa"
+		},
+		{
+			"name": "idgplan",
+			"sqlExpression": "idgplan",
+			"index": 9,
+			"strField": "idgplan",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Idgplan"
+			},
+			"tableName": "tiposventa"
+		},
+		{
+			"name": "idmtipoventa",
+			"sqlExpression": "idmtipoventa",
+			"index": 10,
+			"strField": "idmtipoventa",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Idmtipoventa"
+			},
+			"tableName": "tiposventa"
 		}
 	],
 	"dbTableInfo": {
@@ -85,80 +196,47 @@
 		"foreignKeys": [],
 		"fields": [
 			{
-				"name": "idproducto",
-				"type": 20,
-				"size": 20,
+				"name": "idtipoventa",
+				"type": 3,
+				"size": 11,
 				"scale": 0,
-				"typeName": "bigint(20)",
+				"typeName": "int(11)",
 				"nullable": false,
 				"autoinc": true,
 				"defaultValueSQL": null,
 				"defaultValue": ""
 			},
 			{
-				"name": "marca",
+				"name": "tipoventa",
 				"type": 200,
-				"size": 20,
+				"size": 30,
 				"scale": 0,
-				"typeName": "varchar(20)",
-				"nullable": true,
-				"autoinc": false,
-				"defaultValueSQL": null,
-				"defaultValue": ""
-			},
-			{
-				"name": "modelo",
-				"type": 200,
-				"size": 50,
-				"scale": 0,
-				"typeName": "varchar(50)",
-				"nullable": true,
-				"autoinc": false,
-				"defaultValueSQL": null,
-				"defaultValue": ""
-			},
-			{
-				"name": "color",
-				"type": 200,
-				"size": 20,
-				"scale": 0,
-				"typeName": "varchar(20)",
-				"nullable": true,
-				"autoinc": false,
-				"defaultValueSQL": null,
-				"defaultValue": ""
-			},
-			{
-				"name": "codigoIUSA",
-				"type": 200,
-				"size": 20,
-				"scale": 0,
-				"typeName": "varchar(20)",
+				"typeName": "varchar(30)",
 				"nullable": false,
 				"autoinc": false,
 				"defaultValueSQL": null,
 				"defaultValue": ""
 			},
 			{
-				"name": "descripcion",
-				"type": 200,
-				"size": 150,
-				"scale": 0,
-				"typeName": "varchar(150)",
-				"nullable": false,
+				"name": "valor",
+				"type": 14,
+				"size": 4,
+				"scale": 2,
+				"typeName": "decimal(4,2)",
+				"nullable": true,
 				"autoinc": false,
 				"defaultValueSQL": null,
 				"defaultValue": ""
 			},
 			{
-				"name": "Clasif",
+				"name": "clase",
 				"type": 129,
 				"size": 0,
 				"scale": 0,
-				"typeName": "enum('Equipo','Chip')",
+				"typeName": "enum('Teléfono y Chip','Solo Chip')",
 				"enumValues": [
-					"Equipo",
-					"Chip"
+					"Teléfono y Chip",
+					"Solo Chip"
 				],
 				"nullable": true,
 				"autoinc": false,
@@ -166,33 +244,66 @@
 				"defaultValue": ""
 			},
 			{
-				"name": "precioestimado",
-				"type": 14,
+				"name": "gtipoventa",
+				"type": 200,
+				"size": 20,
+				"scale": 0,
+				"typeName": "varchar(20)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idgtipoventa",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": false,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "tipoventaant",
+				"type": 200,
+				"size": 30,
+				"scale": 0,
+				"typeName": "varchar(30)",
+				"nullable": false,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "uso",
+				"type": 200,
 				"size": 10,
-				"scale": 2,
-				"typeName": "decimal(10,2)",
+				"scale": 0,
+				"typeName": "varchar(10)",
 				"nullable": true,
 				"autoinc": false,
 				"defaultValueSQL": null,
 				"defaultValue": ""
 			},
 			{
-				"name": "idmarca",
+				"name": "idgplan",
 				"type": 3,
-				"size": 4,
+				"size": 11,
 				"scale": 0,
-				"typeName": "int(4)",
+				"typeName": "int(11)",
 				"nullable": true,
 				"autoinc": false,
 				"defaultValueSQL": null,
 				"defaultValue": ""
 			},
 			{
-				"name": "idmodelo",
+				"name": "idmtipoventa",
 				"type": 3,
-				"size": 4,
+				"size": 11,
 				"scale": 0,
-				"typeName": "int(4)",
+				"typeName": "int(11)",
 				"nullable": true,
 				"autoinc": false,
 				"defaultValueSQL": null,
@@ -200,10 +311,10 @@
 			}
 		],
 		"primaryKeys": [
-			"idproducto"
+			"idtipoventa"
 		],
 		"uniqueFields": [],
-		"name": "productos"
+		"name": "tiposventa"
 	},
 	"pages": [
 		{
@@ -301,8 +412,15 @@
 						"c3": {
 							"model": "c3",
 							"items": [
+								"integrated_edit_field",
+								"integrated_edit_field1",
+								"integrated_edit_field2",
 								"integrated_edit_field3",
-								"integrated_edit_field4"
+								"integrated_edit_field4",
+								"integrated_edit_field5",
+								"integrated_edit_field6",
+								"integrated_edit_field7",
+								"integrated_edit_field8"
 							]
 						}
 					},
@@ -331,13 +449,48 @@
 				"add_reset": {
 					"type": "add_reset"
 				},
+				"integrated_edit_field": {
+					"field": "tipoventa",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field1": {
+					"field": "valor",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field2": {
+					"field": "clase",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
 				"integrated_edit_field3": {
-					"field": "codigoIUSA",
+					"field": "gtipoventa",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
 				"integrated_edit_field4": {
-					"field": "descripcion",
+					"field": "idgtipoventa",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field5": {
+					"field": "tipoventaant",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field6": {
+					"field": "uso",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field7": {
+					"field": "idgplan",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field8": {
+					"field": "idmtipoventa",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				}
@@ -421,8 +574,15 @@
 							"model": "c1",
 							"items": [
 								"export_field",
+								"export_field1",
+								"export_field2",
+								"export_field3",
 								"export_field4",
-								"export_field5"
+								"export_field5",
+								"export_field6",
+								"export_field7",
+								"export_field8",
+								"export_field9"
 							]
 						}
 					},
@@ -472,15 +632,43 @@
 					"type": "export_cancel"
 				},
 				"export_field": {
-					"field": "idproducto",
+					"field": "idtipoventa",
+					"type": "export_field"
+				},
+				"export_field1": {
+					"field": "tipoventa",
+					"type": "export_field"
+				},
+				"export_field2": {
+					"field": "valor",
+					"type": "export_field"
+				},
+				"export_field3": {
+					"field": "clase",
 					"type": "export_field"
 				},
 				"export_field4": {
-					"field": "codigoIUSA",
+					"field": "gtipoventa",
 					"type": "export_field"
 				},
 				"export_field5": {
-					"field": "descripcion",
+					"field": "idgtipoventa",
+					"type": "export_field"
+				},
+				"export_field6": {
+					"field": "tipoventaant",
+					"type": "export_field"
+				},
+				"export_field7": {
+					"field": "uso",
+					"type": "export_field"
+				},
+				"export_field8": {
+					"field": "idgplan",
+					"type": "export_field"
+				},
+				"export_field9": {
+					"field": "idmtipoventa",
 					"type": "export_field"
 				}
 			},
@@ -567,8 +755,15 @@
 							"model": "c1",
 							"items": [
 								"import_field",
+								"import_field1",
+								"import_field2",
+								"import_field3",
 								"import_field4",
-								"import_field5"
+								"import_field5",
+								"import_field6",
+								"import_field7",
+								"import_field8",
+								"import_field9"
 							]
 						}
 					},
@@ -581,15 +776,43 @@
 					"type": "import_header"
 				},
 				"import_field": {
-					"field": "idproducto",
+					"field": "idtipoventa",
+					"type": "import_field"
+				},
+				"import_field1": {
+					"field": "tipoventa",
+					"type": "import_field"
+				},
+				"import_field2": {
+					"field": "valor",
+					"type": "import_field"
+				},
+				"import_field3": {
+					"field": "clase",
 					"type": "import_field"
 				},
 				"import_field4": {
-					"field": "codigoIUSA",
+					"field": "gtipoventa",
 					"type": "import_field"
 				},
 				"import_field5": {
-					"field": "descripcion",
+					"field": "idgtipoventa",
+					"type": "import_field"
+				},
+				"import_field6": {
+					"field": "tipoventaant",
+					"type": "import_field"
+				},
+				"import_field7": {
+					"field": "uso",
+					"type": "import_field"
+				},
+				"import_field8": {
+					"field": "idgplan",
+					"type": "import_field"
+				},
+				"import_field9": {
+					"field": "idmtipoventa",
 					"type": "import_field"
 				}
 			},
@@ -707,8 +930,15 @@
 						"c3": {
 							"model": "c3",
 							"items": [
+								"integrated_edit_field",
+								"integrated_edit_field1",
+								"integrated_edit_field2",
 								"integrated_edit_field3",
-								"integrated_edit_field4"
+								"integrated_edit_field4",
+								"integrated_edit_field5",
+								"integrated_edit_field6",
+								"integrated_edit_field7",
+								"integrated_edit_field8"
 							]
 						}
 					},
@@ -743,13 +973,48 @@
 				"edit_close": {
 					"type": "edit_close"
 				},
+				"integrated_edit_field": {
+					"field": "tipoventa",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field1": {
+					"field": "valor",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field2": {
+					"field": "clase",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
 				"integrated_edit_field3": {
-					"field": "codigoIUSA",
+					"field": "gtipoventa",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
 				"integrated_edit_field4": {
-					"field": "descripcion",
+					"field": "idgtipoventa",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field5": {
+					"field": "tipoventaant",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field6": {
+					"field": "uso",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field7": {
+					"field": "idgplan",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field8": {
+					"field": "idmtipoventa",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				}
@@ -867,8 +1132,15 @@
 							"model": "c3",
 							"items": [
 								"integrated_edit_field",
+								"integrated_edit_field1",
+								"integrated_edit_field2",
+								"integrated_edit_field3",
 								"integrated_edit_field4",
-								"integrated_edit_field5"
+								"integrated_edit_field5",
+								"integrated_edit_field6",
+								"integrated_edit_field7",
+								"integrated_edit_field8",
+								"integrated_edit_field9"
 							]
 						}
 					},
@@ -889,17 +1161,52 @@
 					"type": "view_close"
 				},
 				"integrated_edit_field": {
-					"field": "idproducto",
+					"field": "idtipoventa",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field1": {
+					"field": "tipoventa",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field2": {
+					"field": "valor",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field3": {
+					"field": "clase",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
 				"integrated_edit_field4": {
-					"field": "codigoIUSA",
+					"field": "gtipoventa",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
 				"integrated_edit_field5": {
-					"field": "descripcion",
+					"field": "idgtipoventa",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field6": {
+					"field": "tipoventaant",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field7": {
+					"field": "uso",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field8": {
+					"field": "idgplan",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field9": {
+					"field": "idmtipoventa",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
@@ -1071,9 +1378,16 @@
 						"c1": {
 							"model": "c1",
 							"items": [
+								"simple_grid_field",
+								"simple_grid_field1",
+								"simple_grid_field2",
+								"simple_grid_field3",
 								"simple_grid_field4",
 								"simple_grid_field5",
-								"simple_grid_field"
+								"simple_grid_field6",
+								"simple_grid_field7",
+								"simple_grid_field8",
+								"simple_grid_field9"
 							]
 						}
 					},
@@ -1119,14 +1433,62 @@
 				"details_found": {
 					"type": "details_found"
 				},
+				"simple_grid_field": {
+					"field": "idtipoventa",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field1": {
+					"field": "tipoventa",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field2": {
+					"field": "valor",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field3": {
+					"field": "clase",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
 				"simple_grid_field4": {
-					"field": "codigoIUSA",
+					"field": "gtipoventa",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
 					"inlineEdit": false
 				},
 				"simple_grid_field5": {
-					"field": "descripcion",
+					"field": "idgtipoventa",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field6": {
+					"field": "tipoventaant",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field7": {
+					"field": "uso",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field8": {
+					"field": "idgplan",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field9": {
+					"field": "idmtipoventa",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
 					"inlineEdit": false
@@ -1134,9 +1496,16 @@
 				"search_panel": {
 					"type": "search_panel",
 					"items": [
-						"search_panel_field5",
 						"search_panel_field",
-						"search_panel_field4"
+						"search_panel_field9",
+						"search_panel_field8",
+						"search_panel_field7",
+						"search_panel_field6",
+						"search_panel_field5",
+						"search_panel_field4",
+						"search_panel_field3",
+						"search_panel_field2",
+						"search_panel_field1"
 					],
 					"_flexiblePanel": true
 				},
@@ -1153,12 +1522,44 @@
 				"hide_search_panel": {
 					"type": "hide_search_panel"
 				},
+				"search_panel_field": {
+					"field": "idtipoventa",
+					"type": "search_panel_field"
+				},
+				"search_panel_field1": {
+					"field": "tipoventa",
+					"type": "search_panel_field"
+				},
+				"search_panel_field2": {
+					"field": "valor",
+					"type": "search_panel_field"
+				},
+				"search_panel_field3": {
+					"field": "clase",
+					"type": "search_panel_field"
+				},
 				"search_panel_field4": {
-					"field": "codigoIUSA",
+					"field": "gtipoventa",
 					"type": "search_panel_field"
 				},
 				"search_panel_field5": {
-					"field": "descripcion",
+					"field": "idgtipoventa",
+					"type": "search_panel_field"
+				},
+				"search_panel_field6": {
+					"field": "tipoventaant",
+					"type": "search_panel_field"
+				},
+				"search_panel_field7": {
+					"field": "uso",
+					"type": "search_panel_field"
+				},
+				"search_panel_field8": {
+					"field": "idgplan",
+					"type": "search_panel_field"
+				},
+				"search_panel_field9": {
+					"field": "idmtipoventa",
 					"type": "search_panel_field"
 				},
 				"username_button": {
@@ -1196,16 +1597,6 @@
 				},
 				"-2": {
 					"type": "-"
-				},
-				"simple_grid_field": {
-					"field": "saldo",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"search_panel_field": {
-					"field": "saldo",
-					"type": "search_panel_field"
 				}
 			},
 			"dbProps": {},
@@ -1311,8 +1702,15 @@
 							"model": "c1",
 							"items": [
 								"simple_grid_field",
+								"simple_grid_field1",
+								"simple_grid_field2",
+								"simple_grid_field3",
 								"simple_grid_field4",
-								"simple_grid_field5"
+								"simple_grid_field5",
+								"simple_grid_field6",
+								"simple_grid_field7",
+								"simple_grid_field8",
+								"simple_grid_field9"
 							]
 						}
 					},
@@ -1331,15 +1729,43 @@
 					"type": "print_pages"
 				},
 				"simple_grid_field": {
-					"field": "idproducto",
+					"field": "idtipoventa",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field1": {
+					"field": "tipoventa",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field2": {
+					"field": "valor",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field3": {
+					"field": "clase",
 					"type": "simple_grid_field"
 				},
 				"simple_grid_field4": {
-					"field": "codigoIUSA",
+					"field": "gtipoventa",
 					"type": "simple_grid_field"
 				},
 				"simple_grid_field5": {
-					"field": "descripcion",
+					"field": "idgtipoventa",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field6": {
+					"field": "tipoventaant",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field7": {
+					"field": "uso",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field8": {
+					"field": "idgplan",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field9": {
+					"field": "idmtipoventa",
 					"type": "simple_grid_field"
 				}
 			},
@@ -1362,6 +1788,6 @@
 		"addressFields": []
 	},
 	"caption": {
-		"Spanish": "Productos"
+		"Spanish": "Tiposventa"
 	}
 }

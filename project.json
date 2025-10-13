@@ -103,6 +103,13 @@
 				"height": 400
 			},
 			{
+				"gid": 4181045712,
+				"y": 465,
+				"x": 810,
+				"width": 132.828125,
+				"height": 320
+			},
+			{
 				"gid": 1182658781,
 				"y": 180,
 				"x": 810,
@@ -416,6 +423,20 @@
 							"table": 3847630651,
 							"pageType": "list"
 						}
+					},
+					{
+						"id": "9",
+						"data": {
+							"name": {
+								"table": "tiposventa",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 4181045712,
+							"pageType": "list"
+						}
 					}
 				]
 			}
@@ -500,7 +521,8 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"welcome_item2"
+								"welcome_item2",
+								"welcome_item"
 							]
 						}
 					},
@@ -554,6 +576,25 @@
 				},
 				"adminarea_link": {
 					"type": "adminarea_link"
+				},
+				"welcome_item": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "tiposventa",
+					"linkPage": "list",
+					"linkText": {
+						"table": "tiposventa",
+						"type": 6
+					},
+					"linkIcon": {
+						"glyph": "fire"
+					},
+					"linkComments": {
+						"text": "Tiposventa description",
+						"type": 0
+					},
+					"background": "#cd853f",
+					"linkType": 0
 				}
 			},
 			"dbProps": {},

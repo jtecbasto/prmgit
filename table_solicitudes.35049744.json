@@ -1,5 +1,13 @@
 {
-	"sql": "SELECT\n\ts.idtipoventa,\n\ts.fecha,\n\ts.fechacaptura,\n\ts.idcliente,\n\ts.idproducto,\n\ts.idplan,\n\ts.usuario,\n\ts.idtienda,\n\ts.fechamodif,\n\ts.orden,\n\ts.solicitudimg,\n\ts.estatus,\n\ts.idsolrazon,\n\ts.importeatt,\n\ts.importesms,\n\ts.plazo,\n\ts.observaciones,\n\ts.equipoincluido,\n\ts.rfc,\n\ts.idtratamiento,\n\ts.riesgo,\n\ts.observacionest,\n\ts.idcli,\n\ts.fecha1avta,\n\ts.idplan1avta,\n\ts.dn1avta,\n\ts.idproceso,\n\ts.idorigenventa,\n\ts.estatusentrega,\n\tcte.nombre,\n\tcte.paterno,\n\tcte.materno,\n\tev.estado,\n\tev.ciudad,\n\tev.cp,\n\tev.calle,\n\tev.numeroext,\n\tev.numeroint,\n\tev.colonia,\n\tp.descripcion,\n\tCONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(TRIM(CONCAT_WS(' ',\n             IFNULL(ev.numeroext,''),IFNULL(ev.calle,''),IFNULL(ev.numeroint,''),\n             IFNULL(ev.colonia,''),IFNULL(ev.cp,''),IFNULL(ev.ciudad,''),IFNULL(ev.estado,'')\n           )),' ','+')) AS maps_url,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      IF(IFNULL(ev.calle,'')='','', CONCAT('C.',ev.calle)),\n      IFNULL(CONCAT('No.',ev.numeroext),''),\n      IFNULL(CONCAT('Int.',ev.numeroint),''),\n      IFNULL(ev.colonia,''), IFNULL(CONCAT('C.P.',ev.cp),''),\n      IFNULL(ev.ciudad,''), IFNULL(ev.estado,'')\n    ))) AS direccion,\n\ts.idsolicitud,\n\tss.equipo noserie,\n\tss.chip,\n\tev.lat,\n\tev.lng\nFROM\n\tsolicitudes AS s\n\tLEFT OUTER JOIN clientes AS cte ON cte.idcliente = s.idcliente\n\tLEFT OUTER JOIN entregasvnp AS ev ON ev.idsolicitud = s.idsolicitud\n\tLEFT OUTER JOIN productos AS p ON p.idproducto = s.idproducto\n\tLEFT OUTER JOIN (SELECT\n\tss.idsolicitud,\n\tMAX(CASE WHEN pr.clasif = 'Equipo' THEN ss.esnimei END) AS equipo,\n\tMAX(CASE WHEN pr.clasif = 'Chip'   THEN ss.esnimei END) AS chip\nFROM\n\tseriessolicitadas AS ss\n\tINNER JOIN compras AS cp ON cp.noserie = ss.esnimei\n\tINNER JOIN productos AS pr ON pr.codigoIUSA = cp.codigoproducto\nGROUP BY\n\tss.idsolicitud\n) AS ss ON ss.idsolicitud = s.idsolicitud\nWHERE\n s.idtienda = 2\n\n",
+	"orderInfo": [
+		{
+			"index": 43,
+			"field": "estatusentrega",
+			"expr": "s.idsolicitud",
+			"asc": false
+		}
+	],
+	"sql": "SELECT\n\ts.idtipoventa,\n\ts.fecha,\n\ts.fechacaptura,\n\ts.idcliente,\n\ts.idproducto,\n\ts.idplan,\n\ts.usuario,\n\ts.idtienda,\n\ts.fechamodif,\n\ts.orden,\n\ts.solicitudimg,\n\ts.estatus,\n\ts.idsolrazon,\n\ts.importeatt,\n\ts.importesms,\n\ts.plazo,\n\ts.observaciones,\n\ts.equipoincluido,\n\ts.rfc,\n\ts.idtratamiento,\n\ts.riesgo,\n\ts.observacionest,\n\ts.idcli,\n\ts.fecha1avta,\n\ts.idplan1avta,\n\ts.dn1avta,\n\ts.idproceso,\n\ts.idorigenventa,\n\ts.estatusentrega,\n\tcte.nombre,\n\tcte.paterno,\n\tcte.materno,\n\tev.estado,\n\tev.ciudad,\n\tev.cp,\n\tev.calle,\n\tev.numeroext,\n\tev.numeroint,\n\tev.colonia,\n\tp.descripcion,\n\tCONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(TRIM(CONCAT_WS(' ',\n             IFNULL(ev.numeroext,''),IFNULL(ev.calle,''),IFNULL(ev.numeroint,''),\n             IFNULL(ev.colonia,''),IFNULL(ev.cp,''),IFNULL(ev.ciudad,''),IFNULL(ev.estado,'')\n           )),' ','+')) AS maps_url,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      IF(IFNULL(ev.calle,'')='','', CONCAT('C.',ev.calle)),\n      IFNULL(CONCAT('No.',ev.numeroext),''),\n      IFNULL(CONCAT('Int.',ev.numeroint),''),\n      IFNULL(ev.colonia,''), IFNULL(CONCAT('C.P.',ev.cp),''),\n      IFNULL(ev.ciudad,''), IFNULL(ev.estado,'')\n    ))) AS direccion,\n\ts.idsolicitud,\n\tss.equipo noserie,\n\tss.chip,\n\tev.lat,\n\tev.lng,\n\ts.session_data_json\nFROM\n\tsolicitudes AS s\n\tLEFT OUTER JOIN clientes AS cte ON cte.idcliente = s.idcliente\n\tLEFT OUTER JOIN entregasvnp AS ev ON ev.idsolicitud = s.idsolicitud\n\tLEFT OUTER JOIN productos AS p ON p.idproducto = s.idproducto\n\tLEFT OUTER JOIN (SELECT\n\tss.idsolicitud,\n\tMAX(CASE WHEN pr.clasif = 'Equipo' THEN ss.esnimei END) AS equipo,\n\tMAX(CASE WHEN pr.clasif = 'Chip'   THEN ss.esnimei END) AS chip\nFROM\n\tseriessolicitadas AS ss\n\tINNER JOIN compras AS cp ON cp.noserie = ss.esnimei\n\tINNER JOIN productos AS pr ON pr.codigoIUSA = cp.codigoproducto\nGROUP BY\n\tss.idsolicitud\n) AS ss ON ss.idsolicitud = s.idsolicitud\nWHERE\n s.idtienda = 2 order by s.idsolicitud desc\n\n",
 	"connId": "conn",
 	"originalTable": "solicitudes",
 	"name": "solicitudes",
@@ -52,7 +60,16 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"format": "Lookup wizard",
+					"lookupType": 2,
+					"lookupTable": "tiposventa",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "idtipoventa",
+					"lookupDisplayField": "tipoventa",
+					"lookupOrderBy": "tipoventa",
+					"lookupWhere": "uso='VIGENTE'"
+				}
 			],
 			"label": {
 				"English": "Idtipoventa"
@@ -654,7 +671,6 @@
 				{
 					"format": "Lookup wizard",
 					"pageType": "add",
-					"required": true,
 					"lookupTable": "plazos",
 					"lookupTableConnection": "conn",
 					"lookupLinkField": "plazo",
@@ -989,9 +1005,7 @@
 				{}
 			],
 			"editFormats": [
-				{
-					"required": true
-				}
+				{}
 			],
 			"label": {
 				"Spanish": "Estado"
@@ -1008,9 +1022,7 @@
 				{}
 			],
 			"editFormats": [
-				{
-					"required": true
-				}
+				{}
 			],
 			"label": {
 				"Spanish": "Ciudad"
@@ -1044,9 +1056,7 @@
 				{}
 			],
 			"editFormats": [
-				{
-					"required": true
-				}
+				{}
 			],
 			"label": {
 				"Spanish": "Calle"
@@ -1063,9 +1073,7 @@
 				{}
 			],
 			"editFormats": [
-				{
-					"required": true
-				}
+				{}
 			],
 			"label": {
 				"Spanish": "# Ext"
@@ -1099,9 +1107,7 @@
 				{}
 			],
 			"editFormats": [
-				{
-					"required": true
-				}
+				{}
 			],
 			"label": {
 				"Spanish": "Colonia"
@@ -1225,9 +1231,7 @@
 				{}
 			],
 			"editFormats": [
-				{
-					"required": true
-				}
+				{}
 			],
 			"label": {
 				"Spanish": "Latitud"
@@ -1244,9 +1248,7 @@
 				{}
 			],
 			"editFormats": [
-				{
-					"required": true
-				}
+				{}
 			],
 			"label": {
 				"Spanish": "Longitud"
@@ -1263,10 +1265,29 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"required": true
+				}
 			],
 			"label": {
 				"Spanish": "IMEI"
+			},
+			"tableName": ""
+		},
+		{
+			"name": "session_data_json",
+			"sqlExpression": "s.session_data_json",
+			"index": 48,
+			"strField": "session_data_json",
+			"type": 201,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": ""
 			},
 			"tableName": ""
 		}
@@ -1278,12 +1299,12 @@
 		{
 			"eventId": "EVENT_AFTERADD",
 			"pageType": "add",
-			"code": "/*\n// Events → Add → After record added\nglobal $conn;\n\n//********************************************************************************\n//Se inicia la trasancción\n\nDB::Exec(\"SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED\", $conn);\n\n// Inicia transacción\nDB::Exec(\"START TRANSACTION\", $conn);\n\n// marca en sesión por si necesitas saber que hay una txn abierta\n$_SESSION['add_txn_started'] = true;\n\n//**********************************************************************************\n\n\n$ok = true;\n$err = \"\";\n\n// PK del registro principal recién insertado\n$pk = (int)$keys[\"idsolicitud\"];  // ajusta al nombre real\n\n\n\n\n// Recupera y limpia el stash\n$extras = $_SESSION['solicitudes_add_extras'][$pageObject->id] ?? [];\nunset($_SESSION['solicitudes_add_extras'][$pageObject->id]);\n\n// Ya tienes $keys[\"idsolicitud\"] del registro insertado en solicitudes\n$idsolicitud = (int)$keys[\"idsolicitud\"];\n\n// EJEMPLO: insertar dirección de entrega en entregasvnp usando los extras\nif (!empty($extras)) {\n    $sql = sprintf(\n        \"INSERT INTO entregasvnp (idsolicitud, estado, ciudad, cp, calle, numeroext, numeroint, colonia)\n         VALUES (%d, %s, %s, %d, %s, %s, %s, %s)\",\n        $idsolicitud,\n        db_prepare_string($extras[\"estado\"]    ?? \"\"),\n        db_prepare_string($extras[\"ciudad\"]    ?? \"\"),\n        db_prepare_string($extras[\"cp\"]        ?? \"\"),\n        db_prepare_string($extras[\"calle\"]     ?? \"\"),\n        db_prepare_string($extras[\"numeroext\"] ?? \"\"),\n        db_prepare_string($extras[\"numeroint\"] ?? \"\"),\n        db_prepare_string($extras[\"colonia\"]   ?? \"\")\n    );\n    $ok = DB::Exec($sql, $conn) !== false;\n    if(!$ok){ $err = db_error($conn); }\n\n  //  db_exec($sql, $conn);\n}\n\nif($ok){\n    $esnimei = $_SESSION[\"esnimei\"] ?? null;\n    if (!empty($esnimei)) {\n           $sql = sprintf(\n            \"INSERT INTO seriessolicitadas (idsolicitud, esnimei)\n             VALUES (%d, %s)\",\n            $idsolicitud,\n            db_prepare_string($esnimei    ?? \"\")\n        );\n        db_exec($sql, $conn);\n    \n    }\n    \n    $simcard = $_SESSION[\"simcard\"] ?? null;\n    if (!empty($esnimei)) {\n           $sql = sprintf(\n            \"INSERT INTO seriessolicitadas (idsolicitud, esnimei)\n             VALUES (%d, %s)\",\n            $idsolicitud,\n            db_prepare_string($simcard    ?? \"\")\n        );\n        db_exec($sql, $conn);\n    \n    }\n}\n// Si quieres log/debug:\n// file_put_contents(\"extras_log.txt\", date('c').\" PID:\".$pageObject->id.\" \".json_encode($extras,JSON_UNESCAPED_UNICODE).PHP_EOL, FILE_APPEND);\n\nif($ok){\n  DB::Exec(\"COMMIT\", $conn);\n  DB::Exec(\"SET autocommit=1\", $conn); // higiene (opcional)\n} else {\n  DB::Exec(\"ROLLBACK\", $conn);\n  DB::Exec(\"SET autocommit=1\", $conn);\n\n  // informa al usuario y evita que parezca “éxito”\n  // para Add normal:\n  $_SESSION[\"last_error\"] = \"No se pudo completar la operación: \".$err;\n  header(\"Location: \".$pageObject->shortTableName.\"_add.php?message=rollback\"); // ajusta ruta\n  exit;\n}\n*/\n\n\n\n    $noserie = $values[\"noserie\"];\n    $saleId  = $keys[\"idventa\"]; // ajusta al PK real\n    $user    = Security::getUserName();\n/*\n    DB::Exec(\"\n      UPDATE seriesreservadas\n         SET status='consumed', consumed_at=NOW(), sale_id=\".$saleId.\"\n       WHERE noserie=\".db_prepare_string($noserie).\"\n         AND user_id=\".db_prepare_string($user).\"\n         AND status='active'\n      LIMIT 1\n    \");\n    */\n       DB::Exec(\"\n      DELETE FROM seriesreservadas\n       WHERE noserie=\".db_prepare_string($noserie).\"\n         AND userid=\".db_prepare_string($user));\n\n\n\n"
+			"code": "/*\n// Events → Add → After record added\nglobal $conn;\n\n//********************************************************************************\n//Se inicia la trasancción\n\nDB::Exec(\"SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED\", $conn);\n\n// Inicia transacción\nDB::Exec(\"START TRANSACTION\", $conn);\n\n// marca en sesión por si necesitas saber que hay una txn abierta\n$_SESSION['add_txn_started'] = true;\n\n//**********************************************************************************\n\n\n$ok = true;\n$err = \"\";\n\n// PK del registro principal recién insertado\n$pk = (int)$keys[\"idsolicitud\"];  // ajusta al nombre real\n\n\n\n\n// Recupera y limpia el stash\n$extras = $_SESSION['solicitudes_add_extras'][$pageObject->id] ?? [];\nunset($_SESSION['solicitudes_add_extras'][$pageObject->id]);\n\n// Ya tienes $keys[\"idsolicitud\"] del registro insertado en solicitudes\n$idsolicitud = (int)$keys[\"idsolicitud\"];\n\n// EJEMPLO: insertar dirección de entrega en entregasvnp usando los extras\nif (!empty($extras)) {\n    $sql = sprintf(\n        \"INSERT INTO entregasvnp (idsolicitud, estado, ciudad, cp, calle, numeroext, numeroint, colonia)\n         VALUES (%d, %s, %s, %d, %s, %s, %s, %s)\",\n        $idsolicitud,\n        db_prepare_string($extras[\"estado\"]    ?? \"\"),\n        db_prepare_string($extras[\"ciudad\"]    ?? \"\"),\n        db_prepare_string($extras[\"cp\"]        ?? \"\"),\n        db_prepare_string($extras[\"calle\"]     ?? \"\"),\n        db_prepare_string($extras[\"numeroext\"] ?? \"\"),\n        db_prepare_string($extras[\"numeroint\"] ?? \"\"),\n        db_prepare_string($extras[\"colonia\"]   ?? \"\")\n    );\n    $ok = DB::Exec($sql, $conn) !== false;\n    if(!$ok){ $err = db_error($conn); }\n\n  //  db_exec($sql, $conn);\n}\n\nif($ok){\n    $esnimei = $_SESSION[\"esnimei\"] ?? null;\n    if (!empty($esnimei)) {\n           $sql = sprintf(\n            \"INSERT INTO seriessolicitadas (idsolicitud, esnimei)\n             VALUES (%d, %s)\",\n            $idsolicitud,\n            db_prepare_string($esnimei    ?? \"\")\n        );\n        db_exec($sql, $conn);\n    \n    }\n    \n    $simcard = $_SESSION[\"simcard\"] ?? null;\n    if (!empty($esnimei)) {\n           $sql = sprintf(\n            \"INSERT INTO seriessolicitadas (idsolicitud, esnimei)\n             VALUES (%d, %s)\",\n            $idsolicitud,\n            db_prepare_string($simcard    ?? \"\")\n        );\n        db_exec($sql, $conn);\n    \n    }\n}\n// Si quieres log/debug:\n// file_put_contents(\"extras_log.txt\", date('c').\" PID:\".$pageObject->id.\" \".json_encode($extras,JSON_UNESCAPED_UNICODE).PHP_EOL, FILE_APPEND);\n\nif($ok){\n  DB::Exec(\"COMMIT\", $conn);\n  DB::Exec(\"SET autocommit=1\", $conn); // higiene (opcional)\n} else {\n  DB::Exec(\"ROLLBACK\", $conn);\n  DB::Exec(\"SET autocommit=1\", $conn);\n\n  // informa al usuario y evita que parezca “éxito”\n  // para Add normal:\n  $_SESSION[\"last_error\"] = \"No se pudo completar la operación: \".$err;\n  header(\"Location: \".$pageObject->shortTableName.\"_add.php?message=rollback\"); // ajusta ruta\n  exit;\n}\n*/\n\n\n\n\n\n\n\n\n// En el evento AfterProcessAdd de la tabla Solicitudes\n\n// En el evento AfterProcessAdd de la tabla 'solicitudes'\n\n// En el evento AfterProcessAdd de la tabla 'solicitudes'\n\n// En el evento AfterProcessAdd de la tabla 'solicitudes'\n\n// En el evento AfterProcessAdd de la tabla 'solicitudes'\n/*\nglobal $pageObject;\n\n// 1. Verificar si hay datos guardados\nif (isset($_SESSION[\"add_data_temp\"])) {\n    \n    $temp_values = $_SESSION[\"add_data_temp\"];\n    \n    // 🛑 CRÍTICO FINAL: Inyectar los valores en el array de sesión interna de PHPRunner para la página.\n    // Esto simula que los valores fueron cargados por defecto o por un filtro de la sesión.\n    \n    $session_key = $pageObject->shortTableName . \"_add\"; // e.g., \"solicitudes_add\"\n    \n    // Asegura que la clave exista\n    $_SESSION[$session_key] = $_SESSION[$session_key] ?? [];\n    \n    // Fusiona los valores temporales en la sesión de la página\n    $_SESSION[$session_key] = array_merge($_SESSION[$session_key], $temp_values);\n    \n    \n    // Opcional, pero mantener para los lookups\n    $pageObject->data = array_merge($pageObject->data, $temp_values);\n    \n    // La inyección en controlsData debe seguir estando, aunque a estas alturas es más un seguro.\n    foreach ($temp_values as $fldName => $fldValue) {\n        if (isset($pageObject->controlsData['details'][$fldName])) {\n            $pageObject->controlsData['details'][$fldName]['value'] = $fldValue;\n            \n            $deliveryFields = [\"estado\", \"ciudad\", \"cp\", \"calle\", \"numeroext\", \"numeroint\", \"colonia\", \"noserie\"];\n            if (in_array($fldName, $deliveryFields)) {\n                 $pageObject->controlsData['details'][$fldName]['text'] = $fldValue;\n            }\n        }\n    }\n    \n    // Limpieza de sesión de datos fallidos (mantén esta limpieza para evitar que se pegue a la siguiente alta)\n    unset($_SESSION[\"add_data_temp\"]);\n}*/\n\n\n// En el evento AfterProcessAdd de la tabla 'solicitudes'\n/*\nglobal $pageObject;\n\n// 🛑 AGREGAR DEPURACIÓN AQUÍ 🛑\n$log_content = date('Y-m-d H:i:s') . \" - AfterProcessAdd ejecutado.\\n\";\nfile_put_contents('debug_log.txt', $log_content, FILE_APPEND);\n// 🛑 FIN DEPURACIÓN 🛑\n\n// Verificar si hay datos guardados de un intento de adición fallido\nif (isset($_SESSION[\"add_data_temp\"])) {\n    \n    // 🛑 AGREGAR DEPURACIÓN AQUÍ 🛑\n    $log_content = date('Y-m-d H:i:s') . \" - Sesión 'add_data_temp' ENCONTRADA. Contenido:\\n\" . var_export($_SESSION[\"add_data_temp\"], true) . \"\\n---\\n\";\n    file_put_contents('debug_log.txt', $log_content, FILE_APPEND);\n    // 🛑 FIN DEPURACIÓN 🛑\n    \n    // ... (Tu lógica de recuperación aquí) ...\n    \n    // Limpieza de sesión\n    unset($_SESSION[\"add_data_temp\"]);\n}*/"
 		},
 		{
 			"eventId": "EVENT_BEFOREADD",
 			"pageType": "add",
-			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n// Events → Add → Before record added\n// Copia campos del JOIN a un arreglo y quítalos de $values\n\nDB::Exec(\"START TRANSACTION\", $conn);\n\n\n$values[\"fecha\"]=date('Y-m-d');\n$values[\"idtienda\"]=2;  //Tienda no presencial\n$values[\"idtipoventa\"]=5; //Renovación Tradicional (Equipo y Chip)\n$values[\"estatus\"]=\"ACTUALIZADA\";\n$values[\"equipoincluido\"]=1;\n$values[\"usuario\"]=$_SESSION[\"UserID\"];\n\n\n$camposExtra = [\"nombre\",\"paterno\",\"materno\",\"estado\",\"ciudad\",\"cp\",\"calle\",\"numeroext\",\"numeroint\",\"colonia\"];\n\n\n// Helpers para armar valores seguros\nfunction q($v){               // cadenas/fechas: 'valor' o NULL\n  return (isset($v) && $v !== '' ? db_prepare_string($v) : \"NULL\");\n}\nfunction qi($v){              // enteros: número o NULL\n  return (isset($v) && $v !== '' ? (int)$v : \"NULL\");\n}\nfunction qb($v){              // booleano/bit: 0/1\n  return (!empty($v) ? 1 : 0);\n}\n\n// Construcción del INSERT\n$sqlMain = \"INSERT INTO solicitudes\n  (fecha, idtienda, idtipoventa, estatus, equipoincluido, usuario,\n   idcliente, idproducto, idplan, orden, plazo, rfc, idcli, estatusentrega)\nVALUES (\".\n    q($values['fecha'])           .\", \".\n    qi($values['idtienda'])       .\", \".\n    qi($values['idtipoventa'])    .\", \".\n    q($values['estatus'])         .\", \".\n    qb($values['equipoincluido']) .\", \".\n    q($values['usuario'])         .\", \".\n    qi($values['idcliente'])      .\", \".\n    qi($values['idproducto'])     .\", \".\n    qi($values['idplan'])         .\", \".\n    q($values['orden'])           .\", \".\n    qi($values['plazo'])          .\", \".\n    q($values['rfc'])             .\", \".\n    qi($values['idcli'])           .\", \".\n    qi($values['estatusentrega'])  .\n\")\";\n\nif (!DB::Exec($sqlMain, $conn)) {\n    DB::Exec(\"ROLLBACK\", $conn);\n    $message = \"No se pudo crear la solicitud: \".db_error($conn);\n    return false;               // el form queda con los valores\n}\n$idsolicitud = db_insertid($conn);\n\n\n\n\n\n$extras = [];\nforeach ($camposExtra as $f) {\n    if (array_key_exists($f, $values)) {\n        $extras[$f] = $values[$f];\n        unset($values[$f]);             // <- evita \"Unknown column ...\" en el INSERT de solicitudes\n    } else {\n        // Si alguno lo pones como \"Custom field\" (no ligado a DB), recupéralo del POST:\n        $pv = postvalue($f);\n        if ($pv !== null) $extras[$f] = $pv;\n    }\n}\n\n// Guarda en sesión, indexado por el id de la página para evitar choques con otras pestañas\n$_SESSION['solicitudes_add_extras'] = $_SESSION['solicitudes_add_extras'] ?? [];\n$_SESSION['solicitudes_add_extras'][$pageObject->id] = $extras;\n\n// Continúa con el insert normal en solicitudes\n\n$strSQLExists=\"SELECT\ncompras.noserie\nFROM compras\nLEFT OUTER JOIN ventas v ON compras.noserie = v.esnimei\nLEFT OUTER JOIN movimientos m ON compras.noserie = m.esnimei\nLEFT OUTER JOIN seriessolicitadas ss on compras.noserie=ss.esnimei     \nLEFT OUTER JOIN (SELECT t.esnimei,t.tiendadestino,t.`fecharecepcion` FROM traspasosdet t INNER JOIN (SELECT MAX(idtraspasodet) idtraspaso FROM traspasosdet GROUP BY esnimei) t1 ON t.idtraspasodet=t1.idtraspaso) t ON compras.noserie=t.esnimei\nINNER JOIN productos ON compras.codigoproducto = productos.codigoIUSA\nWHERE   v.esnimei is null and m.esnimei is null and ss.esnimei is null and (t. esnimei is null or t.fecharecepcion is not null and t.fecharecepcion<>'0000-00-00')\n  and compras.tienda=2 and compras.clasif = 2 and productos.Clasif='Equipo' AND compras.noserie='\". $values['noserie']. \"' LIMIT 1 \";\n  \n /*\n $strSQLExists=\"SELECT * FROM seriesreservadas WHERE userid=\".db_prepare_string($_SESSION[\"UserID\"]);\n */\n \n\n\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\n\nif (!$data)\n{\n\t\t$message=\"No existe saldo en el inventario para el producto seleccionado\";\n\treturn false;\n\n} else {\n    $_SESSION[\"esnimei\"] = $data['noserie'];\n}\n/*\n\n$strSQLExists=\"SELECT\ncompras.noserie\nFROM compras\nLEFT OUTER JOIN ventas v ON compras.noserie = v.esnimei\nLEFT OUTER JOIN movimientos m ON compras.noserie = m.esnimei\nLEFT OUTER JOIN seriessolicitadas ss on compras.noserie=ss.esnimei     \nLEFT OUTER JOIN (SELECT t.esnimei,t.tiendadestino,t.`fecharecepcion` FROM traspasosdet t INNER JOIN (SELECT MAX(idtraspasodet) idtraspaso FROM traspasosdet GROUP BY esnimei) t1 ON t.idtraspasodet=t1.idtraspaso) t ON compras.noserie=t.esnimei\nINNER JOIN productos ON compras.codigoproducto = productos.codigoIUSA\nWHERE   v.esnimei is null and m.esnimei is null  and ss.esnimei is null and (t. esnimei is null or t.fecharecepcion is not null and t.fecharecepcion<>'0000-00-00')\n  and compras.tienda=2 and compras.clasif = 2 and productos.Clasif='Chip' LIMIT 1 \";\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\n\nif (!$data)\n{\n\t\t$message=\"No existe saldo en el inventario de simcards\";\n\treturn false;\n\n} else {\n    $_SESSION[\"simcard\"] = $data['noserie'];\n}\n*/\n\n$extras = $_SESSION['solicitudes_add_extras'][$pageObject->id] ?? [];\nunset($_SESSION['solicitudes_add_extras'][$pageObject->id]);\n\n// Ya tienes $keys[\"idsolicitud\"] del registro insertado en solicitudes\n//$idsolicitud = (int)$keys[\"idsolicitud\"];\n\n// EJEMPLO: insertar dirección de entrega en entregasvnp usando los extras\nif (!empty($extras)) {\n    $sql = sprintf(\n        \"INSERT INTO entregasvnp (idsolicitud, estado, ciudad, cp, calle, numeroext, numeroint, colonia)\n         VALUES (%d, %s, %s, %d, %s, %s, %s, %s)\",\n        $idsolicitud,\n        db_prepare_string($extras[\"estado\"]    ?? \"\"),\n        db_prepare_string($extras[\"ciudad\"]    ?? \"\"),\n        db_prepare_string($extras[\"cp\"]        ?? \"\"),\n        db_prepare_string($extras[\"calle\"]     ?? \"\"),\n        db_prepare_string($extras[\"numeroext\"] ?? \"\"),\n        db_prepare_string($extras[\"numeroint\"] ?? \"\"),\n        db_prepare_string($extras[\"colonia\"]   ?? \"\")\n    );\n    if (!DB::Exec($sql, $conn)) {\n        DB::Exec(\"ROLLBACK\", $conn);\n        $message = \"No se pudo guardar la entrega: \".db_error($conn);\n        return false;               // el form NO pierde lo tecleado\n    }\n  //  db_exec($sql, $conn);\n}\n\n    $esnimei = $_SESSION[\"esnimei\"] ?? null;\n    if (!empty($esnimei)) {\n           $sql = sprintf(\n            \"INSERT INTO seriessolicitadas (idsolicitud, esnimei)\n             VALUES (%d, %s)\",\n            $idsolicitud,\n            db_prepare_string($esnimei    ?? \"\")\n        );\n    if (!DB::Exec($sql, $conn)) {\n        DB::Exec(\"ROLLBACK\", $conn);\n        $message = \"No se pudo guardar el equipo: \".db_error($conn);\n        return false;               // el form NO pierde lo tecleado\n    }\n    \n    }\n    \n    $simcard = $_SESSION[\"simcard\"] ?? null;\n    if (!empty($esnimei)) {\n           $sql = sprintf(\n            \"INSERT INTO seriessolicitadas (idsolicitud, esnimei)\n             VALUES (%d, %s)\",\n            $idsolicitud,\n            db_prepare_string($simcard    ?? \"\")\n        );\n    if (!DB::Exec($sql, $conn)) {\n        DB::Exec(\"ROLLBACK\", $conn);\n        $message = \"No se pudo guardar el sincard: \".db_error($conn);\n        return false;               // el form NO pierde lo tecleado\n    }\n    \n    }\n\nDB::Exec(\"COMMIT\", $conn);\n\n// “flash message” en sesión para mostrarlo en verde tras el redirect\n$_SESSION['flash_ok'] = \"Solicitud #{$idsolicitud} guardada correctamente.\";\n\n// Redirige a la página Add (form limpio)\nheader(\"Location: \".$pageObject->shortTableName.\"_add.php?new=1\");\nexit;\n\n\n\n\nreturn false;\n\n\n"
+			"code": "\n$all_values = $values; \n\nDB::Exec(\"START TRANSACTION\", $conn);\n\n$values[\"fecha\"] = date('Y-m-d');\n$values[\"idtienda\"] = 2; // Tienda no presencial\n//$values[\"idtipoventa\"] = 5; // Renovación Tradicional (Equipo y Chip)\n$values[\"estatus\"] = \"ACTUALIZADA\";\n$values[\"equipoincluido\"] = 1;\n$values[\"usuario\"] = $_SESSION[\"UserID\"];\n\n\n$camposExtra = [\"nombre\",\"paterno\",\"materno\",\"estado\",\"ciudad\",\"cp\",\"calle\",\"numeroext\",\"numeroint\",\"colonia\", \"noserie\"]; // Agregamos noserie y simcard para persistencia\n\n// Helpers para armar valores seguros\nfunction q($v){ // cadenas/fechas: 'valor' o NULL\n    return (isset($v) && $v !== '' ? db_prepare_string($v) : \"NULL\");\n}\nfunction qi($v){ // enteros: número o NULL\n    return (isset($v) && $v !== '' ? (int)$v : \"NULL\");\n}\nfunction qb($v){ // booleano/bit: 0/1\n    return (!empty($v) ? 1 : 0);\n}\n\n\n\n/**\n * FUNCIÓN DE MANEJO DE FALLO (Solo hace el rollback y guarda datos)\n */\nfunction handle_fail($values_to_save, $conn, $message_text) {\n    DB::Exec(\"ROLLBACK\", $conn);\n    \n    // Guardar todos los datos del formulario en la sesión para recuperarlos\n    $_SESSION[\"add_data_temp\"] = $values_to_save;\n    \n\n    \n    \n    // Devolver el mensaje de error (string)\n    return $message_text;\n}\n\n// ==================================================================================\n// 1. PREPARACIÓN DE VALORES Y EXTRACCIÓN DE CAMPOS EXTRA\n// ==================================================================================\n\n$extras = [];\nforeach ($camposExtra as $f) {\n    if (array_key_exists($f, $all_values)) {\n        $extras[$f] = $all_values[$f];\n        \n        // La clave: quitar los campos de la tabla principal ($values)\n        // PERO conservar el valor en $all_values para guardarlo si falla.\n        if (array_key_exists($f, $values)) {\n            unset($values[$f]); \n        }\n    } else {\n        // Si es un \"Custom field\" o no está en $values (viene directo del POST)\n        $pv = postvalue($f);\n        if ($pv !== null) $extras[$f] = $pv;\n    }\n}\n\n// ==================================================================================\n// 2. VERIFICACIÓN DE EXISTENCIA DE EQUIPO (no serie)\n// ==================================================================================\n\n// Usamos el 'noserie' del formulario (que está en $extras, si se capturó o reservó)\n$noserie_equipo = $extras['noserie'] ?? '';\n\nif (empty($noserie_equipo)) {\n    // Si no hay noserie, podría ser un error de negocio o que se espera que se reserve antes.\n    return handle_fail($all_values, $conn, \"El número de serie del equipo es obligatorio.\", $pageObject);\n}\n\n\n$strSQLExists=\"SELECT\ncompras.noserie\nFROM compras\nLEFT OUTER JOIN ventas v ON compras.noserie = v.esnimei\nLEFT OUTER JOIN movimientos m ON compras.noserie = m.esnimei\nLEFT OUTER JOIN seriessolicitadas ss on compras.noserie=ss.esnimei\nLEFT OUTER JOIN (SELECT t.esnimei,t.tiendadestino,t.`fecharecepcion` FROM traspasosdet t INNER JOIN (SELECT MAX(idtraspasodet) idtraspaso FROM traspasosdet GROUP BY esnimei) t1 ON t.idtraspasodet=t1.idtraspaso) t ON compras.noserie=t.esnimei\nINNER JOIN productos ON compras.codigoproducto = productos.codigoIUSA\nWHERE v.esnimei is null and m.esnimei is null and ss.esnimei is null and (t. esnimei is null or t.fecharecepcion is not null and t.fecharecepcion<>'0000-00-00')\n  and compras.tienda=2 and compras.clasif = 2 and productos.Clasif='Equipo' AND compras.noserie='\". $noserie_equipo. \"' LIMIT 1 \";\n \n$rsExists = db_query($strSQLExists,$conn);\n$data = db_fetch_array($rsExists);\n\nif (!$data) {\n    // FALLO: No existe saldo para el número de serie.\n    return handle_fail($all_values, $conn, \"No existe saldo en el inventario para el número de serie '{$noserie_equipo}'.\", $pageObject);\n} else {\n    $esnimei = $data['noserie'];\n}\n\n\n\n// ==================================================================================\n// 3. INSERCIÓN DE SOLICITUDES\n// ==================================================================================\n\n$sqlMain = \"INSERT INTO solicitudes\n  (fecha, idtienda, idtipoventa, estatus, equipoincluido, usuario,\n   idcliente, idproducto, idplan, orden, plazo, rfc, idcli, estatusentrega)\nVALUES (\".\n    q($values['fecha']) .\", \".\n    qi($values['idtienda']) .\", \".\n    qi($values['idtipoventa']) .\", \".\n    q($values['estatus']) .\", \".\n    qb($values['equipoincluido']) .\", \".\n    q($values['usuario']) .\", \".\n    qi($values['idcliente']) .\", \".\n    qi($values['idproducto']) .\", \".\n    qi($values['idplan']) .\", \".\n    q($values['orden']) .\", \".\n    qi($values['plazo']) .\", \".\n    q($values['rfc']) .\", \".\n    qi($values['idcli']) .\", \".\n    qi($values['estatusentrega']) .\n\")\";\n\nif (!DB::Exec($sqlMain, $conn)) {\n    // FALLO: No se pudo insertar la solicitud principal.\n\n    \n\n    $message = handle_fail($all_values, $conn, \"No se pudo crear la solicitud: \".DB::LastError());\n    return false;\n}\n$idsolicitud = db_insertid($conn);\n\n\n// ==================================================================================\n// 4. INSERCIÓN EN entregasvnp\n// ==================================================================================\n\nif (!empty($extras[\"estado\"])) { // Si existe al menos el campo estado, intentamos insertar\n    $sql = sprintf(\n        \"INSERT INTO entregasvnp (idsolicitud, estado, ciudad, cp, calle, numeroext, numeroint, colonia)\n         VALUES (%d, %s, %s, %d, %s, %s, %s, %s)\",\n        $idsolicitud,\n        q($extras[\"estado\"]),\n        q($extras[\"ciudad\"]),\n        qi($extras[\"cp\"]),\n        q($extras[\"calle\"]),\n        q($extras[\"numeroext\"]),\n        q($extras[\"numeroint\"]),\n        q($extras[\"colonia\"])\n    );\n    if (!DB::Exec($sql, $conn)) {\n        // FALLO: No se pudo guardar la entrega.\n       $message= handle_fail($all_values, $conn, \"No se pudo guardar la entrega: \".DB::LastError());\n       return false;\n    }\n}\n\n\n// ==================================================================================\n// 5. INSERCIÓN EN seriessolicitadas (Equipo y Chip)\n// ==================================================================================\n\n// Equipo (noserie)\nif (!empty($esnimei)) {\n    $sql = sprintf(\n        \"INSERT INTO seriessolicitadas (idsolicitud, esnimei) VALUES (%d, %s)\",\n        $idsolicitud,\n        q($esnimei)\n    );\n    if (!DB::Exec($sql, $conn)) {\n        // FALLO: No se pudo guardar el equipo.\n        $message = handle_fail($all_values, $conn, \"No se pudo guardar el equipo en seriessolicitadas: \".DB::LastError());\n        return false;\n    } else {\n \n               DB::Exec(\"\n            DELETE FROM seriesreservadas\n            WHERE noserie=\".q($esnimei).\"\n            AND userid=\".q($values['usuario']));\n\n    }\n}\n    \n\n// ==================================================================================\n// 6. ÉXITO FINAL Y LIMPIEZA\n// ==================================================================================\n\nif (!DB::Exec(\"COMMIT\", $conn)) {\n           $message = handle_fail($all_values, $conn, \"Error al registrar los datos: \".DB::LastError());\n        return false;\n        \n} \n\n\n// LIMPIAR LA SESIÓN DE DATOS FALLIDOS si el COMMIT fue exitoso\nunset($_SESSION[\"add_data_temp\"]); \n\n// “flash message” en sesión para mostrarlo en verde tras el redirect\n$_SESSION['flash_ok'] = \"Solicitud #{$idsolicitud} guardada correctamente.\";\n\n// Redirige a la página Add (form limpio)\nheader(\"Location: \".$pageObject->shortTableName.\"_add.php?new=1\");\nexit;\n\n\n// La línea 'return false;' al final del evento BeforeRecordAdded es redundante si se usa header/exit.\n// Si no usas header/exit, el retorno por defecto de PHPRunner debe ser true para continuar con el guardado, \n// o false para detenerlo. Como estamos tomando control total con header/exit, esta línea es opcional,\n// pero la dejamos como 'false' para que PHPRunner no intente un INSERT extra, aunque el 'exit' lo previene.\nreturn false;\n\n\n\n\n"
 		},
 		{
 			"eventId": "EVENT_JS_ONLOAD",
@@ -1298,7 +1319,7 @@
 		{
 			"eventId": "EVENT_AFTEREDIT",
 			"pageType": "edit",
-			"code": "\n\n//**********  Check if specific record exists  ************  \n$ids = (int)$keys['idsolicitud'];\nif ((int)$values['estatusentrega']==2) {\n    $rs = DB::Query(\"select * from ventas where idsolicitud=\". $ids);\n    $data=$rs->fetchAssoc(); \n    if($data) {  \n        // if record exists do something \n    } else {  \n        $data = array(); \n        $data[\"idtipoventa\"] = $values['idtipoventa']; \n        $data[\"fecha\"] = date('Y-m-d'); \n        $data[\"idcliente\"] = $values['idcliente']; \n        $data[\"esnimei\"] = $values['equipo'];   \n        $data[\"simcard\"] = $values['chip'];   \n        $data[\"usuario\"] = $values['usuario'];   \n        $data[\"tienda\"] = $values['idtienda'];   \n        $data[\"idsolicitud\"] = $values['idsolicitud'];   \n        $data[\"orden\"] = $values['orden'];   \n        $data[\"plazo\"] = $values['plazo'];   \n        $data[\"plan\"] = $values['idplan'];   \n        $data[\"equipoincluido\"] = 1;   \n\n\n        \n        DB::Insert(\"ventas\", $data );\n    // if dont exist do something else \n    }\n\n}\n\n\n\n\n"
+			"code": "\n\n//**********  Check if specific record exists  ************  \n/*\n$ids = (int)$keys['idsolicitud'];\nif ((int)$values['estatusentrega']==2) {\n    $rs = DB::Query(\"select * from ventas where idsolicitud=\". $ids);\n    $data=$rs->fetchAssoc(); \n    if($data) {  \n        // if record exists do something \n    } else {  \n        $data = array(); \n        $data[\"idtipoventa\"] = $values['idtipoventa']; \n        $data[\"fecha\"] = date('Y-m-d'); \n        $data[\"idcliente\"] = $values['idcliente']; \n        $data[\"esnimei\"] = $values['equipo'];   \n        $data[\"simcard\"] = $values['chip'];   \n        $data[\"usuario\"] = $values['usuario'];   \n        $data[\"tienda\"] = $values['idtienda'];   \n        $data[\"idsolicitud\"] = $values['idsolicitud'];   \n        $data[\"orden\"] = $values['orden'];   \n        $data[\"plazo\"] = $values['plazo'];   \n        $data[\"plan\"] = $values['idplan'];   \n        $data[\"equipoincluido\"] = 1;   \n\n\n        \n        DB::Insert(\"ventas\", $data );\n    // if dont exist do something else \n    }\n\n}\n\n*/\n\n\n// En el evento AfterProcessEdit de la tabla 'solicitudes'\n\nglobal $pageObject;\n\n// Verificar si hay datos guardados de un intento de edición fallido\nif (isset($_SESSION[\"edit_data_temp\"])) {\n    \n    $temp_data = $_SESSION[\"edit_data_temp\"];\n    $temp_values = $temp_data['values'];\n    $temp_keys = $temp_data['keys'];\n\n    // ⚠️ CRÍTICO: Solo rellenar si estamos en el registro correcto que falló\n    if ($temp_keys['idsolicitud'] == $pageObject->keys['idsolicitud']) {\n        \n        // Asignar los valores del formulario que falló a los controles de la página\n        foreach ($temp_values as $fldName => $fldValue) {\n            if (isset($pageObject->controlsData['details'][$fldName])) {\n                $pageObject->controlsData['details'][$fldName]['value'] = $fldValue;\n            }\n        }\n        \n        // Limpiar los datos temporales después de usarlos\n        unset($_SESSION[\"edit_data_temp\"]);\n    }\n}"
 		},
 		{
 			"eventId": "EVENT_BEFOREMOVENEXT_LIST",
@@ -1318,12 +1339,12 @@
 		{
 			"eventId": "EVENT_BEFORESHOW_ADD",
 			"pageType": "add",
-			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n// Valores de texto\n$pageObject->setProxyValue(\"value_ciudad_1\", \"MERIDA\");\n$pageObject->setProxyValue(\"value_estado_1\", \"YUCATAN\");\n\n// Coordenadas por defecto\n$pageObject->setProxyValue(\"value_lat_1\", \"21.1619\");\n$pageObject->setProxyValue(\"value_lng_1\", \"-89.6793\");\n"
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n\n    // Si hay datos “rescatados” de un intento fallido, se los paso al cliente\n\n\n// —— solicitudes_add: Before display ——\n\n// Si vienes de un fallo, expón los datos al cliente\n/*if ( isset($_SESSION['add_data_temp']) && is_array($_SESSION['add_data_temp']) ) {\n\t$pageObject->setProxyValue(\"prefill_from_session\", $_SESSION['add_data_temp']);\n\t// (Opcional) mensaje visual\n\t$xt->assign(\"message\", \"Se recuperaron los datos del intento anterior que no se alcanzó a guardar.\");\n\t$xt->assign(\"message_class\", \"alert-warning\");\n}\n\n// (Opcional) si traes un \"flash_ok\" de éxito previo, muéstralo y bórralo\nif( isset($_SESSION['flash_ok']) ){\n\t$xt->assign(\"message\", $_SESSION['flash_ok']);\n\t$xt->assign(\"message_class\", \"alert-success\");\n\tunset($_SESSION['flash_ok']);\n}\n\n\n\n\n// Valores de texto\n$pageObject->setProxyValue(\"value_ciudad_1\", \"MERIDA\");\n$pageObject->setProxyValue(\"value_estado_1\", \"YUCATAN\");\n\n// Coordenadas por defecto\n$pageObject->setProxyValue(\"value_lat_1\", \"21.1619\");\n$pageObject->setProxyValue(\"value_lng_1\", \"-89.6793\");\n\n*/\n// Si vienes de un fallo, cargar datos en session_data_json\nif (isset($_SESSION['add_data_temp']) && is_array($_SESSION['add_data_temp'])) {\n    // Convertir a JSON y pre-cargar en el campo oculto\n    $recoveryData = $_SESSION['add_data_temp'];\n    \n    // Setear cada campo directamente\n    foreach ($recoveryData as $field => $value) {\n        if ($value !== null && $value !== '') {\n            $pageObject->setProxyValue(\"value_{$field}_1\", $value);\n        }\n    }\n    \n    // IMPORTANTE: También cargar en session_data_json para que el JS lo procese\n    $pageObject->setProxyValue(\"value_session_data_json_1\", json_encode($recoveryData));\n    \n    // Mensaje visual\n    $xt->assign(\"message\", \"⚠️ Se recuperaron los datos del intento anterior. Por favor revise y guarde nuevamente.\");\n    $xt->assign(\"message_class\", \"alert-warning\");\n    \n    // NO borrar aún - solo después de éxito\n    // unset($_SESSION['add_data_temp']);\n}\n\n// Flash de éxito\nif (isset($_SESSION['flash_ok'])) {\n    $xt->assign(\"message\", $_SESSION['flash_ok']);\n    $xt->assign(\"message_class\", \"alert-success\");\n    unset($_SESSION['flash_ok']);\n    // Limpiar datos temporales SOLO en éxito\n    unset($_SESSION['add_data_temp']);\n}\n\n// Valores por defecto (solo si NO hay recuperación)\nif (!isset($_SESSION['add_data_temp'])) {\n    $pageObject->setProxyValue(\"value_ciudad_1\", \"MERIDA\");\n    $pageObject->setProxyValue(\"value_estado_1\", \"YUCATAN\");\n    $pageObject->setProxyValue(\"value_lat_1\", \"21.1619\");\n    $pageObject->setProxyValue(\"value_lng_1\", \"-89.6793\");\n}"
 		},
 		{
 			"eventId": "EVENT_BEFOREEDIT",
 			"pageType": "edit",
-			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n$pageName = isset($pageObject) ? $pageObject->pageName : \"\";\n\nif ($pageName == \"edit1\") {\n    return true;\n} else {\n\nDB::Exec(\"START TRANSACTION\", $conn);\n\n\n$values[\"fecha\"]=date('Y-m-d');\n$values[\"idtienda\"]=2;  //Tienda no presencial\n$values[\"idtipoventa\"]=5; //Renovación Tradicional (Equipo y Chip)\n$values[\"estatus\"]=\"ACTUALIZADA\";\n$values[\"equipoincluido\"]=1;\n$values[\"usuario\"]=$_SESSION[\"UserID\"];\n\n\n$camposExtra = [\"nombre\",\"paterno\",\"materno\",\"estado\",\"ciudad\",\"cp\",\"calle\",\"numeroext\",\"numeroint\",\"colonia\"];\n\n\n// Helpers para armar valores seguros\nfunction q($v){               // cadenas/fechas: 'valor' o NULL\n  return (isset($v) && $v !== '' ? db_prepare_string($v) : \"NULL\");\n}\nfunction qi($v){              // enteros: número o NULL\n  return (isset($v) && $v !== '' ? (int)$v : \"NULL\");\n}\nfunction qb($v){              // booleano/bit: 0/1\n  return (!empty($v) ? 1 : 0);\n}\n\n$idsolicitud = qi($oldvalues['idsolicitud']) ;\n\n// Construcción del UPDATE\n$sqlMain = \"UPDATE solicitudes SET estatus =\" . q($values['estatus']) .\", idcliente = \". qi($values['idcliente']) .\n\", idproducto = \".qi($values['idproducto'])     .\", idplan = \".    qi($values['idplan'])         .\", orden =  \" .   q($values['orden']) .\n\", plazo = \".  qi($values['plazo']) .\", rfc = \".     q($values['rfc'])  .\", idcli = \".    qi($values['idcli']) . \" WHERE idsolicitud = \" . $idsolicitud   ;\n\nif (!DB::Exec($sqlMain, $conn)) {\n    DB::Exec(\"ROLLBACK\", $conn);\n    $message = \"No se pudo actualizar la solicitud: \".db_error($conn);\n    return false;               // el form queda con los valores\n}\n//$idsolicitud = db_insertid($conn);\n\n\n\n\n\n$extras = [];\nforeach ($camposExtra as $f) {\n    if (array_key_exists($f, $values)) {\n        $extras[$f] = $values[$f];\n        unset($values[$f]);             // <- evita \"Unknown column ...\" en el INSERT de solicitudes\n    } else {\n        // Si alguno lo pones como \"Custom field\" (no ligado a DB), recupéralo del POST:\n        $pv = postvalue($f);\n        if ($pv !== null) $extras[$f] = $pv;\n    }\n}\n\n// Guarda en sesión, indexado por el id de la página para evitar choques con otras pestañas\n$_SESSION['solicitudes_add_extras'] = $_SESSION['solicitudes_add_extras'] ?? [];\n$_SESSION['solicitudes_add_extras'][$pageObject->id] = $extras;\n\n// Continúa con el insert normal en solicitudes\n\n\n $sql = sprintf(\"DELETE FROM seriessolicitadas WHERE idsolicitud =\". $idsolicitud );\n     if (!DB::Exec($sql, $conn)) {\n        DB::Exec(\"ROLLBACK\", $conn);\n        $message = \"error en las series solicitadas: \".db_error($conn);\n        return false;               // el form NO pierde lo tecleado\n    }\n\n \n\n$sql= sprintf(\"SELECT idventa FROM ventas WHERE idsolicitud = %d\", $idsolicitud);\n     if (!DB::Query($sql, $conn)) {\n            $strSQLExists=\"SELECT\n            compras.noserie\n            FROM compras\n            LEFT OUTER JOIN ventas v ON compras.noserie = v.esnimei\n            LEFT OUTER JOIN movimientos m ON compras.noserie = m.esnimei\n            LEFT OUTER JOIN seriessolicitadas ss on compras.noserie=ss.esnimei     \n            LEFT OUTER JOIN (SELECT t.esnimei,t.tiendadestino,t.`fecharecepcion` FROM traspasosdet t INNER JOIN (SELECT MAX(idtraspasodet) idtraspaso FROM traspasosdet GROUP BY esnimei) t1 ON t.idtraspasodet=t1.idtraspaso) t ON compras.noserie=t.esnimei\n            INNER JOIN productos ON compras.codigoproducto = productos.codigoIUSA\n            WHERE   v.esnimei is null and m.esnimei is null and ss.esnimei is null and (t. esnimei is null or t.fecharecepcion is not null and t.fecharecepcion<>'0000-00-00')\n              and compras.tienda=2 and compras.clasif = 2 and productos.Clasif='Equipo' AND productos.idproducto=\". $values['idproducto']. \" LIMIT 1 \";\n            $rsExists = db_query($strSQLExists,$conn);\n            $data=db_fetch_array($rsExists);\n            \n            if (!$data)\n            {\n            \t\t$message=\"No existe saldo en el inventario para el producto seleccionado \". $sql;\n            \treturn false;\n            \n            } else {\n                $_SESSION[\"esnimei\"] = $data['noserie'];\n            }\n            \n     /*       \n            $strSQLExists=\"SELECT\n            compras.noserie\n            FROM compras\n            LEFT OUTER JOIN ventas v ON compras.noserie = v.esnimei\n            LEFT OUTER JOIN movimientos m ON compras.noserie = m.esnimei\n            LEFT OUTER JOIN seriessolicitadas ss on compras.noserie=ss.esnimei     \n            LEFT OUTER JOIN (SELECT t.esnimei,t.tiendadestino,t.`fecharecepcion` FROM traspasosdet t INNER JOIN (SELECT MAX(idtraspasodet) idtraspaso FROM traspasosdet GROUP BY esnimei) t1 ON t.idtraspasodet=t1.idtraspaso) t ON compras.noserie=t.esnimei\n            INNER JOIN productos ON compras.codigoproducto = productos.codigoIUSA\n            WHERE   v.esnimei is null and m.esnimei is null  and ss.esnimei is null and (t. esnimei is null or t.fecharecepcion is not null and t.fecharecepcion<>'0000-00-00')\n              and compras.tienda=2 and compras.clasif = 2 and productos.Clasif='Chip' LIMIT 1 \";\n            $rsExists = db_query($strSQLExists,$conn);\n            $data=db_fetch_array($rsExists);\n            \n            if (!$data)\n            {\n            \t\t$message=\"No existe saldo en el inventario de simcards\";\n            \treturn false;\n            \n            } else {\n                $_SESSION[\"simcard\"] = $data['noserie'];\n            }   \n    */\n    }\n\n\n\n\n\n\n\n\n$extras = $_SESSION['solicitudes_add_extras'][$pageObject->id] ?? [];\nunset($_SESSION['solicitudes_add_extras'][$pageObject->id]);\n\n// Ya tienes $keys[\"idsolicitud\"] del registro insertado en solicitudes\n//$idsolicitud = (int)$keys[\"idsolicitud\"];\n\n// EJEMPLO: insertar dirección de entrega en entregasvnp usando los extras\n$strSQLExists=\"SELECT\nidsolicitud FROM entregasvnp WHERE idsolicitud = \". $idsolicitud ;\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\n\nif ($data)\n{\n\t\tif (!empty($extras)) {\n    $sql = sprintf(\n        \"UPDATE entregasvnp SET idsolicitud = \" . qi($values['idsolicitud']) . \", estado = \". db_prepare_string($extras[\"estado\"]    ?? \"\").\", ciudad = \" . db_prepare_string($extras[\"ciudad\"]    ?? \"\") .\n        \", cp = \" .db_prepare_string($extras[\"cp\"]        ?? \"\").\" , calle = \".db_prepare_string($extras[\"calle\"]     ?? \"\").\" , numeroext = \". db_prepare_string($extras[\"numeroext\"] ?? \"\") .\n        \", numeroint = \". db_prepare_string($extras[\"numeroint\"] ?? \"\") .\" , colonia = \". db_prepare_string($extras[\"colonia\"]   ?? \"\").\" WHERE idsolicitud = \". $idsolicitud ) ;\n\n    if (!DB::Exec($sql, $conn)) {\n        DB::Exec(\"ROLLBACK\", $conn);\n        $message = \"No se pudo actualizar los datos de entrega: \".db_error($conn);\n        return false;               // el form NO pierde lo tecleado\n    }\n  //  db_exec($sql, $conn);\n}\n\n} else {\n    if (!empty($extras)) {\n    $sql = sprintf(\n        \"INSERT INTO entregasvnp (idsolicitud, estado, ciudad, cp, calle, numeroext, numeroint, colonia)\n         VALUES (%d, %s, %s, %d, %s, %s, %s, %s)\",\n        $idsolicitud,\n        db_prepare_string($extras[\"estado\"]    ?? \"\"),\n        db_prepare_string($extras[\"ciudad\"]    ?? \"\"),\n        db_prepare_string($extras[\"cp\"]        ?? \"\"),\n        db_prepare_string($extras[\"calle\"]     ?? \"\"),\n        db_prepare_string($extras[\"numeroext\"] ?? \"\"),\n        db_prepare_string($extras[\"numeroint\"] ?? \"\"),\n        db_prepare_string($extras[\"colonia\"]   ?? \"\")\n    );\n    if (!DB::Exec($sql, $conn)) {\n        DB::Exec(\"ROLLBACK\", $conn);\n        $message = \"No se pudo guardar la entrega: \".db_error($conn);\n        return false;               // el form NO pierde lo tecleado\n    }\n  //  db_exec($sql, $conn);\n}\n}\n\n\n \n    $esnimei = $_SESSION[\"esnimei\"] ?? null;\n    if (!empty($esnimei)) {\n           $sql = sprintf(\n               \n            \"INSERT INTO seriessolicitadas (idsolicitud, esnimei)\n             VALUES (%d, %s)\",\n            $idsolicitud,\n            db_prepare_string($esnimei    ?? \"\")\n        );\n    if (!DB::Exec($sql, $conn)) {\n        DB::Exec(\"ROLLBACK\", $conn);\n        $message = \"No se pudo guardar el equipo: \".db_error($conn);\n        return false;               // el form NO pierde lo tecleado\n    }\n    \n    }\n    \n    $simcard = $_SESSION[\"simcard\"] ?? null;\n    if (!empty($esnimei)) {\n           $sql = sprintf(\n            \"INSERT INTO seriessolicitadas (idsolicitud, esnimei)\n             VALUES (%d, %s)\",\n            $idsolicitud,\n            db_prepare_string($simcard    ?? \"\")\n        );\n    if (!DB::Exec($sql, $conn)) {\n        DB::Exec(\"ROLLBACK\", $conn);\n        $message = \"No se pudo guardar el sincard: \".db_error($conn);\n        return false;               // el form NO pierde lo tecleado\n    }\n    \n    }\n\nDB::Exec(\"COMMIT\", $conn);\n\n// “flash message” en sesión para mostrarlo en verde tras el redirect\n$_SESSION['flash_ok'] = \"Solicitud #{$idsolicitud} guardada correctamente.\";\n\n// Redirige a la página Add (form limpio)\nheader(\"Location: \".$pageObject->shortTableName.\"_add.php?new=1\");\nexit;\n}\n\n\n\nreturn false;\n"
+			"code": "// Place event code here.\n\n// En el evento BeforeEdit de la tabla 'solicitudes'\n\n// ⚠️ Usaremos el array $values que contiene los datos a guardar.\n$all_values = $values; \n\nDB::Exec(\"START TRANSACTION\", $conn);\n\n// ... (Las funciones q, qi, qb se asumen definidas o incluidas) ...\nfunction q($v){ // cadenas/fechas: 'valor' o NULL\n    return (isset($v) && $v !== '' ? db_prepare_string($v) : \"NULL\");\n}\nfunction qi($v){ // enteros: número o NULL\n    return (isset($v) && $v !== '' ? (int)$v : \"NULL\");\n}\nfunction qb($v){ // booleano/bit: 0/1\n    return (!empty($v) ? 1 : 0);\n}\n\n\n$camposExtra = [\"nombre\",\"paterno\",\"materno\",\"estado\",\"ciudad\",\"cp\",\"calle\",\"numeroext\",\"numeroint\",\"colonia\", \"noserie\", \"simcard\"];\n\n/**\n * FUNCIÓN DE MANEJO DE FALLO para la edición\n * Guarda los datos del formulario en sesión antes de salir con error, \n * y mantiene las claves primarias ($keys).\n */\nfunction handle_fail_edit($values_to_save, $keys, $conn, $message_text) {\n    DB::Exec(\"ROLLBACK\", $conn);\n    \n    // Guardar TODOS los datos del formulario y las claves primarias\n    $_SESSION[\"edit_data_temp\"] = [\n        'values' => $values_to_save,\n        'keys' => $keys\n    ];\n    \n    // Establecer el mensaje de error para PHPRunner\n    global $message;\n    $message = $message_text;\n    \n    // Devuelve false para detener el proceso de guardado\n    return false;\n}\n\n// -----------------------------------------------------------\n// 1. PREPARACIÓN DE VALORES Y EXTRACCIÓN DE CAMPOS EXTRA\n// -----------------------------------------------------------\n\n// Separar campos para la actualización de la tabla principal y las tablas relacionadas\n$extras = [];\nforeach ($camposExtra as $f) {\n    if (array_key_exists($f, $all_values)) {\n        $extras[$f] = $all_values[$f];\n        // Quitar campos de la tabla principal ($values)\n        if (array_key_exists($f, $values)) {\n            unset($values[$f]); \n        }\n    }\n}\n\n$idsolicitud = (int)$keys[\"idsolicitud\"]; // Obtener la clave del registro actual\n\n// ... (La lógica de verificación de stock para noserie y simcard va aquí, similar al BeforeAdd) ...\n// Si fallan las verificaciones, debes usar:\n/*\nif (// Validación falla) {\n    return handle_fail_edit($all_values, $keys, $conn, \"Error en validación de stock.\");\n}\n*/\n$esnimei = $extras['noserie'] ?? null;\n\n\n\n// -----------------------------------------------------------\n// 2. ACTUALIZACIÓN DE solicitudes\n// -----------------------------------------------------------\n\n// PHPRunner intentará hacer el UPDATE de $values automáticamente si retornas TRUE, \n// pero como estamos manejando la transacción y tablas relacionadas, es mejor hacerlo manualmente\n// y retornar FALSE al final, o limpiar $values para evitar un doble UPDATE.\n\n// Usaremos solo los campos que cambiaste en el formulario\n$sqlUpdate = \"UPDATE solicitudes SET \".\n    \"idcliente = \". qi($values['idcliente']) .\", \".\n    \"idproducto = \". qi($values['idproducto']) .\", \".\n    \"idplan = \". qi($values['idplan']) .\", \".\n    \"orden = \". q($values['orden']) .\", \".\n    \"plazo = \". qi($values['plazo']) .\", \".\n    \"rfc = \". q($values['rfc']) .\", \".\n    \"idcli = \". qi($values['idcli']) .\", \".\n    \"estatusentrega = \". qi($values['estatusentrega']) .\", \".\n    \"fechamodif = NOW() \".\n    \"WHERE idsolicitud = \".$idsolicitud;\n\nif (!DB::Exec($sqlUpdate, $conn)) {\n    // FALLO: No se pudo actualizar la solicitud principal.\n    return handle_fail_edit($all_values, $keys, $conn, \"No se pudo actualizar la solicitud: \" . DB::LastError());\n}\n\n\n// -----------------------------------------------------------\n// 3. ACTUALIZACIÓN/INSERCIÓN EN entregasvnp\n// -----------------------------------------------------------\n\n// Buscamos si ya existe un registro de entrega para esta solicitud\n$existeEntrega = DBLookup(\"SELECT 1 FROM entregasvnp WHERE idsolicitud = \".$idsolicitud, $conn);\n\nif (!empty($extras[\"estado\"])) {\n    if ($existeEntrega) {\n        // ACTUALIZAR\n        $sql = sprintf(\n            \"UPDATE entregasvnp SET estado=%s, ciudad=%s, cp=%d, calle=%s, numeroext=%s, numeroint=%s, colonia=%s WHERE idsolicitud=%d\",\n            q($extras[\"estado\"]), q($extras[\"ciudad\"]), qi($extras[\"cp\"]), q($extras[\"calle\"]), \n            q($extras[\"numeroext\"]), q($extras[\"numeroint\"]), q($extras[\"colonia\"]), $idsolicitud\n        );\n    } else {\n        // INSERTAR\n        $sql = sprintf(\n            \"INSERT INTO entregasvnp (idsolicitud, estado, ciudad, cp, calle, numeroext, numeroint, colonia)\n             VALUES (%d, %s, %s, %d, %s, %s, %s, %s)\",\n            $idsolicitud, q($extras[\"estado\"]), q($extras[\"ciudad\"]), qi($extras[\"cp\"]), \n            q($extras[\"calle\"]), q($extras[\"numeroext\"]), q($extras[\"numeroint\"]), q($extras[\"colonia\"])\n        );\n    }\n\n    if (!DB::Exec($sql, $conn)) {\n        // FALLO: No se pudo guardar/actualizar la entrega.\n        return handle_fail_edit($all_values, $keys, $conn, \"No se pudo actualizar la entrega: \" . DB::LastError());\n    }\n}\n\n\n// -----------------------------------------------------------\n// 4. ACTUALIZACIÓN EN seriessolicitadas (Equipo y Chip)\n// -----------------------------------------------------------\n\n// Primero, limpiamos las series existentes para esta solicitud (si ya existen) para re-insertar o actualizar\nDB::Exec(\"DELETE FROM seriessolicitadas WHERE idsolicitud = \" . $idsolicitud, $conn); \n\n// Equipo (noserie)\nif (!empty($esnimei)) {\n    $sql = sprintf(\"INSERT INTO seriessolicitadas (idsolicitud, esnimei) VALUES (%d, %s)\", $idsolicitud, q($esnimei));\n    if (!DB::Exec($sql, $conn)) {\n        return handle_fail_edit($all_values, $keys, $conn, \"No se pudo guardar el equipo en seriessolicitadas: \" . DB::LastError());\n    }\n}\n    \n\n\n\n// -----------------------------------------------------------\n// 5. ÉXITO FINAL Y LIMPIEZA\n// -----------------------------------------------------------\n\nDB::Exec(\"COMMIT\", $conn);\n\n// Limpiar la sesión de datos fallidos\nunset($_SESSION[\"edit_data_temp\"]); \n\n// Mensaje flash y redirección (opcional, PHPRunner por defecto va a la lista o al siguiente registro)\n$_SESSION['flash_ok'] = \"Solicitud #{$idsolicitud} actualizada correctamente.\";\n\n// Para evitar que PHPRunner intente un UPDATE por defecto y para que el control\n// de transacción sea total, retornamos FALSE.\nreturn false;\n\n\n"
 		},
 		{
 			"eventId": "EVENT_BEFOREPROCESSROW_LIST",
@@ -1338,7 +1359,12 @@
 		{
 			"eventId": "EVENT_JS_ONLOAD",
 			"pageType": "add",
-			"code": "// NOMBRES DE CAMPOS EN TU FORMULARIO\r\nvar fldProducto = 'idproducto';\r\nvar fldNoSerie    = 'noserie';\r\n\r\nvar ctrlProducto = Runner.getControl(pageid, fldProducto);\r\nvar ctrlSerie    = Runner.getControl(pageid, fldNoSerie);\r\n\r\nwindow.__res_noserie = null;\r\n\r\nfunction releasePrev() {\r\n  if (!window.__res_noserie) return;\r\n  $.post('serial_reserve.php', { action:'release', noserie: window.__res_noserie }, function(){}, 'json');\r\n  window.__res_noserie = null;\r\n}\r\n\r\nif (ctrlProducto) {\r\n  ctrlProducto.on('change', function() {\r\n    var productId = ctrlProducto.getValue();\r\n\r\n    // Limpia y libera lo anterior\r\n    releasePrev();\r\n    if (ctrlSerie) ctrlSerie.setValue('');\r\n\r\n    if (!productId) return;\r\n\r\n    $.post('serial_reserve.php', { action:'reserve_by_product', product_id: productId }, function(resp){\r\n      if (resp && resp.ok) {\r\n        if (ctrlSerie) ctrlSerie.setValue(resp.noserie);\r\n        window.__res_noserie = resp.noserie;\r\n      } else if (resp && resp.error === 'no-stock') {\r\n        alert('No hay series disponibles para este producto.');\r\n        if (ctrlProducto) ctrlProducto.reset(); \r\n      } else {\r\n        alert('No se pudo reservar una serie (concurrencia). Intenta de nuevo.');\r\n        if (ctrlProducto) ctrlProducto.reset(); \r\n      }\r\n    }, 'json');\r\n  });\r\n}\r\n\r\n// Liberar al cerrar/navegar fuera (best effort)\r\nwindow.addEventListener('beforeunload', function(){\r\n  if(!window.__res_noserie) return;\r\n  var data = new URLSearchParams({ action:'release', noserie: window.__res_noserie });\r\n  navigator.sendBeacon('serial_reserve.php', data);\r\n});\r\n"
+			"code": "// ================== CONFIG ==================\r\nvar fldProducto = 'idproducto';\r\nvar fldNoSerie  = 'noserie';\r\nvar fldDraft    = 'session_data_json';   // campo REAL en la tabla (Integrated edit field)\r\nvar ENDPOINT    = 'serial_reserve.php';\r\n\r\n// Campos a restaurar/persistir (Step 1 + noserie)\r\nvar FIELDS_STEP1   = ['estado','ciudad','colonia','calle','numeroext','numeroint','noserie'];\r\nvar FIELDS_PERSIST = FIELDS_STEP1.concat(['idproducto']); // agrega más si quieres\r\n\r\n// ================== CONTROLES (inic. perezosa con getCtrl) ==================\r\nfunction getCtrl(field){\r\n  try { return Runner.getControl(pageid, field); } catch(e){ return null; }\r\n}\r\nvar ctrlProducto = getCtrl(fldProducto);\r\nvar ctrlDraft    = getCtrl(fldDraft);\r\n\r\n// ================== ESTADO ==================\r\nwindow.__res_noserie = window.__res_noserie || null;\r\nvar lastAjax = { ts: 0, xhr: null };\r\nvar PREFILLING = false;\r\n\r\n// ================== HELPERS ==================\r\nfunction safeJson(resp){ if (typeof resp==='object') return resp; try{ return JSON.parse(resp);}catch(e){return null;} }\r\nfunction isVisible(el){ return !!el && $(el).is(':visible') && $(el).css('visibility')!=='hidden' && $(el).width()>0 && $(el).height()>0; }\r\n\r\nfunction setValSmart(field, value, opts){\r\n  opts = opts || {};\r\n  var c = getCtrl(field);\r\n  if (c && typeof c.setValue==='function'){\r\n    c.setValue(value);\r\n    if (opts.fireChange && typeof c.fireEvent==='function') c.fireEvent('change');\r\n    return true;\r\n  }\r\n  var $id = $('#value_'+field+'_'+pageid);\r\n  if ($id.length){ $id.val(value).trigger('change'); return true; }\r\n  var $w = $('div.r-integrated-field[data-field=\"'+field+'\"][data-pageid=\"'+pageid+'\"]');\r\n  if ($w.length){\r\n    var $inp = $w.find('input,select,textarea').first();\r\n    if ($inp.length){ $inp.val(value).trigger('change'); return true; }\r\n  }\r\n  var $n = $('[name=\"'+field+'\"]');\r\n  if ($n.length){ $n.val(value).trigger('change'); return true; }\r\n  return false;\r\n}\r\n\r\nfunction applyWhenReady(field, value, opts){\r\n  var tries=0,max=40,delay=150;\r\n  (function tick(){\r\n    tries++;\r\n    if (setValSmart(field,value,opts)) return;\r\n    if (tries>=max) { console.warn('No se pudo setear', field); return; }\r\n    setTimeout(tick,delay);\r\n  })();\r\n}\r\n\r\n// === FIX: setter resiliente para NOSERIE ===\r\nfunction setNoSerieValue(noserie){\r\n  // 1) DOM inmediato (aunque el control no exista aún)\r\n  var $dom = $('#value_'+fldNoSerie+'_'+pageid);\r\n  if ($dom.length){\r\n    $dom.val(noserie).trigger('change');\r\n    // Si es lookup/select2 en tu proyecto, descomenta:\r\n    // $dom.trigger('change.select2');\r\n  }\r\n  // 2) Intento inmediato con Runner control\r\n  var c = getCtrl(fldNoSerie);\r\n  if (c && typeof c.setValue==='function'){\r\n    c.setValue(noserie);\r\n    if (typeof c.fireEvent==='function') c.fireEvent('change');\r\n    return;\r\n  }\r\n  // 3) Reintentos hasta que el control exista (p.ej., cuando se muestre el Step)\r\n  var tries=0,max=40,delay=150;\r\n  (function retry(){\r\n    tries++;\r\n    var cc = getCtrl(fldNoSerie);\r\n    if (cc && typeof cc.setValue==='function'){\r\n      cc.setValue(noserie);\r\n      if (typeof cc.fireEvent==='function') cc.fireEvent('change');\r\n      return;\r\n    }\r\n    if (tries>=max) return;\r\n    setTimeout(retry, delay);\r\n  })();\r\n}\r\n\r\n// ================== AUTOSAVE → session_data_json ==================\r\nfunction readVal(field){\r\n  var c = getCtrl(field);\r\n  if (c && typeof c.getValue==='function') return c.getValue();\r\n  var $id = $('#value_'+field+'_'+pageid); if ($id.length) return $id.val();\r\n  var $w = $('div.r-integrated-field[data-field=\"'+field+'\"][data-pageid=\"'+pageid+'\"]');\r\n  if ($w.length){ var $inp=$w.find('input,select,textarea').first(); if ($inp.length) return $inp.val(); }\r\n  var $n = $('[name=\"'+field+'\"]'); if ($n.length) return $n.val();\r\n  return null;\r\n}\r\nfunction writeDraftJson(obj){\r\n  var json = JSON.stringify(obj || {});\r\n  var c = getCtrl(fldDraft);\r\n  if (c && typeof c.setValue==='function'){ try{ c.setValue(json); }catch(e){} }\r\n  var $id = $('#value_'+fldDraft+'_'+pageid);\r\n  if ($id.length) $id.val(json);\r\n}\r\nfunction buildDraft(){ var d={}; FIELDS_PERSIST.forEach(function(f){ d[f]=readVal(f); }); return d; }\r\n// Reemplaza tu makeDebounce por este:\r\nvar saveDraftDebounced = function(){ saveDraftNow(); };\r\n\r\n\r\nvar saveDraftNow       = function(){ writeDraftJson( buildDraft() ); };\r\n\r\n\r\n// ================== RESERVA DE SERIE ==================\r\nfunction releasePrev(){\r\n  if (!window.__res_noserie) return;\r\n  $.post(ENDPOINT, { action:'release', noserie: window.__res_noserie }, function(){}, 'json');\r\n  window.__res_noserie = null;\r\n}\r\n\r\nfunction reserveForProduct(productId, opts){\r\n  opts = opts || {};\r\n  if (lastAjax.xhr && lastAjax.xhr.readyState!==4){ try{ lastAjax.xhr.abort(); }catch(e){} }\r\n  var ts=Date.now(); lastAjax.ts = ts;\r\n\r\n  var xhr = $.post(ENDPOINT, { action:'reserve_by_product', product_id: productId }, null, 'json')\r\n    .done(function(resp){\r\n      if (ts!==lastAjax.ts) return;\r\n      resp = safeJson(resp) || {};\r\n      if (resp.ok){\r\n        setNoSerieValue(resp.noserie);      // <-- usa el setter resiliente\r\n        window.__res_noserie = resp.noserie;\r\n        saveDraftNow();\r\n        if (!opts.silent) console.log('Reserva OK →', resp.noserie);\r\n      } else if (resp.error==='no-stock'){\r\n        alert('No hay series disponibles para este producto.');\r\n        var cProd = getCtrl(fldProducto); if (cProd) cProd.setValue('');\r\n        setNoSerieValue('');\r\n        releasePrev();\r\n        saveDraftNow();\r\n      } else {\r\n        alert('No se pudo reservar una serie (concurrencia). Intenta de nuevo.');\r\n        setNoSerieValue('');\r\n        saveDraftNow();\r\n      }\r\n    })\r\n    .fail(function(){\r\n      if (ts!==lastAjax.ts) return;\r\n      alert('Error de comunicación al reservar la serie.');\r\n      setNoSerieValue('');\r\n      saveDraftNow();\r\n    })\r\n    .always(function(){ lastAjax.xhr=null; });\r\n\r\n  lastAjax.xhr = xhr;\r\n  return xhr;\r\n}\r\n\r\n// Cambio de producto\r\nif (ctrlProducto){\r\n  ctrlProducto.on('change', function(){\r\n    if (PREFILLING) return;\r\n    var productId = ctrlProducto.getValue();\r\n\r\n    // limpia/invalida serie previa\r\n    var prevSerie = readVal(fldNoSerie);\r\n    if (prevSerie){\r\n      setNoSerieValue(''); // limpia en DOM/Runner\r\n      if (window.__res_noserie===prevSerie) releasePrev();\r\n    } else {\r\n      releasePrev();\r\n    }\r\n\r\n    // guarda draft (idproducto nuevo, noserie vacía hasta reservar)\r\n    saveDraftNow();\r\n\r\n    if (!productId) return;\r\n    reserveForProduct(productId);\r\n  });\r\n}\r\n\r\n// Liberar y guardar al salir\r\nwindow.addEventListener('beforeunload', function(){\r\n  saveDraftNow();\r\n  if (!window.__res_noserie) return;\r\n  var data = new URLSearchParams({ action:'release', noserie: window.__res_noserie });\r\n  try { navigator.sendBeacon(ENDPOINT, data); } catch(e){}\r\n});\r\n\r\n// ================== RESTAURAR DESDE session_data_json ==================\r\npageObj.on('afterInit', function(){\r\n\r\n  // 1) leer borrador del campo oculto\r\n  var draft = {};\r\n  try{\r\n    var raw = (getCtrl(fldDraft)&&getCtrl(fldDraft).getValue) ? getCtrl(fldDraft).getValue() : $('#value_'+fldDraft+'_'+pageid).val();\r\n    if (raw) draft = JSON.parse(raw) || {};\r\n  }catch(e){ draft = {}; }\r\n\r\n  // 2) setear idproducto primero\r\n  if (draft.idproducto != null && draft.idproducto !== ''){\r\n    applyWhenReady('idproducto', draft.idproducto, {fireChange:true});\r\n  }\r\n\r\n  // 3) hidratar Step 1 cuando sea visible (dirección + noserie)\r\n  var step1Sel = '#step_1_'+pageid;\r\n  var step1El  = document.querySelector(step1Sel);\r\n\r\n  var doHydrateStep1 = function(){\r\n    FIELDS_STEP1.forEach(function(f){\r\n      if (draft[f] != null && draft[f] !== '') applyWhenReady(f, draft[f], {});\r\n    });\r\n\r\n    if (draft.noserie){\r\n      setNoSerieValue(draft.noserie);     // <-- también usa el setter\r\n      window.__res_noserie = draft.noserie;\r\n    } else if (draft.idproducto){\r\n      reserveForProduct(draft.idproducto, { silent:true });\r\n    }\r\n\r\n    // pulso de guardado por si el usuario no toca nada\r\n    setTimeout(saveDraftNow, 100);\r\n  };\r\n\r\n  if (step1El && isVisible(step1El)){\r\n    setTimeout(doHydrateStep1, 80);\r\n  } else {\r\n    $(document).on('click', '[data-stepcontrol] [data-step], .step-tab, .nav-link', function(){\r\n      setTimeout(function(){\r\n        var elNow = document.querySelector(step1Sel);\r\n        if (elNow && isVisible(elNow)) doHydrateStep1();\r\n      }, 200);\r\n    });\r\n    if (step1El){\r\n      var obs = new MutationObserver(function(){\r\n        if (isVisible(step1El)){ doHydrateStep1(); try{obs.disconnect();}catch(e){} }\r\n      });\r\n      obs.observe(step1El, { attributes:true, attributeFilter:['style','class'] });\r\n    }\r\n  }\r\n\r\n  // 4) AUTOSAVE: cada cambio de los campos vigilados actualiza el JSON\r\n  FIELDS_PERSIST.forEach(function(f){\r\n    var c = getCtrl(f);\r\n    if (c) c.on('change', saveDraftDebounced);\r\n  });\r\n  var selDeleg = FIELDS_PERSIST.map(function(f){\r\n    return 'div.r-integrated-field[data-field=\"'+f+'\"][data-pageid=\"'+pageid+'\"] input, '+\r\n           'div.r-integrated-field[data-field=\"'+f+'\"][data-pageid=\"'+pageid+'\"] select, '+\r\n           'div.r-integrated-field[data-field=\"'+f+'\"][data-pageid=\"'+pageid+'\"] textarea';\r\n  }).join(', ');\r\n  $(document).on('change input', selDeleg, saveDraftDebounced);\r\n\r\n  // 5) guardado periódico de seguridad\r\n  var ticks=0,maxTicks=6;\r\n  var safeTimer=setInterval(function(){ ticks++; saveDraftDebounced(); if(ticks>=maxTicks) clearInterval(safeTimer); },2000);\r\n});\r\n"
+		},
+		{
+			"eventId": "EVENT_BEFOREPROCESS_ADD",
+			"pageType": "add",
+			"code": "// En el evento BeforeProcessAdd de la tabla 'solicitudes'\n\n// En el evento BeforeProcessAdd de la tabla 'solicitudes'\n// En el evento BeforeProcessAdd de la tabla 'solicitudes'\n\nglobal $pageObject;\n$session_key = $pageObject->shortTableName . \"_add\"; \n$debug_file = 'debug_log.txt';\n\n\n// 🛑 PASO DE LIMPIEZA: Limpiar datos de sesión si es una carga de página \"limpia\" 🛑\n// Si existe la variable de datos fallidos Y el método de la solicitud es GET (navegación por enlace),\n// asumimos que el usuario no viene de un reenvío fallido y limpiamos la sesión.\nif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_SESSION[\"add_data_temp\"])) {\n    // Los datos son de una sesión de error anterior, pero estamos en una navegación nueva.\n    unset($_SESSION[\"add_data_temp\"]);\n}\n\n// En el evento BeforeProcessAdd de la tabla 'solicitudes'\n\n"
 		}
 	],
 	"dbTableInfo": {
@@ -1869,6 +1895,7 @@
 							"model": "c1",
 							"items": [
 								"integrated_edit_field",
+								"integrated_edit_field20",
 								"integrated_edit_field2",
 								"integrated_edit_field7",
 								"integrated_edit_field8",
@@ -1920,7 +1947,8 @@
 								"integrated_edit_field16",
 								"integrated_edit_field13",
 								"integrated_edit_field14",
-								"integrated_edit_field15"
+								"integrated_edit_field15",
+								"integrated_edit_field21"
 							]
 						},
 						"c4": {
@@ -2148,6 +2176,22 @@
 					"field": "noserie",
 					"type": "integrated_edit_field",
 					"orientation": 0
+				},
+				"integrated_edit_field20": {
+					"field": "idtipoventa",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field21": {
+					"field": "session_data_json",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"label": {
+						"field": "session_data_json",
+						"table": "solicitudes",
+						"type": 3
+					},
+					"customCSS": "/* Put  your custom CSS code here */\n\n"
 				}
 			},
 			"dbProps": {},
@@ -2246,7 +2290,8 @@
 							"items": [
 								"export_field",
 								"export_field1",
-								"export_field2"
+								"export_field2",
+								"export_field3"
 							]
 						}
 					},
@@ -2305,6 +2350,10 @@
 				},
 				"export_field2": {
 					"field": "lng",
+					"type": "export_field"
+				},
+				"export_field3": {
+					"field": "session_data_json",
 					"type": "export_field"
 				}
 			},
@@ -2536,7 +2585,8 @@
 							"model": "c3",
 							"items": [
 								"section",
-								"integrated_edit_field19"
+								"integrated_edit_field19",
+								"integrated_edit_field21"
 							],
 							"border": [
 								{
@@ -2552,7 +2602,8 @@
 						"c": {
 							"model": "c3",
 							"items": [
-								"section1"
+								"section1",
+								"integrated_edit_field20"
 							]
 						}
 					},
@@ -2931,6 +2982,18 @@
 					"type": "integrated_edit_field",
 					"orientation": 0,
 					"updateOnEdit": false
+				},
+				"integrated_edit_field20": {
+					"field": "idtipoventa",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field21": {
+					"field": "session_data_json",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
 				}
 			},
 			"dbProps": {},
@@ -3069,6 +3132,15 @@
 								}
 							],
 							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c5",
+									"colspan": 2
+								}
+							],
+							"section": ""
 						}
 					],
 					"cells": {
@@ -3097,6 +3169,12 @@
 							"model": "c3",
 							"items": [
 								"section2"
+							]
+						},
+						"c5": {
+							"model": "c3",
+							"items": [
+								"integrated_edit_field17"
 							]
 						}
 					},
@@ -3408,6 +3486,11 @@
 						"type": 0
 					},
 					"editedByRte": false
+				},
+				"integrated_edit_field17": {
+					"field": "idtipoventa",
+					"type": "integrated_edit_field",
+					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -3637,6 +3720,9 @@
 								},
 								{
 									"cell": "headcell_field8"
+								},
+								{
+									"cell": "headcell_field13"
 								}
 							]
 						},
@@ -3681,6 +3767,9 @@
 								},
 								{
 									"cell": "cell_field5"
+								},
+								{
+									"cell": "cell_field7"
 								}
 							]
 						},
@@ -3688,7 +3777,7 @@
 							"cells": [
 								{
 									"cell": "cell_dpreview",
-									"colspan": 13
+									"colspan": 14
 								}
 							],
 							"section": "body"
@@ -3734,6 +3823,9 @@
 								},
 								{
 									"cell": "footcell_field5"
+								},
+								{
+									"cell": "footcell_field7"
 								}
 							]
 						}
@@ -4034,6 +4126,25 @@
 							"items": [],
 							"field": "noserie",
 							"columnName": "field"
+						},
+						"headcell_field13": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label5"
+							],
+							"field": "idtipoventa"
+						},
+						"cell_field7": {
+							"model": "cell_field",
+							"items": [
+								"grid_field5"
+							],
+							"field": "idtipoventa"
+						},
+						"footcell_field7": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "idtipoventa"
 						}
 					},
 					"deferredItems": [],
@@ -4352,6 +4463,16 @@
 				"grid_field_label3": {
 					"type": "grid_field_label",
 					"field": "noserie"
+				},
+				"grid_field5": {
+					"field": "idtipoventa",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label5": {
+					"type": "grid_field_label",
+					"field": "idtipoventa"
 				}
 			},
 			"dbProps": {},
@@ -4618,7 +4739,8 @@
 						"c3": {
 							"model": "c3",
 							"items": [
-								"integrated_search_field"
+								"integrated_search_field",
+								"integrated_search_field1"
 							]
 						}
 					},
@@ -4644,6 +4766,11 @@
 				},
 				"integrated_search_field": {
 					"field": "noserie",
+					"type": "integrated_search_field",
+					"orientation": 0
+				},
+				"integrated_search_field1": {
+					"field": "session_data_json",
 					"type": "integrated_search_field",
 					"orientation": 0
 				}
@@ -4794,7 +4921,8 @@
 								"simple_grid_field44",
 								"simple_grid_field45",
 								"simple_grid_field46",
-								"simple_grid_field43"
+								"simple_grid_field43",
+								"simple_grid_field47"
 							]
 						}
 					},
@@ -4996,6 +5124,10 @@
 				"simple_grid_field43": {
 					"field": "noserie",
 					"type": "simple_grid_field"
+				},
+				"simple_grid_field47": {
+					"field": "session_data_json",
+					"type": "simple_grid_field"
 				}
 			},
 			"dbProps": {},
@@ -5143,7 +5275,8 @@
 								"simple_grid_field44",
 								"simple_grid_field45",
 								"simple_grid_field46",
-								"simple_grid_field43"
+								"simple_grid_field43",
+								"simple_grid_field47"
 							]
 						}
 					},
@@ -5341,6 +5474,10 @@
 				},
 				"simple_grid_field43": {
 					"field": "noserie",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field47": {
+					"field": "session_data_json",
 					"type": "simple_grid_field"
 				}
 			},
