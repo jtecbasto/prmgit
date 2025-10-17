@@ -155,120 +155,12 @@
 			"index": 4,
 			"strField": "idcliente",
 			"type": 3,
-			"separateEditViewFormats": true,
 			"viewFormats": [
-				{},
-				{
-					"pageType": "list",
-					"textShowFirstN": 20
-				},
-				{
-					"pageType": "print"
-				},
-				{
-					"pageType": "export"
-				}
+				{}
 			],
 			"editFormats": [
 				{
-					"format": "Readonly",
-					"required": true,
-					"denyDuplicateMessage": {
-						"text": "El cliente %value% ya existe",
-						"type": 0
-					},
-					"lookupType": 2,
-					"lookupTable": "clientes",
-					"lookupTableConnection": "conn",
-					"lookupLinkField": "idcliente",
-					"lookupDisplayField": "nombre_completo",
-					"lookupAllowAdd": true,
-					"lookupAllowEdit": true,
-					"lookupControlType": 2,
-					"lookupListPage": "list",
-					"lookupAddPage": "add",
-					"lookupEditPage": "edit",
-					"lookupAutofillFields": [
-						{
-							"masterField": "nombre",
-							"lookupField": "nombre"
-						},
-						{
-							"masterField": "paterno",
-							"lookupField": "paterno"
-						},
-						{
-							"masterField": "materno",
-							"lookupField": "materno"
-						},
-						{
-							"masterField": "rfc",
-							"lookupField": "rfc"
-						},
-						{
-							"masterField": "cliente_id",
-							"lookupField": "idcliente"
-						},
-						{
-							"masterField": "estado",
-							"lookupField": "estado"
-						},
-						{
-							"masterField": "ciudad",
-							"lookupField": "ciudad"
-						},
-						{
-							"masterField": "cp",
-							"lookupField": "idcp"
-						}
-					]
-				},
-				{
 					"format": "Lookup wizard",
-					"pageType": "add",
-					"required": true,
-					"denyDuplicateMessage": {
-						"text": "El cliente %value% ya existe",
-						"type": 0
-					},
-					"lookupType": 2,
-					"lookupTable": "clientes",
-					"lookupTableConnection": "conn",
-					"lookupLinkField": "idcliente",
-					"lookupDisplayField": "nombre_completo",
-					"lookupOrderBy": "nombre_completo",
-					"lookupAllowAdd": true,
-					"lookupAllowEdit": true,
-					"lookupControlType": 2,
-					"lookupListPage": "list",
-					"lookupAddPage": "add",
-					"lookupEditPage": "edit",
-					"lookupAutofillFields": [
-						{
-							"masterField": "nombre",
-							"lookupField": "nombre"
-						},
-						{
-							"masterField": "paterno",
-							"lookupField": "paterno"
-						},
-						{
-							"masterField": "materno",
-							"lookupField": "materno"
-						},
-						{
-							"masterField": "rfc",
-							"lookupField": "rfc"
-						},
-						{
-							"masterField": "cliente_id",
-							"lookupField": "idcliente"
-						}
-					]
-				},
-				{
-					"format": "Lookup wizard",
-					"pageType": "search",
 					"required": true,
 					"denyDuplicateMessage": {
 						"text": "El cliente %value% ya existe",
@@ -305,18 +197,6 @@
 						{
 							"masterField": "cliente_id",
 							"lookupField": "idcliente"
-						},
-						{
-							"masterField": "estado",
-							"lookupField": "estado"
-						},
-						{
-							"masterField": "ciudad",
-							"lookupField": "ciudad"
-						},
-						{
-							"masterField": "cp",
-							"lookupField": "idcp"
 						}
 					]
 				}
@@ -1283,7 +1163,7 @@
 		{
 			"eventId": "EVENT_AFTEREDIT",
 			"pageType": "edit",
-			"code": "// AfterRecordUpdated — tabla: solicitudes\r\nglobal $pageObject, $keys;\r\n\r\n// Bandera de éxito para limpieza de draft/autosave\r\n$_SESSION['solicitudes_edit_clean_draft'] = 1;\r\n\r\n// Redirige al mismo edit con clean=1 (y nonce) para evitar caché\r\n$idsolicitud = (int)$keys[\"idsolicitud\"];\r\nif (ob_get_length()) { @ob_end_clean(); }\r\n\r\n$nonce  = time();\r\n$target = $pageObject->shortTableName.\"_edit.php?editid1=\".$idsolicitud.\"&clean=1&_n=\".$nonce;\r\n\r\nheader(\"Location: \".$target);\r\nexit;\r\n"
+			"code": "// AfterRecordUpdated\r\n// Opcional: solo para poner un mensaje “verde” más claro cuando no hubo cambios en la tabla principal.\r\nglobal $message;\r\n\r\nif (!$message) {\r\n    $message = \"Cambios guardados.\";\r\n}\r\nreturn true;\r\n\r\n"
 		},
 		{
 			"eventId": "EVENT_BEFOREMOVENEXT_LIST",
@@ -1308,7 +1188,7 @@
 		{
 			"eventId": "EVENT_BEFOREEDIT",
 			"pageType": "edit",
-			"code": "// BeforeRecordUpdated — tabla: solicitudes\r\nglobal $pageObject, $keys, $values, $oldvalues, $message, $conn;\r\n\r\n$idsolicitud = (int)$keys[\"idsolicitud\"];\r\n\r\nfunction dbg_log($txt){\r\n    @file_put_contents(getabspath(\"debug_log.txt\"), date('Y-m-d H:i:s').\" \".$txt.\"\\n\", FILE_APPEND);\r\n}\r\n\r\n// ==================== Helpers ====================\r\nfunction q($v){ return (isset($v) && $v !== '' ? db_prepare_string($v) : \"NULL\"); }\r\nfunction qi($v){ return (isset($v) && $v !== '' ? (int)$v : \"NULL\"); }\r\nfunction qb($v){ return (!empty($v) ? 1 : 0); }\r\n\r\nfunction handle_fail_edit($values_to_save, $conn, $msg_text){\r\n\r\n    DB::Exec(\"ROLLBACK\", $conn);\r\n    $_SESSION['edit_data_temp'] = $values_to_save; // para reinyectar\r\n    return $msg_text;\r\n}\r\n\r\n// 1) Comenzar transacción\r\nDB::Exec(\"START TRANSACTION\", $conn);\r\n\r\n// 2) Determinar si cambió el producto y qué serie se pretende guardar\r\n$producto_nuevo = $values['idproducto'];\r\n$producto_prev  = $oldvalues['idproducto'];\r\n\r\n// Serie actual vinculada a esta solicitud (si hay)\r\n$sqlCur = \"\r\nSELECT MAX(CASE WHEN pr.clasif='Equipo' THEN ss.esnimei END) AS noserie\r\nFROM seriessolicitadas ss\r\nJOIN compras cp ON cp.noserie=ss.esnimei\r\nJOIN productos pr ON pr.codigoIUSA=cp.codigoproducto\r\nWHERE ss.idsolicitud=\".qi($idsolicitud);\r\n\r\n\r\n\r\n$rsCur  = db_query($sqlCur, $conn);\r\n$rowCur = db_fetch_array($rsCur);\r\n$noserie_actual = $rowCur ? $rowCur['noserie'] : '';\r\n\r\n// ¿Qué serie traeremos del form? (no es editable, pero llega por POST)\r\n$noserie_form = postvalue(\"noserie\");\r\n\r\n// Si cambió el producto, ignoramos la serie actual y exigimos que haya nueva reserva\r\n$requiere_nueva_serie = ($producto_nuevo != $producto_prev);\r\n\r\n// 3) Si el producto cambió, validar que la nueva serie exista en saldo (y no esté usada)\r\n//    *Excluye la serie_actual de la misma solicitud para no bloquearte si el usuario vuelve atrás.\r\nif ($requiere_nueva_serie) {\r\n    if (!$noserie_form) {\r\n        $message = handle_fail_edit($values, $conn, \"No se pudo detectar una nueva serie para el producto seleccionado.\");\r\n        return false;\r\n    }\r\n\r\n    $strSQLExists = \"\r\n    SELECT compras.noserie\r\n    FROM compras\r\n    LEFT JOIN ventas v ON compras.noserie = v.esnimei\r\n    LEFT JOIN movimientos m ON compras.noserie = m.esnimei\r\n    LEFT JOIN seriessolicitadas ss ON compras.noserie = ss.esnimei\r\n    LEFT JOIN (\r\n        SELECT t.esnimei, t.tiendadestino, t.fecharecepcion\r\n        FROM traspasosdet t\r\n        INNER JOIN (\r\n            SELECT MAX(idtraspasodet) idtraspaso\r\n            FROM traspasosdet\r\n            GROUP BY esnimei\r\n        ) t1 ON t.idtraspasodet = t1.idtraspaso\r\n    ) t ON compras.noserie = t.esnimei\r\n    INNER JOIN productos p ON compras.codigoproducto = p.codigoIUSA\r\n    WHERE \r\n        (v.esnimei IS NULL) AND (m.esnimei IS NULL)\r\n        AND (ss.esnimei IS NULL OR ss.idsolicitud = \".qi($idsolicitud).\")  /* permite si ya es de esta solicitud */\r\n        AND (t.esnimei IS NULL OR (t.fecharecepcion IS NOT NULL AND t.fecharecepcion <> '0000-00-00'))\r\n        AND compras.tienda = 2 \r\n        AND compras.clasif = 2 \r\n        AND p.Clasif = 'Equipo'\r\n        AND compras.noserie = \".q($noserie_form).\"\r\n    LIMIT 1\";\r\n\r\n    $rsExists = db_query($strSQLExists, $conn);\r\n    $data = db_fetch_array($rsExists);\r\n\r\n    if (!$data) {\r\n        $message = handle_fail_edit($values, $conn, \"La serie seleccionada ya no está disponible.\");\r\n        return false;\r\n    }\r\n}\r\n\r\n\r\n// 4) Actualizar tabla principal (solicitudes)\r\n//    (Aquí puedes ajustar campos automáticos como usuario/fecha si aplica)\r\n$values[\"fechamodif\"] = date('Y-m-d H:i:s');\r\n$values[\"usuario\"]    = $_SESSION[\"UserID\"];\r\n\r\n// 5) Ejecutar UPDATE principal (PHPRunner lo hará si retornas true).\r\n//    Si tú haces el UPDATE manual, pon DB::Exec(...) aquí y return false para frenar el update automático.\r\n//    En este caso, dejamos que PHPRunner haga el UPDATE → return true al final de este evento.\r\n\r\n// 6) Ajustar seriessolicitadas (solo si cambió producto)\r\nif ($requiere_nueva_serie) {\r\n    // Elimina/actualiza la serie de Equipo previa y coloca la nueva\r\n    // Opción simple: borra filas previas de Equipo y vuelve a insertar\r\n    $delSQL = \"\r\n        DELETE ss FROM seriessolicitadas ss\r\n        JOIN compras cp ON cp.noserie=ss.esnimei\r\n        JOIN productos pr ON pr.codigoIUSA=cp.codigoproducto\r\n        WHERE ss.idsolicitud=\".qi($idsolicitud).\" AND pr.clasif='Equipo'\r\n    \";\r\n\r\n    if (!DB::Exec($delSQL, $conn)) {\r\n        $message = handle_fail_edit($values, $conn, \"No se pudo limpiar seriessolicitadas (Equipo): \".DB::LastError());\r\n        return false;\r\n    }\r\n\r\n    \r\n    $insSQL = \"\r\n        INSERT INTO seriessolicitadas (idsolicitud, esnimei)\r\n        VALUES (\".qi($idsolicitud).\", \".q($noserie_form).\")\r\n    \";\r\n    \r\n\r\n    if (!DB::Exec($insSQL, $conn)) {\r\n        $message = handle_fail_edit($values, $conn, \"No se pudo guardar la nueva serie (Equipo). \".DB::LastError());\r\n        return false;\r\n    }\r\n\r\n    // Limpia la reserva del usuario (si llevas seriesreservadas por usuario)\r\n\r\n    $sqlDelete=\"DELETE FROM seriesreservadas\r\n        WHERE noserie = \".q($noserie_form).\" AND userid = \".q($_SESSION['UserID']);\r\n    dbg_log(\"SQL DELETE2: \".$sqlDelete);\r\n    DB::Exec($sqlDelete\r\n    , $conn);\r\n}\r\n\r\n// 7) Commit (el commit final lo podemos posponer a AfterRecordUpdated si prefieres,\r\n//    pero aquí ya validamos/insertamos seriessolicitadas; lo dejamos listo.)\r\nif (!DB::Exec(\"COMMIT\", $conn)) {\r\n    \r\n\r\n    $message = handle_fail_edit($values, $conn, \"Error al confirmar cambios: \".DB::LastError());\r\n    return false;\r\n}\r\n\r\n// Si todo OK, no detengas el UPDATE de PHPRunner\r\nreturn true;\r\n"
+			"code": "// BeforeRecordUpdated\r\n// Se ejecuta SIEMPRE cuando el usuario pulsa Guardar en Edit, aunque la tabla principal no cambie.\r\n\r\nglobal $conn, $message, $pageObject;\r\n\r\n// ---------- Helpers ----------\r\nfunction q($v){ return ($v!==null && $v!=='') ? db_prepare_string($v) : \"NULL\"; }\r\nfunction qi($v){ return ($v!==null && $v!=='') ? (int)$v : \"NULL\"; }\r\n\r\n// Campos que NO son de la tabla 'solicitudes'\r\n$extraFields = ['estado','ciudad','cp','calle','numeroext','numeroint','colonia','lat','lng','noserie'];\r\n\r\n// 1) Saca del SET de PHPRunner los campos que no pertenecen a la tabla principal\r\n$extras = [];\r\nforeach ($extraFields as $f) {\r\n    if (array_key_exists($f, $values)) {\r\n        $extras[$f] = $values[$f];\r\n        unset($values[$f]);              // <- evita \"Unknown column 'calle' in SET\"\r\n    }\r\n    // por si vienen como custom / readonly en POST\r\n    $pv = postvalue($f);\r\n    if ($pv !== null && $pv !== '') $extras[$f] = $pv;\r\n}\r\n\r\n$idsolicitud = (int)$keys['idsolicitud'];\r\n\r\n// ---------- 2) UPSERT en entregasvnp (sin duplicar filas) ----------\r\n$hayDireccion =\r\n    (!empty($extras['estado']))     || (!empty($extras['ciudad'])) ||\r\n    (!empty($extras['cp']))         || (!empty($extras['calle']))  ||\r\n    (!empty($extras['numeroext']))  || (!empty($extras['numeroint'])) ||\r\n    (!empty($extras['colonia']))    || (isset($extras['lat']))     || (isset($extras['lng']));\r\n\r\nif ($hayDireccion) {\r\n    // ¿existe ya fila para esta solicitud?\r\n    $rsExist = db_query(\"SELECT idsolicitud FROM entregasvnp WHERE idsolicitud = {$idsolicitud} LIMIT 1\", $conn);\r\n    $exists  = db_fetch_array($rsExist);\r\n\r\n    // Normalizamos valores\r\n    $estado    = q($extras['estado']    ?? null);\r\n    $ciudad    = q($extras['ciudad']    ?? null);\r\n    $cp        = qi($extras['cp']       ?? null);\r\n    $calle     = q($extras['calle']     ?? null);\r\n    $numeroext = q($extras['numeroext'] ?? null);\r\n    $numeroint = q($extras['numeroint'] ?? null);\r\n    $colonia   = q($extras['colonia']   ?? null);\r\n    $lat       = q($extras['lat']       ?? null);\r\n    $lng       = q($extras['lng']       ?? null);\r\n\r\n    if ($exists) {\r\n        // UPDATE primero (no genera duplicados)\r\n        $sqlEV = \"\r\n            UPDATE entregasvnp SET\r\n                estado    = {$estado},\r\n                ciudad    = {$ciudad},\r\n                cp        = {$cp},\r\n                calle     = {$calle},\r\n                numeroext = {$numeroext},\r\n                numeroint = {$numeroint},\r\n                colonia   = {$colonia},\r\n                lat       = {$lat},\r\n                lng       = {$lng}\r\n            WHERE idsolicitud = {$idsolicitud}\r\n            LIMIT 1\r\n        \";\r\n        if (!DB::Exec($sqlEV, $conn)) {\r\n            $message = 'No se pudo actualizar la dirección de entrega: '.DB::LastError();\r\n        }\r\n    } else {\r\n        // Si no existe, INSERT una sola vez\r\n        $sqlEV = \"\r\n            INSERT INTO entregasvnp\r\n                (idsolicitud, estado, ciudad, cp, calle, numeroext, numeroint, colonia, lat, lng)\r\n            VALUES\r\n                ({$idsolicitud}, {$estado}, {$ciudad}, {$cp}, {$calle}, {$numeroext}, {$numeroint}, {$colonia}, {$lat}, {$lng})\r\n        \";\r\n        if (!DB::Exec($sqlEV, $conn)) {\r\n            $message = 'No se pudo insertar la dirección de entrega: '.DB::LastError();\r\n        }\r\n    }\r\n}\r\n\r\n\r\n// 3) Serie (seriessolicitadas)\r\n$noserieNuevo = trim($extras['noserie'] ?? '');\r\nif ($noserieNuevo !== '') {\r\n    // Serie actual\r\n    $sqlSerieActual = \"\r\n        SELECT ss.esnimei\r\n        FROM seriessolicitadas ss\r\n        JOIN compras cp  ON cp.noserie = ss.esnimei\r\n        JOIN productos pr ON pr.codigoIUSA = cp.codigoproducto\r\n        WHERE ss.idsolicitud = {$idsolicitud}\r\n          AND pr.clasif = 'Equipo'\r\n        LIMIT 1\r\n    \";\r\n    $rs = db_query($sqlSerieActual, $conn);\r\n    $row = db_fetch_array($rs);\r\n    $noserieActual = $row ? $row['esnimei'] : '';\r\n\r\n    if ($noserieNuevo !== $noserieActual) {\r\n        // Validar disponibilidad (o que esté ya ligada a esta solicitud)\r\n        $strSQLExists = \"\r\n            SELECT c.noserie\r\n            FROM compras c\r\n            LEFT JOIN ventas v         ON c.noserie = v.esnimei\r\n            LEFT JOIN movimientos m    ON c.noserie = m.esnimei\r\n            LEFT JOIN seriessolicitadas ss ON c.noserie = ss.esnimei\r\n            LEFT JOIN (\r\n                SELECT t.esnimei, t.tiendadestino, t.fecharecepcion\r\n                FROM traspasosdet t\r\n                INNER JOIN (SELECT MAX(idtraspasodet) idtraspaso FROM traspasosdet GROUP BY esnimei) t1\r\n                    ON t.idtraspasodet = t1.idtraspaso\r\n            ) t ON c.noserie = t.esnimei\r\n            INNER JOIN productos p ON c.codigoproducto = p.codigoIUSA\r\n            WHERE p.Clasif='Equipo'\r\n              AND c.tienda = 2\r\n              AND c.clasif = 2\r\n              AND (\r\n                    (v.esnimei IS NULL AND m.esnimei IS NULL AND ss.esnimei IS NULL)\r\n                    OR (ss.idsolicitud = {$idsolicitud})\r\n                  )\r\n              AND (t.esnimei IS NULL OR (t.fecharecepcion IS NOT NULL AND t.fecharecepcion <> '0000-00-00'))\r\n              AND c.noserie = \".q($noserieNuevo).\"\r\n            LIMIT 1\r\n        \";\r\n        $rsExists = db_query($strSQLExists, $conn);\r\n        $okSerie = db_fetch_array($rsExists);\r\n\r\n        if (!$okSerie) {\r\n            $message = \"La serie {$noserieNuevo} ya no está disponible.\";\r\n            // No detenemos el guardado de 'solicitudes'\r\n        } else {\r\n            // Elimina la anterior (si había) y guarda la nueva\r\n            if ($noserieActual !== '') {\r\n                $sqlDel = \"\r\n                    DELETE ss\r\n                    FROM seriessolicitadas ss\r\n                    JOIN compras cp ON cp.noserie = ss.esnimei\r\n                    JOIN productos pr ON pr.codigoIUSA = cp.codigoproducto\r\n                    WHERE ss.idsolicitud = {$idsolicitud}\r\n                      AND pr.clasif = 'Equipo'\r\n                \";\r\n                DB::Exec($sqlDel, $conn);\r\n            }\r\n\r\n            $sqlIns = \"\r\n                INSERT INTO seriessolicitadas (idsolicitud, esnimei)\r\n                VALUES ({$idsolicitud}, \".q($noserieNuevo).\")\r\n                ON DUPLICATE KEY UPDATE esnimei = VALUES(esnimei)\r\n            \";\r\n            if (!DB::Exec($sqlIns, $conn)) {\r\n                $message = \"No se pudo actualizar la serie: \".DB::LastError();\r\n            } else {\r\n                // limpia reserva del usuario si la manejas\r\n                $userId = $_SESSION[\"UserID\"];\r\n                DB::Exec(\"\r\n                    DELETE FROM seriesreservadas\r\n                    WHERE noserie = \".q($noserieNuevo).\"\r\n                      AND userid  = \".q($userId).\"\r\n                \", $conn);\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n// 4) Listo. Deja que PHPRunner haga su UPDATE de 'solicitudes' si hubiera cambios.\r\n//    Aunque no haya cambios, este evento ya guardó extras y serie.\r\nreturn true;\r\n"
 		},
 		{
 			"eventId": "EVENT_BEFOREPROCESSROW_LIST",
