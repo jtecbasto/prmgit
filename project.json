@@ -346,6 +346,9 @@
 		}
 	],
 	"defaultConnID": "conn",
+	"mapSettings": {
+		"apikey": "XXXXXXXXXXXXXXXXXXXXXXXXX"
+	},
 	"menus": [
 		{
 			"id": "main",
