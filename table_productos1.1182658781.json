@@ -81,6 +81,7 @@
 			"tableName": ""
 		}
 	],
+	"afterEditAction": 0,
 	"dbTableInfo": {
 		"type": 0,
 		"foreignKeys": [],

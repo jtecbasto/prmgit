@@ -162,6 +162,7 @@
 			"tableName": "logisticavnp"
 		}
 	],
+	"afterEditAction": 0,
 	"eventHandlers": [
 		{
 			"eventId": "EVENT_BEFOREADD",

@@ -191,6 +191,7 @@
 			"tableName": "tiposventa"
 		}
 	],
+	"afterEditAction": 0,
 	"dbTableInfo": {
 		"type": 0,
 		"foreignKeys": [],

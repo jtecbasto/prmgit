@@ -359,6 +359,7 @@
 			"tableName": "serviciosmoviles_users"
 		}
 	],
+	"afterEditAction": 0,
 	"dbTableInfo": {
 		"type": 0,
 		"foreignKeys": [],

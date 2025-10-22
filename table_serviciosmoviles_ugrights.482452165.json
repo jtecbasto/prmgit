@@ -82,6 +82,7 @@
 			"tableName": "serviciosmoviles_ugrights"
 		}
 	],
+	"afterEditAction": 0,
 	"dbTableInfo": {
 		"type": 0,
 		"foreignKeys": [],

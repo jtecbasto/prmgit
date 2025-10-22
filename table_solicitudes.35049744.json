@@ -7,7 +7,7 @@
 			"asc": false
 		}
 	],
-	"sql": "SELECT\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tsolicitudes.estatusentrega,\n\tcte.nombre,\n\tcte.paterno,\n\tcte.materno,\n\tev.estado,\n\tev.ciudad,\n\tev.cp,\n\tev.calle,\n\tev.numeroext,\n\tev.numeroint,\n\tev.colonia,\n\tp.descripcion,\n\tCONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(TRIM(CONCAT_WS(' ',\n             IFNULL(ev.numeroext,''),IFNULL(ev.calle,''),IFNULL(ev.numeroint,''),\n             IFNULL(ev.colonia,''),IFNULL(ev.cp,''),IFNULL(ev.ciudad,''),IFNULL(ev.estado,'')\n           )),' ','+')) AS maps_url,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      IF(IFNULL(ev.calle,'')='','', CONCAT('C.',ev.calle)),\n      IFNULL(CONCAT('No.',ev.numeroext),''),\n      IFNULL(CONCAT('Int.',ev.numeroint),''),\n      IFNULL(ev.colonia,''), IFNULL(CONCAT('C.P.',ev.cp),''),\n      IFNULL(ev.ciudad,''), IFNULL(ev.estado,'')\n    ))) AS direccion,\n\tsolicitudes.idsolicitud idsolicitud,\n\tss.equipo noserie,\n\tss.chip,\n\tev.lat,\n\tev.lng\nFROM\n\tsolicitudes AS solicitudes\n\tLEFT OUTER JOIN clientes AS cte ON cte.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp AS ev ON ev.idsolicitud = solicitudes.idsolicitud\n\tLEFT OUTER JOIN productos AS p ON p.idproducto = solicitudes.idproducto\n\tLEFT OUTER JOIN (SELECT\n\tss.idsolicitud,\n\tMAX(CASE WHEN pr.clasif = 'Equipo' THEN ss.esnimei END) AS equipo,\n\tMAX(CASE WHEN pr.clasif = 'Chip'   THEN ss.esnimei END) AS chip\nFROM\n\tseriessolicitadas AS ss\n\tINNER JOIN compras AS cp ON cp.noserie = ss.esnimei\n\tINNER JOIN productos AS pr ON pr.codigoIUSA = cp.codigoproducto\nGROUP BY\n\tss.idsolicitud\n) AS ss ON ss.idsolicitud = solicitudes.idsolicitud\nWHERE\n solicitudes.idtienda = 2 order by solicitudes.idsolicitud desc\n\n",
+	"sql": "SELECT\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tsolicitudes.estatusentrega,\n\tcte.nombre,\n\tcte.paterno,\n\tcte.materno,\n\tev.estado,\n\tev.ciudad,\n\tev.cp,\n\tev.calle,\n\tev.numeroext,\n\tev.numeroint,\n\tev.colonia,\n\tp.descripcion,\n\tCONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(TRIM(CONCAT_WS(' ',\n             IFNULL(ev.numeroext,''),IFNULL(ev.calle,''),IFNULL(ev.numeroint,''),\n             IFNULL(ev.colonia,''),IFNULL(ev.cp,''),IFNULL(ev.ciudad,''),IFNULL(ev.estado,'')\n           )),' ','+')) AS maps_url,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      IF(IFNULL(ev.calle,'')='','', CONCAT('C.',ev.calle)),\n      IFNULL(CONCAT('No.',ev.numeroext),''),\n      IFNULL(CONCAT('Int.',ev.numeroint),''),\n      IFNULL(ev.colonia,''), IFNULL(CONCAT('C.P.',ev.cp),''),\n      IFNULL(ev.ciudad,''), IFNULL(ev.estado,'')\n    ))) AS direccion,\n\tsolicitudes.idsolicitud idsolicitud,\n\tss.equipo noserie,\n\tss.chip,\n\tev.lat,\n\tev.lng,\n\t'' dn,\n\t'' dnpreferido,\n\t'' cuenta,\n\t'' contrato,\n\t'' contratoportal,\n\t0 plazopendiente,\n\t'' factura,\n\tnull fechavenci,\n\t0 ciclo\n\t\nFROM\n\tsolicitudes AS solicitudes\n\tLEFT OUTER JOIN clientes AS cte ON cte.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp AS ev ON ev.idsolicitud = solicitudes.idsolicitud\n\tLEFT OUTER JOIN productos AS p ON p.idproducto = solicitudes.idproducto\n\tLEFT OUTER JOIN (SELECT\n\tss.idsolicitud,\n\tMAX(CASE WHEN pr.clasif = 'Equipo' THEN ss.esnimei END) AS equipo,\n\tMAX(CASE WHEN pr.clasif = 'Chip'   THEN ss.esnimei END) AS chip\nFROM\n\tseriessolicitadas AS ss\n\tINNER JOIN compras AS cp ON cp.noserie = ss.esnimei\n\tINNER JOIN productos AS pr ON pr.codigoIUSA = cp.codigoproducto\nGROUP BY\n\tss.idsolicitud\n) AS ss ON ss.idsolicitud = solicitudes.idsolicitud\nWHERE\n solicitudes.idtienda = 2 order by solicitudes.idsolicitud desc\n\n",
 	"connId": "conn",
 	"originalTable": "solicitudes",
 	"name": "solicitudes",
@@ -377,27 +377,19 @@
 			"index": 10,
 			"strField": "orden",
 			"type": 200,
-			"separateEditViewFormats": true,
 			"viewFormats": [
-				{},
-				{
-					"pageType": "list"
-				},
-				{
-					"pageType": "print"
-				},
-				{
-					"pageType": "export"
-				}
+				{}
 			],
 			"editFormats": [
-				{},
 				{
-					"pageType": "add"
-				},
-				{
-					"format": "Readonly",
-					"pageType": "search"
+					"required": true,
+					"validateAs": "Regular expression",
+					"validateRegex": "^[A-Z0-9]{11}$",
+					"validateRegexMessage": {
+						"text": "El valor es inválido",
+						"type": 0
+					},
+					"textboxMaxLenth": 11
 				}
 			],
 			"label": {
@@ -1141,8 +1133,185 @@
 				"Spanish": "IMEI"
 			},
 			"tableName": ""
+		},
+		{
+			"name": "dn",
+			"sqlExpression": "''",
+			"index": 48,
+			"strField": "dn",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"required": true,
+					"textboxMaxLenth": 10,
+					"textboxMask": "9999999999"
+				}
+			],
+			"label": {
+				"Spanish": "Dn"
+			},
+			"tableName": ""
+		},
+		{
+			"name": "cuenta",
+			"sqlExpression": "''",
+			"index": 50,
+			"strField": "cuenta",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"required": true,
+					"validateAs": "Number",
+					"textboxMaxLenth": 50
+				}
+			],
+			"label": {
+				"Spanish": "Cuenta"
+			},
+			"tableName": ""
+		},
+		{
+			"name": "contrato",
+			"sqlExpression": "''",
+			"index": 51,
+			"strField": "contrato",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"required": true,
+					"textboxMaxLenth": 10
+				}
+			],
+			"label": {
+				"Spanish": "Contrato"
+			},
+			"tableName": ""
+		},
+		{
+			"name": "contratoportal",
+			"sqlExpression": "''",
+			"index": 52,
+			"strField": "contratoportal",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Contratoportal"
+			},
+			"tableName": ""
+		},
+		{
+			"name": "plazopendiente",
+			"sqlExpression": "0",
+			"index": 53,
+			"strField": "plazopendiente",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"validateAs": "Number"
+				}
+			],
+			"label": {
+				"Spanish": "Plazopendiente"
+			},
+			"tableName": ""
+		},
+		{
+			"name": "factura",
+			"sqlExpression": "''",
+			"index": 54,
+			"strField": "factura",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"textboxMaxLenth": 18
+				}
+			],
+			"label": {
+				"Spanish": "Factura"
+			},
+			"tableName": ""
+		},
+		{
+			"name": "fechavenci",
+			"sqlExpression": "null",
+			"index": 55,
+			"strField": "fechavenci",
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Fechavenci"
+			},
+			"tableName": ""
+		},
+		{
+			"name": "ciclo",
+			"sqlExpression": "0",
+			"index": 56,
+			"strField": "ciclo",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Lookup wizard",
+					"lookupTable": "ciclos_lookup",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "ciclo",
+					"lookupDisplayField": "corte",
+					"lookupWhere": "\"clasif = 2\""
+				}
+			],
+			"label": {
+				"Spanish": "Ciclo"
+			},
+			"tableName": ""
+		},
+		{
+			"name": "dnpreferido",
+			"sqlExpression": "''",
+			"index": 49,
+			"strField": "dnpreferido",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"textboxMaxLenth": 10
+				}
+			],
+			"label": {
+				"Spanish": "Dnpreferido"
+			},
+			"tableName": ""
 		}
 	],
+	"afterEditAction": 0,
 	"whereTabs": [
 		{}
 	],
@@ -1170,7 +1339,7 @@
 		{
 			"eventId": "EVENT_BEFOREMOVENEXT_LIST",
 			"pageType": "list",
-			"code": "// $data = registro actual; $row = atributos HTML de la fila\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n$st = (int)$data[\"estatusentrega\"];  // 2=Entregada, 3=Rechazada (ajusta si difiere)\r\nswitch ($st) {\r\n  case 2:  $cls = 'table-success'; break; // Entregada\r\n  case 3:  $cls = 'table-danger';  break; // Rechazada\r\n  default: $cls = 'table-warning';        // No entregada / otros\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\nif (!isset($row[\"rowattrs\"])) $row[\"rowattrs\"] = '';\r\n$row[\"rowattrs\"] .= ' class=\"'.$cls.'\"';\r\n\r\nif($data['estatusentrega'] == 3){\r\n    $record[\"css\"] = 'background:#FF3A30';\r\n    $record['fecha_css'] = 'color:white';\r\n    $record['idcliente_css'] = 'color:white';\r\n    $record['descripcion_css'] = 'color:white';\r\n    $record['estatus_css'] = 'color:white';\r\n    $record['plazo_css'] = 'color:white';\r\n    $record['orden_css'] = 'color:white';\r\n    $record['maps_url_css'] = 'color:white';\r\n    $record['estatusentrega_css'] = 'color:white';\r\n    $record['equipo_css'] = 'color:white';\r\n    $record['chip_css'] = 'color:white';\r\n}\r\n\r\n$pk = $data[\"idsolicitud\"]; // cambia si tu PK es otro\r\n\r\n// Decide a qué página dirigir según el grupo\r\n// Cambia 'Supervisores' por el nombre EXACTO de tu grupo en uggroups.Label\r\n$targetPageType = $_SESSION[\"UserID\"]==='VALIDADOR' ? 'edit1' : 'edit';\r\n\r\n\r\n\r\n// Construye el link a esa página\r\n$href = GetTableLink(\"solicitudes\", $targetPageType, \"editid1=\".rawurlencode($pk));\r\n\r\n// Reemplaza el href del botón Edit de ESTA fila\r\n$record[\"editlink_attrs\"] = 'href=\"'.$href.'\"';\r\n\r\n\r\n"
+			"code": "// $data = registro actual; $row = atributos HTML de la fila\r\n\r\n\r\n\r\n\r\n/*\r\n\r\n\r\n$st = (int)$data[\"estatusentrega\"];  // 2=Entregada, 3=Rechazada (ajusta si difiere)\r\nswitch ($st) {\r\n  case 2:  $cls = 'table-success'; break; // Entregada\r\n  case 3:  $cls = 'table-danger';  break; // Rechazada\r\n  default: $cls = 'table-warning';        // No entregada / otros\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\nif (!isset($row[\"rowattrs\"])) $row[\"rowattrs\"] = '';\r\n$row[\"rowattrs\"] .= ' class=\"'.$cls.'\"';\r\n\r\nif($data['estatusentrega'] == 3){\r\n    $record[\"css\"] = 'background:#FF3A30';\r\n    $record['fecha_css'] = 'color:white';\r\n    $record['idcliente_css'] = 'color:white';\r\n    $record['descripcion_css'] = 'color:white';\r\n    $record['estatus_css'] = 'color:white';\r\n    $record['plazo_css'] = 'color:white';\r\n    $record['orden_css'] = 'color:white';\r\n    $record['maps_url_css'] = 'color:white';\r\n    $record['estatusentrega_css'] = 'color:white';\r\n    $record['equipo_css'] = 'color:white';\r\n    $record['chip_css'] = 'color:white';\r\n}\r\n\r\n$pk = $data[\"idsolicitud\"]; // cambia si tu PK es otro\r\n\r\n// Decide a qué página dirigir según el grupo\r\n// Cambia 'Supervisores' por el nombre EXACTO de tu grupo en uggroups.Label\r\n$targetPageType = $_SESSION[\"UserID\"]==='VALIDADOR' ? 'edit1' : 'edit1';\r\n\r\n\r\n\r\n// Construye el link a esa página\r\n$href = GetTableLink(\"solicitudes\", $targetPageType, \"editid1=\".rawurlencode($pk));\r\n\r\n// Reemplaza el href del botón Edit de ESTA fila\r\n$record[\"editlink_attrs\"] = 'href=\"'.$href.'\"';\r\n*/\r\n\r\n\r\n\r\n// Coloring por estatus (igual que ya tienes)\r\n$st = (int)$data[\"estatusentrega\"];\r\nswitch ($st) {\r\n  case 2:  $cls = 'table-success'; break;\r\n  case 3:  $cls = 'table-danger';  break;\r\n  default: $cls = 'table-warning';\r\n}\r\nif (!isset($row[\"rowattrs\"])) $row[\"rowattrs\"] = '';\r\n$row[\"rowattrs\"] .= ' class=\"'.$cls.'\"';\r\n\r\nif ($st === 3) {\r\n    $record[\"css\"]                  = 'background:#FF3A30';\r\n    $record['fecha_css']            = 'color:white';\r\n    $record['idcliente_css']        = 'color:white';\r\n    $record['descripcion_css']      = 'color:white';\r\n    $record['estatus_css']          = 'color:white';\r\n    $record['plazo_css']            = 'color:white';\r\n    $record['orden_css']            = 'color:white';\r\n    $record['maps_url_css']         = 'color:white';\r\n    $record['estatusentrega_css']   = 'color:white';\r\n    $record['equipo_css']           = 'color:white';\r\n    $record['chip_css']             = 'color:white';\r\n}\r\n\r\n// PK\r\n$pk = $data[\"idsolicitud\"];\r\nif (!$pk) return;\r\n\r\n// Elige la página (usa tu lógica real)\r\n$targetPage = (strtoupper($_SESSION[\"Label\"]) === 'VALIDADOR') ? 'edit1' : 'edit'; // prueba forzada a edit1\r\n\r\n// URL correcta usando helper de PHPRunner\r\n$href = GetTableLink(\"solicitudes\", $targetPage, \"editid1=\".rawurlencode($pk));\r\n\r\n// MUY IMPORTANTE: además del href, ajusta los data-attrs que usa el JS de PHPRunner\r\n// - data-pagetype debe seguir siendo \"edit\" (tipo de página)\r\n// - data-page debe ser el nombre de tu variante: \"edit1\" (o \"edit2\", etc.)\r\n$attrs  = ' href=\"'.$href.'\"';\r\n$attrs .= ' data-pagetype=\"edit\"';\r\n$attrs .= ' data-page=\"'.$targetPage.'\"';\r\n// si usas popup y quieres forzar página normal:\r\n$attrs .= ' data-popup=\"0\"';\r\n\r\n// Si ya existían attrs, mejor concatenar que reemplazar\r\nif (!isset($record[\"editlink_attrs\"])) $record[\"editlink_attrs\"] = '';\r\n$record[\"editlink_attrs\"] .= $attrs;\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"
 		},
 		{
 			"eventId": "EVENT_BEFORESHOW_EDIT",
@@ -1190,7 +1359,7 @@
 		{
 			"eventId": "EVENT_BEFOREEDIT",
 			"pageType": "edit",
-			"code": "// BeforeRecordUpdated\r\n// Se ejecuta SIEMPRE cuando el usuario pulsa Guardar en Edit, aunque la tabla principal no cambie.\r\n\r\nglobal $conn, $message, $pageObject;\r\n\r\n// ---------- Helpers ----------\r\nfunction q($v){ // cadenas/fechas: 'valor' o NULL\r\n    return (isset($v) && $v !== '' ? db_prepare_string($v) : \"NULL\");\r\n}\r\nfunction qi($v){ // enteros: número o NULL\r\n    return (isset($v) && $v !== '' ? (int)$v : \"NULL\");\r\n}\r\nfunction qb($v){ // booleano/bit: 0/1\r\n    return (!empty($v) ? 1 : 0);\r\n}\r\nfunction qd($v, $scale = 2) { // decimales: número (formateado) o NULL\r\n    if (!isset($v) || $v === '') return \"NULL\";\r\n    $n = (float)$v;\r\n    return number_format($n, $scale, '.', ''); // sin comillas\r\n}\r\n\r\n\r\n// Campos que NO son de la tabla 'solicitudes'\r\n$extraFields = ['estado','ciudad','cp','calle','numeroext','numeroint','colonia','lat','lng','noserie'];\r\n\r\n// 1) Saca del SET de PHPRunner los campos que no pertenecen a la tabla principal\r\n$extras = [];\r\nforeach ($extraFields as $f) {\r\n    if (array_key_exists($f, $values)) {\r\n        $extras[$f] = $values[$f];\r\n        unset($values[$f]);              // <- evita \"Unknown column 'calle' in SET\"\r\n    }\r\n    // por si vienen como custom / readonly en POST\r\n    $pv = postvalue($f);\r\n    if ($pv !== null && $pv !== '') $extras[$f] = $pv;\r\n}\r\n\r\n$idsolicitud = (int)$keys['idsolicitud'];\r\n\r\n// ---------- 2) UPSERT en entregasvnp (sin duplicar filas) ----------\r\n$hayDireccion =\r\n    (!empty($extras['estado']))     || (!empty($extras['ciudad'])) ||\r\n    (!empty($extras['cp']))         || (!empty($extras['calle']))  ||\r\n    (!empty($extras['numeroext']))  || (!empty($extras['numeroint'])) ||\r\n    (!empty($extras['colonia']))    || (isset($extras['lat']))     || (isset($extras['lng']));\r\n\r\nif ($hayDireccion) {\r\n    // ¿existe ya fila para esta solicitud?\r\n    $rsExist = db_query(\"SELECT idsolicitud FROM entregasvnp WHERE idsolicitud = {$idsolicitud} LIMIT 1\", $conn);\r\n    $exists  = db_fetch_array($rsExist);\r\n\r\n    // Normalizamos valores\r\n    $estado    = q($extras['estado']    ?? null);\r\n    $ciudad    = q($extras['ciudad']    ?? null);\r\n    $cp        = qi($extras['cp']       ?? null);\r\n    $calle     = q($extras['calle']     ?? null);\r\n    $numeroext = q($extras['numeroext'] ?? null);\r\n    $numeroint = q($extras['numeroint'] ?? null);\r\n    $colonia   = q($extras['colonia']   ?? null);\r\n    $lat       = q($extras['lat']       ?? null);\r\n    $lng       = q($extras['lng']       ?? null);\r\n\r\n    if ($exists) {\r\n        // UPDATE primero (no genera duplicados)\r\n        $sqlEV = \"\r\n            UPDATE entregasvnp SET\r\n                estado    = {$estado},\r\n                ciudad    = {$ciudad},\r\n                cp        = {$cp},\r\n                calle     = {$calle},\r\n                numeroext = {$numeroext},\r\n                numeroint = {$numeroint},\r\n                colonia   = {$colonia},\r\n                lat       = {$lat},\r\n                lng       = {$lng}\r\n            WHERE idsolicitud = {$idsolicitud}\r\n            LIMIT 1\r\n        \";\r\n        if (!DB::Exec($sqlEV, $conn)) {\r\n            $message = 'No se pudo actualizar la dirección de entrega: '.DB::LastError();\r\n        }\r\n    } else {\r\n        // Si no existe, INSERT una sola vez\r\n        $sqlEV = \"\r\n            INSERT INTO entregasvnp\r\n                (idsolicitud, estado, ciudad, cp, calle, numeroext, numeroint, colonia, lat, lng)\r\n            VALUES\r\n                ({$idsolicitud}, {$estado}, {$ciudad}, {$cp}, {$calle}, {$numeroext}, {$numeroint}, {$colonia}, {$lat}, {$lng})\r\n        \";\r\n        if (!DB::Exec($sqlEV, $conn)) {\r\n            $message = 'No se pudo insertar la dirección de entrega: '.DB::LastError();\r\n        }\r\n    }\r\n}\r\n\r\n\r\n// ---------- 2.5) UPSERT en entregasvnp (sin duplicar filas) ----------\r\n\r\n    // ¿existe ya fila para esta solicitud?\r\n    $rsExist = db_query(\"SELECT idsolicitud FROM ventas WHERE idsolicitud = {$idsolicitud} LIMIT 1\", $conn);\r\n    $exists  = db_fetch_array($rsExist);\r\n\r\n    // Normalizamos valores\r\n    $idtipoventa   = q($values['idtipoventa']    ?? null);\r\n    $fecha         = q(date(\"Y-m-d\")    ?? null);\r\n    $idcliente     = qi($values['idcliente']       ?? null);\r\n    $esnimei       = q(trim($extras['noserie'])     ?? null);\r\n  //  $simcard       = q($extras['numeroext'] ?? null);\r\n  //  $dn            = q($extras['numeroint'] ?? null);\r\n  //  $cuenta        = q($extras['colonia']   ?? null);\r\n  //  $contrato      = q($extras['lat']       ?? null);\r\n  //  $contratoportal= q($extras['lat']       ?? null);\r\n    $plan          = qi($values['plan']       ?? null);\r\n    $plazo         = qi($extras['plazo']       ?? null);\r\n //   $plazopendiente= qi($extras['lat']       ?? null);\r\n    $usuario       = q($_SESSION[\"UserID\"]      ?? null);\r\n    $tienda        = qi($_SESSION[\"Tienda\"]      ?? null);\r\n //   $factura       = q($extras['lat']       ?? null);\r\n //   $fechavenci    = q($extras['lat']       ?? null);\r\n //   $ciclo         = qi($extras['lat']       ?? null);\r\n //   $dnpreferido   = q($extras['lat']       ?? null);\r\n    $ventadomicilio= 1;\r\n    $equipoincluido= 1;\r\n //   $orden         = q($extras['lat']       ?? null);\r\n\r\n    \r\n\r\n    if ($exists) {\r\n        // UPDATE primero (no genera duplicados)\r\n        $sqlEV = \"\r\n            UPDATE ventas v SET\r\n                idtipoventa    = {$idtipoventa},\r\n                idcliente      = {$idcliente},\r\n                esnimei        = {$esnimei},\r\n                plan           = {$plan},\r\n                plazo          = {$plazo},\r\n                usuario        = {$usuario},\r\n                tienda         = {$tienda},\r\n                ventadomicilio = {$ventadomiciloo},\r\n                equipoincluido = {$equipoincluido}\r\n            WHERE idsolicitud = {$idsolicitud}\r\n            LIMIT 1\r\n        \";\r\n        if (!DB::Exec($sqlEV, $conn)) {\r\n            $message = 'No se pudo actualizar la venta: '.DB::LastError();\r\n        }\r\n    } else {\r\n        // Si no existe, INSERT una sola vez\r\n        $rsplanes = DB::Query(\"select renta from planes where idplan={$plan}\");\r\n        $renta = qd($rsplanes->value(\"renta\"));\r\n        \r\n        \r\n        $sqlEV = \"\r\n            INSERT INTO ventas\r\n                (idsolicitud, idtipoventa, fecha, idcliente, esnimei, plan, plazo, usuario, tienda, ventadomicilio, equipoincluido, renta)\r\n            VALUES \r\n                ({$idsolicitud}, {$idtipoventa},{$fecha}, {$idcliente}, {$esnimei}, {$plan}, {$plazo}, {$usuario}, {$tienda}, {$ventadomicilio}, {$equipoincluido}, {$renta})\r\n                \r\n        \";\r\n        if (!DB::Exec($sqlEV, $conn)) {\r\n            $message = 'No se pudo insertar la venta: '.DB::LastError();\r\n        }\r\n    }\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n// 3) Serie (seriessolicitadas)\r\n$noserieNuevo = trim($extras['noserie'] ?? '');\r\nif ($noserieNuevo !== '') {\r\n    // Serie actual\r\n    $sqlSerieActual = \"\r\n        SELECT ss.esnimei\r\n        FROM seriessolicitadas ss\r\n        JOIN compras cp  ON cp.noserie = ss.esnimei\r\n        JOIN productos pr ON pr.codigoIUSA = cp.codigoproducto\r\n        WHERE ss.idsolicitud = {$idsolicitud}\r\n          AND pr.clasif = 'Equipo'\r\n        LIMIT 1\r\n    \";\r\n    $rs = db_query($sqlSerieActual, $conn);\r\n    $row = db_fetch_array($rs);\r\n    $noserieActual = $row ? $row['esnimei'] : '';\r\n\r\n    if ($noserieNuevo !== $noserieActual) {\r\n        // Validar disponibilidad (o que esté ya ligada a esta solicitud)\r\n        $strSQLExists = \"\r\n            SELECT c.noserie\r\n            FROM compras c\r\n            LEFT JOIN ventas v         ON c.noserie = v.esnimei\r\n            LEFT JOIN movimientos m    ON c.noserie = m.esnimei\r\n            LEFT JOIN seriessolicitadas ss ON c.noserie = ss.esnimei\r\n            LEFT JOIN (\r\n                SELECT t.esnimei, t.tiendadestino, t.fecharecepcion\r\n                FROM traspasosdet t\r\n                INNER JOIN (SELECT MAX(idtraspasodet) idtraspaso FROM traspasosdet GROUP BY esnimei) t1\r\n                    ON t.idtraspasodet = t1.idtraspaso\r\n            ) t ON c.noserie = t.esnimei\r\n            INNER JOIN productos p ON c.codigoproducto = p.codigoIUSA\r\n            WHERE p.Clasif='Equipo'\r\n              AND c.tienda = 2\r\n              AND c.clasif = 2\r\n              AND (\r\n                    (v.esnimei IS NULL AND m.esnimei IS NULL AND ss.esnimei IS NULL)\r\n                    OR (ss.idsolicitud = {$idsolicitud})\r\n                  )\r\n              AND (t.esnimei IS NULL OR (t.fecharecepcion IS NOT NULL AND t.fecharecepcion <> '0000-00-00'))\r\n              AND c.noserie = \".q($noserieNuevo).\"\r\n            LIMIT 1\r\n        \";\r\n        $rsExists = db_query($strSQLExists, $conn);\r\n        $okSerie = db_fetch_array($rsExists);\r\n\r\n        if (!$okSerie) {\r\n            $message = \"La serie {$noserieNuevo} ya no está disponible.\";\r\n            // No detenemos el guardado de 'solicitudes'\r\n        } else {\r\n            // Elimina la anterior (si había) y guarda la nueva\r\n            if ($noserieActual !== '') {\r\n                $sqlDel = \"\r\n                    DELETE ss\r\n                    FROM seriessolicitadas ss\r\n                    JOIN compras cp ON cp.noserie = ss.esnimei\r\n                    JOIN productos pr ON pr.codigoIUSA = cp.codigoproducto\r\n                    WHERE ss.idsolicitud = {$idsolicitud}\r\n                      AND pr.clasif = 'Equipo'\r\n                \";\r\n                DB::Exec($sqlDel, $conn);\r\n            }\r\n\r\n            $sqlIns = \"\r\n                INSERT INTO seriessolicitadas (idsolicitud, esnimei)\r\n                VALUES ({$idsolicitud}, \".q($noserieNuevo).\")\r\n                ON DUPLICATE KEY UPDATE esnimei = VALUES(esnimei)\r\n            \";\r\n            if (!DB::Exec($sqlIns, $conn)) {\r\n                $message = \"No se pudo actualizar la serie: \".DB::LastError();\r\n            } else {\r\n                // limpia reserva del usuario si la manejas\r\n                $userId = $_SESSION[\"UserID\"];\r\n                DB::Exec(\"\r\n                    DELETE FROM seriesreservadas\r\n                    WHERE noserie = \".q($noserieNuevo).\"\r\n                      AND userid  = \".q($userId).\"\r\n                \", $conn);\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n// 4) Listo. Deja que PHPRunner haga su UPDATE de 'solicitudes' si hubiera cambios.\r\n//    Aunque no haya cambios, este evento ya guardó extras y serie.\r\nreturn true;\r\n"
+			"code": "// BeforeRecordUpdated\r\n// Se ejecuta SIEMPRE cuando el usuario pulsa Guardar en Edit, aunque la tabla principal no cambie.\r\n\r\nglobal $conn, $message, $pageObject;\r\n\r\n// ---------- Helpers ----------\r\nfunction q($v){ // cadenas/fechas: 'valor' o NULL\r\n    return (isset($v) && $v !== '' ? db_prepare_string($v) : \"NULL\");\r\n}\r\nfunction qi($v){ // enteros: número o NULL\r\n    return (isset($v) && $v !== '' ? (int)$v : \"NULL\");\r\n}\r\nfunction qb($v){ // booleano/bit: 0/1\r\n    return (!empty($v) ? 1 : 0);\r\n}\r\nfunction qd($v, $scale = 2) { // decimales: número (formateado) o NULL\r\n    if (!isset($v) || $v === '') return \"NULL\";\r\n    $n = (float)$v;\r\n    return number_format($n, $scale, '.', ''); // sin comillas\r\n}\r\n\r\n\r\n// Campos que NO son de la tabla 'solicitudes'\r\n$extraFields = ['estado','ciudad','cp','calle','numeroext','numeroint','colonia','lat','lng','noserie'];\r\n\r\n// 1) Saca del SET de PHPRunner los campos que no pertenecen a la tabla principal\r\n$extras = [];\r\nforeach ($extraFields as $f) {\r\n    if (array_key_exists($f, $values)) {\r\n        $extras[$f] = $values[$f];\r\n        unset($values[$f]);              // <- evita \"Unknown column 'calle' in SET\"\r\n    }\r\n    // por si vienen como custom / readonly en POST\r\n    $pv = postvalue($f);\r\n    if ($pv !== null && $pv !== '') $extras[$f] = $pv;\r\n}\r\n\r\n$idsolicitud = (int)$keys['idsolicitud'];\r\n$estatusentrega=qi($values['estatusentrega']);\r\n\r\n// ---------- 2) UPSERT en entregasvnp (sin duplicar filas) ----------\r\n$hayDireccion =\r\n    (!empty($extras['estado']))     || (!empty($extras['ciudad'])) ||\r\n    (!empty($extras['cp']))         || (!empty($extras['calle']))  ||\r\n    (!empty($extras['numeroext']))  || (!empty($extras['numeroint'])) ||\r\n    (!empty($extras['colonia']))    || (isset($extras['lat']))     || (isset($extras['lng']));\r\n\r\nif ($hayDireccion) {\r\n    // ¿existe ya fila para esta solicitud?\r\n    $rsExist = db_query(\"SELECT idsolicitud FROM entregasvnp WHERE idsolicitud = {$idsolicitud} LIMIT 1\", $conn);\r\n    $exists  = db_fetch_array($rsExist);\r\n\r\n    // Normalizamos valores\r\n    $estado    = q($extras['estado']    ?? null);\r\n    $ciudad    = q($extras['ciudad']    ?? null);\r\n    $cp        = qi($extras['cp']       ?? null);\r\n    $calle     = q($extras['calle']     ?? null);\r\n    $numeroext = q($extras['numeroext'] ?? null);\r\n    $numeroint = q($extras['numeroint'] ?? null);\r\n    $colonia   = q($extras['colonia']   ?? null);\r\n    $lat       = q($extras['lat']       ?? null);\r\n    $lng       = q($extras['lng']       ?? null);\r\n\r\n    if ($exists) {\r\n        // UPDATE primero (no genera duplicados)\r\n        $sqlEV = \"\r\n            UPDATE entregasvnp SET\r\n                estado    = {$estado},\r\n                ciudad    = {$ciudad},\r\n                cp        = {$cp},\r\n                calle     = {$calle},\r\n                numeroext = {$numeroext},\r\n                numeroint = {$numeroint},\r\n                colonia   = {$colonia},\r\n                lat       = {$lat},\r\n                lng       = {$lng}\r\n            WHERE idsolicitud = {$idsolicitud}\r\n            LIMIT 1\r\n        \";\r\n        if (!DB::Exec($sqlEV, $conn)) {\r\n            $message = 'No se pudo actualizar la dirección de entrega: '.DB::LastError();\r\n        }\r\n    } else {\r\n        // Si no existe, INSERT una sola vez\r\n        $sqlEV = \"\r\n            INSERT INTO entregasvnp\r\n                (idsolicitud, estado, ciudad, cp, calle, numeroext, numeroint, colonia, lat, lng)\r\n            VALUES\r\n                ({$idsolicitud}, {$estado}, {$ciudad}, {$cp}, {$calle}, {$numeroext}, {$numeroint}, {$colonia}, {$lat}, {$lng})\r\n        \";\r\n        if (!DB::Exec($sqlEV, $conn)) {\r\n            $message = 'No se pudo insertar la dirección de entrega: '.DB::LastError();\r\n        }\r\n    }\r\n}\r\n\r\n\r\n// ---------- 2.5) UPSERT en entregasvnp (sin duplicar filas) ----------\r\n        $rsestatusgral = DB::Query(\"select estatusgral from estatusentregas where id={$estatusentrega}\");\r\n        $estatusgral = trim(strtoupper(qd($rsestatusgral->value(\"estatusgral\"))));\r\n        \r\nif ($estatusgral==='CERRADO'){\r\n    // ¿existe ya fila para esta solicitud?\r\n    $rsExist = db_query(\"SELECT idsolicitud FROM ventas WHERE idsolicitud = {$idsolicitud} LIMIT 1\", $conn);\r\n    $exists  = db_fetch_array($rsExist);\r\n\r\n    // Normalizamos valores\r\n    $idtipoventa   = q($values['idtipoventa']    ?? null);\r\n    $fecha         = q(date(\"Y-m-d\")    ?? null);\r\n    $idcliente     = qi($values['idcliente']       ?? null);\r\n    $esnimei       = q(trim($extras['noserie'])     ?? null);\r\n  //  $simcard       = q($extras['numeroext'] ?? null);\r\n  //  $dn            = q($extras['numeroint'] ?? null);\r\n  //  $cuenta        = q($extras['colonia']   ?? null);\r\n  //  $contrato      = q($extras['lat']       ?? null);\r\n  //  $contratoportal= q($extras['lat']       ?? null);\r\n    $plan          = qi($values['plan']       ?? null);\r\n    $plazo         = qi($extras['plazo']       ?? null);\r\n //   $plazopendiente= qi($extras['lat']       ?? null);\r\n    $usuario       = q($_SESSION[\"UserID\"]      ?? null);\r\n    $tienda        = qi($_SESSION[\"Tienda\"]      ?? null);\r\n //   $factura       = q($extras['lat']       ?? null);\r\n //   $fechavenci    = q($extras['lat']       ?? null);\r\n //   $ciclo         = qi($extras['lat']       ?? null);\r\n //   $dnpreferido   = q($extras['lat']       ?? null);\r\n    $ventadomicilio= 1;\r\n    $equipoincluido= 1;\r\n //   $orden         = q($extras['lat']       ?? null);\r\n\r\n    \r\n\r\n    if ($exists) {\r\n        // UPDATE primero (no genera duplicados)\r\n        $sqlEV = \"\r\n            UPDATE ventas v SET\r\n                idtipoventa    = {$idtipoventa},\r\n                idcliente      = {$idcliente},\r\n                esnimei        = {$esnimei},\r\n                plan           = {$plan},\r\n                plazo          = {$plazo},\r\n                usuario        = {$usuario},\r\n                tienda         = {$tienda},\r\n                ventadomicilio = {$ventadomiciloo},\r\n                equipoincluido = {$equipoincluido}\r\n            WHERE idsolicitud = {$idsolicitud}\r\n            LIMIT 1\r\n        \";\r\n        if (!DB::Exec($sqlEV, $conn)) {\r\n            $message = 'No se pudo actualizar la venta: '.DB::LastError();\r\n        }\r\n    } else {\r\n        // Si no existe, INSERT una sola vez\r\n        $rsplanes = DB::Query(\"select renta from planes where idplan={$plan}\");\r\n        $renta = qd($rsplanes->value(\"renta\"));\r\n        \r\n        \r\n        $sqlEV = \"\r\n            INSERT INTO ventas\r\n                (idsolicitud, idtipoventa, fecha, idcliente, esnimei, plan, plazo, usuario, tienda, ventadomicilio, equipoincluido, renta)\r\n            VALUES \r\n                ({$idsolicitud}, {$idtipoventa},{$fecha}, {$idcliente}, {$esnimei}, {$plan}, {$plazo}, {$usuario}, {$tienda}, {$ventadomicilio}, {$equipoincluido}, {$renta})\r\n                \r\n        \";\r\n        if (!DB::Exec($sqlEV, $conn)) {\r\n            $message = 'No se pudo insertar la venta: '.DB::LastError();\r\n        }\r\n    }\r\n\r\n}\r\n\r\n\r\n\r\n\r\n// 3) Serie (seriessolicitadas)\r\n$noserieNuevo = trim($extras['noserie'] ?? '');\r\nif ($noserieNuevo !== '') {\r\n    // Serie actual\r\n    $sqlSerieActual = \"\r\n        SELECT ss.esnimei\r\n        FROM seriessolicitadas ss\r\n        JOIN compras cp  ON cp.noserie = ss.esnimei\r\n        JOIN productos pr ON pr.codigoIUSA = cp.codigoproducto\r\n        WHERE ss.idsolicitud = {$idsolicitud}\r\n          AND pr.clasif = 'Equipo'\r\n        LIMIT 1\r\n    \";\r\n    $rs = db_query($sqlSerieActual, $conn);\r\n    $row = db_fetch_array($rs);\r\n    $noserieActual = $row ? $row['esnimei'] : '';\r\n\r\n    if ($noserieNuevo !== $noserieActual) {\r\n        // Validar disponibilidad (o que esté ya ligada a esta solicitud)\r\n        $strSQLExists = \"\r\n            SELECT c.noserie\r\n            FROM compras c\r\n            LEFT JOIN ventas v         ON c.noserie = v.esnimei\r\n            LEFT JOIN movimientos m    ON c.noserie = m.esnimei\r\n            LEFT JOIN seriessolicitadas ss ON c.noserie = ss.esnimei\r\n            LEFT JOIN (\r\n                SELECT t.esnimei, t.tiendadestino, t.fecharecepcion\r\n                FROM traspasosdet t\r\n                INNER JOIN (SELECT MAX(idtraspasodet) idtraspaso FROM traspasosdet GROUP BY esnimei) t1\r\n                    ON t.idtraspasodet = t1.idtraspaso\r\n            ) t ON c.noserie = t.esnimei\r\n            INNER JOIN productos p ON c.codigoproducto = p.codigoIUSA\r\n            WHERE p.Clasif='Equipo'\r\n              AND c.tienda = 2\r\n              AND c.clasif = 2\r\n              AND (\r\n                    (v.esnimei IS NULL AND m.esnimei IS NULL AND ss.esnimei IS NULL)\r\n                    OR (ss.idsolicitud = {$idsolicitud})\r\n                  )\r\n              AND (t.esnimei IS NULL OR (t.fecharecepcion IS NOT NULL AND t.fecharecepcion <> '0000-00-00'))\r\n              AND c.noserie = \".q($noserieNuevo).\"\r\n            LIMIT 1\r\n        \";\r\n        $rsExists = db_query($strSQLExists, $conn);\r\n        $okSerie = db_fetch_array($rsExists);\r\n\r\n        if (!$okSerie) {\r\n            $message = \"La serie {$noserieNuevo} ya no está disponible.\";\r\n            // No detenemos el guardado de 'solicitudes'\r\n        } else {\r\n            // Elimina la anterior (si había) y guarda la nueva\r\n            if ($noserieActual !== '') {\r\n                $sqlDel = \"\r\n                    DELETE ss\r\n                    FROM seriessolicitadas ss\r\n                    JOIN compras cp ON cp.noserie = ss.esnimei\r\n                    JOIN productos pr ON pr.codigoIUSA = cp.codigoproducto\r\n                    WHERE ss.idsolicitud = {$idsolicitud}\r\n                      AND pr.clasif = 'Equipo'\r\n                \";\r\n                DB::Exec($sqlDel, $conn);\r\n            }\r\n\r\n            $sqlIns = \"\r\n                INSERT INTO seriessolicitadas (idsolicitud, esnimei)\r\n                VALUES ({$idsolicitud}, \".q($noserieNuevo).\")\r\n                ON DUPLICATE KEY UPDATE esnimei = VALUES(esnimei)\r\n            \";\r\n            if (!DB::Exec($sqlIns, $conn)) {\r\n                $message = \"No se pudo actualizar la serie: \".DB::LastError();\r\n            } else {\r\n                // limpia reserva del usuario si la manejas\r\n                $userId = $_SESSION[\"UserID\"];\r\n                DB::Exec(\"\r\n                    DELETE FROM seriesreservadas\r\n                    WHERE noserie = \".q($noserieNuevo).\"\r\n                      AND userid  = \".q($userId).\"\r\n                \", $conn);\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n// 4) Listo. Deja que PHPRunner haga su UPDATE de 'solicitudes' si hubiera cambios.\r\n//    Aunque no haya cambios, este evento ya guardó extras y serie.\r\nreturn true;\r\n"
 		},
 		{
 			"eventId": "EVENT_BEFOREPROCESSROW_LIST",
@@ -1680,7 +1849,12 @@
 						"c3": {
 							"model": "c3",
 							"items": [
-								"section"
+								"section",
+								"integrated_edit_field21",
+								"integrated_edit_field23",
+								"integrated_edit_field25",
+								"integrated_edit_field27",
+								"integrated_edit_field29"
 							],
 							"border": [
 								{
@@ -1695,7 +1869,11 @@
 						"c": {
 							"model": "c3",
 							"items": [
-								"section1"
+								"section1",
+								"integrated_edit_field22",
+								"integrated_edit_field24",
+								"integrated_edit_field26",
+								"integrated_edit_field28"
 							]
 						}
 					},
@@ -2036,6 +2214,51 @@
 						"type": 0
 					},
 					"editedByRte": false
+				},
+				"integrated_edit_field21": {
+					"field": "dn",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field22": {
+					"field": "cuenta",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field23": {
+					"field": "contrato",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field24": {
+					"field": "contratoportal",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field25": {
+					"field": "plazopendiente",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field26": {
+					"field": "factura",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field27": {
+					"field": "fechavenci",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field28": {
+					"field": "ciclo",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field29": {
+					"field": "dnpreferido",
+					"type": "integrated_edit_field",
+					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -2135,7 +2358,16 @@
 							"items": [
 								"export_field",
 								"export_field1",
-								"export_field2"
+								"export_field2",
+								"export_field3",
+								"export_field4",
+								"export_field5",
+								"export_field6",
+								"export_field7",
+								"export_field8",
+								"export_field9",
+								"export_field10",
+								"export_field11"
 							]
 						}
 					},
@@ -2194,6 +2426,42 @@
 				},
 				"export_field2": {
 					"field": "lng",
+					"type": "export_field"
+				},
+				"export_field3": {
+					"field": "dn",
+					"type": "export_field"
+				},
+				"export_field4": {
+					"field": "cuenta",
+					"type": "export_field"
+				},
+				"export_field5": {
+					"field": "contrato",
+					"type": "export_field"
+				},
+				"export_field6": {
+					"field": "contratoportal",
+					"type": "export_field"
+				},
+				"export_field7": {
+					"field": "plazopendiente",
+					"type": "export_field"
+				},
+				"export_field8": {
+					"field": "factura",
+					"type": "export_field"
+				},
+				"export_field9": {
+					"field": "fechavenci",
+					"type": "export_field"
+				},
+				"export_field10": {
+					"field": "ciclo",
+					"type": "export_field"
+				},
+				"export_field11": {
+					"field": "dnpreferido",
 					"type": "export_field"
 				}
 			},
@@ -2470,7 +2738,9 @@
 								"integrated_edit_field5",
 								"integrated_edit_field1",
 								"integrated_edit_field6",
-								"integrated_edit_field9"
+								"integrated_edit_field9",
+								"integrated_edit_field21",
+								"integrated_edit_field29"
 							]
 						}
 					},
@@ -2486,6 +2756,9 @@
 							"cells": [
 								{
 									"cell": "c1"
+								},
+								{
+									"cell": "c"
 								}
 							],
 							"section": ""
@@ -2499,8 +2772,20 @@
 								"integrated_edit_field20",
 								"integrated_edit_field2",
 								"integrated_edit_field7",
+								"integrated_edit_field28",
 								"integrated_edit_field8",
 								"integrated_edit_field19"
+							]
+						},
+						"c": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field25",
+								"integrated_edit_field27",
+								"integrated_edit_field22",
+								"integrated_edit_field23",
+								"integrated_edit_field24",
+								"integrated_edit_field26"
 							]
 						}
 					},
@@ -2827,6 +3112,60 @@
 					"type": "integrated_edit_field",
 					"orientation": 0,
 					"updateOnEdit": false
+				},
+				"integrated_edit_field21": {
+					"field": "dn",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field22": {
+					"field": "cuenta",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field23": {
+					"field": "contrato",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field24": {
+					"field": "contratoportal",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field25": {
+					"field": "plazopendiente",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field26": {
+					"field": "factura",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field27": {
+					"field": "fechavenci",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field28": {
+					"field": "ciclo",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field29": {
+					"field": "dnpreferido",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
 				}
 			},
 			"dbProps": {},
@@ -3007,7 +3346,16 @@
 						"c5": {
 							"model": "c3",
 							"items": [
-								"integrated_edit_field17"
+								"integrated_edit_field17",
+								"integrated_edit_field18",
+								"integrated_edit_field19",
+								"integrated_edit_field20",
+								"integrated_edit_field21",
+								"integrated_edit_field22",
+								"integrated_edit_field23",
+								"integrated_edit_field24",
+								"integrated_edit_field25",
+								"integrated_edit_field26"
 							]
 						}
 					},
@@ -3322,6 +3670,51 @@
 				},
 				"integrated_edit_field17": {
 					"field": "idtipoventa",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field18": {
+					"field": "dn",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field19": {
+					"field": "cuenta",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field20": {
+					"field": "contrato",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field21": {
+					"field": "contratoportal",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field22": {
+					"field": "plazopendiente",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field23": {
+					"field": "factura",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field24": {
+					"field": "fechavenci",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field25": {
+					"field": "ciclo",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field26": {
+					"field": "dnpreferido",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				}
@@ -4594,7 +4987,16 @@
 						"c3": {
 							"model": "c3",
 							"items": [
-								"integrated_search_field"
+								"integrated_search_field",
+								"integrated_search_field1",
+								"integrated_search_field2",
+								"integrated_search_field3",
+								"integrated_search_field4",
+								"integrated_search_field5",
+								"integrated_search_field6",
+								"integrated_search_field7",
+								"integrated_search_field8",
+								"integrated_search_field9"
 							]
 						}
 					},
@@ -4620,6 +5022,51 @@
 				},
 				"integrated_search_field": {
 					"field": "noserie",
+					"type": "integrated_search_field",
+					"orientation": 0
+				},
+				"integrated_search_field1": {
+					"field": "dn",
+					"type": "integrated_search_field",
+					"orientation": 0
+				},
+				"integrated_search_field2": {
+					"field": "cuenta",
+					"type": "integrated_search_field",
+					"orientation": 0
+				},
+				"integrated_search_field3": {
+					"field": "contrato",
+					"type": "integrated_search_field",
+					"orientation": 0
+				},
+				"integrated_search_field4": {
+					"field": "contratoportal",
+					"type": "integrated_search_field",
+					"orientation": 0
+				},
+				"integrated_search_field5": {
+					"field": "plazopendiente",
+					"type": "integrated_search_field",
+					"orientation": 0
+				},
+				"integrated_search_field6": {
+					"field": "factura",
+					"type": "integrated_search_field",
+					"orientation": 0
+				},
+				"integrated_search_field7": {
+					"field": "fechavenci",
+					"type": "integrated_search_field",
+					"orientation": 0
+				},
+				"integrated_search_field8": {
+					"field": "ciclo",
+					"type": "integrated_search_field",
+					"orientation": 0
+				},
+				"integrated_search_field9": {
+					"field": "dnpreferido",
 					"type": "integrated_search_field",
 					"orientation": 0
 				}
@@ -4770,7 +5217,16 @@
 								"simple_grid_field44",
 								"simple_grid_field45",
 								"simple_grid_field46",
-								"simple_grid_field43"
+								"simple_grid_field43",
+								"simple_grid_field47",
+								"simple_grid_field48",
+								"simple_grid_field49",
+								"simple_grid_field50",
+								"simple_grid_field51",
+								"simple_grid_field52",
+								"simple_grid_field53",
+								"simple_grid_field54",
+								"simple_grid_field55"
 							]
 						}
 					},
@@ -4972,6 +5428,42 @@
 				"simple_grid_field43": {
 					"field": "noserie",
 					"type": "simple_grid_field"
+				},
+				"simple_grid_field47": {
+					"field": "dn",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field48": {
+					"field": "cuenta",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field49": {
+					"field": "contrato",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field50": {
+					"field": "contratoportal",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field51": {
+					"field": "plazopendiente",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field52": {
+					"field": "factura",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field53": {
+					"field": "fechavenci",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field54": {
+					"field": "ciclo",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field55": {
+					"field": "dnpreferido",
+					"type": "simple_grid_field"
 				}
 			},
 			"dbProps": {},
@@ -5119,7 +5611,16 @@
 								"simple_grid_field44",
 								"simple_grid_field45",
 								"simple_grid_field46",
-								"simple_grid_field43"
+								"simple_grid_field43",
+								"simple_grid_field47",
+								"simple_grid_field48",
+								"simple_grid_field49",
+								"simple_grid_field50",
+								"simple_grid_field51",
+								"simple_grid_field52",
+								"simple_grid_field53",
+								"simple_grid_field54",
+								"simple_grid_field55"
 							]
 						}
 					},
@@ -5317,6 +5818,42 @@
 				},
 				"simple_grid_field43": {
 					"field": "noserie",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field47": {
+					"field": "dn",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field48": {
+					"field": "cuenta",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field49": {
+					"field": "contrato",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field50": {
+					"field": "contratoportal",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field51": {
+					"field": "plazopendiente",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field52": {
+					"field": "factura",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field53": {
+					"field": "fechavenci",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field54": {
+					"field": "ciclo",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field55": {
+					"field": "dnpreferido",
 					"type": "simple_grid_field"
 				}
 			},

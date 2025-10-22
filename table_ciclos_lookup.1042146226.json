@@ -1,0 +1,150 @@
+{
+	"sql": "SELECT\r\n\tciclo,\r\n\tcorte,\r\n\tpago,\r\n\tclasif\r\nFROM\r\n\tciclos",
+	"type": 1,
+	"connId": "conn",
+	"originalTable": "ciclos",
+	"name": "ciclos_lookup",
+	"shortTableName": "ciclos_lookup",
+	"dbType": 0,
+	"keyFields": [
+		"ciclo",
+		"clasif"
+	],
+	"detailsBadgeColor": "d2af80",
+	"fields": [
+		{
+			"name": "ciclo",
+			"sqlExpression": "ciclo",
+			"index": 1,
+			"strField": "ciclo",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Ciclo"
+			},
+			"tableName": "ciclos"
+		},
+		{
+			"name": "corte",
+			"sqlExpression": "corte",
+			"index": 2,
+			"strField": "corte",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Corte"
+			},
+			"tableName": "ciclos"
+		},
+		{
+			"name": "pago",
+			"sqlExpression": "pago",
+			"index": 3,
+			"strField": "pago",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Pago"
+			},
+			"tableName": "ciclos"
+		},
+		{
+			"name": "clasif",
+			"sqlExpression": "clasif",
+			"index": 4,
+			"strField": "clasif",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Clasif"
+			},
+			"tableName": "ciclos"
+		}
+	],
+	"dbTableInfo": {
+		"type": 0,
+		"foreignKeys": [],
+		"fields": [
+			{
+				"name": "ciclo",
+				"type": 3,
+				"size": 2,
+				"scale": 0,
+				"typeName": "int(2)",
+				"nullable": false,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "corte",
+				"type": 3,
+				"size": 2,
+				"scale": 0,
+				"typeName": "int(2)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "pago",
+				"type": 3,
+				"size": 2,
+				"scale": 0,
+				"typeName": "int(2)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "clasif",
+				"type": 3,
+				"size": 1,
+				"scale": 0,
+				"typeName": "int(1)",
+				"nullable": false,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			}
+		],
+		"primaryKeys": [
+			"ciclo",
+			"clasif"
+		],
+		"uniqueFields": [],
+		"name": "ciclos"
+	},
+	"pages": [],
+	"geoCoding": {
+		"enabled": false,
+		"latField": "",
+		"lonField": "",
+		"addressFields": []
+	},
+	"caption": {
+		"Spanish": "Ciclos Lookup"
+	}
+}
