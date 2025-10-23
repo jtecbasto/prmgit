@@ -220,10 +220,10 @@
 			},
 			{
 				"name": "SIMEntregado",
-				"type": 16,
-				"size": 1,
+				"type": 200,
+				"size": 20,
 				"scale": 0,
-				"typeName": "tinyint(1)",
+				"typeName": "varchar(20)",
 				"nullable": false,
 				"autoinc": false,
 				"defaultValueSQL": null,

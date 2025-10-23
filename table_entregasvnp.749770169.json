@@ -169,7 +169,7 @@
 			"sqlExpression": "lat",
 			"index": 10,
 			"strField": "lat",
-			"type": 3,
+			"type": 14,
 			"viewFormats": [
 				{}
 			],
@@ -186,7 +186,7 @@
 			"sqlExpression": "lng",
 			"index": 11,
 			"strField": "lng",
-			"type": 3,
+			"type": 14,
 			"viewFormats": [
 				{}
 			],
@@ -305,10 +305,10 @@
 			},
 			{
 				"name": "lat",
-				"type": 3,
-				"size": 11,
-				"scale": 0,
-				"typeName": "int(11)",
+				"type": 14,
+				"size": 15,
+				"scale": 8,
+				"typeName": "decimal(15,8)",
 				"nullable": true,
 				"autoinc": false,
 				"defaultValueSQL": null,
@@ -316,10 +316,10 @@
 			},
 			{
 				"name": "lng",
-				"type": 3,
-				"size": 11,
-				"scale": 0,
-				"typeName": "int(11)",
+				"type": 14,
+				"size": 15,
+				"scale": 8,
+				"typeName": "decimal(15,8)",
 				"nullable": true,
 				"autoinc": false,
 				"defaultValueSQL": null,
