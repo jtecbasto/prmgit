@@ -12,6 +12,13 @@
 				"height": 400
 			},
 			{
+				"gid": 3904369708,
+				"y": 680,
+				"x": 1245,
+				"width": 104.015625,
+				"height": 152
+			},
+			{
 				"gid": 1042146226,
 				"y": 655,
 				"x": 630,
@@ -447,6 +454,20 @@
 							"table": 4181045712,
 							"pageType": "list"
 						}
+					},
+					{
+						"id": "10",
+						"data": {
+							"name": {
+								"table": "ciclos",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 3904369708,
+							"pageType": "list"
+						}
 					}
 				]
 			}
@@ -532,7 +553,8 @@
 							"model": "c1",
 							"items": [
 								"welcome_item2",
-								"welcome_item"
+								"welcome_item",
+								"welcome_item1"
 							]
 						}
 					},
@@ -604,6 +626,25 @@
 						"type": 0
 					},
 					"background": "#cd853f",
+					"linkType": 0
+				},
+				"welcome_item1": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "ciclos",
+					"linkPage": "list",
+					"linkText": {
+						"table": "ciclos",
+						"type": 6
+					},
+					"linkIcon": {
+						"glyph": "camera"
+					},
+					"linkComments": {
+						"text": "Ciclos description",
+						"type": 0
+					},
+					"background": "#1e90ff",
 					"linkType": 0
 				}
 			},
