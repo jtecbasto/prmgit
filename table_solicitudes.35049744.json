@@ -1856,7 +1856,7 @@
 			"type": "add",
 			"layoutId": "nomenu",
 			"disabled": false,
-			"default": 0,
+			"default": 1,
 			"forms": {
 				"above-grid": {
 					"modelId": "add-above-grid",
@@ -1868,14 +1868,6 @@
 								}
 							],
 							"section": ""
-						},
-						{
-							"cells": [
-								{
-									"cell": "c2"
-								}
-							],
-							"section": ""
 						}
 					],
 					"cells": {
@@ -1883,12 +1875,6 @@
 							"model": "c1",
 							"items": [
 								"add_message"
-							]
-						},
-						"c2": {
-							"model": "c2",
-							"items": [
-								"step_nav"
 							]
 						}
 					},
@@ -1911,7 +1897,6 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"next_step",
 								"add_save",
 								"add_reset",
 								"add_back_list",
@@ -1938,6 +1923,7 @@
 						"c1": {
 							"model": "c1",
 							"items": [
+								"image",
 								"add_header"
 							]
 						}
@@ -1951,51 +1937,95 @@
 						{
 							"cells": [
 								{
-									"cell": "c3",
-									"rowspan": 1
-								},
-								{
-									"cell": "c",
-									"rowspan": 1
+									"cell": "c4",
+									"colspan": 1
 								}
 							],
 							"section": ""
 						},
 						{
+							"section": "",
 							"cells": [
 								{
-									"cell": "c4",
-									"colspan": 2
+									"cell": "c6",
+									"colspan": 1
+								}
+							]
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c",
+									"colspan": 1
+								}
+							]
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c1",
+									"colspan": 1
+								}
+							]
+						},
+						{
+							"cells": [
+								{
+									"cell": "c8",
+									"colspan": 1
 								}
 							],
 							"section": ""
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c7",
+									"colspan": 1
+								}
+							]
 						}
 					],
 					"cells": {
-						"c3": {
+						"c4": {
 							"model": "c3",
 							"items": [
 								"section"
 							],
-							"border": [
-								{
-									"side": "",
-									"width": "0"
-								}
-							],
-							"padding": {
-								"right": "10px"
-							}
+							"align": "center"
 						},
 						"c": {
 							"model": "c3",
 							"items": [
 								"section1"
-							]
+							],
+							"align": "center"
 						},
-						"c4": {
+						"c6": {
 							"model": "c3",
-							"items": []
+							"items": [],
+							"background": "transparent"
+						},
+						"c1": {
+							"model": "c3",
+							"items": [],
+							"background": "transparent",
+							"customCSS": "/* Put  your custom CSS code here */\n\n        body {\n            box-sizing: border-box;\n        }"
+						},
+						"c7": {
+							"model": "c3",
+							"items": [],
+							"align": "center"
+						},
+						"c8": {
+							"model": "c3",
+							"items": [
+								"section2"
+							],
+							"align": "center"
 						}
 					},
 					"deferredItems": [],
@@ -2007,35 +2037,16 @@
 					"modelId": "simple-edit",
 					"grid": [
 						{
+							"section": "",
 							"cells": [
 								{
-									"cell": "c1"
+									"cell": "c3"
+								},
+								{
+									"cell": "c4"
 								}
-							],
-							"section": ""
-						}
-					],
-					"cells": {
-						"c1": {
-							"model": "c1",
-							"items": [
-								"integrated_edit_field3",
-								"integrated_edit_field4",
-								"integrated_edit_field5",
-								"integrated_edit_field1",
-								"integrated_edit_field6",
-								"integrated_edit_field9"
 							]
-						}
-					},
-					"deferredItems": [],
-					"columnCount": 1,
-					"inlineLabels": false,
-					"separateLabels": false
-				},
-				"section1": {
-					"modelId": "simple-edit",
-					"grid": [
+						},
 						{
 							"cells": [
 								{
@@ -2052,29 +2063,28 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"integrated_edit_field",
-								"integrated_edit_field20",
-								"integrated_edit_field2",
-								"integrated_edit_field7",
-								"integrated_edit_field8",
-								"integrated_edit_field25",
-								"integrated_edit_field27",
-								"integrated_edit_field28",
-								"integrated_edit_field19"
-							],
-							"width": "50%"
+								"integrated_edit_field4",
+								"integrated_edit_field1"
+							]
 						},
 						"c": {
 							"model": "c1",
 							"items": [
-								"integrated_edit_field21",
-								"integrated_edit_field29",
-								"integrated_edit_field22",
-								"integrated_edit_field23",
-								"integrated_edit_field24",
-								"integrated_edit_field26"
-							],
-							"width": "50%"
+								"integrated_edit_field5",
+								"integrated_edit_field6"
+							]
+						},
+						"c3": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field3"
+							]
+						},
+						"c4": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field9"
+							]
 						}
 					},
 					"deferredItems": [],
@@ -2082,14 +2092,205 @@
 					"inlineLabels": false,
 					"separateLabels": false
 				},
-				"step2": {
+				"section1": {
 					"modelId": "simple-edit",
 					"grid": [
 						{
 							"section": "",
 							"cells": [
 								{
-									"cell": "c",
+									"cell": "c2"
+								},
+								{
+									"cell": "c3",
+									"colspan": 3
+								}
+							]
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c4"
+								},
+								{
+									"cell": "c5",
+									"colspan": 3
+								}
+							]
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c8"
+								},
+								{
+									"cell": "c9"
+								},
+								{
+									"cell": "c10"
+								},
+								{
+									"cell": "c11"
+								}
+							]
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c12"
+								},
+								{
+									"cell": "c13"
+								},
+								{
+									"cell": "c14"
+								},
+								{
+									"cell": "c15"
+								}
+							]
+						},
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c"
+								},
+								{
+									"cell": "c6"
+								},
+								{
+									"cell": "c7"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field8"
+							],
+							"width": "50%"
+						},
+						"c": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field25"
+							],
+							"width": "50%"
+						},
+						"c2": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field"
+							]
+						},
+						"c3": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field19"
+							]
+						},
+						"c4": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field20"
+							]
+						},
+						"c5": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field2"
+							]
+						},
+						"c6": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field28"
+							],
+							"width": "50%"
+						},
+						"c7": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field27"
+							],
+							"width": "50%"
+						},
+						"c8": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field7"
+							]
+						},
+						"c9": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field21"
+							]
+						},
+						"c10": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field29"
+							]
+						},
+						"c11": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field22"
+							]
+						},
+						"c12": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field23"
+							]
+						},
+						"c13": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field24"
+							]
+						},
+						"c14": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field26"
+							]
+						},
+						"c15": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				},
+				"section2": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c4"
+								},
+								{
+									"cell": "c5",
+									"colspan": 2
+								},
+								{
+									"cell": "c6",
 									"colspan": 2
 								}
 							]
@@ -2098,15 +2299,59 @@
 							"section": "",
 							"cells": [
 								{
+									"cell": "c9"
+								},
+								{
+									"cell": "c10"
+								},
+								{
+									"cell": "c11"
+								},
+								{
+									"cell": "c12"
+								},
+								{
+									"cell": "c13"
+								}
+							]
+						},
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
 									"cell": "c2"
 								},
 								{
-									"cell": "c4"
+									"cell": "c7"
+								},
+								{
+									"cell": "c3"
+								},
+								{
+									"cell": "c8"
+								}
+							],
+							"section": ""
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c",
+									"colspan": 5
 								}
 							]
 						}
 					],
 					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field17"
+							]
+						},
 						"c": {
 							"model": "c1",
 							"items": [
@@ -2117,23 +2362,68 @@
 						"c2": {
 							"model": "c1",
 							"items": [
-								"integrated_edit_field12",
-								"integrated_edit_field16",
-								"integrated_edit_field13",
-								"integrated_edit_field14",
-								"integrated_edit_field15"
-							],
-							"width": "50%"
+								"integrated_edit_field18"
+							]
+						},
+						"c3": {
+							"model": "c1",
+							"items": []
 						},
 						"c4": {
 							"model": "c1",
 							"items": [
-								"integrated_edit_field11",
-								"integrated_edit_field10",
-								"integrated_edit_field17",
-								"integrated_edit_field18"
+								"integrated_edit_field10"
 							],
-							"width": "50%"
+							"align": "left"
+						},
+						"c5": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field11"
+							],
+							"align": "left"
+						},
+						"c6": {
+							"model": "c1",
+							"items": []
+						},
+						"c7": {
+							"model": "c1",
+							"items": []
+						},
+						"c8": {
+							"model": "c1",
+							"items": []
+						},
+						"c9": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field16"
+							]
+						},
+						"c10": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field13"
+							]
+						},
+						"c11": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field14"
+							]
+						},
+						"c12": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field15"
+							]
+						},
+						"c13": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field12"
+							]
 						}
 					},
 					"deferredItems": [],
@@ -2265,7 +2555,7 @@
 					"location": "section",
 					"bsStyle": "default",
 					"panelType": 3,
-					"headerBg": "#a0dcf5",
+					"headerBg": "",
 					"headerColor": "",
 					"bodyBg": "",
 					"bodyColor": "",
@@ -2276,68 +2566,18 @@
 					"type": "section",
 					"title": {
 						"type": 0,
-						"text": "Datos de la solicitud"
+						"text": "Datos de la venta"
 					},
 					"location": "section1",
 					"bsStyle": "default",
 					"panelType": 3,
-					"headerBg": "#72d6f9",
+					"headerBg": "",
 					"headerColor": "",
 					"bodyBg": "",
 					"bodyColor": "",
 					"panelBorder": null,
-					"borderColor": ""
-				},
-				"integrated_edit_field10": {
-					"field": "estado",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field11": {
-					"field": "ciudad",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field12": {
-					"field": "cp",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field13": {
-					"field": "calle",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field14": {
-					"field": "numeroext",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field15": {
-					"field": "numeroint",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field16": {
-					"field": "colonia",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"next_step": {
-					"type": "next_step"
-				},
-				"step_nav": {
-					"type": "step_nav"
-				},
-				"integrated_edit_field17": {
-					"field": "lat",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field18": {
-					"field": "lng",
-					"type": "integrated_edit_field",
-					"orientation": 0
+					"borderColor": "",
+					"initiallyClosed": true
 				},
 				"integrated_edit_field19": {
 					"field": "noserie",
@@ -2394,6 +2634,15 @@
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
+				"image": {
+					"type": "image",
+					"image": {
+						"image": "LOGO NEGRO Y AZUL PEQUE.png",
+						"source": 2
+					},
+					"width": "168px",
+					"height": "80px"
+				},
 				"text": {
 					"type": "text",
 					"editedByRte": false,
@@ -2401,32 +2650,80 @@
 						"text": "<div id=\"google-map\" style=\"height: 400px; width: 100%; margin-bottom: 10px; border: 1px solid #ccc;\"></div>\n<p><strong>Haz clic en el mapa para ubicar o arrastra el marcador.</strong></p>\n\n<script src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyBEbOZrRNV7JiveFroZVC2AFkoMJ18VKyg&libraries=geometry,places&callback=initGoogleMap\" async defer></script>\n\n<script>\n// ====================================================================\n// 📌 1. CONFIGURACIÓN DE IDS (AJUSTA ESTOS IDS SI NO COINCIDEN)\n// ====================================================================\nconst FIELD_IDS = {\n    calle:   'value_calle_1',\n    numext:  'value_numeroext_1',\n    colonia: 'value_colonia_1',\n    ciudad:  'value_ciudad_1',\n    estado:  'value_estado_1',\n    cp:      'value_cp_1',\n    lat:     'value_lat_1',\n    lng:     'value_lng_1'\n};\n\n// ====================================================================\n// 📌 2. VARIABLES GLOBALES Y HELPERS\n// ====================================================================\nlet map;\nlet marker;\nlet geocoder;\nlet mapInitialized = false;\n\nconst $id = (id) => document.getElementById(id);\nconst safeTrim = (v) => (v || '').toString().trim();\nconst isValidLatLng = (lat, lng) => {\n    const a = Number(lat), b = Number(lng);\n    return Number.isFinite(a) && Number.isFinite(b) && a <= 90 && a >= -90 && b <= 180 && b >= -180;\n};\n\n// ====================================================================\n// 📌 3. FUNCIONES PRINCIPALES\n// ====================================================================\n\n// --- Inicialización del Mapa (Llamada por el API script) ---\nfunction initGoogleMap() {\n    if (mapInitialized) return;\n\n    const defaultCoords = { lat: 21.0038, lng: -89.6183 }; // Mérida, México como centro por defecto\n    \n    const initialLat = safeTrim($id(FIELD_IDS.lat)?.value);\n    const initialLng = safeTrim($id(FIELD_IDS.lng)?.value);\n    const initialCoords = isValidLatLng(initialLat, initialLng) \n        ? { lat: Number(initialLat), lng: Number(initialLng) } \n        : defaultCoords;\n\n    map = new google.maps.Map($id('google-map'), {\n        center: initialCoords,\n        zoom: isValidLatLng(initialLat, initialLng) ? 17 : 12,\n        mapTypeId: 'roadmap',\n        gestureHandling: 'greedy' // 🚀 Evita el molesto \"Ctrl + Scroll\"\n    });\n\n    geocoder = new google.maps.Geocoder();\n    mapInitialized = true;\n\n    // Colocar marcador si hay coordenadas iniciales\n    if (isValidLatLng(initialLat, initialLng)) {\n        placeMarker(initialCoords);\n    }\n    \n    // Listener: Al hacer CLIC en el mapa\n    map.addListener('click', (e) => {\n        placeMarker(e.latLng); \n        updateFieldsAndGeocode(e.latLng); \n    });\n    \n    // PHPRunner necesita esta línea para que el mapa se muestre correctamente en pestañas/secciones\n    setTimeout(() => google.maps.event.trigger(map, 'resize'), 300);\n}\n\n// --- Coloca el marcador y actualiza Lat/Lng al arrastrar o hacer clic ---\nfunction placeMarker(location) {\n    if (marker) {\n        marker.setPosition(location);\n    } else {\n        marker = new google.maps.Marker({\n            position: location,\n            map: map,\n            draggable: true // 📌 Permite arrastrar el marcador\n        });\n        \n        // Listener: Al terminar de arrastrar el marcador\n        marker.addListener('dragend', function() {\n            const newLocation = marker.getPosition();\n            updateFieldsAndGeocode(newLocation);\n        });\n    }\n    map.setCenter(location);\n    \n    // Si no usamos updateFieldsAndGeocode (ej. al inicio), aseguramos la posición\n    $id(FIELD_IDS.lat).value = location.lat().toFixed(6);\n    $id(FIELD_IDS.lng).value = location.lng().toFixed(6);\n}\n\n// --- Función central: Actualiza campos y pide Geocodificación Inversa ---\nfunction updateFieldsAndGeocode(location) {\n    // 1. Actualiza campos Lat/Lng\n    $id(FIELD_IDS.lat).value = location.lat().toFixed(6);\n    $id(FIELD_IDS.lng).value = location.lng().toFixed(6);\n    \n    // 2. Realiza la geocodificación inversa (Lat/Lng -> Dirección)\n    reverseGeocode(location);\n}\n\n// --- Geocodificación Inversa (Lat/Lng -> Dirección) ---\nfunction reverseGeocode(latLng) {\n    if (!geocoder) return;\n\n    geocoder.geocode({ location: latLng })\n        .then((response) => {\n            if (response.results[0]) {\n                populateAddressFields(response.results[0]);\n            }\n        })\n        .catch((e) => console.error('Falló la geocodificación inversa:', e));\n}\n\nfunction getAddressComponent(components, type) {\n    const component = components.find(c => c.types.includes(type));\n    return component ? component.long_name : '';\n}\n\nfunction populateAddressFields(result) {\n    const components = result.address_components;\n    \n    // Obtener componentes específicos de Google Maps\n    const street = getAddressComponent(components, 'route');\n    const houseNumber = getAddressComponent(components, 'street_number');\n    const neighborhood = getAddressComponent(components, 'sublocality_level_1') || getAddressComponent(components, 'neighborhood');\n    const city = getAddressComponent(components, 'locality') || getAddressComponent(components, 'administrative_area_level_2');\n    const state = getAddressComponent(components, 'administrative_area_level_1');\n    const postalCode = getAddressComponent(components, 'postal_code');\n\n    // Llenar los campos del formulario\n    if ($id(FIELD_IDS.estado)) $id(FIELD_IDS.estado).value = state;\n    if ($id(FIELD_IDS.ciudad)) $id(FIELD_IDS.ciudad).value = city;\n    if ($id(FIELD_IDS.cp)) $id(FIELD_IDS.cp).value = postalCode;\n    if ($id(FIELD_IDS.colonia)) $id(FIELD_IDS.colonia).value = neighborhood;\n    if ($id(FIELD_IDS.calle)) $id(FIELD_IDS.calle).value = street;\n    if ($id(FIELD_IDS.numext)) $id(FIELD_IDS.numext).value = houseNumber;\n}\n\n// --- Geocodificación (Dirección -> Lat/Lng) desde campos de texto ---\nfunction geocodeAddressFromFields() {\n    const calle = safeTrim($id(FIELD_IDS.calle)?.value);\n    const numext = safeTrim($id(FIELD_IDS.numext)?.value);\n    const colonia = safeTrim($id(FIELD_IDS.colonia)?.value);\n    const ciudad = safeTrim($id(FIELD_IDS.ciudad)?.value) || '';\n    const estado = safeTrim($id(FIELD_IDS.estado)?.value) || '';\n    const cp = safeTrim($id(FIELD_IDS.cp)?.value);\n\n    const addressParts = [\n        calle + (numext ? ' ' + numext : ''),\n        colonia,\n        ciudad,\n        estado,\n        cp,\n        'México'\n    ].filter(Boolean);\n    \n    const address = addressParts.join(', ');\n\n    if (!address || !geocoder || (!calle && !colonia)) return;\n\n    geocoder.geocode({ address: address })\n        .then((response) => {\n            if (response.results[0]) {\n                const location = response.results[0].geometry.location;\n                placeMarker(location);\n                map.setZoom(17);\n            }\n        })\n        .catch((e) => console.error('Geocoding falló por:', e));\n}\n\n\n// ====================================================================\n// 📌 4. LÓGICA DE ARRANQUE Y EVENTOS (Manejo de Tabs/Redimensionamiento)\n// ====================================================================\n\nfunction attachListeners() {\n    const addressFields = [FIELD_IDS.calle, FIELD_IDS.numext, FIELD_IDS.colonia, FIELD_IDS.ciudad, FIELD_IDS.estado, FIELD_IDS.cp];\n\n    // Observa cambios en los campos de dirección (al salir o presionar Enter)\n    addressFields.forEach(id => {\n        const el = $id(id);\n        if (!el) return;\n        \n        el.addEventListener('blur', geocodeAddressFromFields);\n        el.addEventListener('keydown', (e) => {\n            if (e.key === 'Enter') {\n                e.preventDefault();\n                geocodeAddressFromFields();\n            }\n        });\n    });\n\n    // Observa cambios en Lat/Lng manuales para centrar el mapa\n    [FIELD_IDS.lat, FIELD_IDS.lng].forEach(id => {\n        const el = $id(id);\n        if (!el) return;\n        el.addEventListener('change', () => {\n            const lat = safeTrim($id(FIELD_IDS.lat)?.value);\n            const lng = safeTrim($id(FIELD_IDS.lng)?.value);\n            if (isValidLatLng(lat, lng)) {\n                placeMarker(new google.maps.LatLng(Number(lat), Number(lng)));\n                map.setZoom(17);\n            }\n        });\n    });\n}\n\n// Maneja la inicialización tardía en caso de que el mapa esté en una pestaña oculta\nfunction checkMapVisibility() {\n    const mapContainer = $id('google-map');\n    if (mapContainer && mapContainer.offsetParent !== null && mapContainer.offsetWidth > 0) {\n        if (!mapInitialized && typeof google !== 'undefined' && typeof google.maps !== 'undefined') {\n             // La inicialización real ocurre por el 'callback=initGoogleMap' en la URL del API\n             // Solo llamamos al resize si ya cargó\n             setTimeout(() => google.maps.event.trigger(map, 'resize'), 100);\n             return true;\n        }\n    }\n    return false;\n}\n\ndocument.addEventListener('DOMContentLoaded', function() {\n    attachListeners();\n\n    // Revisa la visibilidad al inicio\n    checkMapVisibility(); \n    \n    // Observador para cuando se cambie de pestaña\n    document.body.addEventListener('click', function(e) {\n        if (e.target.closest('[data-toggle=\"tab\"], .step-tab, .nav-link')) {\n            setTimeout(() => {\n                if (mapInitialized) google.maps.event.trigger(map, 'resize');\n                else checkMapVisibility();\n            }, 400);\n        }\n    });\n});\n</script>",
 						"type": 0
 					}
+				},
+				"integrated_edit_field12": {
+					"field": "cp",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field16": {
+					"field": "colonia",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field13": {
+					"field": "calle",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field14": {
+					"field": "numeroext",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field15": {
+					"field": "numeroint",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field11": {
+					"field": "ciudad",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field10": {
+					"field": "estado",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field17": {
+					"field": "lat",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field18": {
+					"field": "lng",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"section2": {
+					"type": "section",
+					"title": {
+						"type": 0,
+						"text": "Datos de la entrega"
+					},
+					"location": "section2",
+					"bsStyle": "default",
+					"panelType": 3,
+					"initiallyClosed": true,
+					"headerBg": "",
+					"headerColor": "",
+					"bodyBg": "",
+					"bodyColor": "",
+					"panelBorder": null,
+					"borderColor": ""
 				}
 			},
 			"dbProps": {},
-			"steps": [
-				{
-					"location": "grid",
-					"label": {
-						"text": "Datos iniciales",
-						"type": 0
-					}
-				},
-				{
-					"location": "step2",
-					"label": {
-						"text": "Datos de la Entrega",
-						"type": 0
-					}
-				}
-			],
 			"version": 13,
+			"pageWidth": "standard",
 			"imageItem": {
 				"type": "page_image"
 			},
 			"imageBgColor": "#f2f2f2",
 			"controlsBgColor": "white",
 			"imagePosition": "right",
+			"pageCSS": "/* Put  your custom CSS code here */\n\n\n\n/* ========================================================= */\n/* VARIABLES DE COLOR */\n/* ========================================================= */\n:root {\n    --color-elegante: #FFFFFF; /* Texto Blanco para contrastar con el fondo oscuro */\n    --naranja-degradado-inicio: #03478A; /* Naranja Suave (Light Salmon) */\n    --naranja-degradado-fin: #6D98C2; /* Naranja Medio (Coral) */\n    --color-borde-base: #FF7F50; /* Color simple para el borde base */\n}\n\n/* ========================================================= */\n/* 1. Fondo de la Página: Degradado Azul Cielo (Se mantiene) */\n/* ========================================================= */\nbody, .container-fluid {\nbackground: linear-gradient(180deg, #E0F7FA 0%, #B3E5FC 100%) !important;    min-height: 100vh;\n}\n\n/* ========================================================= */\n/* 2. Estilo de las Secciones: Efecto Tarjeta/Sombreado (Se mantiene) */\n/* ========================================================= */\n.panel, .rnr-c-body, .rnr-c-grid {\n    background-color: #FFFFFF !important; \n    border: none !important; \n    border-radius: 12px !important; \n    padding: 20px;\n    margin-bottom: 25px; \n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), \n                0 2px 6px rgba(0, 0, 0, 0.05) !important; \n}\n\n/* ========================================================= */\n/* 3. Estilo de Encabezados de Sección (EL CAMBIO PRINCIPAL) */\n/* ========================================================= */\n.panel-heading, .rnr-c-head {\n    /* Aplicamos el degradado al fondo completo del encabezado */\n    background: linear-gradient(to right, var(--naranja-degradado-inicio), var(--naranja-degradado-fin)) !important;\n    \n    /* El texto del título ahora es blanco para contrastar con el fondo naranja */\n    color: var(--color-elegante) !important; \n    \n    font-weight: 600;\n    \n    /* Mantenemos el centrado vertical */\n    display: flex;\n    align-items: center;\n    height: 40px; /* Aseguramos una altura suficiente */\n    \n    /* Eliminamos el borde degradado y aplicamos un borde simple y fino abajo */\n    border-bottom: 1px solid var(--color-borde-base) !important; \n    border-image-source: none !important; /* Desactivar la propiedad border-image anterior */\n    \n    /* Ajustes de relleno/bordes para que el degradado se vea bien */\n    padding: 0 15px !important; \n    border-top-left-radius: 12px !important; /* Mantenemos el radio del panel superior */\n    border-top-right-radius: 12px !important;\n}\n\n/* ========================================================= */\n/* 3. Estilo de HOVER: Efecto de Elevación/Intensificación    */\n/* ========================================================= */\n.panel:hover, .rnr-c-body:hover, .rnr-c-grid:hover {\n    /* Nueva sombra más intensa y \"elevada\" */\n    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25), \n                0 4px 10px rgba(0, 0, 0, 0.1) !important; \n    \n    /* Pequeño movimiento hacia arriba para dar más sensación de elevación (opcional) */\n    transform: translateY(-3px); \n}\n\n\n\n/* 4. Estilo de los Inputs (Se mantiene) */\n.form-control {\n    border-radius: 8px !important; \n    border: 1px solid #e0e0e0 !important;\n}\n.form-control:focus {\n    border-color: #48C9B0 !important; \n    box-shadow: 0 0 0 0.2rem rgba(72, 201, 176, 0.25) !important;\n}",
 			"listTotals": 1,
 			"customHtml": "",
 			"title": {}
@@ -3048,12 +3345,12 @@
 					"location": "section",
 					"bsStyle": "default",
 					"panelType": 3,
-					"headerBg": "#a0dcf5",
-					"headerColor": "",
-					"bodyBg": "",
-					"bodyColor": "",
-					"panelBorder": null,
-					"borderColor": ""
+					"headerBg": "#3e58f3",
+					"headerColor": "#f9f6c1",
+					"bodyBg": "#565050",
+					"bodyColor": "#f3f3f2",
+					"panelBorder": "1px",
+					"borderColor": "#d7f5e2"
 				},
 				"integrated_edit_field3": {
 					"field": "idcliente",
@@ -3125,12 +3422,12 @@
 					"location": "section1",
 					"bsStyle": "default",
 					"panelType": 3,
-					"headerBg": "#72d6f9",
-					"headerColor": "",
-					"bodyBg": "",
-					"bodyColor": "",
-					"panelBorder": null,
-					"borderColor": ""
+					"headerBg": "#3e58f3",
+					"headerColor": "#f9f6c1",
+					"bodyBg": "#565050",
+					"bodyColor": "#f3f3f2",
+					"panelBorder": "1px",
+					"borderColor": "#d7f5e2"
 				},
 				"integrated_edit_field": {
 					"field": "idproducto",
@@ -3337,6 +3634,7 @@
 				}
 			],
 			"version": 13,
+			"pageWidth": "full",
 			"imageItem": {
 				"type": "page_image"
 			},
@@ -3645,12 +3943,12 @@
 					"location": "section",
 					"bsStyle": "default",
 					"panelType": 3,
-					"headerBg": "#a0dcf5",
-					"headerColor": "",
-					"bodyBg": "",
-					"bodyColor": "",
-					"panelBorder": null,
-					"borderColor": ""
+					"headerBg": "#3e58f3",
+					"headerColor": "#f9f6c1",
+					"bodyBg": "#565050",
+					"bodyColor": "#f3f3f2",
+					"panelBorder": "1px",
+					"borderColor": "#d7f5e2"
 				},
 				"integrated_edit_field3": {
 					"field": "idcliente",
@@ -3716,12 +4014,12 @@
 					"location": "section1",
 					"bsStyle": "default",
 					"panelType": 3,
-					"headerBg": "#72d6f9",
-					"headerColor": "",
-					"bodyBg": "",
-					"bodyColor": "",
-					"panelBorder": null,
-					"borderColor": ""
+					"headerBg": "#3e58f3",
+					"headerColor": "#f9f6c1",
+					"bodyBg": "#565050",
+					"bodyColor": "#f3f3f2",
+					"panelBorder": "1px",
+					"borderColor": "#d7f5e2"
 				},
 				"integrated_edit_field": {
 					"field": "idproducto",
@@ -3772,12 +4070,12 @@
 					"location": "section2",
 					"bsStyle": "default",
 					"panelType": 3,
-					"headerBg": "#44bee9",
-					"headerColor": "",
-					"bodyBg": "",
-					"bodyColor": "",
-					"panelBorder": null,
-					"borderColor": ""
+					"headerBg": "#3e58f3",
+					"headerColor": "#f9f6c1",
+					"bodyBg": "#565050",
+					"bodyColor": "#f3f3f2",
+					"panelBorder": "1px",
+					"borderColor": "#d7f5e2"
 				},
 				"integrated_edit_field13": {
 					"field": "calle",
