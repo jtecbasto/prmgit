@@ -1040,12 +1040,43 @@
 			"index": 29,
 			"strField": "estatusentrega",
 			"type": 3,
+			"separateEditViewFormats": true,
 			"viewFormats": [
-				{}
+				{},
+				{
+					"format": "Custom",
+					"pageType": "list",
+					"customExpression": "switch($value)\r\n{\r\n    case 'PROGRAMADO';\r\n        $clase .= \" status-en-proceso\";\r\n        break;\r\n    case 'EN TRANSITO';\r\n        $clase .= \" status-en-proceso\";\r\n        break;\r\n    case 'REPROGRAMADO';\r\n        $clase .= \" status-en-proceso\";\r\n        break;\r\n    case 'DEVUELTO/CANCELADO';\r\n        $clase .= \" status-cancelado\";\r\n        break;\r\n    case 'ENTREGADO/INCOMPLETO';\r\n        $clase .= \" status-entregado\";\r\n        break;\r\n    case 'CERRADO';\r\n        $clase .= \" status-entregado\";\r\n        break;\r\n\r\n}\r\n\r\n$value = \"<span class='\" . $clase . \"'>\" . $value . \"</span>\";"
+				},
+				{
+					"pageType": "export"
+				},
+				{
+					"pageType": "masterlist"
+				},
+				{
+					"pageType": "masterprint"
+				}
 			],
 			"editFormats": [
 				{
 					"format": "Lookup wizard",
+					"lookupTable": "estatusentregas",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "id",
+					"lookupDisplayField": "estatusentrega"
+				},
+				{
+					"format": "Lookup wizard",
+					"pageType": "add",
+					"lookupTable": "estatusentregas",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "id",
+					"lookupDisplayField": "estatusentrega"
+				},
+				{
+					"format": "Lookup wizard",
+					"pageType": "search",
 					"lookupTable": "estatusentregas",
 					"lookupTableConnection": "conn",
 					"lookupLinkField": "id",
@@ -1350,7 +1381,7 @@
 		{
 			"eventId": "EVENT_BEFORESHOW_ADD",
 			"pageType": "add",
-			"code": "\n\n// BeforeDisplay (Add)\nglobal $xt;\n\n// Si hubo fallo previo, repinta lo capturado:\nif (isset($_SESSION['add_data_temp']) && is_array($_SESSION['add_data_temp'])) {\n    $xt->assign(\"message\", \"⚠️ Se recuperaron los datos del intento anterior. Revise y guarde nuevamente.\");\n    $xt->assign(\"message_class\", \"alert-warning\");\n\n    // Prefill directo de los campos que existan en el form (opcional)\n    foreach($_SESSION['add_data_temp'] as $field => $value){\n        if ($value !== '' && $value !== null) {\n            $pageObject->setProxyValue(\"value_{$field}_1\", $value);\n        }\n    }\n    // No borramos add_data_temp aquí; se borra tras éxito\n}\n\n// Flash de éxito\nif (isset($_SESSION['flash_ok'])) {\n    $xt->assign(\"message\", $_SESSION['flash_ok']);\n    $xt->assign(\"message_class\", \"alert-success\");\n    unset($_SESSION['flash_ok'], $_SESSION['add_data_temp']);\n    unset($_SESSION['idactual']);\n    unset($_SESSION['currentErr']);\n}\n\nreturn true;\n"
+			"code": "\n\n// BeforeDisplay (Add)\nglobal $xt;\n\n// Si hubo fallo previo, repinta lo capturado:\nif (isset($_SESSION['add_data_temp']) && is_array($_SESSION['add_data_temp'])) {\n    $xt->assign(\"message\", \"⚠️ Se recuperaron los datos del intento anterior. Revise y guarde nuevamente.\");\n    $xt->assign(\"message_class\", \"alert-warning\");\n\n    // Prefill directo de los campos que existan en el form (opcional)\n    foreach($_SESSION['add_data_temp'] as $field => $value){\n        if ($value !== '' && $value !== null) {\n            $pageObject->setProxyValue(\"value_{$field}_1\", $value);\n        }\n    }\n    // No borramos add_data_temp aquí; se borra tras éxito\n}\n\n// Flash de éxito\nif (isset($_SESSION['flash_ok'])) {\n    $xt->assign(\"message\", $_SESSION['flash_ok']);\n    $xt->assign(\"message_class\", \"alert-success\");\n    unset($_SESSION['flash_ok'], $_SESSION['add_data_temp']);\n    unset($_SESSION['idactual']);\n    unset($_SESSION['currentErr']);\n}\n\n\n\nreturn true;\n"
 		},
 		{
 			"eventId": "EVENT_BEFOREEDIT",
@@ -1375,7 +1406,7 @@
 		{
 			"eventId": "EVENT_JS_ONLOAD",
 			"pageType": "add",
-			"code": "// ====================== CONFIG / GLOBALS ======================\r\nwindow.STORAGE_KEY   = 'solicitud_vnp_draft';\r\nwindow.ENDPOINT      = 'serial_reserve.php';\r\nwindow.FIELDS = [\r\n  'idcliente','idproducto','idplan','orden','plazo','rfc','idcli',\r\n  'estado','ciudad','colonia','calle','numeroext','numeroint','noserie'\r\n];\r\nwindow.__res_noserie = window.__res_noserie || null;\r\nwindow.__recovering  = false;\r\nwindow.__submitting  = false;\r\nwindow.SKIP_RECOVERY = window.SKIP_RECOVERY || false;\r\n\r\n// Borrador caduca en 2 horas\r\nvar MAX_DRAFT_AGE_MS = 2 * 60 * 60 * 1000;\r\n\r\n// Redirige después del guardado exitoso (modo AJAX)\r\npageObj.on('afterSave', function (resp) {\r\n  // Opcional: valida éxito si quieres\r\n  // if (!resp || resp.success === false) return;\r\n\r\n  try { sessionStorage.removeItem('solicitud_vnp_draft'); } catch(e){}\r\n  // añade clean=1 y un nonce para evitar caché\r\n  window.location.href = 'solicitudes_add.php?new=1&clean=1&_n=' + Date.now();\r\n});\r\n\r\n\r\n// ====================== HELPERS GENERALES ======================\r\nfunction currentPageId() {\r\n  if (typeof window.pageid !== 'undefined' && window.pageid) return window.pageid;\r\n  var pid = $('[data-pageid]').first().attr('data-pageid');\r\n  return pid || '';\r\n}\r\nfunction getCtrl(field) {\r\n  try { return Runner.getControl(currentPageId(), field); } catch(e) { return null; }\r\n}\r\nfunction readVal(field) {\r\n  var c = getCtrl(field);\r\n  if (c && typeof c.getValue === 'function') return c.getValue();\r\n  var pid = currentPageId();\r\n  var $id = $('#value_'+field+'_'+pid);\r\n  if ($id.length) return $id.val();\r\n  var $w = $('div.r-integrated-field[data-field=\"'+field+'\"][data-pageid=\"'+pid+'\"]');\r\n  if ($w.length) {\r\n    var $inp = $w.find('input,select,textarea').first();\r\n    if ($inp.length) return $inp.val();\r\n  }\r\n  var $n = $('[name=\"'+field+'\"]');\r\n  if ($n.length) return $n.val();\r\n  return '';\r\n}\r\nfunction setVal(field, value, fireChange) {\r\n  var c = getCtrl(field);\r\n  if (c && typeof c.setControlValue === 'function') {\r\n    c.setControlValue(value);\r\n    if (fireChange && typeof c.fireEvent === 'function') c.fireEvent('change');\r\n    return true;\r\n  }\r\n  var pid = currentPageId();\r\n  var $id = $('#value_'+field+'_'+pid);\r\n  if ($id.length) {\r\n    $id.val(value).trigger('change');\r\n    if (fireChange) $id.trigger('keyup');\r\n    return true;\r\n  }\r\n  var $w = $('div.r-integrated-field[data-field=\"'+field+'\"][data-pageid=\"'+pid+'\"]');\r\n  if ($w.length) {\r\n    var $inp = $w.find('input,select,textarea').first();\r\n    if ($inp.length) {\r\n      $inp.val(value).trigger('change');\r\n      if (fireChange) $inp.trigger('keyup');\r\n      return true;\r\n    }\r\n  }\r\n  return false;\r\n}\r\nfunction setNoSerieValue(noserie) {\r\n  var ok = setVal('noserie', noserie, true);\r\n  if (ok) return;\r\n  var tries = 0, max = 40, delay = 150;\r\n  (function retry(){\r\n    tries++;\r\n    if (setVal('noserie', noserie, true)) return;\r\n    if (tries >= max) return;\r\n    setTimeout(retry, delay);\r\n  })();\r\n}\r\nfunction hasErrorMessage() {\r\n  if (window.FORM_ERROR === true) return true;\r\n  var $msg = $('[data-itemtype=\"edit_message\"].alert, .alert[data-itemtype=\"edit_message\"]');\r\n  if (!$msg.length) return false;\r\n  var txt = $.trim($msg.text() || '');\r\n  if (!txt) return false;\r\n  if ($msg.is('.alert-danger, .alert-error')) return true;\r\n  return true;\r\n}\r\nfunction getQS(name){\r\n  var m = new RegExp('[?&]'+name+'=([^&]*)').exec(location.search);\r\n  return m ? decodeURIComponent(m[1].replace(/\\+/g,' ')) : null;\r\n}\r\nfunction hasSuccessOrClean() {\r\n  var okMsg = $('.alert.alert-success[data-itemtype=\"edit_message\"], [data-itemtype=\"edit_message\"].alert-success');\r\n  if (okMsg.length) return true;\r\n  return (getQS('clean') === '1');\r\n}\r\n\r\n// --- limpieza fuerte tras éxito/entrada limpia ---\r\nfunction resetAllFieldsUI() {\r\n  window.__recovering = true;\r\n  // 1ª pasada\r\n  (window.FIELDS || []).forEach(function (f) { setVal(f, '', true); });\r\n  window.__res_noserie = null;\r\n  try { sessionStorage.removeItem(window.STORAGE_KEY); } catch(e){}\r\n\r\n  // 2ª pasada (después del pintado)\r\n  setTimeout(function(){\r\n    (window.FIELDS || []).forEach(function (f) { setVal(f, '', true); });\r\n    window.__res_noserie = null;\r\n    try { sessionStorage.removeItem(window.STORAGE_KEY); } catch(e){}\r\n    setTimeout(function(){ window.__recovering = false; }, 150);\r\n  }, 220);\r\n}\r\n\r\n// loop de refuerzo por si PHPRunner hidrata tarde\r\nfunction startForceClearLoop(ms) {\r\n  var end = Date.now() + (ms || 1000);\r\n  (function loop(){\r\n    if (Date.now() > end) return;\r\n    (window.FIELDS || []).forEach(function (f) { setVal(f, '', false); });\r\n    setTimeout(loop, 120);\r\n  })();\r\n}\r\n\r\n// ====================== AUTOSAVE ======================\r\nfunction buildDraft() {\r\n  var d = {};\r\n  for (var i=0;i<window.FIELDS.length;i++){\r\n    var f = window.FIELDS[i];\r\n    var v = readVal(f);\r\n    if (v !== null && v !== undefined && v !== '') d[f] = v;\r\n  }\r\n  d.timestamp = Date.now();\r\n  return d;\r\n}\r\nfunction saveDraftNow() {\r\n  try { sessionStorage.setItem(window.STORAGE_KEY, JSON.stringify(buildDraft())); } catch(e){}\r\n}\r\nfunction makeDebounce(fn, ms){\r\n  var timeoutId = 0;\r\n  return function(){\r\n    var ctx = this, args = arguments;\r\n    if (timeoutId) { try { window.clearTimeout(timeoutId); } catch(e){} }\r\n    timeoutId = window.setTimeout(function(){\r\n      timeoutId = 0;\r\n      try { fn.apply(ctx, args); } catch(e){}\r\n    }, ms || 200);\r\n  };\r\n}\r\nvar saveDraftDebounced = makeDebounce(saveDraftNow, 300);\r\n\r\n// ====================== Salida fiable ======================\r\nfunction safeReleaseAndClear() {\r\n  try {\r\n    if (window.__res_noserie) {\r\n      try {\r\n        navigator.sendBeacon(\r\n          window.ENDPOINT,\r\n          new URLSearchParams({ action:'release', noserie: window.__res_noserie })\r\n        );\r\n      } catch(e) {}\r\n      window.__res_noserie = null;\r\n    }\r\n    sessionStorage.removeItem(window.STORAGE_KEY);\r\n  } catch(e) {}\r\n}\r\n\r\n// BFCache: si vuelve de caché y NO hay borrador, limpia inputs\r\nwindow.addEventListener('pageshow', function (event) {\r\n  if (!event.persisted) return;\r\n  if (sessionStorage.getItem(window.STORAGE_KEY)) return;\r\n  (window.FIELDS || []).forEach(function (f) { setVal(f, '', true); });\r\n  window.__res_noserie = null;\r\n  window.__recovering = false;\r\n});\r\n\r\n// Salida → no limpiar si es submit (para conservar datos si falla)\r\nwindow.addEventListener('pagehide', function(){\r\n  if (!window.__submitting) safeReleaseAndClear();\r\n});\r\ndocument.addEventListener('visibilitychange', function(){\r\n  if (document.visibilityState === 'hidden' && !window.__submitting) {\r\n    safeReleaseAndClear();\r\n  }\r\n});\r\nwindow.addEventListener('beforeunload', function(){\r\n  saveDraftNow();\r\n  if (!window.__submitting && window.__res_noserie) {\r\n    try {\r\n      navigator.sendBeacon(\r\n        window.ENDPOINT,\r\n        new URLSearchParams({ action:'release', noserie: window.__res_noserie })\r\n      );\r\n    } catch(e) {}\r\n  }\r\n});\r\n\r\n// ====================== RESERVA POR PRODUCTO ======================\r\nfunction releasePrev() {\r\n  if (!window.__res_noserie) return;\r\n  $.post(window.ENDPOINT, { action:'release', noserie: window.__res_noserie }, function(){}, 'json');\r\n  window.__res_noserie = null;\r\n}\r\nfunction reserveForProduct(productId){\r\n  $.post(window.ENDPOINT, { action:'reserve_by_product', product_id: productId }, null, 'json')\r\n    .done(function(resp){\r\n      var r = (typeof resp === 'object') ? resp : (function(){ try{return JSON.parse(resp);}catch(e){return {};}})();\r\n      if (r && r.ok) {\r\n        setNoSerieValue(r.noserie);\r\n        window.__res_noserie = r.noserie;\r\n        saveDraftNow();\r\n      } else if (r && r.error === 'no-stock') {\r\n        alert('No hay series disponibles para este producto.');\r\n        setVal('idproducto','',true);\r\n        setNoSerieValue('');\r\n        releasePrev();\r\n        saveDraftNow();\r\n      } else {\r\n        alert('No se pudo reservar la serie. Intenta de nuevo.');\r\n        setNoSerieValue('');\r\n        saveDraftNow();\r\n      }\r\n    })\r\n    .fail(function(){\r\n      alert('Error de comunicación al reservar la serie.');\r\n      setNoSerieValue('');\r\n      saveDraftNow();\r\n    });\r\n}\r\n\r\n// ====================== INICIO DIFERIDO ======================\r\n\r\n// === HARD RESET tras guardado exitoso ===\r\n// Llama esto lo más pronto posible en tu onload (antes o al inicio del setTimeout)\r\n(function hardResetIfNeeded(){\r\n  // Se setea en BeforeProcessAdd o viene por ?clean=1\r\n  var clean = !!(window.CLEAN_ON_LOAD) || /[?&]clean=1(?:&|$)/i.test(location.search);\r\n  if (!clean) return;\r\n\r\n  // Evita que autosave vuelva a meter datos mientras limpiamos\r\n  window.__recovering = true;\r\n  window.SKIP_RECOVERY = true;\r\n  try { sessionStorage.removeItem(window.STORAGE_KEY); } catch(e){}\r\n\r\n  // 1) Reseteo nativo del <form> (limpia inputs HTML)\r\n  var $form = $('form').first();\r\n  if ($form.length && $form[0].reset) { try { $form[0].reset(); } catch(e){} }\r\n\r\n  // 2) Dos pasadas sobre Runner controls (después del montaje)\r\n  function clearAllOnce() {\r\n    (window.FIELDS || []).forEach(function(f){\r\n      // limpia Runner control si existe, si no, el input nativo\r\n      var c = (function(){ try { return Runner.getControl(currentPageId(), f); } catch(e){ return null; }})();\r\n      if (c && typeof c.setControlValue === 'function') {\r\n        try { c.setControlValue(''); if (c.fireEvent) c.fireEvent('change'); } catch(e){}\r\n      } else {\r\n        setVal(f, '', true);\r\n      }\r\n    });\r\n    window.__res_noserie = null;\r\n  }\r\n\r\n  // primera pasada rápida\r\n  clearAllOnce();\r\n\r\n  // segunda pasada con pequeño delay (evita rehidratación tardía)\r\n  setTimeout(clearAllOnce, 220);\r\n\r\n  // 3) loop de refuerzo por ~1 segundo\r\n  var tEnd = Date.now() + 1000;\r\n  (function loop(){\r\n    if (Date.now() > tEnd) {\r\n      // reactivamos autosave\r\n      setTimeout(function(){ window.__recovering = false; }, 120);\r\n      return;\r\n    }\r\n    clearAllOnce();\r\n    setTimeout(loop, 120);\r\n  })();\r\n})();\r\n\r\n\r\n\r\n\r\nsetTimeout(function(){\r\n  var pid      = currentPageId();\r\n  var ctrlProd = getCtrl('idproducto');\r\n  if (!ctrlProd) return;\r\n\r\n  // 0) MARCAR SUBMIT UNIVERSAL\r\n  $(document).on('submit', 'form', function(){\r\n    window.__submitting = true;\r\n    saveDraftNow();\r\n  });\r\n  var SAVE_SELECTOR = \"[data-itemtype='edit_save'] a, [data-itemid='edit_save'] a, a#saveButton1, button#saveButton1\";\r\n  $(document).on('click', SAVE_SELECTOR, function(){\r\n    window.__submitting = true;\r\n    saveDraftNow();\r\n  });\r\n\r\n  // 🚀 MODO LIMPIEZA: si hay éxito, si CLEAN_ON_LOAD=true (inyectado en PHP), o si SKIP_RECOVERY y NO hay error\r\n  window.CLEAN_ON_LOAD = window.CLEAN_ON_LOAD || (getQS('clean') === '1');\r\n  var cleanMode = hasSuccessOrClean() || !!window.CLEAN_ON_LOAD || (window.SKIP_RECOVERY && !hasErrorMessage());\r\n\r\n  if (cleanMode) {\r\n    try { sessionStorage.removeItem(window.STORAGE_KEY); } catch(e){}\r\n    window.SKIP_RECOVERY = true;\r\n    resetAllFieldsUI();\r\n    startForceClearLoop(1000); // refuerzo ~1s\r\n  } else {\r\n    // 1) RECUPERACIÓN DESDE sessionStorage (si hay, no caducó y no hay error)\r\n    var draftJson = sessionStorage.getItem(window.STORAGE_KEY);\r\n    if (draftJson && !window.SKIP_RECOVERY && !hasErrorMessage()) {\r\n      try {\r\n        var draft = JSON.parse(draftJson) || {};\r\n        var now   = Date.now();\r\n        if (draft.timestamp && (now - draft.timestamp > MAX_DRAFT_AGE_MS)) {\r\n          sessionStorage.removeItem(window.STORAGE_KEY);\r\n        } else {\r\n          window.__recovering = true;\r\n          if (draft.idproducto != null && draft.idproducto !== '') {\r\n            setVal('idproducto', draft.idproducto, true);\r\n          }\r\n          Object.keys(draft).forEach(function(k){\r\n            if (k === 'timestamp' || k === 'idproducto') return;\r\n            setVal(k, draft[k], false);\r\n          });\r\n          if (draft.noserie) window.__res_noserie = draft.noserie;\r\n          sessionStorage.removeItem(window.STORAGE_KEY);\r\n          setTimeout(function(){ window.__recovering = false; }, 150);\r\n        }\r\n      } catch(e){\r\n        console.error('Borrador inválido en sessionStorage:', e);\r\n        sessionStorage.removeItem(window.STORAGE_KEY);\r\n      }\r\n    } else if (window.SKIP_RECOVERY) {\r\n      sessionStorage.removeItem(window.STORAGE_KEY);\r\n    }\r\n  }\r\n\r\n  // 2) CAMBIO DE PRODUCTO → RESERVA\r\n  ctrlProd.on('change', function(){\r\n    var productId = ctrlProd.getValue();\r\n    if (!productId) return;\r\n    if (window.__recovering) return;\r\n\r\n    var prevSerie = readVal('noserie');\r\n    if (prevSerie && window.__res_noserie === prevSerie) {\r\n      $.post(window.ENDPOINT, { action:'release', noserie: window.__res_noserie }, function(){}, 'json');\r\n      window.__res_noserie = null;\r\n    } else {\r\n      releasePrev();\r\n    }\r\n    setNoSerieValue('');\r\n    reserveForProduct(productId);\r\n  });\r\n\r\n  // 3) AUTOGUARDADO (timer + por cambios)\r\n  setInterval(function(){ if (!window.__recovering) saveDraftNow(); }, 5000);\r\n\r\n  var selDeleg = window.FIELDS.map(function(f){\r\n    return 'div.r-integrated-field[data-field=\"'+f+'\"][data-pageid=\"'+pid+'\"] input, '+\r\n           'div.r-integrated-field[data-field=\"'+f+'\"][data-pageid=\"'+pid+'\"] select, '+\r\n           'div.r-integrated-field[data-field=\"'+f+'\"][data-pageid=\"'+pid+'\"] textarea';\r\n  }).join(', ');\r\n  $(document).on('change input', selDeleg, makeDebounce(saveDraftNow, 300));\r\n\r\n  // 4) SALIR (cualquier step)\r\n  (function(){\r\n    var BACK_SELECTOR = [\r\n      '#backButton1',\r\n      '#backButton2',\r\n      \"[data-itemtype='edit_back_list'] a\",\r\n      \"[data-itemid='edit_back_list'] a\",\r\n      \"[data-itemtype='edit_close'] a\",\r\n      \"[data-itemid='edit_close'] a\",\r\n      \"a[href$='solicitudes_list.php']\",\r\n      \"a[href*='solicitudes_list.php?']\"\r\n    ].join(', ');\r\n    $(document).on('mousedown click', BACK_SELECTOR, function(){\r\n      window.__submitting = false;\r\n      safeReleaseAndClear();\r\n    });\r\n  })();\r\n\r\n}, 500);\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"
+			"code": "// ====================== CONFIG / GLOBALS ======================\r\nwindow.STORAGE_KEY   = 'solicitud_vnp_draft';\r\nwindow.ENDPOINT      = 'serial_reserve.php';\r\nwindow.FIELDS = [\r\n  'idcliente','idproducto','idplan','orden','plazo','rfc','idcli',\r\n  'estado','ciudad','colonia','calle','numeroext','numeroint','noserie'\r\n];\r\nwindow.__res_noserie = window.__res_noserie || null;\r\nwindow.__recovering  = false;\r\nwindow.__submitting  = false;\r\nwindow.SKIP_RECOVERY = window.SKIP_RECOVERY || false;\r\n\r\n// Borrador caduca en 2 horas\r\nvar MAX_DRAFT_AGE_MS = 2 * 60 * 60 * 1000;\r\n\r\n// Redirige después del guardado exitoso (modo AJAX)\r\npageObj.on('afterSave', function (resp) {\r\n  // Opcional: valida éxito si quieres\r\n  // if (!resp || resp.success === false) return;\r\n\r\n  try { sessionStorage.removeItem('solicitud_vnp_draft'); } catch(e){}\r\n  // añade clean=1 y un nonce para evitar caché\r\n  window.location.href = 'solicitudes_add.php?new=1&clean=1&_n=' + Date.now();\r\n});\r\n\r\n\r\n\r\n/************************************************************************************************************************************/\r\n// Hover-accordion para Bootstrap/PHPRunner usando .panel-collapse (con histeresis)\r\n(function () {\r\n  var $ = window.jQuery || window.$;\r\n  if (!$) { console.error('[hover-accordion] falta jQuery'); return; }\r\n\r\n  // ===== tiempos (ajusta al gusto) =====\r\n  var OPEN_DELAY     = 120; // espera antes de abrir\r\n  var CLOSE_DELAY    = 500; // espera antes de cerrar al salir\r\n  var BETWEEN_GRACE  = 220; // gracia para cerrar \"las otras\" después de abrir la actual\r\n\r\n  // ===== duraciones / ritmo =====\r\n  var CLOSE_ANIM_MS  = 260; // <-- te faltaba esta constante\r\n  var V_PX_PER_S     = 320; // “velocidad” de apertura (px por segundo)\r\n  var OPEN_MIN       = 380; // ms mínimo al abrir\r\n  var OPEN_MAX       = 900; // ms máximo al abrir\r\n\r\n  var $sections = $('div.panel.panel-default.form-section');\r\n\r\n  // Cierra todas al inicio (colapsa correctamente el contenedor .panel-collapse)\r\n  $sections.children('.panel-collapse').each(function(){\r\n    $(this).removeClass('in show').hide().attr('aria-expanded','false');\r\n  });\r\n  $sections.find('.panel-heading').attr('aria-expanded','false');\r\n\r\n  function closeSection($sec){\r\n    var $col = $sec.children('.panel-collapse');\r\n    $col.addClass('no-bs-trans')\r\n        .css('overflow','hidden')\r\n        .stop(true, false)\r\n        .slideUp(CLOSE_ANIM_MS, 'swing')\r\n        .removeClass('in show')\r\n        .attr('aria-expanded','false')\r\n        .queue(function(next){ $(this).removeClass('no-bs-trans'); next(); });\r\n    $sec.find('.panel-heading').attr('aria-expanded','false');\r\n  }\r\n\r\n  // Abrir primero la target; cerrar las otras después de una pequeña gracia\r\n  function openOnlyWithGrace($target){\r\n    var $col = $target.children('.panel-collapse');\r\n\r\n    // Medir altura natural para duración proporcional (ritmo constante)\r\n    var wasHidden = $col.is(':hidden');\r\n    if (wasHidden) $col.show();\r\n    var h = $col[0].scrollHeight || $col.height();\r\n    if (wasHidden) $col.hide();\r\n\r\n    var duration = Math.max(OPEN_MIN, Math.min(OPEN_MAX, Math.round(h / V_PX_PER_S * 1000)));\r\n\r\n    $col.addClass('no-bs-trans')\r\n        .css('overflow','hidden')\r\n        .stop(true, false)\r\n        .slideDown(duration, 'swing')\r\n        .addClass('in show')\r\n        .attr('aria-expanded','true')\r\n        .queue(function(next){ $(this).removeClass('no-bs-trans'); next(); });\r\n\r\n    $target.find('.panel-heading').attr('aria-expanded','true');\r\n\r\n    // Cierra las demás con pequeña gracia para evitar “saltos”\r\n    setTimeout(function(){\r\n      $sections.not($target).each(function(){ closeSection($(this)); });\r\n    }, BETWEEN_GRACE);\r\n  }\r\n\r\n  $sections.each(function(){\r\n    var $sec  = $(this);\r\n    var $head = $sec.children('.panel-heading');\r\n    var $col  = $sec.children('.panel-collapse');\r\n    if (!$head.length || !$col.length) return;\r\n\r\n    // Evita que el toggler nativo por click interfiera\r\n    $head.on('click', '[data-toggle=\"collapse\"], a[href^=\"#\"]', function(e){\r\n      e.preventDefault(); e.stopPropagation();\r\n    });\r\n\r\n    var openT=null, closeT=null;\r\n\r\n    // Abre SOLO la actual al entrar al header (primero abrir, luego cerrar otras)\r\n    $head.on('mouseenter', function(){\r\n      clearTimeout(closeT);\r\n      clearTimeout(openT);\r\n      openT = setTimeout(function(){ openOnlyWithGrace($sec); }, OPEN_DELAY);\r\n    });\r\n\r\n    // No cierres si el mouse entra al contenido\r\n    $col.on('mouseenter', function(){ clearTimeout(closeT); });\r\n\r\n    // Cierra al salir de TODA la sección (header + collapse) con retardo generoso\r\n    $sec.on('mouseleave', function(){\r\n      clearTimeout(openT);\r\n      clearTimeout(closeT);\r\n      closeT = setTimeout(function(){\r\n        if ($sec.find(':focus').length) return; // no cerrar si hay foco en un input\r\n        closeSection($sec);\r\n      }, CLOSE_DELAY);\r\n    });\r\n  }); // <-- cerraba faltante del each\r\n\r\n})(); // <-- cerraba faltante del IIFE\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n// ====================== HELPERS GENERALES ======================\r\nfunction currentPageId() {\r\n  if (typeof window.pageid !== 'undefined' && window.pageid) return window.pageid;\r\n  var pid = $('[data-pageid]').first().attr('data-pageid');\r\n  return pid || '';\r\n}\r\nfunction getCtrl(field) {\r\n  try { return Runner.getControl(currentPageId(), field); } catch(e) { return null; }\r\n}\r\nfunction readVal(field) {\r\n  var c = getCtrl(field);\r\n  if (c && typeof c.getValue === 'function') return c.getValue();\r\n  var pid = currentPageId();\r\n  var $id = $('#value_'+field+'_'+pid);\r\n  if ($id.length) return $id.val();\r\n  var $w = $('div.r-integrated-field[data-field=\"'+field+'\"][data-pageid=\"'+pid+'\"]');\r\n  if ($w.length) {\r\n    var $inp = $w.find('input,select,textarea').first();\r\n    if ($inp.length) return $inp.val();\r\n  }\r\n  var $n = $('[name=\"'+field+'\"]');\r\n  if ($n.length) return $n.val();\r\n  return '';\r\n}\r\nfunction setVal(field, value, fireChange) {\r\n  var c = getCtrl(field);\r\n  if (c && typeof c.setControlValue === 'function') {\r\n    c.setControlValue(value);\r\n    if (fireChange && typeof c.fireEvent === 'function') c.fireEvent('change');\r\n    return true;\r\n  }\r\n  var pid = currentPageId();\r\n  var $id = $('#value_'+field+'_'+pid);\r\n  if ($id.length) {\r\n    $id.val(value).trigger('change');\r\n    if (fireChange) $id.trigger('keyup');\r\n    return true;\r\n  }\r\n  var $w = $('div.r-integrated-field[data-field=\"'+field+'\"][data-pageid=\"'+pid+'\"]');\r\n  if ($w.length) {\r\n    var $inp = $w.find('input,select,textarea').first();\r\n    if ($inp.length) {\r\n      $inp.val(value).trigger('change');\r\n      if (fireChange) $inp.trigger('keyup');\r\n      return true;\r\n    }\r\n  }\r\n  return false;\r\n}\r\nfunction setNoSerieValue(noserie) {\r\n  var ok = setVal('noserie', noserie, true);\r\n  if (ok) return;\r\n  var tries = 0, max = 40, delay = 150;\r\n  (function retry(){\r\n    tries++;\r\n    if (setVal('noserie', noserie, true)) return;\r\n    if (tries >= max) return;\r\n    setTimeout(retry, delay);\r\n  })();\r\n}\r\nfunction hasErrorMessage() {\r\n  if (window.FORM_ERROR === true) return true;\r\n  var $msg = $('[data-itemtype=\"edit_message\"].alert, .alert[data-itemtype=\"edit_message\"]');\r\n  if (!$msg.length) return false;\r\n  var txt = $.trim($msg.text() || '');\r\n  if (!txt) return false;\r\n  if ($msg.is('.alert-danger, .alert-error')) return true;\r\n  return true;\r\n}\r\nfunction getQS(name){\r\n  var m = new RegExp('[?&]'+name+'=([^&]*)').exec(location.search);\r\n  return m ? decodeURIComponent(m[1].replace(/\\+/g,' ')) : null;\r\n}\r\nfunction hasSuccessOrClean() {\r\n  var okMsg = $('.alert.alert-success[data-itemtype=\"edit_message\"], [data-itemtype=\"edit_message\"].alert-success');\r\n  if (okMsg.length) return true;\r\n  return (getQS('clean') === '1');\r\n}\r\n\r\n// --- limpieza fuerte tras éxito/entrada limpia ---\r\nfunction resetAllFieldsUI() {\r\n  window.__recovering = true;\r\n  // 1ª pasada\r\n  (window.FIELDS || []).forEach(function (f) { setVal(f, '', true); });\r\n  window.__res_noserie = null;\r\n  try { sessionStorage.removeItem(window.STORAGE_KEY); } catch(e){}\r\n\r\n  // 2ª pasada (después del pintado)\r\n  setTimeout(function(){\r\n    (window.FIELDS || []).forEach(function (f) { setVal(f, '', true); });\r\n    window.__res_noserie = null;\r\n    try { sessionStorage.removeItem(window.STORAGE_KEY); } catch(e){}\r\n    setTimeout(function(){ window.__recovering = false; }, 150);\r\n  }, 220);\r\n}\r\n\r\n// loop de refuerzo por si PHPRunner hidrata tarde\r\nfunction startForceClearLoop(ms) {\r\n  var end = Date.now() + (ms || 1000);\r\n  (function loop(){\r\n    if (Date.now() > end) return;\r\n    (window.FIELDS || []).forEach(function (f) { setVal(f, '', false); });\r\n    setTimeout(loop, 120);\r\n  })();\r\n}\r\n\r\n// ====================== AUTOSAVE ======================\r\nfunction buildDraft() {\r\n  var d = {};\r\n  for (var i=0;i<window.FIELDS.length;i++){\r\n    var f = window.FIELDS[i];\r\n    var v = readVal(f);\r\n    if (v !== null && v !== undefined && v !== '') d[f] = v;\r\n  }\r\n  d.timestamp = Date.now();\r\n  return d;\r\n}\r\nfunction saveDraftNow() {\r\n  try { sessionStorage.setItem(window.STORAGE_KEY, JSON.stringify(buildDraft())); } catch(e){}\r\n}\r\nfunction makeDebounce(fn, ms){\r\n  var timeoutId = 0;\r\n  return function(){\r\n    var ctx = this, args = arguments;\r\n    if (timeoutId) { try { window.clearTimeout(timeoutId); } catch(e){} }\r\n    timeoutId = window.setTimeout(function(){\r\n      timeoutId = 0;\r\n      try { fn.apply(ctx, args); } catch(e){}\r\n    }, ms || 200);\r\n  };\r\n}\r\nvar saveDraftDebounced = makeDebounce(saveDraftNow, 300);\r\n\r\n// ====================== Salida fiable ======================\r\nfunction safeReleaseAndClear() {\r\n  try {\r\n    if (window.__res_noserie) {\r\n      try {\r\n        navigator.sendBeacon(\r\n          window.ENDPOINT,\r\n          new URLSearchParams({ action:'release', noserie: window.__res_noserie })\r\n        );\r\n      } catch(e) {}\r\n      window.__res_noserie = null;\r\n    }\r\n    sessionStorage.removeItem(window.STORAGE_KEY);\r\n  } catch(e) {}\r\n}\r\n\r\n// BFCache: si vuelve de caché y NO hay borrador, limpia inputs\r\nwindow.addEventListener('pageshow', function (event) {\r\n  if (!event.persisted) return;\r\n  if (sessionStorage.getItem(window.STORAGE_KEY)) return;\r\n  (window.FIELDS || []).forEach(function (f) { setVal(f, '', true); });\r\n  window.__res_noserie = null;\r\n  window.__recovering = false;\r\n});\r\n\r\n// Salida → no limpiar si es submit (para conservar datos si falla)\r\nwindow.addEventListener('pagehide', function(){\r\n  if (!window.__submitting) safeReleaseAndClear();\r\n});\r\ndocument.addEventListener('visibilitychange', function(){\r\n  if (document.visibilityState === 'hidden' && !window.__submitting) {\r\n    safeReleaseAndClear();\r\n  }\r\n});\r\nwindow.addEventListener('beforeunload', function(){\r\n  saveDraftNow();\r\n  if (!window.__submitting && window.__res_noserie) {\r\n    try {\r\n      navigator.sendBeacon(\r\n        window.ENDPOINT,\r\n        new URLSearchParams({ action:'release', noserie: window.__res_noserie })\r\n      );\r\n    } catch(e) {}\r\n  }\r\n});\r\n\r\n// ====================== RESERVA POR PRODUCTO ======================\r\nfunction releasePrev() {\r\n  if (!window.__res_noserie) return;\r\n  $.post(window.ENDPOINT, { action:'release', noserie: window.__res_noserie }, function(){}, 'json');\r\n  window.__res_noserie = null;\r\n}\r\nfunction reserveForProduct(productId){\r\n  $.post(window.ENDPOINT, { action:'reserve_by_product', product_id: productId }, null, 'json')\r\n    .done(function(resp){\r\n      var r = (typeof resp === 'object') ? resp : (function(){ try{return JSON.parse(resp);}catch(e){return {};}})();\r\n      if (r && r.ok) {\r\n        setNoSerieValue(r.noserie);\r\n        window.__res_noserie = r.noserie;\r\n        saveDraftNow();\r\n      } else if (r && r.error === 'no-stock') {\r\n        alert('No hay series disponibles para este producto.');\r\n        setVal('idproducto','',true);\r\n        setNoSerieValue('');\r\n        releasePrev();\r\n        saveDraftNow();\r\n      } else {\r\n        alert('No se pudo reservar la serie. Intenta de nuevo.');\r\n        setNoSerieValue('');\r\n        saveDraftNow();\r\n      }\r\n    })\r\n    .fail(function(){\r\n      alert('Error de comunicación al reservar la serie.');\r\n      setNoSerieValue('');\r\n      saveDraftNow();\r\n    });\r\n}\r\n\r\n// ====================== INICIO DIFERIDO ======================\r\n\r\n// === HARD RESET tras guardado exitoso ===\r\n// Llama esto lo más pronto posible en tu onload (antes o al inicio del setTimeout)\r\n(function hardResetIfNeeded(){\r\n  // Se setea en BeforeProcessAdd o viene por ?clean=1\r\n  var clean = !!(window.CLEAN_ON_LOAD) || /[?&]clean=1(?:&|$)/i.test(location.search);\r\n  if (!clean) return;\r\n\r\n  // Evita que autosave vuelva a meter datos mientras limpiamos\r\n  window.__recovering = true;\r\n  window.SKIP_RECOVERY = true;\r\n  try { sessionStorage.removeItem(window.STORAGE_KEY); } catch(e){}\r\n\r\n  // 1) Reseteo nativo del <form> (limpia inputs HTML)\r\n  var $form = $('form').first();\r\n  if ($form.length && $form[0].reset) { try { $form[0].reset(); } catch(e){} }\r\n\r\n  // 2) Dos pasadas sobre Runner controls (después del montaje)\r\n  function clearAllOnce() {\r\n    (window.FIELDS || []).forEach(function(f){\r\n      // limpia Runner control si existe, si no, el input nativo\r\n      var c = (function(){ try { return Runner.getControl(currentPageId(), f); } catch(e){ return null; }})();\r\n      if (c && typeof c.setControlValue === 'function') {\r\n        try { c.setControlValue(''); if (c.fireEvent) c.fireEvent('change'); } catch(e){}\r\n      } else {\r\n        setVal(f, '', true);\r\n      }\r\n    });\r\n    window.__res_noserie = null;\r\n  }\r\n\r\n  // primera pasada rápida\r\n  clearAllOnce();\r\n\r\n  // segunda pasada con pequeño delay (evita rehidratación tardía)\r\n  setTimeout(clearAllOnce, 220);\r\n\r\n  // 3) loop de refuerzo por ~1 segundo\r\n  var tEnd = Date.now() + 1000;\r\n  (function loop(){\r\n    if (Date.now() > tEnd) {\r\n      // reactivamos autosave\r\n      setTimeout(function(){ window.__recovering = false; }, 120);\r\n      return;\r\n    }\r\n    clearAllOnce();\r\n    setTimeout(loop, 120);\r\n  })();\r\n})();\r\n\r\n\r\n\r\n\r\nsetTimeout(function(){\r\n  var pid      = currentPageId();\r\n  var ctrlProd = getCtrl('idproducto');\r\n  if (!ctrlProd) return;\r\n\r\n  // 0) MARCAR SUBMIT UNIVERSAL\r\n  $(document).on('submit', 'form', function(){\r\n    window.__submitting = true;\r\n    saveDraftNow();\r\n  });\r\n  var SAVE_SELECTOR = \"[data-itemtype='edit_save'] a, [data-itemid='edit_save'] a, a#saveButton1, button#saveButton1\";\r\n  $(document).on('click', SAVE_SELECTOR, function(){\r\n    window.__submitting = true;\r\n    saveDraftNow();\r\n  });\r\n\r\n  // 🚀 MODO LIMPIEZA: si hay éxito, si CLEAN_ON_LOAD=true (inyectado en PHP), o si SKIP_RECOVERY y NO hay error\r\n  window.CLEAN_ON_LOAD = window.CLEAN_ON_LOAD || (getQS('clean') === '1');\r\n  var cleanMode = hasSuccessOrClean() || !!window.CLEAN_ON_LOAD || (window.SKIP_RECOVERY && !hasErrorMessage());\r\n\r\n  if (cleanMode) {\r\n    try { sessionStorage.removeItem(window.STORAGE_KEY); } catch(e){}\r\n    window.SKIP_RECOVERY = true;\r\n    resetAllFieldsUI();\r\n    startForceClearLoop(1000); // refuerzo ~1s\r\n  } else {\r\n    // 1) RECUPERACIÓN DESDE sessionStorage (si hay, no caducó y no hay error)\r\n    var draftJson = sessionStorage.getItem(window.STORAGE_KEY);\r\n    if (draftJson && !window.SKIP_RECOVERY && !hasErrorMessage()) {\r\n      try {\r\n        var draft = JSON.parse(draftJson) || {};\r\n        var now   = Date.now();\r\n        if (draft.timestamp && (now - draft.timestamp > MAX_DRAFT_AGE_MS)) {\r\n          sessionStorage.removeItem(window.STORAGE_KEY);\r\n        } else {\r\n          window.__recovering = true;\r\n          if (draft.idproducto != null && draft.idproducto !== '') {\r\n            setVal('idproducto', draft.idproducto, true);\r\n          }\r\n          Object.keys(draft).forEach(function(k){\r\n            if (k === 'timestamp' || k === 'idproducto') return;\r\n            setVal(k, draft[k], false);\r\n          });\r\n          if (draft.noserie) window.__res_noserie = draft.noserie;\r\n          sessionStorage.removeItem(window.STORAGE_KEY);\r\n          setTimeout(function(){ window.__recovering = false; }, 150);\r\n        }\r\n      } catch(e){\r\n        console.error('Borrador inválido en sessionStorage:', e);\r\n        sessionStorage.removeItem(window.STORAGE_KEY);\r\n      }\r\n    } else if (window.SKIP_RECOVERY) {\r\n      sessionStorage.removeItem(window.STORAGE_KEY);\r\n    }\r\n  }\r\n\r\n  // 2) CAMBIO DE PRODUCTO → RESERVA\r\n  ctrlProd.on('change', function(){\r\n    var productId = ctrlProd.getValue();\r\n    if (!productId) return;\r\n    if (window.__recovering) return;\r\n\r\n    var prevSerie = readVal('noserie');\r\n    if (prevSerie && window.__res_noserie === prevSerie) {\r\n      $.post(window.ENDPOINT, { action:'release', noserie: window.__res_noserie }, function(){}, 'json');\r\n      window.__res_noserie = null;\r\n    } else {\r\n      releasePrev();\r\n    }\r\n    setNoSerieValue('');\r\n    reserveForProduct(productId);\r\n  });\r\n\r\n  // 3) AUTOGUARDADO (timer + por cambios)\r\n  setInterval(function(){ if (!window.__recovering) saveDraftNow(); }, 5000);\r\n\r\n  var selDeleg = window.FIELDS.map(function(f){\r\n    return 'div.r-integrated-field[data-field=\"'+f+'\"][data-pageid=\"'+pid+'\"] input, '+\r\n           'div.r-integrated-field[data-field=\"'+f+'\"][data-pageid=\"'+pid+'\"] select, '+\r\n           'div.r-integrated-field[data-field=\"'+f+'\"][data-pageid=\"'+pid+'\"] textarea';\r\n  }).join(', ');\r\n  $(document).on('change input', selDeleg, makeDebounce(saveDraftNow, 300));\r\n\r\n  // 4) SALIR (cualquier step)\r\n  (function(){\r\n    var BACK_SELECTOR = [\r\n      '#backButton1',\r\n      '#backButton2',\r\n      \"[data-itemtype='edit_back_list'] a\",\r\n      \"[data-itemid='edit_back_list'] a\",\r\n      \"[data-itemtype='edit_close'] a\",\r\n      \"[data-itemid='edit_close'] a\",\r\n      \"a[href$='solicitudes_list.php']\",\r\n      \"a[href*='solicitudes_list.php?']\"\r\n    ].join(', ');\r\n    $(document).on('mousedown click', BACK_SELECTOR, function(){\r\n      window.__submitting = false;\r\n      safeReleaseAndClear();\r\n    });\r\n  })();\r\n\r\n}, 500);\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"
 		},
 		{
 			"eventId": "EVENT_AFTERADD",
@@ -1993,14 +2024,14 @@
 						"c4": {
 							"model": "c3",
 							"items": [
-								"section"
+								"sec_cliente"
 							],
 							"align": "center"
 						},
 						"c": {
 							"model": "c3",
 							"items": [
-								"section1"
+								"sec_venta"
 							],
 							"align": "center"
 						},
@@ -2099,11 +2130,12 @@
 							"section": "",
 							"cells": [
 								{
-									"cell": "c2"
+									"cell": "c2",
+									"colspan": 2
 								},
 								{
-									"cell": "c3",
-									"colspan": 3
+									"cell": "c10",
+									"colspan": 2
 								}
 							]
 						},
@@ -2111,28 +2143,14 @@
 							"section": "",
 							"cells": [
 								{
-									"cell": "c4"
-								},
-								{
-									"cell": "c5",
-									"colspan": 3
-								}
-							]
-						},
-						{
-							"section": "",
-							"cells": [
-								{
-									"cell": "c8"
-								},
-								{
-									"cell": "c9"
-								},
-								{
-									"cell": "c10"
+									"cell": "c4",
+									"colspan": 2
 								},
 								{
 									"cell": "c11"
+								},
+								{
+									"cell": "c3"
 								}
 							]
 						},
@@ -2140,62 +2158,62 @@
 							"section": "",
 							"cells": [
 								{
-									"cell": "c12"
+									"cell": "c9",
+									"colspan": 1
+								},
+								{
+									"cell": "c18"
 								},
 								{
 									"cell": "c13"
 								},
 								{
+									"cell": "c5"
+								}
+							]
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c12",
+									"colspan": 1
+								},
+								{
+									"cell": "c19"
+								},
+								{
 									"cell": "c14"
 								},
 								{
-									"cell": "c15"
+									"cell": "c7"
 								}
 							]
 						},
 						{
 							"cells": [
 								{
-									"cell": "c1"
+									"cell": "c6",
+									"colspan": 1
 								},
 								{
-									"cell": "c"
+									"cell": "c20"
 								},
 								{
-									"cell": "c6"
+									"cell": "c15"
 								},
 								{
-									"cell": "c7"
+									"cell": "c8"
 								}
 							],
 							"section": ""
 						}
 					],
 					"cells": {
-						"c1": {
-							"model": "c1",
-							"items": [
-								"integrated_edit_field8"
-							],
-							"width": "50%"
-						},
-						"c": {
-							"model": "c1",
-							"items": [
-								"integrated_edit_field25"
-							],
-							"width": "50%"
-						},
 						"c2": {
 							"model": "c1",
 							"items": [
 								"integrated_edit_field"
-							]
-						},
-						"c3": {
-							"model": "c1",
-							"items": [
-								"integrated_edit_field19"
 							]
 						},
 						"c4": {
@@ -2204,48 +2222,16 @@
 								"integrated_edit_field20"
 							]
 						},
-						"c5": {
-							"model": "c1",
-							"items": [
-								"integrated_edit_field2"
-							]
-						},
 						"c6": {
 							"model": "c1",
 							"items": [
-								"integrated_edit_field28"
-							],
-							"width": "50%"
-						},
-						"c7": {
-							"model": "c1",
-							"items": [
-								"integrated_edit_field27"
-							],
-							"width": "50%"
-						},
-						"c8": {
-							"model": "c1",
-							"items": [
-								"integrated_edit_field7"
+								"integrated_edit_field8"
 							]
 						},
 						"c9": {
 							"model": "c1",
 							"items": [
-								"integrated_edit_field21"
-							]
-						},
-						"c10": {
-							"model": "c1",
-							"items": [
-								"integrated_edit_field29"
-							]
-						},
-						"c11": {
-							"model": "c1",
-							"items": [
-								"integrated_edit_field22"
+								"integrated_edit_field7"
 							]
 						},
 						"c12": {
@@ -2254,10 +2240,42 @@
 								"integrated_edit_field23"
 							]
 						},
+						"c3": {
+							"model": "c1",
+							"items": []
+						},
+						"c5": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field22"
+							]
+						},
+						"c7": {
+							"model": "c1",
+							"items": []
+						},
+						"c8": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field27"
+							]
+						},
+						"c10": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field19"
+							]
+						},
+						"c11": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field2"
+							]
+						},
 						"c13": {
 							"model": "c1",
 							"items": [
-								"integrated_edit_field24"
+								"integrated_edit_field29"
 							]
 						},
 						"c14": {
@@ -2268,7 +2286,27 @@
 						},
 						"c15": {
 							"model": "c1",
-							"items": []
+							"items": [
+								"integrated_edit_field28"
+							]
+						},
+						"c18": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field21"
+							]
+						},
+						"c19": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field24"
+							]
+						},
+						"c20": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field25"
+							]
 						}
 					},
 					"deferredItems": [],
@@ -2283,15 +2321,15 @@
 							"section": "",
 							"cells": [
 								{
-									"cell": "c4"
+									"cell": "c4",
+									"colspan": 1
 								},
 								{
 									"cell": "c5",
-									"colspan": 2
+									"colspan": 6
 								},
 								{
-									"cell": "c6",
-									"colspan": 2
+									"cell": "c19"
 								}
 							]
 						},
@@ -2299,58 +2337,95 @@
 							"section": "",
 							"cells": [
 								{
-									"cell": "c9"
+									"cell": "c9",
+									"colspan": 1
 								},
 								{
-									"cell": "c10"
+									"cell": "c6",
+									"colspan": 2
 								},
 								{
-									"cell": "c11"
+									"cell": "c29",
+									"colspan": 2
 								},
 								{
-									"cell": "c12"
+									"cell": "c25"
 								},
 								{
-									"cell": "c13"
+									"cell": "c26"
+								},
+								{
+									"cell": "c20"
 								}
 							]
 						},
 						{
+							"section": "",
 							"cells": [
 								{
-									"cell": "c1"
+									"cell": "c14"
 								},
 								{
-									"cell": "c2"
+									"cell": "c15"
 								},
 								{
-									"cell": "c7"
+									"cell": "c16",
+									"colspan": 2
 								},
 								{
-									"cell": "c3"
+									"cell": "c17",
+									"colspan": 3
 								},
 								{
-									"cell": "c8"
+									"cell": "c18"
 								}
-							],
-							"section": ""
+							]
 						},
 						{
 							"section": "",
 							"cells": [
 								{
 									"cell": "c",
-									"colspan": 5
+									"colspan": 8
 								}
 							]
 						}
 					],
 					"cells": {
-						"c1": {
+						"c4": {
 							"model": "c1",
 							"items": [
-								"integrated_edit_field17"
+								"integrated_edit_field10"
+							],
+							"align": "left"
+						},
+						"c9": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field16"
+							],
+							"width": "40%"
+						},
+						"c19": {
+							"model": "c1",
+							"items": []
+						},
+						"c20": {
+							"model": "c1",
+							"items": []
+						},
+						"c5": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field11"
 							]
+						},
+						"c6": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field13"
+							],
+							"width": "30%"
 						},
 						"c": {
 							"model": "c1",
@@ -2359,67 +2434,43 @@
 							],
 							"align": "center"
 						},
-						"c2": {
+						"c14": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field17"
+							]
+						},
+						"c15": {
 							"model": "c1",
 							"items": [
 								"integrated_edit_field18"
 							]
 						},
-						"c3": {
+						"c16": {
 							"model": "c1",
 							"items": []
 						},
-						"c4": {
-							"model": "c1",
-							"items": [
-								"integrated_edit_field10"
-							],
-							"align": "left"
-						},
-						"c5": {
-							"model": "c1",
-							"items": [
-								"integrated_edit_field11"
-							],
-							"align": "left"
-						},
-						"c6": {
+						"c17": {
 							"model": "c1",
 							"items": []
 						},
-						"c7": {
+						"c18": {
 							"model": "c1",
 							"items": []
 						},
-						"c8": {
-							"model": "c1",
-							"items": []
-						},
-						"c9": {
-							"model": "c1",
-							"items": [
-								"integrated_edit_field16"
-							]
-						},
-						"c10": {
-							"model": "c1",
-							"items": [
-								"integrated_edit_field13"
-							]
-						},
-						"c11": {
+						"c29": {
 							"model": "c1",
 							"items": [
 								"integrated_edit_field14"
 							]
 						},
-						"c12": {
+						"c25": {
 							"model": "c1",
 							"items": [
 								"integrated_edit_field15"
 							]
 						},
-						"c13": {
+						"c26": {
 							"model": "c1",
 							"items": [
 								"integrated_edit_field12"
@@ -2546,39 +2597,6 @@
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
-				"section": {
-					"type": "section",
-					"title": {
-						"type": 0,
-						"text": "Datos del cliente"
-					},
-					"location": "section",
-					"bsStyle": "default",
-					"panelType": 3,
-					"headerBg": "",
-					"headerColor": "",
-					"bodyBg": "",
-					"bodyColor": "",
-					"panelBorder": null,
-					"borderColor": ""
-				},
-				"section1": {
-					"type": "section",
-					"title": {
-						"type": 0,
-						"text": "Datos de la venta"
-					},
-					"location": "section1",
-					"bsStyle": "default",
-					"panelType": 3,
-					"headerBg": "",
-					"headerColor": "",
-					"bodyBg": "",
-					"bodyColor": "",
-					"panelBorder": null,
-					"borderColor": "",
-					"initiallyClosed": true
-				},
 				"integrated_edit_field19": {
 					"field": "noserie",
 					"type": "integrated_edit_field",
@@ -2699,19 +2717,53 @@
 				"section2": {
 					"type": "section",
 					"title": {
-						"type": 0,
-						"text": "Datos de la entrega"
+						"text": "<i class=\"fa-solid fa-location-dot\" style=\"font-size:1.5em; color:#fff;\"></i> Dirección de Entrega\n",
+						"type": 0
 					},
 					"location": "section2",
 					"bsStyle": "default",
 					"panelType": 3,
-					"initiallyClosed": true,
 					"headerBg": "",
 					"headerColor": "",
 					"bodyBg": "",
 					"bodyColor": "",
 					"panelBorder": null,
-					"borderColor": ""
+					"borderColor": "",
+					"initiallyClosed": true
+				},
+				"sec_cliente": {
+					"type": "section",
+					"title": {
+						"text": "<i class=\"fa-solid fa-user\" style=\"font-size:1.5em; color:#fff;\"></i> Datos del Cliente\n\n",
+						"type": 0
+					},
+					"location": "section",
+					"bsStyle": "default",
+					"panelType": 3,
+					"headerBg": "",
+					"headerColor": "",
+					"bodyBg": "",
+					"bodyColor": "",
+					"panelBorder": null,
+					"borderColor": "",
+					"initiallyClosed": true
+				},
+				"sec_venta": {
+					"type": "section",
+					"title": {
+						"text": "<i class=\"fa-solid fa-cart-shopping\" style=\"font-size:1.5em; color:#fff;\"></i> Información de la Venta\n",
+						"type": 0
+					},
+					"location": "section1",
+					"bsStyle": "default",
+					"panelType": 3,
+					"headerBg": "",
+					"headerColor": "",
+					"bodyBg": "",
+					"bodyColor": "",
+					"panelBorder": null,
+					"borderColor": "",
+					"initiallyClosed": true
 				}
 			},
 			"dbProps": {},
@@ -2723,7 +2775,7 @@
 			"imageBgColor": "#f2f2f2",
 			"controlsBgColor": "white",
 			"imagePosition": "right",
-			"pageCSS": "/* Put  your custom CSS code here */\n\n\n\n/* ========================================================= */\n/* VARIABLES DE COLOR */\n/* ========================================================= */\n:root {\n    --color-elegante: #FFFFFF; /* Texto Blanco para contrastar con el fondo oscuro */\n    --naranja-degradado-inicio: #03478A; /* Naranja Suave (Light Salmon) */\n    --naranja-degradado-fin: #6D98C2; /* Naranja Medio (Coral) */\n    --color-borde-base: #FF7F50; /* Color simple para el borde base */\n}\n\n/* ========================================================= */\n/* 1. Fondo de la Página: Degradado Azul Cielo (Se mantiene) */\n/* ========================================================= */\nbody, .container-fluid {\nbackground: linear-gradient(180deg, #E0F7FA 0%, #B3E5FC 100%) !important;    min-height: 100vh;\n}\n\n/* ========================================================= */\n/* 2. Estilo de las Secciones: Efecto Tarjeta/Sombreado (Se mantiene) */\n/* ========================================================= */\n.panel, .rnr-c-body, .rnr-c-grid {\n    background-color: #FFFFFF !important; \n    border: none !important; \n    border-radius: 12px !important; \n    padding: 20px;\n    margin-bottom: 25px; \n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), \n                0 2px 6px rgba(0, 0, 0, 0.05) !important; \n}\n\n/* ========================================================= */\n/* 3. Estilo de Encabezados de Sección (EL CAMBIO PRINCIPAL) */\n/* ========================================================= */\n.panel-heading, .rnr-c-head {\n    /* Aplicamos el degradado al fondo completo del encabezado */\n    background: linear-gradient(to right, var(--naranja-degradado-inicio), var(--naranja-degradado-fin)) !important;\n    \n    /* El texto del título ahora es blanco para contrastar con el fondo naranja */\n    color: var(--color-elegante) !important; \n    \n    font-weight: 600;\n    \n    /* Mantenemos el centrado vertical */\n    display: flex;\n    align-items: center;\n    height: 40px; /* Aseguramos una altura suficiente */\n    \n    /* Eliminamos el borde degradado y aplicamos un borde simple y fino abajo */\n    border-bottom: 1px solid var(--color-borde-base) !important; \n    border-image-source: none !important; /* Desactivar la propiedad border-image anterior */\n    \n    /* Ajustes de relleno/bordes para que el degradado se vea bien */\n    padding: 0 15px !important; \n    border-top-left-radius: 12px !important; /* Mantenemos el radio del panel superior */\n    border-top-right-radius: 12px !important;\n}\n\n/* ========================================================= */\n/* 3. Estilo de HOVER: Efecto de Elevación/Intensificación    */\n/* ========================================================= */\n.panel:hover, .rnr-c-body:hover, .rnr-c-grid:hover {\n    /* Nueva sombra más intensa y \"elevada\" */\n    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25), \n                0 4px 10px rgba(0, 0, 0, 0.1) !important; \n    \n    /* Pequeño movimiento hacia arriba para dar más sensación de elevación (opcional) */\n    transform: translateY(-3px); \n}\n\n\n\n/* 4. Estilo de los Inputs (Se mantiene) */\n.form-control {\n    border-radius: 8px !important; \n    border: 1px solid #e0e0e0 !important;\n}\n.form-control:focus {\n    border-color: #48C9B0 !important; \n    box-shadow: 0 0 0 0.2rem rgba(72, 201, 176, 0.25) !important;\n}",
+			"pageCSS": "/* Put  your custom CSS code here */\n\n\n\n/* ========================================================= */\n/* VARIABLES DE COLOR */\n/* ========================================================= */\n:root {\n    --color-elegante: #FFFFFF; /* Texto Blanco para contrastar con el fondo oscuro */\n    --naranja-degradado-inicio: #03478A; /* Naranja Suave (Light Salmon) */\n    --naranja-degradado-fin: #6D98C2; /* Naranja Medio (Coral) */\n    --color-borde-base: #FF7F50; /* Color simple para el borde base */\n}\n\n/* ========================================================= */\n/* 1. Fondo de la Página: Degradado Azul Cielo (Se mantiene) */\n/* ========================================================= */\nbody, .container-fluid {\nbackground: linear-gradient(180deg, #E0F7FA 0%, #B3E5FC 100%) !important;    min-height: 100vh;\n}\n\n/* ========================================================= */\n/* 2. Estilo de las Secciones: Efecto Tarjeta/Sombreado (Se mantiene) */\n/* ========================================================= */\n.panel, .rnr-c-body, .rnr-c-grid {\n    background-color: #FFFFFF !important; \n    border: none !important; \n    border-radius: 12px !important; \n    padding: 20px;\n    margin-bottom: 25px; \n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), \n                0 2px 6px rgba(0, 0, 0, 0.05) !important; \n                \n    /* 🔑 CAMBIO CLAVE: Agrega 'transform' a la transición */\n    transition: box-shadow 0.3s ease-in-out, \n                transform 0.3s ease-in-out; /* Transición para el movimiento y escala */            \n                \n}\n\n/* ========================================================= */\n/* 3. Estilo de Encabezados de Sección (EL CAMBIO PRINCIPAL) */\n/* ========================================================= */\n.panel-heading, .rnr-c-head {\n    /* Aplicamos el degradado al fondo completo del encabezado */\n    background: linear-gradient(to right, var(--naranja-degradado-inicio), var(--naranja-degradado-fin)) !important;\n    \n    /* El texto del título ahora es blanco para contrastar con el fondo naranja */\n    color: var(--color-elegante) !important; \n    \n    font-weight: 600;\n    \n    /* Mantenemos el centrado vertical */\n    display: flex;\n    align-items: center;\n    height: 40px; /* Aseguramos una altura suficiente */\n    \n    /* Eliminamos el borde degradado y aplicamos un borde simple y fino abajo */\n    border-bottom: 1px solid var(--color-borde-base) !important; \n    border-image-source: none !important; /* Desactivar la propiedad border-image anterior */\n    \n    /* Ajustes de relleno/bordes para que el degradado se vea bien */\n    padding: 0 15px !important; \n    border-top-left-radius: 12px !important; /* Mantenemos el radio del panel superior */\n    border-top-right-radius: 12px !important;\n}\n\n/* ========================================================= */\n/* 3. Estilo de HOVER: Efecto de Elevación/Intensificación    */\n/* ========================================================= */\n.panel:hover, .rnr-c-body:hover, .rnr-c-grid:hover {\n    /* Nueva sombra más intensa y \"elevada\" */\n    box-shadow: 0 15px 400px rgba(0, 0, 0, 0.3), \n                0 5px 15px rgba(0, 0, 0, 0.1) !important; \n    \n    /* Pequeño movimiento hacia arriba para dar más sensación de elevación (opcional) */\n    transform: translateY(-5px) scale(1.005); \n}\n\n\n\n/* 4. Estilo de los Inputs (Se mantiene) */\n.form-control {\n    border-radius: 8px !important; \n    border: 1px solid #e0e0e0 !important;\n}\n.form-control:focus {\n    border-color: #48C9B0 !important; \n    box-shadow: 0 0 0 0.2rem rgba(72, 201, 176, 0.25) !important;\n}\n\n/* Aplica solo a formularios con esas secciones */\n.panel.panel-default.form-section > .panel-body { display: none; }\n\n.panel.panel-default.form-section > .panel-heading:hover {\n  cursor: pointer;\n  filter: brightness(0.98);\n}\n\n.panel-collapse.no-bs-trans {\n  transition: none !important;\n}\n",
 			"listTotals": 1,
 			"customHtml": "",
 			"title": {}
@@ -4397,13 +4449,7 @@
 									"cell": "headcell_field12"
 								},
 								{
-									"cell": "headcell_field16"
-								},
-								{
 									"cell": "headcell_field"
-								},
-								{
-									"cell": "headcell_field1"
 								},
 								{
 									"cell": "headcell_field7"
@@ -4447,13 +4493,7 @@
 									"cell": "cell_field12"
 								},
 								{
-									"cell": "cell_field16"
-								},
-								{
 									"cell": "cell_field"
-								},
-								{
-									"cell": "cell_field1"
 								},
 								{
 									"cell": "cell_field3"
@@ -4476,7 +4516,7 @@
 							"cells": [
 								{
 									"cell": "cell_dpreview",
-									"colspan": 15
+									"colspan": 13
 								}
 							],
 							"section": "body"
@@ -4504,13 +4544,7 @@
 									"cell": "footcell_field12"
 								},
 								{
-									"cell": "footcell_field16"
-								},
-								{
 									"cell": "footcell_field"
-								},
-								{
-									"cell": "footcell_field1"
 								},
 								{
 									"cell": "footcell_field3"
@@ -4596,28 +4630,6 @@
 							"items": [],
 							"columnName": "field",
 							"field": "estatus"
-						},
-						"headcell_field16": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field45"
-							],
-							"field": "plazo",
-							"columnName": "field"
-						},
-						"cell_field16": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field16"
-							],
-							"field": "plazo",
-							"columnName": "field"
-						},
-						"footcell_field16": {
-							"model": "footcell_field",
-							"items": [],
-							"columnName": "field",
-							"field": "plazo"
 						},
 						"headcell_checkbox": {
 							"model": "headcell_checkbox",
@@ -4711,28 +4723,6 @@
 							"columnName": "",
 							"field": ""
 						},
-						"headcell_field1": {
-							"model": "headcell_field",
-							"items": [
-								"grid_field_label1"
-							],
-							"field": "maps_url",
-							"columnName": "field"
-						},
-						"cell_field1": {
-							"model": "cell_field",
-							"items": [
-								"grid_field1"
-							],
-							"field": "maps_url",
-							"columnName": "field"
-						},
-						"footcell_field1": {
-							"model": "footcell_field",
-							"items": [],
-							"columnName": "field",
-							"field": "maps_url"
-						},
 						"headcell_field7": {
 							"model": "headcell_field",
 							"items": [
@@ -4747,7 +4737,10 @@
 								"grid_field2"
 							],
 							"field": "estatusentrega",
-							"columnName": "field"
+							"columnName": "field",
+							"align": "center",
+							"bold": true,
+							"underline": true
 						},
 						"footcell_field3": {
 							"model": "footcell_field",
@@ -4970,16 +4963,6 @@
 					"type": "grid_field_label",
 					"field": "estatus"
 				},
-				"simple_grid_field16": {
-					"field": "plazo",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": true
-				},
-				"simple_grid_field45": {
-					"type": "grid_field_label",
-					"field": "plazo"
-				},
 				"grid_checkbox": {
 					"type": "grid_checkbox"
 				},
@@ -5049,16 +5032,6 @@
 				},
 				"inline_cancel_all": {
 					"type": "inline_cancel_all"
-				},
-				"grid_field1": {
-					"field": "maps_url",
-					"type": "grid_field",
-					"inlineEdit": false,
-					"inlineAdd": false
-				},
-				"grid_field_label1": {
-					"type": "grid_field_label",
-					"field": "maps_url"
 				},
 				"-4": {
 					"type": "-"
@@ -5201,7 +5174,7 @@
 			"imageBgColor": "#f2f2f2",
 			"controlsBgColor": "white",
 			"imagePosition": "right",
-			"pageCSS": "/* Put  your custom CSS code here */\n\n.table {\n    font-family: 'Arial', sans-serif !important;\n    font-size: 12px !important;\n    border-collapse: collapse !important;\n}",
+			"pageCSS": "/* Put  your custom CSS code here */\n/*\n.table {\n    font-family: 'Arial', sans-serif !important;\n    font-size: 12px !important;\n    border-collapse: collapse !important;\n}*/\n\n\n/* ========================================================= */\n/* VARIABLES DE COLOR */\n/* ========================================================= */\n:root {\n    /* Color de acento para botones, foco y texto */\n    --color-acento: #48C9B0; /* Turquesa/Menta */ \n    --color-elegante: #1C334A; /* Azul Marino Oscuro */\n}\n\n/* ========================================================= */\n/* 1. Fondo de la Página: Degradado Azul Cielo Intenso       */\n/* ========================================================= */\nbody, .container-fluid {\n    /* Mismo fondo azul que usamos en el formulario de agregar */\n    background: linear-gradient(180deg, #E0F7FA 0%, #B3E5FC 100%) !important; \n    min-height: 100vh;\n}\n\n/* ========================================================= */\n/* 2. Contenedor de la Lista (El \"Body\" principal de la tabla) */\n/* Aplicamos el efecto de Tarjeta y Sombra a este contenedor */\n/* El selector depende del tema, pero '.rnr-b-grid' suele ser el contenedor de la tabla */\n.rnr-body .rnr-c-body, \n.rnr-b-grid, \n.rnr-c-grid,\n.panel-default {\n    background-color: #FFFFFF !important; \n    border: none !important; \n    border-radius: 12px !important; \n    \n    /* Sombreado elegante de la tarjeta */\n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), \n                0 2px 6px rgba(0, 0, 0, 0.05) !important; \n}\n\n/* 3. Encabezados y Barras de Herramientas (Parte superior e inferior) */\n/* Limpiamos el diseño de los paneles que rodean la tabla */\n.rnr-c-hsucc, .rnr-c-message, .rnr-c-hcell {\n    background-color: transparent !important;\n    border: none !important;\n}\n\n/* 4. Estilo de las Filas de Datos (Efecto Hover de Elevación) */\n/* Le da interactividad a la tabla */\n.rnr-body tr {\n    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;\n}\n\n.rnr-body tr:hover {\n    background-color: #fcfcfc !important; /* Ligeramente más claro al pasar el mouse */\n    \n    /* Sombra y elevación sutil para destacar la fila */\n    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1), \n                0 1px 3px rgba(0, 0, 0, 0.05) !important;\n    transform: translateY(-1px);\n}\n\n/* 5. Asegurar que las celdas del encabezado de la tabla se vean bien */\n.rnr-c-grid th {\n    background-color: #f7f7f7 !important; /* Fondo sutil para el header de la tabla */\n    color: var(--color-elegante) !important;\n    font-weight: 600;\n    border-bottom: 2px solid var(--color-acento) !important;\n}\n\n/* 6. Barras de Paginación y Búsqueda */\n.rnr-bottom .panel, .rnr-c-search, .rnr-c-top, .rnr-bottom-nav {\n    background-color: transparent !important;\n    border: none !important;\n    box-shadow: none !important; /* Quitamos la sombra a estos elementos */\n}\n\n\n\n/* ========================================================= */\n/* ESTILOS PARA CELDAS DE ESTADO (FORMATO CONDICIONAL)       */\n/* ========================================================= */\n\n/* Clase base para el estilo de \"badge\" o \"tag\" */\n.status-badge {\n    display: inline-block; /* Para que tome el tamaño del contenido */\n    padding: 5px 10px; /* Relleno interno */\n    border-radius: 20px; /* MUY REDONDEADO para el efecto de píldora */\n    font-weight: bold;\n    font-size: 0.85em;\n    text-align: center;\n    min-width: 80px; /* Ancho mínimo para que no se vea muy pequeño */\n    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Sombra sutil */\n}\n\n/* Estado: Entregado (Verde) */\n.status-entregado {\n    background-color: #D4EDDA; /* Verde pastel claro */\n    color: #155724; /* Texto verde oscuro */\n    border: 1px solid #C3E6CB; /* Borde sutil */\n}\n\n/* Estado: Pendiente (Amarillo) */\n.status-pendiente {\n    background-color: #FFF3CD; /* Amarillo pastel claro */\n    color: #856404; /* Texto amarillo oscuro */\n    border: 1px solid #FFEEBA;\n}\n\n/* Estado: Cancelado (Rojo) */\n.status-cancelado {\n    background-color: #F8D7DA; /* Rojo pastel claro */\n    color: #721C24; /* Texto rojo oscuro */\n    border: 1px solid #F5C6CB;\n}\n\n/* Agrega más estados según sea necesario */\n/* Estado: En Proceso (Azul) */\n.status-en-proceso {\n    background-color: #D1ECF1; /* Azul pastel claro */\n    color: #0C5460; /* Texto azul oscuro */\n    border: 1px solid #BEE5EB;\n}\n\n\n/* ========================================================= */\n/* ELIMINAR SEPARADORES DE COLUMNA (LÍNEAS VERTICALES)        */\n/* ========================================================= */\n/* Mantén líneas horizontales ligeras, borra las verticales */\n.rnr-gridtable td,\n.rnr-gridtable th {\n  border-left: none !important;\n  border-right: none !important;\n  box-shadow: none !important; /* algunos temas usan sombras como divisores */\n}\n\n/* Si quieres una línea horizontal sutil */\n.rnr-gridtable td {\n  border-top: 1px solid #eee !important;\n}\n.rnr-gridtable thead th {\n  border-bottom: 1px solid #e6e6e6 !important;\n}\n",
 			"listTotals": 1,
 			"title": {}
 		},
