@@ -1356,7 +1356,7 @@
 		{
 			"eventId": "EVENT_JS_ONLOAD",
 			"pageType": "edit",
-			"code": "/*// ====================== CONFIG / GLOBALS (EDIT) ======================\r\nwindow.ENDPOINT = 'serial_reserve.php';\r\n\r\n// Campos que quieres autoguardar\r\nwindow.EDIT_FIELDS = [\r\n  'idcliente','idproducto','idplan','orden','plazo','rfc','idcli',\r\n  'estado','ciudad','colonia','calle','numeroext','numeroint','noserie'\r\n];\r\n\r\n// Contexto del servidor (inyectado en BeforeShowEdit)\r\nvar EDIT_CTX = (pageObj.getProxy && pageObj.getProxy().edit_ctx) || {};\r\nvar EDIT_ID  = EDIT_CTX.idsolicitud || '';\r\nvar CURR_SERIE_DB = EDIT_CTX.noserie_actual || '';\r\n\r\n// Llave de autosave **por registro**\r\nwindow.EDIT_STORAGE_KEY = 'solicitud_vnp_edit_draft_' + EDIT_ID;\r\n\r\n// Banderas\r\nwindow.__edit_recovering = false;\r\nwindow.__edit_submitting = false;\r\nwindow.__res_noserie     = null;   // reserva en curso del usuario (si cambia producto)\r\nwindow.EDIT_SKIP_RECOVERY = window.EDIT_SKIP_RECOVERY || false;\r\n\r\n\r\n  var px = (pageObj.getProxy && pageObj.getProxy()) || {};\r\n\r\n  // 1) Mensaje que viene de PHP en BeforeShowEdit (para popup)\r\n  if (px.popup_msg && px.popup_msg.text) {\r\n    var t = (px.popup_msg.type === 'success') ? 'success' : 'error';\r\n    if (Runner && Runner.displayPopupMessage) {\r\n      Runner.displayPopupMessage(px.popup_msg.text, t);\r\n    } else {\r\n      alert(px.popup_msg.text);\r\n    }\r\n  }\r\n\r\n  // 2) Mensajes que regresan en la respuesta AJAX de Guardar\r\n  pageObj.on('afterSave', function(resp){\r\n    if (!resp) return;\r\n    if (resp.success === false && resp.message) {\r\n      if (Runner && Runner.displayPopupMessage) {\r\n        Runner.displayPopupMessage(resp.message, 'error');\r\n      } else {\r\n        alert(resp.message);\r\n      }\r\n    } else if (resp.success && resp.message) {\r\n      if (Runner && Runner.displayPopupMessage) {\r\n        Runner.displayPopupMessage(resp.message, 'success');\r\n      }\r\n    }\r\n  });\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n// ====================== HELPERS ======================\r\nfunction currentPageId() {\r\n  if (typeof window.pageid !== 'undefined' && window.pageid) return window.pageid;\r\n  var pid = $('[data-pageid]').first().attr('data-pageid');\r\n  return pid || '';\r\n}\r\nfunction getCtrl(field) {\r\n  try { return Runner.getControl(currentPageId(), field); } catch(e) { return null; }\r\n}\r\nfunction readVal(field) {\r\n  var c = getCtrl(field);\r\n  if (c && typeof c.getValue === 'function') return c.getValue();\r\n  var pid = currentPageId();\r\n  var $id = $('#value_'+field+'_'+pid);\r\n  if ($id.length) return $id.val();\r\n  var $w = $('div.r-integrated-field[data-field=\"'+field+'\"][data-pageid=\"'+pid+'\"]');\r\n  if ($w.length) {\r\n    var $inp = $w.find('input,select,textarea').first();\r\n    if ($inp.length) return $inp.val();\r\n  }\r\n  var $n = $('[name=\"'+field+'\"]');\r\n  if ($n.length) return $n.val();\r\n  return '';\r\n}\r\nfunction setVal(field, value, fireChange) {\r\n  var c = getCtrl(field);\r\n  if (c && typeof c.setControlValue === 'function') {\r\n    c.setControlValue(value);\r\n    if (fireChange && typeof c.fireEvent === 'function') c.fireEvent('change');\r\n    return true;\r\n  }\r\n  var pid = currentPageId();\r\n  var $id = $('#value_'+field+'_'+pid);\r\n  if ($id.length) {\r\n    $id.val(value).trigger('change');\r\n    if (fireChange) $id.trigger('keyup');\r\n    return true;\r\n  }\r\n  var $w = $('div.r-integrated-field[data-field=\"'+field+'\"][data-pageid=\"'+pid+'\"]');\r\n  if ($w.length) {\r\n    var $inp = $w.find('input,select,textarea').first();\r\n    if ($inp.length) {\r\n      $inp.val(value).trigger('change');\r\n      if (fireChange) $inp.trigger('keyup');\r\n      return true;\r\n    }\r\n  }\r\n  return false;\r\n}\r\nfunction setNoSerieValue(noserie) {\r\n  var ok = setVal('noserie', noserie, true);\r\n  if (ok) return;\r\n  var tries = 0, max = 40, delay = 150;\r\n  (function retry(){\r\n    tries++;\r\n    if (setVal('noserie', noserie, true)) return;\r\n    if (tries >= max) return;\r\n    setTimeout(retry, delay);\r\n  })();\r\n}\r\nfunction getQS(name){\r\n  var m = new RegExp('[?&]'+name+'=([^&]*)').exec(location.search);\r\n  return m ? decodeURIComponent(m[1].replace(/\\+/g,' ')) : null;\r\n}\r\nfunction hasErrorMessage() {\r\n  var $msg = $('[data-itemtype=\"edit_message\"].alert, .alert[data-itemtype=\"edit_message\"]');\r\n  if (!$msg.length) return false;\r\n  var txt = $.trim($msg.text() || '');\r\n  if (!txt) return false;\r\n  return $msg.is('.alert-danger, .alert-error') || true;\r\n}\r\n\r\n// ====================== AUTOSAVE (por registro) ======================\r\nfunction buildEditDraft() {\r\n  var d = {};\r\n  (window.EDIT_FIELDS || []).forEach(function(f){\r\n    var v = readVal(f);\r\n    if (v !== null && v !== undefined && v !== '') d[f] = v;\r\n  });\r\n  d.timestamp = Date.now();\r\n  return d;\r\n}\r\nfunction saveEditDraftNow(){\r\n  try{ sessionStorage.setItem(window.EDIT_STORAGE_KEY, JSON.stringify(buildEditDraft())); }catch(e){}\r\n}\r\nfunction debounce(fn, ms){ var t=0; return function(){ var a=arguments,s=this; if(t){try{clearTimeout(t);}catch(e){}} t=setTimeout(function(){ t=0; try{fn.apply(s,a);}catch(e){} }, ms||200); }; }\r\nvar saveDraftDebounced = debounce(saveEditDraftNow, 300);\r\n\r\n// ====================== Reserva por producto (EDIT) ======================\r\nfunction releasePrev(){\r\n  if (!window.__res_noserie) return;\r\n  $.post(window.ENDPOINT, { action:'release', noserie: window.__res_noserie }, function(){}, 'json');\r\n  window.__res_noserie = null;\r\n}\r\nfunction reserveForProduct(productId){\r\n  $.post(window.ENDPOINT, { action:'reserve_by_product', product_id: productId }, null, 'json')\r\n    .done(function(resp){\r\n      var r = (typeof resp === 'object') ? resp : (function(){ try{return JSON.parse(resp);}catch(e){return {};}})();\r\n      if (r && r.ok) {\r\n        setNoSerieValue(r.noserie);\r\n        window.__res_noserie = r.noserie;\r\n        saveEditDraftNow();\r\n      } else if (r && r.error === 'no-stock') {\r\n        alert('No hay series disponibles para este producto.');\r\n        setVal('idproducto','',true);\r\n        setNoSerieValue('');\r\n        releasePrev();\r\n        saveEditDraftNow();\r\n      } else {\r\n        alert('No se pudo reservar la serie. Intenta de nuevo.');\r\n        setNoSerieValue('');\r\n        saveEditDraftNow();\r\n      }\r\n    })\r\n    .fail(function(){\r\n      alert('Error de comunicación al reservar la serie.');\r\n      setNoSerieValue('');\r\n      saveEditDraftNow();\r\n    });\r\n}\r\n\r\n// ====================== Inicio diferido ======================\r\nsetTimeout(function(){\r\n  var pid      = currentPageId();\r\n  var ctrlProd = getCtrl('idproducto');\r\n  if (!ctrlProd) return;\r\n\r\n  // 0) Marcar submit (para no limpiar al salir si es guardado)\r\n  $(document).on('submit', 'form', function(){\r\n    window.__edit_submitting = true;\r\n    saveEditDraftNow();\r\n  });\r\n  var SAVE_SELECTOR = \"[data-itemtype='edit_save'] a, [data-itemid='edit_save'] a, a#saveButton1, button#saveButton1\";\r\n  $(document).on('click', SAVE_SELECTOR, function(){\r\n    window.__edit_submitting = true;\r\n    saveEditDraftNow();\r\n  });\r\n\r\n  // 1) Modo limpieza tras éxito o entrada limpia\r\n  var cleanMode = !!(window.EDIT_CLEAN_ON_LOAD) || (getQS('clean') === '1') || !!window.EDIT_SKIP_RECOVERY;\r\n  if (cleanMode) {\r\n    try{ sessionStorage.removeItem(window.EDIT_STORAGE_KEY); }catch(e){}\r\n    // En EDIT **no** se “blanquea” el formulario: se deja el estado del servidor.\r\n    // Sólo desactivamos la recuperación.\r\n  } else {\r\n    // 2) Recuperación desde sessionStorage si hubo error\r\n    var draftJson = sessionStorage.getItem(window.EDIT_STORAGE_KEY);\r\n    if (draftJson && !hasErrorMessage()) {\r\n      try {\r\n        var d = JSON.parse(draftJson)||{};\r\n        var now = Date.now();\r\n        // 2 horas por consistencia\r\n        if (d.timestamp && (now - d.timestamp > 2*60*60*1000)) {\r\n          sessionStorage.removeItem(window.EDIT_STORAGE_KEY);\r\n        } else {\r\n          window.__edit_recovering = true;\r\n          // Producto primero\r\n          if (d.idproducto != null && d.idproducto !== '') {\r\n            setVal('idproducto', d.idproducto, true);\r\n          }\r\n          // Resto\r\n          Object.keys(d).forEach(function(k){\r\n            if (k==='timestamp' || k==='idproducto') return;\r\n            setVal(k, d[k], false);\r\n          });\r\n          // Si había una serie en el draft, tómala como “visual”\r\n          if (d.noserie) window.__res_noserie = d.noserie;\r\n\r\n          sessionStorage.removeItem(window.EDIT_STORAGE_KEY);\r\n          setTimeout(function(){ window.__edit_recovering=false; }, 150);\r\n        }\r\n      } catch(e) {\r\n        sessionStorage.removeItem(window.EDIT_STORAGE_KEY);\r\n      }\r\n    } else if (hasErrorMessage()) {\r\n      // si el servidor ya reinyectó valores en HTML, no hagas nada.\r\n      // (tu BeforeShowEdit ya los puso por proxy)\r\n    }\r\n  }\r\n\r\n  // 3) Cambio de producto → reservar serie (comparando con la serie actual de DB)\r\n  ctrlProd.on('change', function(){\r\n    var productId = ctrlProd.getValue();\r\n    if (!productId) return;\r\n    if (window.__edit_recovering) return;\r\n\r\n    // Si ya había serie reservada en esta sesión, suéltala\r\n    releasePrev();\r\n\r\n    // Limpia el campo noserie en UI (no editable, pero visible)\r\n    setNoSerieValue('');\r\n\r\n    // Si el usuario no cambió efectivamente la serie (p.ej. regresa al mismo producto),\r\n    // no impide reservar; el endpoint decidirá la primera libre.\r\n    reserveForProduct(productId);\r\n  });\r\n\r\n  // 4) Autosave periódico y por cambio\r\n  setInterval(function(){ if(!window.__edit_recovering) saveEditDraftNow(); }, 5000);\r\n\r\n  var selDeleg = (window.EDIT_FIELDS || []).map(function(f){\r\n    return 'div.r-integrated-field[data-field=\"'+f+'\"][data-pageid=\"'+pid+'\"] input, '+\r\n           'div.r-integrated-field[data-field=\"'+f+'\"][data-pageid=\"'+pid+'\"] select, '+\r\n           'div.r-integrated-field[data-field=\"'+f+'\"][data-pageid=\"'+pid+'\"] textarea';\r\n  }).join(', ');\r\n  $(document).on('change input', selDeleg, saveDraftDebounced);\r\n\r\n  // 5) Salidas (volver/cerrar) → liberar reserva y limpiar draft\r\n  (function(){\r\n    var BACK_SELECTOR = [\r\n      '#backButton1',\r\n      '#backButton2',\r\n      \"[data-itemtype='edit_back_list'] a\",\r\n      \"[data-itemid='edit_back_list'] a\",\r\n      \"[data-itemtype='edit_close'] a\",\r\n      \"[data-itemid='edit_close'] a\",\r\n      \"a[href$='solicitudes_list.php']\",\r\n      \"a[href*='solicitudes_list.php?']\"\r\n    ].join(', ');\r\n    function safeReleaseAndClear(){\r\n      try{\r\n        if (window.__res_noserie) {\r\n          navigator.sendBeacon(window.ENDPOINT, new URLSearchParams({action:'release', noserie: window.__res_noserie}));\r\n          window.__res_noserie = null;\r\n        }\r\n        sessionStorage.removeItem(window.EDIT_STORAGE_KEY);\r\n      }catch(e){}\r\n    }\r\n    $(document).on('mousedown click', BACK_SELECTOR, function(){\r\n      window.__edit_submitting = false;\r\n      safeReleaseAndClear();\r\n    });\r\n\r\n    window.addEventListener('pagehide', function(){\r\n      if (!window.__edit_submitting) {\r\n        try{\r\n          if (window.__res_noserie) {\r\n            navigator.sendBeacon(window.ENDPOINT, new URLSearchParams({action:'release', noserie: window.__res_noserie}));\r\n            window.__res_noserie = null;\r\n          }\r\n          sessionStorage.removeItem(window.EDIT_STORAGE_KEY);\r\n        }catch(e){}\r\n      }\r\n    });\r\n    window.addEventListener('beforeunload', function(){\r\n      if (!window.__edit_submitting && window.__res_noserie) {\r\n        try{\r\n          navigator.sendBeacon(window.ENDPOINT, new URLSearchParams({action:'release', noserie: window.__res_noserie}));\r\n        }catch(e){}\r\n      }\r\n    });\r\n  })();\r\n\r\n}, 500);\r\n\r\n// --- Mensajería universal desde PHP (BeforeShow* -> setProxyValue(\"popup_msg\",{text,type})) ---\r\n(function () {\r\n  // Espera a que PHPRunner haya inicializado los controles/proxy\r\n  var start = function () {\r\n    try {\r\n      var proxy = (pageObj.getProxy && pageObj.getProxy()) || {};\r\n      var pm = proxy.popup_msg || null;\r\n      if (!pm || !pm.text) return; // no hay mensaje que mostrar\r\n\r\n      // Normaliza tipo -> clase Bootstrap\r\n      var t = (pm.type || 'info').toLowerCase();\r\n      var bs =\r\n        t === 'success' ? 'success' :\r\n        t === 'error'   ? 'danger'  :\r\n        t === 'warning' ? 'warning' : 'info';\r\n\r\n      // Crea el alert\r\n      var $alert = $('<div/>', {\r\n        'class': 'alert alert-' + bs,\r\n        css: { margin: '8px 8px 12px 8px' }\r\n      }).text(pm.text);\r\n\r\n      // ¿Estamos en popup?\r\n      var $modalBody = $('.modal-body:visible').first();\r\n\r\n      if ($modalBody.length) {\r\n        // POPUP: intenta usar el contenedor de mensaje si existe, si no, prepend\r\n        var $holder = $modalBody.find('[data-itemtype=\"edit_message\"]').first();\r\n        if ($holder.length) {\r\n          $holder.empty().append($alert).show();\r\n          // Asegura que el bloque de mensaje esté visible si el template lo oculta\r\n          $holder.closest('.r-message, .row, div').show();\r\n        } else {\r\n          $modalBody.prepend($alert);\r\n        }\r\n      } else {\r\n        // NO POPUP: usa el bloque de mensaje estándar si existe\r\n        var $std = $('[data-itemtype=\"edit_message\"]').first();\r\n        if ($std.length) {\r\n          $std.empty().append($alert).show();\r\n          $std.closest('.r-message, .row, div').show();\r\n        } else {\r\n          // Fallback: inserta arriba del contenedor de la página\r\n          var pid = (typeof pageid !== 'undefined' && pageid) ? pageid : ($('[data-pageid]').first().attr('data-pageid') || '');\r\n          var $wrap = pid ? $('[data-pageid=\"'+pid+'\"]').first() : $('body');\r\n          $wrap.prepend($alert);\r\n        }\r\n      }\r\n\r\n      // Auto-ocultar (opcional). Cambia 0 para dejarlo fijo.\r\n      var AUTO_HIDE_MS = 6000;\r\n      if (AUTO_HIDE_MS > 0) {\r\n        setTimeout(function(){ $alert.fadeOut(400, function(){ $(this).remove(); }); }, AUTO_HIDE_MS);\r\n      }\r\n    } catch (e) {\r\n      // Silencioso: no romper tu onload si algo falla\r\n      if (window.console && console.warn) console.warn('msg bridge error:', e);\r\n    }\r\n  };\r\n\r\n  // Ejecuta cuando la página esté lista para asegurar contenedores\r\n  if (pageObj && pageObj.on) {\r\n    pageObj.on('afterInit', start);   // PHPRunner hook\r\n  } else {\r\n    // Fallback por si no existe el hook en esta página\r\n    $(start);\r\n  }\r\n})();\r\n*/\r\n"
+			"code": "// ====================== CONFIG / GLOBALS (EDIT) ======================\r\nwindow.ENDPOINT = 'serial_reserve.php';\r\n\r\n// Campos que quieres autoguardar\r\nwindow.EDIT_FIELDS = [\r\n  'idcliente','idproducto','idplan','orden','plazo','rfc','idcli',\r\n  'estado','ciudad','colonia','calle','numeroext','numeroint','noserie'\r\n];\r\n\r\n// Contexto del servidor (inyectado en BeforeShowEdit)\r\nvar EDIT_CTX = (pageObj.getProxy && pageObj.getProxy().edit_ctx) || {};\r\nvar EDIT_ID  = EDIT_CTX.idsolicitud || '';\r\nvar CURR_SERIE_DB = EDIT_CTX.noserie_actual || '';\r\n\r\n// Llave de autosave **por registro**\r\nwindow.EDIT_STORAGE_KEY = 'solicitud_vnp_edit_draft_' + EDIT_ID;\r\n\r\n// Banderas\r\nwindow.__edit_recovering = false;\r\nwindow.__edit_submitting = false;\r\nwindow.__res_noserie     = null;   // reserva en curso del usuario (si cambia producto)\r\nwindow.EDIT_SKIP_RECOVERY = window.EDIT_SKIP_RECOVERY || false;\r\n\r\n\r\n  var px = (pageObj.getProxy && pageObj.getProxy()) || {};\r\n\r\n  // 1) Mensaje que viene de PHP en BeforeShowEdit (para popup)\r\n  if (px.popup_msg && px.popup_msg.text) {\r\n    var t = (px.popup_msg.type === 'success') ? 'success' : 'error';\r\n    if (Runner && Runner.displayPopupMessage) {\r\n      Runner.displayPopupMessage(px.popup_msg.text, t);\r\n    } else {\r\n      alert(px.popup_msg.text);\r\n    }\r\n  }\r\n\r\n  // 2) Mensajes que regresan en la respuesta AJAX de Guardar\r\n  pageObj.on('afterSave', function(resp){\r\n    if (!resp) return;\r\n    if (resp.success === false && resp.message) {\r\n      if (Runner && Runner.displayPopupMessage) {\r\n        Runner.displayPopupMessage(resp.message, 'error');\r\n      } else {\r\n        alert(resp.message);\r\n      }\r\n    } else if (resp.success && resp.message) {\r\n      if (Runner && Runner.displayPopupMessage) {\r\n        Runner.displayPopupMessage(resp.message, 'success');\r\n      }\r\n    }\r\n  });\r\n\r\n\r\n/************************************************************************************************************************************/\r\n// Hover-accordion para Bootstrap/PHPRunner usando .panel-collapse (con histeresis)\r\n(function () {\r\n  var $ = window.jQuery || window.$;\r\n  if (!$) { console.error('[hover-accordion] falta jQuery'); return; }\r\n\r\n  // ===== tiempos (ajusta al gusto) =====\r\n  var OPEN_DELAY     = 120; // espera antes de abrir\r\n  var CLOSE_DELAY    = 500; // espera antes de cerrar al salir\r\n  var BETWEEN_GRACE  = 220; // gracia para cerrar \"las otras\" después de abrir la actual\r\n\r\n  // ===== duraciones / ritmo =====\r\n  var CLOSE_ANIM_MS  = 400; // <-- te faltaba esta constante\r\n  var V_PX_PER_S     = 320; // “velocidad” de apertura (px por segundo)\r\n  var OPEN_MIN       = 380; // ms mínimo al abrir\r\n  var OPEN_MAX       = 900; // ms máximo al abrir\r\n\r\n  var $sections = $('div.panel.panel-default.form-section');\r\n\r\n  // Cierra todas al inicio (colapsa correctamente el contenedor .panel-collapse)\r\n  $sections.children('.panel-collapse').each(function(){\r\n    $(this).removeClass('in show').hide().attr('aria-expanded','false');\r\n  });\r\n  $sections.find('.panel-heading').attr('aria-expanded','false');\r\n\r\n  function closeSection($sec){\r\n    var $col = $sec.children('.panel-collapse');\r\n    $col.addClass('no-bs-trans')\r\n        .css('overflow','hidden')\r\n        .stop(true, false)\r\n        .slideUp(CLOSE_ANIM_MS, 'swing')\r\n        .removeClass('in show')\r\n        .attr('aria-expanded','false')\r\n        .queue(function(next){ $(this).removeClass('no-bs-trans'); next(); });\r\n    $sec.find('.panel-heading').attr('aria-expanded','false');\r\n  }\r\n\r\n  // Abrir primero la target; cerrar las otras después de una pequeña gracia\r\n  function openOnlyWithGrace($target){\r\n    var $col = $target.children('.panel-collapse');\r\n\r\n    // Medir altura natural para duración proporcional (ritmo constante)\r\n    var wasHidden = $col.is(':hidden');\r\n    if (wasHidden) $col.show();\r\n    var h = $col[0].scrollHeight || $col.height();\r\n    if (wasHidden) $col.hide();\r\n\r\n    var duration = Math.max(OPEN_MIN, Math.min(OPEN_MAX, Math.round(h / V_PX_PER_S * 1000)));\r\n\r\n    $col.addClass('no-bs-trans')\r\n        .css('overflow','hidden')\r\n        .stop(true, false)\r\n        .slideDown(duration, 'swing')\r\n        .addClass('in show')\r\n        .attr('aria-expanded','true')\r\n        .queue(function(next){ $(this).removeClass('no-bs-trans'); next(); });\r\n\r\n    $target.find('.panel-heading').attr('aria-expanded','true');\r\n\r\n    // Cierra las demás con pequeña gracia para evitar “saltos”\r\n    setTimeout(function(){\r\n      $sections.not($target).each(function(){ closeSection($(this)); });\r\n    }, BETWEEN_GRACE);\r\n  }\r\n\r\n  $sections.each(function(){\r\n    var $sec  = $(this);\r\n    var $head = $sec.children('.panel-heading');\r\n    var $col  = $sec.children('.panel-collapse');\r\n    if (!$head.length || !$col.length) return;\r\n\r\n    // Evita que el toggler nativo por click interfiera\r\n    $head.on('click', '[data-toggle=\"collapse\"], a[href^=\"#\"]', function(e){\r\n      e.preventDefault(); e.stopPropagation();\r\n    });\r\n\r\n    var openT=null, closeT=null;\r\n\r\n    // Abre SOLO la actual al entrar al header (primero abrir, luego cerrar otras)\r\n    $head.on('mouseenter', function(){\r\n      clearTimeout(closeT);\r\n      clearTimeout(openT);\r\n      openT = setTimeout(function(){ openOnlyWithGrace($sec); }, OPEN_DELAY);\r\n    });\r\n\r\n    // No cierres si el mouse entra al contenido\r\n    $col.on('mouseenter', function(){ clearTimeout(closeT); });\r\n\r\n    // Cierra al salir de TODA la sección (header + collapse) con retardo generoso\r\n    $sec.on('mouseleave', function(){\r\n      clearTimeout(openT);\r\n      clearTimeout(closeT);\r\n      closeT = setTimeout(function(){\r\n        if ($sec.find(':focus').length) return; // no cerrar si hay foco en un input\r\n        closeSection($sec);\r\n      }, CLOSE_DELAY);\r\n    });\r\n  }); // <-- cerraba faltante del each\r\n\r\n})(); // <-- cerraba faltante del IIFE\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n// ====================== HELPERS ======================\r\nfunction currentPageId() {\r\n  if (typeof window.pageid !== 'undefined' && window.pageid) return window.pageid;\r\n  var pid = $('[data-pageid]').first().attr('data-pageid');\r\n  return pid || '';\r\n}\r\nfunction getCtrl(field) {\r\n  try { return Runner.getControl(currentPageId(), field); } catch(e) { return null; }\r\n}\r\nfunction readVal(field) {\r\n  var c = getCtrl(field);\r\n  if (c && typeof c.getValue === 'function') return c.getValue();\r\n  var pid = currentPageId();\r\n  var $id = $('#value_'+field+'_'+pid);\r\n  if ($id.length) return $id.val();\r\n  var $w = $('div.r-integrated-field[data-field=\"'+field+'\"][data-pageid=\"'+pid+'\"]');\r\n  if ($w.length) {\r\n    var $inp = $w.find('input,select,textarea').first();\r\n    if ($inp.length) return $inp.val();\r\n  }\r\n  var $n = $('[name=\"'+field+'\"]');\r\n  if ($n.length) return $n.val();\r\n  return '';\r\n}\r\nfunction setVal(field, value, fireChange) {\r\n  var c = getCtrl(field);\r\n  if (c && typeof c.setControlValue === 'function') {\r\n    c.setControlValue(value);\r\n    if (fireChange && typeof c.fireEvent === 'function') c.fireEvent('change');\r\n    return true;\r\n  }\r\n  var pid = currentPageId();\r\n  var $id = $('#value_'+field+'_'+pid);\r\n  if ($id.length) {\r\n    $id.val(value).trigger('change');\r\n    if (fireChange) $id.trigger('keyup');\r\n    return true;\r\n  }\r\n  var $w = $('div.r-integrated-field[data-field=\"'+field+'\"][data-pageid=\"'+pid+'\"]');\r\n  if ($w.length) {\r\n    var $inp = $w.find('input,select,textarea').first();\r\n    if ($inp.length) {\r\n      $inp.val(value).trigger('change');\r\n      if (fireChange) $inp.trigger('keyup');\r\n      return true;\r\n    }\r\n  }\r\n  return false;\r\n}\r\nfunction setNoSerieValue(noserie) {\r\n  var ok = setVal('noserie', noserie, true);\r\n  if (ok) return;\r\n  var tries = 0, max = 40, delay = 150;\r\n  (function retry(){\r\n    tries++;\r\n    if (setVal('noserie', noserie, true)) return;\r\n    if (tries >= max) return;\r\n    setTimeout(retry, delay);\r\n  })();\r\n}\r\nfunction getQS(name){\r\n  var m = new RegExp('[?&]'+name+'=([^&]*)').exec(location.search);\r\n  return m ? decodeURIComponent(m[1].replace(/\\+/g,' ')) : null;\r\n}\r\nfunction hasErrorMessage() {\r\n  var $msg = $('[data-itemtype=\"edit_message\"].alert, .alert[data-itemtype=\"edit_message\"]');\r\n  if (!$msg.length) return false;\r\n  var txt = $.trim($msg.text() || '');\r\n  if (!txt) return false;\r\n  return $msg.is('.alert-danger, .alert-error') || true;\r\n}\r\n\r\n// ====================== AUTOSAVE (por registro) ======================\r\nfunction buildEditDraft() {\r\n  var d = {};\r\n  (window.EDIT_FIELDS || []).forEach(function(f){\r\n    var v = readVal(f);\r\n    if (v !== null && v !== undefined && v !== '') d[f] = v;\r\n  });\r\n  d.timestamp = Date.now();\r\n  return d;\r\n}\r\nfunction saveEditDraftNow(){\r\n  try{ sessionStorage.setItem(window.EDIT_STORAGE_KEY, JSON.stringify(buildEditDraft())); }catch(e){}\r\n}\r\nfunction debounce(fn, ms){ var t=0; return function(){ var a=arguments,s=this; if(t){try{clearTimeout(t);}catch(e){}} t=setTimeout(function(){ t=0; try{fn.apply(s,a);}catch(e){} }, ms||200); }; }\r\nvar saveDraftDebounced = debounce(saveEditDraftNow, 300);\r\n\r\n// ====================== Reserva por producto (EDIT) ======================\r\nfunction releasePrev(){\r\n  if (!window.__res_noserie) return;\r\n  $.post(window.ENDPOINT, { action:'release', noserie: window.__res_noserie }, function(){}, 'json');\r\n  window.__res_noserie = null;\r\n}\r\nfunction reserveForProduct(productId){\r\n  $.post(window.ENDPOINT, { action:'reserve_by_product', product_id: productId }, null, 'json')\r\n    .done(function(resp){\r\n      var r = (typeof resp === 'object') ? resp : (function(){ try{return JSON.parse(resp);}catch(e){return {};}})();\r\n      if (r && r.ok) {\r\n        setNoSerieValue(r.noserie);\r\n        window.__res_noserie = r.noserie;\r\n        saveEditDraftNow();\r\n      } else if (r && r.error === 'no-stock') {\r\n        alert('No hay series disponibles para este producto.');\r\n        setVal('idproducto','',true);\r\n        setNoSerieValue('');\r\n        releasePrev();\r\n        saveEditDraftNow();\r\n      } else {\r\n        alert('No se pudo reservar la serie. Intenta de nuevo.');\r\n        setNoSerieValue('');\r\n        saveEditDraftNow();\r\n      }\r\n    })\r\n    .fail(function(){\r\n      alert('Error de comunicación al reservar la serie.');\r\n      setNoSerieValue('');\r\n      saveEditDraftNow();\r\n    });\r\n}\r\n\r\n// ====================== Inicio diferido ======================\r\nsetTimeout(function(){\r\n  var pid      = currentPageId();\r\n  var ctrlProd = getCtrl('idproducto');\r\n  if (!ctrlProd) return;\r\n\r\n  // 0) Marcar submit (para no limpiar al salir si es guardado)\r\n  $(document).on('submit', 'form', function(){\r\n    window.__edit_submitting = true;\r\n    saveEditDraftNow();\r\n  });\r\n  var SAVE_SELECTOR = \"[data-itemtype='edit_save'] a, [data-itemid='edit_save'] a, a#saveButton1, button#saveButton1\";\r\n  $(document).on('click', SAVE_SELECTOR, function(){\r\n    window.__edit_submitting = true;\r\n    saveEditDraftNow();\r\n  });\r\n\r\n  // 1) Modo limpieza tras éxito o entrada limpia\r\n  var cleanMode = !!(window.EDIT_CLEAN_ON_LOAD) || (getQS('clean') === '1') || !!window.EDIT_SKIP_RECOVERY;\r\n  if (cleanMode) {\r\n    try{ sessionStorage.removeItem(window.EDIT_STORAGE_KEY); }catch(e){}\r\n    // En EDIT **no** se “blanquea” el formulario: se deja el estado del servidor.\r\n    // Sólo desactivamos la recuperación.\r\n  } else {\r\n    // 2) Recuperación desde sessionStorage si hubo error\r\n    var draftJson = sessionStorage.getItem(window.EDIT_STORAGE_KEY);\r\n    if (draftJson && !hasErrorMessage()) {\r\n      try {\r\n        var d = JSON.parse(draftJson)||{};\r\n        var now = Date.now();\r\n        // 2 horas por consistencia\r\n        if (d.timestamp && (now - d.timestamp > 2*60*60*1000)) {\r\n          sessionStorage.removeItem(window.EDIT_STORAGE_KEY);\r\n        } else {\r\n          window.__edit_recovering = true;\r\n          // Producto primero\r\n          if (d.idproducto != null && d.idproducto !== '') {\r\n            setVal('idproducto', d.idproducto, true);\r\n          }\r\n          // Resto\r\n          Object.keys(d).forEach(function(k){\r\n            if (k==='timestamp' || k==='idproducto') return;\r\n            setVal(k, d[k], false);\r\n          });\r\n          // Si había una serie en el draft, tómala como “visual”\r\n          if (d.noserie) window.__res_noserie = d.noserie;\r\n\r\n          sessionStorage.removeItem(window.EDIT_STORAGE_KEY);\r\n          setTimeout(function(){ window.__edit_recovering=false; }, 150);\r\n        }\r\n      } catch(e) {\r\n        sessionStorage.removeItem(window.EDIT_STORAGE_KEY);\r\n      }\r\n    } else if (hasErrorMessage()) {\r\n      // si el servidor ya reinyectó valores en HTML, no hagas nada.\r\n      // (tu BeforeShowEdit ya los puso por proxy)\r\n    }\r\n  }\r\n\r\n  // 3) Cambio de producto → reservar serie (comparando con la serie actual de DB)\r\n  ctrlProd.on('change', function(){\r\n    var productId = ctrlProd.getValue();\r\n    if (!productId) return;\r\n    if (window.__edit_recovering) return;\r\n\r\n    // Si ya había serie reservada en esta sesión, suéltala\r\n    releasePrev();\r\n\r\n    // Limpia el campo noserie en UI (no editable, pero visible)\r\n    setNoSerieValue('');\r\n\r\n    // Si el usuario no cambió efectivamente la serie (p.ej. regresa al mismo producto),\r\n    // no impide reservar; el endpoint decidirá la primera libre.\r\n    reserveForProduct(productId);\r\n  });\r\n\r\n  // 4) Autosave periódico y por cambio\r\n  setInterval(function(){ if(!window.__edit_recovering) saveEditDraftNow(); }, 5000);\r\n\r\n  var selDeleg = (window.EDIT_FIELDS || []).map(function(f){\r\n    return 'div.r-integrated-field[data-field=\"'+f+'\"][data-pageid=\"'+pid+'\"] input, '+\r\n           'div.r-integrated-field[data-field=\"'+f+'\"][data-pageid=\"'+pid+'\"] select, '+\r\n           'div.r-integrated-field[data-field=\"'+f+'\"][data-pageid=\"'+pid+'\"] textarea';\r\n  }).join(', ');\r\n  $(document).on('change input', selDeleg, saveDraftDebounced);\r\n\r\n  // 5) Salidas (volver/cerrar) → liberar reserva y limpiar draft\r\n  (function(){\r\n    var BACK_SELECTOR = [\r\n      '#backButton1',\r\n      '#backButton2',\r\n      \"[data-itemtype='edit_back_list'] a\",\r\n      \"[data-itemid='edit_back_list'] a\",\r\n      \"[data-itemtype='edit_close'] a\",\r\n      \"[data-itemid='edit_close'] a\",\r\n      \"a[href$='solicitudes_list.php']\",\r\n      \"a[href*='solicitudes_list.php?']\"\r\n    ].join(', ');\r\n    function safeReleaseAndClear(){\r\n      try{\r\n        if (window.__res_noserie) {\r\n          navigator.sendBeacon(window.ENDPOINT, new URLSearchParams({action:'release', noserie: window.__res_noserie}));\r\n          window.__res_noserie = null;\r\n        }\r\n        sessionStorage.removeItem(window.EDIT_STORAGE_KEY);\r\n      }catch(e){}\r\n    }\r\n    $(document).on('mousedown click', BACK_SELECTOR, function(){\r\n      window.__edit_submitting = false;\r\n      safeReleaseAndClear();\r\n    });\r\n\r\n    window.addEventListener('pagehide', function(){\r\n      if (!window.__edit_submitting) {\r\n        try{\r\n          if (window.__res_noserie) {\r\n            navigator.sendBeacon(window.ENDPOINT, new URLSearchParams({action:'release', noserie: window.__res_noserie}));\r\n            window.__res_noserie = null;\r\n          }\r\n          sessionStorage.removeItem(window.EDIT_STORAGE_KEY);\r\n        }catch(e){}\r\n      }\r\n    });\r\n    window.addEventListener('beforeunload', function(){\r\n      if (!window.__edit_submitting && window.__res_noserie) {\r\n        try{\r\n          navigator.sendBeacon(window.ENDPOINT, new URLSearchParams({action:'release', noserie: window.__res_noserie}));\r\n        }catch(e){}\r\n      }\r\n    });\r\n  })();\r\n\r\n}, 500);\r\n\r\n// --- Mensajería universal desde PHP (BeforeShow* -> setProxyValue(\"popup_msg\",{text,type})) ---\r\n(function () {\r\n  // Espera a que PHPRunner haya inicializado los controles/proxy\r\n  var start = function () {\r\n    try {\r\n      var proxy = (pageObj.getProxy && pageObj.getProxy()) || {};\r\n      var pm = proxy.popup_msg || null;\r\n      if (!pm || !pm.text) return; // no hay mensaje que mostrar\r\n\r\n      // Normaliza tipo -> clase Bootstrap\r\n      var t = (pm.type || 'info').toLowerCase();\r\n      var bs =\r\n        t === 'success' ? 'success' :\r\n        t === 'error'   ? 'danger'  :\r\n        t === 'warning' ? 'warning' : 'info';\r\n\r\n      // Crea el alert\r\n      var $alert = $('<div/>', {\r\n        'class': 'alert alert-' + bs,\r\n        css: { margin: '8px 8px 12px 8px' }\r\n      }).text(pm.text);\r\n\r\n      // ¿Estamos en popup?\r\n      var $modalBody = $('.modal-body:visible').first();\r\n\r\n      if ($modalBody.length) {\r\n        // POPUP: intenta usar el contenedor de mensaje si existe, si no, prepend\r\n        var $holder = $modalBody.find('[data-itemtype=\"edit_message\"]').first();\r\n        if ($holder.length) {\r\n          $holder.empty().append($alert).show();\r\n          // Asegura que el bloque de mensaje esté visible si el template lo oculta\r\n          $holder.closest('.r-message, .row, div').show();\r\n        } else {\r\n          $modalBody.prepend($alert);\r\n        }\r\n      } else {\r\n        // NO POPUP: usa el bloque de mensaje estándar si existe\r\n        var $std = $('[data-itemtype=\"edit_message\"]').first();\r\n        if ($std.length) {\r\n          $std.empty().append($alert).show();\r\n          $std.closest('.r-message, .row, div').show();\r\n        } else {\r\n          // Fallback: inserta arriba del contenedor de la página\r\n          var pid = (typeof pageid !== 'undefined' && pageid) ? pageid : ($('[data-pageid]').first().attr('data-pageid') || '');\r\n          var $wrap = pid ? $('[data-pageid=\"'+pid+'\"]').first() : $('body');\r\n          $wrap.prepend($alert);\r\n        }\r\n      }\r\n\r\n      // Auto-ocultar (opcional). Cambia 0 para dejarlo fijo.\r\n      var AUTO_HIDE_MS = 6000;\r\n      if (AUTO_HIDE_MS > 0) {\r\n        setTimeout(function(){ $alert.fadeOut(400, function(){ $(this).remove(); }); }, AUTO_HIDE_MS);\r\n      }\r\n    } catch (e) {\r\n      // Silencioso: no romper tu onload si algo falla\r\n      if (window.console && console.warn) console.warn('msg bridge error:', e);\r\n    }\r\n  };\r\n\r\n  // Ejecuta cuando la página esté lista para asegurar contenedores\r\n  if (pageObj && pageObj.on) {\r\n    pageObj.on('afterInit', start);   // PHPRunner hook\r\n  } else {\r\n    // Fallback por si no existe el hook en esta página\r\n    $(start);\r\n  }\r\n})();\r\n\r\n"
 		},
 		{
 			"eventId": "EVENT_AFTEREDIT",
@@ -1406,7 +1406,7 @@
 		{
 			"eventId": "EVENT_JS_ONLOAD",
 			"pageType": "add",
-			"code": "// ====================== CONFIG / GLOBALS ======================\r\nwindow.STORAGE_KEY   = 'solicitud_vnp_draft';\r\nwindow.ENDPOINT      = 'serial_reserve.php';\r\nwindow.FIELDS = [\r\n  'idcliente','idproducto','idplan','orden','plazo','rfc','idcli',\r\n  'estado','ciudad','colonia','calle','numeroext','numeroint','noserie'\r\n];\r\nwindow.__res_noserie = window.__res_noserie || null;\r\nwindow.__recovering  = false;\r\nwindow.__submitting  = false;\r\nwindow.SKIP_RECOVERY = window.SKIP_RECOVERY || false;\r\n\r\n// Borrador caduca en 2 horas\r\nvar MAX_DRAFT_AGE_MS = 2 * 60 * 60 * 1000;\r\n\r\n// Redirige después del guardado exitoso (modo AJAX)\r\npageObj.on('afterSave', function (resp) {\r\n  // Opcional: valida éxito si quieres\r\n  // if (!resp || resp.success === false) return;\r\n\r\n  try { sessionStorage.removeItem('solicitud_vnp_draft'); } catch(e){}\r\n  // añade clean=1 y un nonce para evitar caché\r\n  window.location.href = 'solicitudes_add.php?new=1&clean=1&_n=' + Date.now();\r\n});\r\n\r\n\r\n\r\n/************************************************************************************************************************************/\r\n// Hover-accordion para Bootstrap/PHPRunner usando .panel-collapse (con histeresis)\r\n(function () {\r\n  var $ = window.jQuery || window.$;\r\n  if (!$) { console.error('[hover-accordion] falta jQuery'); return; }\r\n\r\n  // ===== tiempos (ajusta al gusto) =====\r\n  var OPEN_DELAY     = 120; // espera antes de abrir\r\n  var CLOSE_DELAY    = 500; // espera antes de cerrar al salir\r\n  var BETWEEN_GRACE  = 220; // gracia para cerrar \"las otras\" después de abrir la actual\r\n\r\n  // ===== duraciones / ritmo =====\r\n  var CLOSE_ANIM_MS  = 260; // <-- te faltaba esta constante\r\n  var V_PX_PER_S     = 320; // “velocidad” de apertura (px por segundo)\r\n  var OPEN_MIN       = 380; // ms mínimo al abrir\r\n  var OPEN_MAX       = 900; // ms máximo al abrir\r\n\r\n  var $sections = $('div.panel.panel-default.form-section');\r\n\r\n  // Cierra todas al inicio (colapsa correctamente el contenedor .panel-collapse)\r\n  $sections.children('.panel-collapse').each(function(){\r\n    $(this).removeClass('in show').hide().attr('aria-expanded','false');\r\n  });\r\n  $sections.find('.panel-heading').attr('aria-expanded','false');\r\n\r\n  function closeSection($sec){\r\n    var $col = $sec.children('.panel-collapse');\r\n    $col.addClass('no-bs-trans')\r\n        .css('overflow','hidden')\r\n        .stop(true, false)\r\n        .slideUp(CLOSE_ANIM_MS, 'swing')\r\n        .removeClass('in show')\r\n        .attr('aria-expanded','false')\r\n        .queue(function(next){ $(this).removeClass('no-bs-trans'); next(); });\r\n    $sec.find('.panel-heading').attr('aria-expanded','false');\r\n  }\r\n\r\n  // Abrir primero la target; cerrar las otras después de una pequeña gracia\r\n  function openOnlyWithGrace($target){\r\n    var $col = $target.children('.panel-collapse');\r\n\r\n    // Medir altura natural para duración proporcional (ritmo constante)\r\n    var wasHidden = $col.is(':hidden');\r\n    if (wasHidden) $col.show();\r\n    var h = $col[0].scrollHeight || $col.height();\r\n    if (wasHidden) $col.hide();\r\n\r\n    var duration = Math.max(OPEN_MIN, Math.min(OPEN_MAX, Math.round(h / V_PX_PER_S * 1000)));\r\n\r\n    $col.addClass('no-bs-trans')\r\n        .css('overflow','hidden')\r\n        .stop(true, false)\r\n        .slideDown(duration, 'swing')\r\n        .addClass('in show')\r\n        .attr('aria-expanded','true')\r\n        .queue(function(next){ $(this).removeClass('no-bs-trans'); next(); });\r\n\r\n    $target.find('.panel-heading').attr('aria-expanded','true');\r\n\r\n    // Cierra las demás con pequeña gracia para evitar “saltos”\r\n    setTimeout(function(){\r\n      $sections.not($target).each(function(){ closeSection($(this)); });\r\n    }, BETWEEN_GRACE);\r\n  }\r\n\r\n  $sections.each(function(){\r\n    var $sec  = $(this);\r\n    var $head = $sec.children('.panel-heading');\r\n    var $col  = $sec.children('.panel-collapse');\r\n    if (!$head.length || !$col.length) return;\r\n\r\n    // Evita que el toggler nativo por click interfiera\r\n    $head.on('click', '[data-toggle=\"collapse\"], a[href^=\"#\"]', function(e){\r\n      e.preventDefault(); e.stopPropagation();\r\n    });\r\n\r\n    var openT=null, closeT=null;\r\n\r\n    // Abre SOLO la actual al entrar al header (primero abrir, luego cerrar otras)\r\n    $head.on('mouseenter', function(){\r\n      clearTimeout(closeT);\r\n      clearTimeout(openT);\r\n      openT = setTimeout(function(){ openOnlyWithGrace($sec); }, OPEN_DELAY);\r\n    });\r\n\r\n    // No cierres si el mouse entra al contenido\r\n    $col.on('mouseenter', function(){ clearTimeout(closeT); });\r\n\r\n    // Cierra al salir de TODA la sección (header + collapse) con retardo generoso\r\n    $sec.on('mouseleave', function(){\r\n      clearTimeout(openT);\r\n      clearTimeout(closeT);\r\n      closeT = setTimeout(function(){\r\n        if ($sec.find(':focus').length) return; // no cerrar si hay foco en un input\r\n        closeSection($sec);\r\n      }, CLOSE_DELAY);\r\n    });\r\n  }); // <-- cerraba faltante del each\r\n\r\n})(); // <-- cerraba faltante del IIFE\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n// ====================== HELPERS GENERALES ======================\r\nfunction currentPageId() {\r\n  if (typeof window.pageid !== 'undefined' && window.pageid) return window.pageid;\r\n  var pid = $('[data-pageid]').first().attr('data-pageid');\r\n  return pid || '';\r\n}\r\nfunction getCtrl(field) {\r\n  try { return Runner.getControl(currentPageId(), field); } catch(e) { return null; }\r\n}\r\nfunction readVal(field) {\r\n  var c = getCtrl(field);\r\n  if (c && typeof c.getValue === 'function') return c.getValue();\r\n  var pid = currentPageId();\r\n  var $id = $('#value_'+field+'_'+pid);\r\n  if ($id.length) return $id.val();\r\n  var $w = $('div.r-integrated-field[data-field=\"'+field+'\"][data-pageid=\"'+pid+'\"]');\r\n  if ($w.length) {\r\n    var $inp = $w.find('input,select,textarea').first();\r\n    if ($inp.length) return $inp.val();\r\n  }\r\n  var $n = $('[name=\"'+field+'\"]');\r\n  if ($n.length) return $n.val();\r\n  return '';\r\n}\r\nfunction setVal(field, value, fireChange) {\r\n  var c = getCtrl(field);\r\n  if (c && typeof c.setControlValue === 'function') {\r\n    c.setControlValue(value);\r\n    if (fireChange && typeof c.fireEvent === 'function') c.fireEvent('change');\r\n    return true;\r\n  }\r\n  var pid = currentPageId();\r\n  var $id = $('#value_'+field+'_'+pid);\r\n  if ($id.length) {\r\n    $id.val(value).trigger('change');\r\n    if (fireChange) $id.trigger('keyup');\r\n    return true;\r\n  }\r\n  var $w = $('div.r-integrated-field[data-field=\"'+field+'\"][data-pageid=\"'+pid+'\"]');\r\n  if ($w.length) {\r\n    var $inp = $w.find('input,select,textarea').first();\r\n    if ($inp.length) {\r\n      $inp.val(value).trigger('change');\r\n      if (fireChange) $inp.trigger('keyup');\r\n      return true;\r\n    }\r\n  }\r\n  return false;\r\n}\r\nfunction setNoSerieValue(noserie) {\r\n  var ok = setVal('noserie', noserie, true);\r\n  if (ok) return;\r\n  var tries = 0, max = 40, delay = 150;\r\n  (function retry(){\r\n    tries++;\r\n    if (setVal('noserie', noserie, true)) return;\r\n    if (tries >= max) return;\r\n    setTimeout(retry, delay);\r\n  })();\r\n}\r\nfunction hasErrorMessage() {\r\n  if (window.FORM_ERROR === true) return true;\r\n  var $msg = $('[data-itemtype=\"edit_message\"].alert, .alert[data-itemtype=\"edit_message\"]');\r\n  if (!$msg.length) return false;\r\n  var txt = $.trim($msg.text() || '');\r\n  if (!txt) return false;\r\n  if ($msg.is('.alert-danger, .alert-error')) return true;\r\n  return true;\r\n}\r\nfunction getQS(name){\r\n  var m = new RegExp('[?&]'+name+'=([^&]*)').exec(location.search);\r\n  return m ? decodeURIComponent(m[1].replace(/\\+/g,' ')) : null;\r\n}\r\nfunction hasSuccessOrClean() {\r\n  var okMsg = $('.alert.alert-success[data-itemtype=\"edit_message\"], [data-itemtype=\"edit_message\"].alert-success');\r\n  if (okMsg.length) return true;\r\n  return (getQS('clean') === '1');\r\n}\r\n\r\n// --- limpieza fuerte tras éxito/entrada limpia ---\r\nfunction resetAllFieldsUI() {\r\n  window.__recovering = true;\r\n  // 1ª pasada\r\n  (window.FIELDS || []).forEach(function (f) { setVal(f, '', true); });\r\n  window.__res_noserie = null;\r\n  try { sessionStorage.removeItem(window.STORAGE_KEY); } catch(e){}\r\n\r\n  // 2ª pasada (después del pintado)\r\n  setTimeout(function(){\r\n    (window.FIELDS || []).forEach(function (f) { setVal(f, '', true); });\r\n    window.__res_noserie = null;\r\n    try { sessionStorage.removeItem(window.STORAGE_KEY); } catch(e){}\r\n    setTimeout(function(){ window.__recovering = false; }, 150);\r\n  }, 220);\r\n}\r\n\r\n// loop de refuerzo por si PHPRunner hidrata tarde\r\nfunction startForceClearLoop(ms) {\r\n  var end = Date.now() + (ms || 1000);\r\n  (function loop(){\r\n    if (Date.now() > end) return;\r\n    (window.FIELDS || []).forEach(function (f) { setVal(f, '', false); });\r\n    setTimeout(loop, 120);\r\n  })();\r\n}\r\n\r\n// ====================== AUTOSAVE ======================\r\nfunction buildDraft() {\r\n  var d = {};\r\n  for (var i=0;i<window.FIELDS.length;i++){\r\n    var f = window.FIELDS[i];\r\n    var v = readVal(f);\r\n    if (v !== null && v !== undefined && v !== '') d[f] = v;\r\n  }\r\n  d.timestamp = Date.now();\r\n  return d;\r\n}\r\nfunction saveDraftNow() {\r\n  try { sessionStorage.setItem(window.STORAGE_KEY, JSON.stringify(buildDraft())); } catch(e){}\r\n}\r\nfunction makeDebounce(fn, ms){\r\n  var timeoutId = 0;\r\n  return function(){\r\n    var ctx = this, args = arguments;\r\n    if (timeoutId) { try { window.clearTimeout(timeoutId); } catch(e){} }\r\n    timeoutId = window.setTimeout(function(){\r\n      timeoutId = 0;\r\n      try { fn.apply(ctx, args); } catch(e){}\r\n    }, ms || 200);\r\n  };\r\n}\r\nvar saveDraftDebounced = makeDebounce(saveDraftNow, 300);\r\n\r\n// ====================== Salida fiable ======================\r\nfunction safeReleaseAndClear() {\r\n  try {\r\n    if (window.__res_noserie) {\r\n      try {\r\n        navigator.sendBeacon(\r\n          window.ENDPOINT,\r\n          new URLSearchParams({ action:'release', noserie: window.__res_noserie })\r\n        );\r\n      } catch(e) {}\r\n      window.__res_noserie = null;\r\n    }\r\n    sessionStorage.removeItem(window.STORAGE_KEY);\r\n  } catch(e) {}\r\n}\r\n\r\n// BFCache: si vuelve de caché y NO hay borrador, limpia inputs\r\nwindow.addEventListener('pageshow', function (event) {\r\n  if (!event.persisted) return;\r\n  if (sessionStorage.getItem(window.STORAGE_KEY)) return;\r\n  (window.FIELDS || []).forEach(function (f) { setVal(f, '', true); });\r\n  window.__res_noserie = null;\r\n  window.__recovering = false;\r\n});\r\n\r\n// Salida → no limpiar si es submit (para conservar datos si falla)\r\nwindow.addEventListener('pagehide', function(){\r\n  if (!window.__submitting) safeReleaseAndClear();\r\n});\r\ndocument.addEventListener('visibilitychange', function(){\r\n  if (document.visibilityState === 'hidden' && !window.__submitting) {\r\n    safeReleaseAndClear();\r\n  }\r\n});\r\nwindow.addEventListener('beforeunload', function(){\r\n  saveDraftNow();\r\n  if (!window.__submitting && window.__res_noserie) {\r\n    try {\r\n      navigator.sendBeacon(\r\n        window.ENDPOINT,\r\n        new URLSearchParams({ action:'release', noserie: window.__res_noserie })\r\n      );\r\n    } catch(e) {}\r\n  }\r\n});\r\n\r\n// ====================== RESERVA POR PRODUCTO ======================\r\nfunction releasePrev() {\r\n  if (!window.__res_noserie) return;\r\n  $.post(window.ENDPOINT, { action:'release', noserie: window.__res_noserie }, function(){}, 'json');\r\n  window.__res_noserie = null;\r\n}\r\nfunction reserveForProduct(productId){\r\n  $.post(window.ENDPOINT, { action:'reserve_by_product', product_id: productId }, null, 'json')\r\n    .done(function(resp){\r\n      var r = (typeof resp === 'object') ? resp : (function(){ try{return JSON.parse(resp);}catch(e){return {};}})();\r\n      if (r && r.ok) {\r\n        setNoSerieValue(r.noserie);\r\n        window.__res_noserie = r.noserie;\r\n        saveDraftNow();\r\n      } else if (r && r.error === 'no-stock') {\r\n        alert('No hay series disponibles para este producto.');\r\n        setVal('idproducto','',true);\r\n        setNoSerieValue('');\r\n        releasePrev();\r\n        saveDraftNow();\r\n      } else {\r\n        alert('No se pudo reservar la serie. Intenta de nuevo.');\r\n        setNoSerieValue('');\r\n        saveDraftNow();\r\n      }\r\n    })\r\n    .fail(function(){\r\n      alert('Error de comunicación al reservar la serie.');\r\n      setNoSerieValue('');\r\n      saveDraftNow();\r\n    });\r\n}\r\n\r\n// ====================== INICIO DIFERIDO ======================\r\n\r\n// === HARD RESET tras guardado exitoso ===\r\n// Llama esto lo más pronto posible en tu onload (antes o al inicio del setTimeout)\r\n(function hardResetIfNeeded(){\r\n  // Se setea en BeforeProcessAdd o viene por ?clean=1\r\n  var clean = !!(window.CLEAN_ON_LOAD) || /[?&]clean=1(?:&|$)/i.test(location.search);\r\n  if (!clean) return;\r\n\r\n  // Evita que autosave vuelva a meter datos mientras limpiamos\r\n  window.__recovering = true;\r\n  window.SKIP_RECOVERY = true;\r\n  try { sessionStorage.removeItem(window.STORAGE_KEY); } catch(e){}\r\n\r\n  // 1) Reseteo nativo del <form> (limpia inputs HTML)\r\n  var $form = $('form').first();\r\n  if ($form.length && $form[0].reset) { try { $form[0].reset(); } catch(e){} }\r\n\r\n  // 2) Dos pasadas sobre Runner controls (después del montaje)\r\n  function clearAllOnce() {\r\n    (window.FIELDS || []).forEach(function(f){\r\n      // limpia Runner control si existe, si no, el input nativo\r\n      var c = (function(){ try { return Runner.getControl(currentPageId(), f); } catch(e){ return null; }})();\r\n      if (c && typeof c.setControlValue === 'function') {\r\n        try { c.setControlValue(''); if (c.fireEvent) c.fireEvent('change'); } catch(e){}\r\n      } else {\r\n        setVal(f, '', true);\r\n      }\r\n    });\r\n    window.__res_noserie = null;\r\n  }\r\n\r\n  // primera pasada rápida\r\n  clearAllOnce();\r\n\r\n  // segunda pasada con pequeño delay (evita rehidratación tardía)\r\n  setTimeout(clearAllOnce, 220);\r\n\r\n  // 3) loop de refuerzo por ~1 segundo\r\n  var tEnd = Date.now() + 1000;\r\n  (function loop(){\r\n    if (Date.now() > tEnd) {\r\n      // reactivamos autosave\r\n      setTimeout(function(){ window.__recovering = false; }, 120);\r\n      return;\r\n    }\r\n    clearAllOnce();\r\n    setTimeout(loop, 120);\r\n  })();\r\n})();\r\n\r\n\r\n\r\n\r\nsetTimeout(function(){\r\n  var pid      = currentPageId();\r\n  var ctrlProd = getCtrl('idproducto');\r\n  if (!ctrlProd) return;\r\n\r\n  // 0) MARCAR SUBMIT UNIVERSAL\r\n  $(document).on('submit', 'form', function(){\r\n    window.__submitting = true;\r\n    saveDraftNow();\r\n  });\r\n  var SAVE_SELECTOR = \"[data-itemtype='edit_save'] a, [data-itemid='edit_save'] a, a#saveButton1, button#saveButton1\";\r\n  $(document).on('click', SAVE_SELECTOR, function(){\r\n    window.__submitting = true;\r\n    saveDraftNow();\r\n  });\r\n\r\n  // 🚀 MODO LIMPIEZA: si hay éxito, si CLEAN_ON_LOAD=true (inyectado en PHP), o si SKIP_RECOVERY y NO hay error\r\n  window.CLEAN_ON_LOAD = window.CLEAN_ON_LOAD || (getQS('clean') === '1');\r\n  var cleanMode = hasSuccessOrClean() || !!window.CLEAN_ON_LOAD || (window.SKIP_RECOVERY && !hasErrorMessage());\r\n\r\n  if (cleanMode) {\r\n    try { sessionStorage.removeItem(window.STORAGE_KEY); } catch(e){}\r\n    window.SKIP_RECOVERY = true;\r\n    resetAllFieldsUI();\r\n    startForceClearLoop(1000); // refuerzo ~1s\r\n  } else {\r\n    // 1) RECUPERACIÓN DESDE sessionStorage (si hay, no caducó y no hay error)\r\n    var draftJson = sessionStorage.getItem(window.STORAGE_KEY);\r\n    if (draftJson && !window.SKIP_RECOVERY && !hasErrorMessage()) {\r\n      try {\r\n        var draft = JSON.parse(draftJson) || {};\r\n        var now   = Date.now();\r\n        if (draft.timestamp && (now - draft.timestamp > MAX_DRAFT_AGE_MS)) {\r\n          sessionStorage.removeItem(window.STORAGE_KEY);\r\n        } else {\r\n          window.__recovering = true;\r\n          if (draft.idproducto != null && draft.idproducto !== '') {\r\n            setVal('idproducto', draft.idproducto, true);\r\n          }\r\n          Object.keys(draft).forEach(function(k){\r\n            if (k === 'timestamp' || k === 'idproducto') return;\r\n            setVal(k, draft[k], false);\r\n          });\r\n          if (draft.noserie) window.__res_noserie = draft.noserie;\r\n          sessionStorage.removeItem(window.STORAGE_KEY);\r\n          setTimeout(function(){ window.__recovering = false; }, 150);\r\n        }\r\n      } catch(e){\r\n        console.error('Borrador inválido en sessionStorage:', e);\r\n        sessionStorage.removeItem(window.STORAGE_KEY);\r\n      }\r\n    } else if (window.SKIP_RECOVERY) {\r\n      sessionStorage.removeItem(window.STORAGE_KEY);\r\n    }\r\n  }\r\n\r\n  // 2) CAMBIO DE PRODUCTO → RESERVA\r\n  ctrlProd.on('change', function(){\r\n    var productId = ctrlProd.getValue();\r\n    if (!productId) return;\r\n    if (window.__recovering) return;\r\n\r\n    var prevSerie = readVal('noserie');\r\n    if (prevSerie && window.__res_noserie === prevSerie) {\r\n      $.post(window.ENDPOINT, { action:'release', noserie: window.__res_noserie }, function(){}, 'json');\r\n      window.__res_noserie = null;\r\n    } else {\r\n      releasePrev();\r\n    }\r\n    setNoSerieValue('');\r\n    reserveForProduct(productId);\r\n  });\r\n\r\n  // 3) AUTOGUARDADO (timer + por cambios)\r\n  setInterval(function(){ if (!window.__recovering) saveDraftNow(); }, 5000);\r\n\r\n  var selDeleg = window.FIELDS.map(function(f){\r\n    return 'div.r-integrated-field[data-field=\"'+f+'\"][data-pageid=\"'+pid+'\"] input, '+\r\n           'div.r-integrated-field[data-field=\"'+f+'\"][data-pageid=\"'+pid+'\"] select, '+\r\n           'div.r-integrated-field[data-field=\"'+f+'\"][data-pageid=\"'+pid+'\"] textarea';\r\n  }).join(', ');\r\n  $(document).on('change input', selDeleg, makeDebounce(saveDraftNow, 300));\r\n\r\n  // 4) SALIR (cualquier step)\r\n  (function(){\r\n    var BACK_SELECTOR = [\r\n      '#backButton1',\r\n      '#backButton2',\r\n      \"[data-itemtype='edit_back_list'] a\",\r\n      \"[data-itemid='edit_back_list'] a\",\r\n      \"[data-itemtype='edit_close'] a\",\r\n      \"[data-itemid='edit_close'] a\",\r\n      \"a[href$='solicitudes_list.php']\",\r\n      \"a[href*='solicitudes_list.php?']\"\r\n    ].join(', ');\r\n    $(document).on('mousedown click', BACK_SELECTOR, function(){\r\n      window.__submitting = false;\r\n      safeReleaseAndClear();\r\n    });\r\n  })();\r\n\r\n}, 500);\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"
+			"code": "// ====================== CONFIG / GLOBALS ======================\r\nwindow.STORAGE_KEY   = 'solicitud_vnp_draft';\r\nwindow.ENDPOINT      = 'serial_reserve.php';\r\nwindow.FIELDS = [\r\n  'idcliente','idproducto','idplan','orden','plazo','rfc','idcli',\r\n  'estado','ciudad','colonia','calle','numeroext','numeroint','noserie'\r\n];\r\nwindow.__res_noserie = window.__res_noserie || null;\r\nwindow.__recovering  = false;\r\nwindow.__submitting  = false;\r\nwindow.SKIP_RECOVERY = window.SKIP_RECOVERY || false;\r\n\r\n// Borrador caduca en 2 horas\r\nvar MAX_DRAFT_AGE_MS = 2 * 60 * 60 * 1000;\r\n\r\n// Redirige después del guardado exitoso (modo AJAX)\r\npageObj.on('afterSave', function (resp) {\r\n  // Opcional: valida éxito si quieres\r\n  // if (!resp || resp.success === false) return;\r\n\r\n  try { sessionStorage.removeItem('solicitud_vnp_draft'); } catch(e){}\r\n  // añade clean=1 y un nonce para evitar caché\r\n  window.location.href = 'solicitudes_add.php?new=1&clean=1&_n=' + Date.now();\r\n});\r\n\r\n\r\n\r\n/************************************************************************************************************************************/\r\n// Hover-accordion para Bootstrap/PHPRunner usando .panel-collapse (con histeresis)\r\n(function () {\r\n  var $ = window.jQuery || window.$;\r\n  if (!$) { console.error('[hover-accordion] falta jQuery'); return; }\r\n\r\n  // ===== tiempos (ajusta al gusto) =====\r\n  var OPEN_DELAY     = 120; // espera antes de abrir\r\n  var CLOSE_DELAY    = 500; // espera antes de cerrar al salir\r\n  var BETWEEN_GRACE  = 220; // gracia para cerrar \"las otras\" después de abrir la actual\r\n\r\n  // ===== duraciones / ritmo =====\r\n  var CLOSE_ANIM_MS  = 400; // <-- te faltaba esta constante\r\n  var V_PX_PER_S     = 320; // “velocidad” de apertura (px por segundo)\r\n  var OPEN_MIN       = 380; // ms mínimo al abrir\r\n  var OPEN_MAX       = 900; // ms máximo al abrir\r\n\r\n  var $sections = $('div.panel.panel-default.form-section');\r\n\r\n  // Cierra todas al inicio (colapsa correctamente el contenedor .panel-collapse)\r\n  $sections.children('.panel-collapse').each(function(){\r\n    $(this).removeClass('in show').hide().attr('aria-expanded','false');\r\n  });\r\n  $sections.find('.panel-heading').attr('aria-expanded','false');\r\n\r\n  function closeSection($sec){\r\n    var $col = $sec.children('.panel-collapse');\r\n    $col.addClass('no-bs-trans')\r\n        .css('overflow','hidden')\r\n        .stop(true, false)\r\n        .slideUp(CLOSE_ANIM_MS, 'swing')\r\n        .removeClass('in show')\r\n        .attr('aria-expanded','false')\r\n        .queue(function(next){ $(this).removeClass('no-bs-trans'); next(); });\r\n    $sec.find('.panel-heading').attr('aria-expanded','false');\r\n  }\r\n\r\n  // Abrir primero la target; cerrar las otras después de una pequeña gracia\r\n  function openOnlyWithGrace($target){\r\n    var $col = $target.children('.panel-collapse');\r\n\r\n    // Medir altura natural para duración proporcional (ritmo constante)\r\n    var wasHidden = $col.is(':hidden');\r\n    if (wasHidden) $col.show();\r\n    var h = $col[0].scrollHeight || $col.height();\r\n    if (wasHidden) $col.hide();\r\n\r\n    var duration = Math.max(OPEN_MIN, Math.min(OPEN_MAX, Math.round(h / V_PX_PER_S * 1000)));\r\n\r\n    $col.addClass('no-bs-trans')\r\n        .css('overflow','hidden')\r\n        .stop(true, false)\r\n        .slideDown(duration, 'swing')\r\n        .addClass('in show')\r\n        .attr('aria-expanded','true')\r\n        .queue(function(next){ $(this).removeClass('no-bs-trans'); next(); });\r\n\r\n    $target.find('.panel-heading').attr('aria-expanded','true');\r\n\r\n    // Cierra las demás con pequeña gracia para evitar “saltos”\r\n    setTimeout(function(){\r\n      $sections.not($target).each(function(){ closeSection($(this)); });\r\n    }, BETWEEN_GRACE);\r\n  }\r\n\r\n  $sections.each(function(){\r\n    var $sec  = $(this);\r\n    var $head = $sec.children('.panel-heading');\r\n    var $col  = $sec.children('.panel-collapse');\r\n    if (!$head.length || !$col.length) return;\r\n\r\n    // Evita que el toggler nativo por click interfiera\r\n    $head.on('click', '[data-toggle=\"collapse\"], a[href^=\"#\"]', function(e){\r\n      e.preventDefault(); e.stopPropagation();\r\n    });\r\n\r\n    var openT=null, closeT=null;\r\n\r\n    // Abre SOLO la actual al entrar al header (primero abrir, luego cerrar otras)\r\n    $head.on('mouseenter', function(){\r\n      clearTimeout(closeT);\r\n      clearTimeout(openT);\r\n      openT = setTimeout(function(){ openOnlyWithGrace($sec); }, OPEN_DELAY);\r\n    });\r\n\r\n    // No cierres si el mouse entra al contenido\r\n    $col.on('mouseenter', function(){ clearTimeout(closeT); });\r\n\r\n    // Cierra al salir de TODA la sección (header + collapse) con retardo generoso\r\n    $sec.on('mouseleave', function(){\r\n      clearTimeout(openT);\r\n      clearTimeout(closeT);\r\n      closeT = setTimeout(function(){\r\n        if ($sec.find(':focus').length) return; // no cerrar si hay foco en un input\r\n        closeSection($sec);\r\n      }, CLOSE_DELAY);\r\n    });\r\n  }); // <-- cerraba faltante del each\r\n\r\n})(); // <-- cerraba faltante del IIFE\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n// ====================== HELPERS GENERALES ======================\r\nfunction currentPageId() {\r\n  if (typeof window.pageid !== 'undefined' && window.pageid) return window.pageid;\r\n  var pid = $('[data-pageid]').first().attr('data-pageid');\r\n  return pid || '';\r\n}\r\nfunction getCtrl(field) {\r\n  try { return Runner.getControl(currentPageId(), field); } catch(e) { return null; }\r\n}\r\nfunction readVal(field) {\r\n  var c = getCtrl(field);\r\n  if (c && typeof c.getValue === 'function') return c.getValue();\r\n  var pid = currentPageId();\r\n  var $id = $('#value_'+field+'_'+pid);\r\n  if ($id.length) return $id.val();\r\n  var $w = $('div.r-integrated-field[data-field=\"'+field+'\"][data-pageid=\"'+pid+'\"]');\r\n  if ($w.length) {\r\n    var $inp = $w.find('input,select,textarea').first();\r\n    if ($inp.length) return $inp.val();\r\n  }\r\n  var $n = $('[name=\"'+field+'\"]');\r\n  if ($n.length) return $n.val();\r\n  return '';\r\n}\r\nfunction setVal(field, value, fireChange) {\r\n  var c = getCtrl(field);\r\n  if (c && typeof c.setControlValue === 'function') {\r\n    c.setControlValue(value);\r\n    if (fireChange && typeof c.fireEvent === 'function') c.fireEvent('change');\r\n    return true;\r\n  }\r\n  var pid = currentPageId();\r\n  var $id = $('#value_'+field+'_'+pid);\r\n  if ($id.length) {\r\n    $id.val(value).trigger('change');\r\n    if (fireChange) $id.trigger('keyup');\r\n    return true;\r\n  }\r\n  var $w = $('div.r-integrated-field[data-field=\"'+field+'\"][data-pageid=\"'+pid+'\"]');\r\n  if ($w.length) {\r\n    var $inp = $w.find('input,select,textarea').first();\r\n    if ($inp.length) {\r\n      $inp.val(value).trigger('change');\r\n      if (fireChange) $inp.trigger('keyup');\r\n      return true;\r\n    }\r\n  }\r\n  return false;\r\n}\r\nfunction setNoSerieValue(noserie) {\r\n  var ok = setVal('noserie', noserie, true);\r\n  if (ok) return;\r\n  var tries = 0, max = 40, delay = 150;\r\n  (function retry(){\r\n    tries++;\r\n    if (setVal('noserie', noserie, true)) return;\r\n    if (tries >= max) return;\r\n    setTimeout(retry, delay);\r\n  })();\r\n}\r\nfunction hasErrorMessage() {\r\n  if (window.FORM_ERROR === true) return true;\r\n  var $msg = $('[data-itemtype=\"edit_message\"].alert, .alert[data-itemtype=\"edit_message\"]');\r\n  if (!$msg.length) return false;\r\n  var txt = $.trim($msg.text() || '');\r\n  if (!txt) return false;\r\n  if ($msg.is('.alert-danger, .alert-error')) return true;\r\n  return true;\r\n}\r\nfunction getQS(name){\r\n  var m = new RegExp('[?&]'+name+'=([^&]*)').exec(location.search);\r\n  return m ? decodeURIComponent(m[1].replace(/\\+/g,' ')) : null;\r\n}\r\nfunction hasSuccessOrClean() {\r\n  var okMsg = $('.alert.alert-success[data-itemtype=\"edit_message\"], [data-itemtype=\"edit_message\"].alert-success');\r\n  if (okMsg.length) return true;\r\n  return (getQS('clean') === '1');\r\n}\r\n\r\n// --- limpieza fuerte tras éxito/entrada limpia ---\r\nfunction resetAllFieldsUI() {\r\n  window.__recovering = true;\r\n  // 1ª pasada\r\n  (window.FIELDS || []).forEach(function (f) { setVal(f, '', true); });\r\n  window.__res_noserie = null;\r\n  try { sessionStorage.removeItem(window.STORAGE_KEY); } catch(e){}\r\n\r\n  // 2ª pasada (después del pintado)\r\n  setTimeout(function(){\r\n    (window.FIELDS || []).forEach(function (f) { setVal(f, '', true); });\r\n    window.__res_noserie = null;\r\n    try { sessionStorage.removeItem(window.STORAGE_KEY); } catch(e){}\r\n    setTimeout(function(){ window.__recovering = false; }, 150);\r\n  }, 220);\r\n}\r\n\r\n// loop de refuerzo por si PHPRunner hidrata tarde\r\nfunction startForceClearLoop(ms) {\r\n  var end = Date.now() + (ms || 1000);\r\n  (function loop(){\r\n    if (Date.now() > end) return;\r\n    (window.FIELDS || []).forEach(function (f) { setVal(f, '', false); });\r\n    setTimeout(loop, 120);\r\n  })();\r\n}\r\n\r\n// ====================== AUTOSAVE ======================\r\nfunction buildDraft() {\r\n  var d = {};\r\n  for (var i=0;i<window.FIELDS.length;i++){\r\n    var f = window.FIELDS[i];\r\n    var v = readVal(f);\r\n    if (v !== null && v !== undefined && v !== '') d[f] = v;\r\n  }\r\n  d.timestamp = Date.now();\r\n  return d;\r\n}\r\nfunction saveDraftNow() {\r\n  try { sessionStorage.setItem(window.STORAGE_KEY, JSON.stringify(buildDraft())); } catch(e){}\r\n}\r\nfunction makeDebounce(fn, ms){\r\n  var timeoutId = 0;\r\n  return function(){\r\n    var ctx = this, args = arguments;\r\n    if (timeoutId) { try { window.clearTimeout(timeoutId); } catch(e){} }\r\n    timeoutId = window.setTimeout(function(){\r\n      timeoutId = 0;\r\n      try { fn.apply(ctx, args); } catch(e){}\r\n    }, ms || 200);\r\n  };\r\n}\r\nvar saveDraftDebounced = makeDebounce(saveDraftNow, 300);\r\n\r\n// ====================== Salida fiable ======================\r\nfunction safeReleaseAndClear() {\r\n  try {\r\n    if (window.__res_noserie) {\r\n      try {\r\n        navigator.sendBeacon(\r\n          window.ENDPOINT,\r\n          new URLSearchParams({ action:'release', noserie: window.__res_noserie })\r\n        );\r\n      } catch(e) {}\r\n      window.__res_noserie = null;\r\n    }\r\n    sessionStorage.removeItem(window.STORAGE_KEY);\r\n  } catch(e) {}\r\n}\r\n\r\n// BFCache: si vuelve de caché y NO hay borrador, limpia inputs\r\nwindow.addEventListener('pageshow', function (event) {\r\n  if (!event.persisted) return;\r\n  if (sessionStorage.getItem(window.STORAGE_KEY)) return;\r\n  (window.FIELDS || []).forEach(function (f) { setVal(f, '', true); });\r\n  window.__res_noserie = null;\r\n  window.__recovering = false;\r\n});\r\n\r\n// Salida → no limpiar si es submit (para conservar datos si falla)\r\nwindow.addEventListener('pagehide', function(){\r\n  if (!window.__submitting) safeReleaseAndClear();\r\n});\r\ndocument.addEventListener('visibilitychange', function(){\r\n  if (document.visibilityState === 'hidden' && !window.__submitting) {\r\n    safeReleaseAndClear();\r\n  }\r\n});\r\nwindow.addEventListener('beforeunload', function(){\r\n  saveDraftNow();\r\n  if (!window.__submitting && window.__res_noserie) {\r\n    try {\r\n      navigator.sendBeacon(\r\n        window.ENDPOINT,\r\n        new URLSearchParams({ action:'release', noserie: window.__res_noserie })\r\n      );\r\n    } catch(e) {}\r\n  }\r\n});\r\n\r\n// ====================== RESERVA POR PRODUCTO ======================\r\nfunction releasePrev() {\r\n  if (!window.__res_noserie) return;\r\n  $.post(window.ENDPOINT, { action:'release', noserie: window.__res_noserie }, function(){}, 'json');\r\n  window.__res_noserie = null;\r\n}\r\nfunction reserveForProduct(productId){\r\n  $.post(window.ENDPOINT, { action:'reserve_by_product', product_id: productId }, null, 'json')\r\n    .done(function(resp){\r\n      var r = (typeof resp === 'object') ? resp : (function(){ try{return JSON.parse(resp);}catch(e){return {};}})();\r\n      if (r && r.ok) {\r\n        setNoSerieValue(r.noserie);\r\n        window.__res_noserie = r.noserie;\r\n        saveDraftNow();\r\n      } else if (r && r.error === 'no-stock') {\r\n        alert('No hay series disponibles para este producto.');\r\n        setVal('idproducto','',true);\r\n        setNoSerieValue('');\r\n        releasePrev();\r\n        saveDraftNow();\r\n      } else {\r\n        alert('No se pudo reservar la serie. Intenta de nuevo.');\r\n        setNoSerieValue('');\r\n        saveDraftNow();\r\n      }\r\n    })\r\n    .fail(function(){\r\n      alert('Error de comunicación al reservar la serie.');\r\n      setNoSerieValue('');\r\n      saveDraftNow();\r\n    });\r\n}\r\n\r\n// ====================== INICIO DIFERIDO ======================\r\n\r\n// === HARD RESET tras guardado exitoso ===\r\n// Llama esto lo más pronto posible en tu onload (antes o al inicio del setTimeout)\r\n(function hardResetIfNeeded(){\r\n  // Se setea en BeforeProcessAdd o viene por ?clean=1\r\n  var clean = !!(window.CLEAN_ON_LOAD) || /[?&]clean=1(?:&|$)/i.test(location.search);\r\n  if (!clean) return;\r\n\r\n  // Evita que autosave vuelva a meter datos mientras limpiamos\r\n  window.__recovering = true;\r\n  window.SKIP_RECOVERY = true;\r\n  try { sessionStorage.removeItem(window.STORAGE_KEY); } catch(e){}\r\n\r\n  // 1) Reseteo nativo del <form> (limpia inputs HTML)\r\n  var $form = $('form').first();\r\n  if ($form.length && $form[0].reset) { try { $form[0].reset(); } catch(e){} }\r\n\r\n  // 2) Dos pasadas sobre Runner controls (después del montaje)\r\n  function clearAllOnce() {\r\n    (window.FIELDS || []).forEach(function(f){\r\n      // limpia Runner control si existe, si no, el input nativo\r\n      var c = (function(){ try { return Runner.getControl(currentPageId(), f); } catch(e){ return null; }})();\r\n      if (c && typeof c.setControlValue === 'function') {\r\n        try { c.setControlValue(''); if (c.fireEvent) c.fireEvent('change'); } catch(e){}\r\n      } else {\r\n        setVal(f, '', true);\r\n      }\r\n    });\r\n    window.__res_noserie = null;\r\n  }\r\n\r\n  // primera pasada rápida\r\n  clearAllOnce();\r\n\r\n  // segunda pasada con pequeño delay (evita rehidratación tardía)\r\n  setTimeout(clearAllOnce, 220);\r\n\r\n  // 3) loop de refuerzo por ~1 segundo\r\n  var tEnd = Date.now() + 1000;\r\n  (function loop(){\r\n    if (Date.now() > tEnd) {\r\n      // reactivamos autosave\r\n      setTimeout(function(){ window.__recovering = false; }, 120);\r\n      return;\r\n    }\r\n    clearAllOnce();\r\n    setTimeout(loop, 120);\r\n  })();\r\n})();\r\n\r\n\r\n\r\n\r\nsetTimeout(function(){\r\n  var pid      = currentPageId();\r\n  var ctrlProd = getCtrl('idproducto');\r\n  if (!ctrlProd) return;\r\n\r\n  // 0) MARCAR SUBMIT UNIVERSAL\r\n  $(document).on('submit', 'form', function(){\r\n    window.__submitting = true;\r\n    saveDraftNow();\r\n  });\r\n  var SAVE_SELECTOR = \"[data-itemtype='edit_save'] a, [data-itemid='edit_save'] a, a#saveButton1, button#saveButton1\";\r\n  $(document).on('click', SAVE_SELECTOR, function(){\r\n    window.__submitting = true;\r\n    saveDraftNow();\r\n  });\r\n\r\n  // 🚀 MODO LIMPIEZA: si hay éxito, si CLEAN_ON_LOAD=true (inyectado en PHP), o si SKIP_RECOVERY y NO hay error\r\n  window.CLEAN_ON_LOAD = window.CLEAN_ON_LOAD || (getQS('clean') === '1');\r\n  var cleanMode = hasSuccessOrClean() || !!window.CLEAN_ON_LOAD || (window.SKIP_RECOVERY && !hasErrorMessage());\r\n\r\n  if (cleanMode) {\r\n    try { sessionStorage.removeItem(window.STORAGE_KEY); } catch(e){}\r\n    window.SKIP_RECOVERY = true;\r\n    resetAllFieldsUI();\r\n    startForceClearLoop(1000); // refuerzo ~1s\r\n  } else {\r\n    // 1) RECUPERACIÓN DESDE sessionStorage (si hay, no caducó y no hay error)\r\n    var draftJson = sessionStorage.getItem(window.STORAGE_KEY);\r\n    if (draftJson && !window.SKIP_RECOVERY && !hasErrorMessage()) {\r\n      try {\r\n        var draft = JSON.parse(draftJson) || {};\r\n        var now   = Date.now();\r\n        if (draft.timestamp && (now - draft.timestamp > MAX_DRAFT_AGE_MS)) {\r\n          sessionStorage.removeItem(window.STORAGE_KEY);\r\n        } else {\r\n          window.__recovering = true;\r\n          if (draft.idproducto != null && draft.idproducto !== '') {\r\n            setVal('idproducto', draft.idproducto, true);\r\n          }\r\n          Object.keys(draft).forEach(function(k){\r\n            if (k === 'timestamp' || k === 'idproducto') return;\r\n            setVal(k, draft[k], false);\r\n          });\r\n          if (draft.noserie) window.__res_noserie = draft.noserie;\r\n          sessionStorage.removeItem(window.STORAGE_KEY);\r\n          setTimeout(function(){ window.__recovering = false; }, 150);\r\n        }\r\n      } catch(e){\r\n        console.error('Borrador inválido en sessionStorage:', e);\r\n        sessionStorage.removeItem(window.STORAGE_KEY);\r\n      }\r\n    } else if (window.SKIP_RECOVERY) {\r\n      sessionStorage.removeItem(window.STORAGE_KEY);\r\n    }\r\n  }\r\n\r\n  // 2) CAMBIO DE PRODUCTO → RESERVA\r\n  ctrlProd.on('change', function(){\r\n    var productId = ctrlProd.getValue();\r\n    if (!productId) return;\r\n    if (window.__recovering) return;\r\n\r\n    var prevSerie = readVal('noserie');\r\n    if (prevSerie && window.__res_noserie === prevSerie) {\r\n      $.post(window.ENDPOINT, { action:'release', noserie: window.__res_noserie }, function(){}, 'json');\r\n      window.__res_noserie = null;\r\n    } else {\r\n      releasePrev();\r\n    }\r\n    setNoSerieValue('');\r\n    reserveForProduct(productId);\r\n  });\r\n\r\n  // 3) AUTOGUARDADO (timer + por cambios)\r\n  setInterval(function(){ if (!window.__recovering) saveDraftNow(); }, 5000);\r\n\r\n  var selDeleg = window.FIELDS.map(function(f){\r\n    return 'div.r-integrated-field[data-field=\"'+f+'\"][data-pageid=\"'+pid+'\"] input, '+\r\n           'div.r-integrated-field[data-field=\"'+f+'\"][data-pageid=\"'+pid+'\"] select, '+\r\n           'div.r-integrated-field[data-field=\"'+f+'\"][data-pageid=\"'+pid+'\"] textarea';\r\n  }).join(', ');\r\n  $(document).on('change input', selDeleg, makeDebounce(saveDraftNow, 300));\r\n\r\n  // 4) SALIR (cualquier step)\r\n  (function(){\r\n    var BACK_SELECTOR = [\r\n      '#backButton1',\r\n      '#backButton2',\r\n      \"[data-itemtype='edit_back_list'] a\",\r\n      \"[data-itemid='edit_back_list'] a\",\r\n      \"[data-itemtype='edit_close'] a\",\r\n      \"[data-itemid='edit_close'] a\",\r\n      \"a[href$='solicitudes_list.php']\",\r\n      \"a[href*='solicitudes_list.php?']\"\r\n    ].join(', ');\r\n    $(document).on('mousedown click', BACK_SELECTOR, function(){\r\n      window.__submitting = false;\r\n      safeReleaseAndClear();\r\n    });\r\n  })();\r\n\r\n}, 500);\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"
 		},
 		{
 			"eventId": "EVENT_AFTERADD",
@@ -1978,8 +1978,8 @@
 							"section": "",
 							"cells": [
 								{
-									"cell": "c6",
-									"colspan": 1
+									"cell": "c9",
+									"rowspan": 1
 								}
 							]
 						},
@@ -2035,16 +2035,12 @@
 							],
 							"align": "center"
 						},
-						"c6": {
-							"model": "c3",
-							"items": [],
-							"background": "transparent"
-						},
 						"c1": {
 							"model": "c3",
 							"items": [],
 							"background": "transparent",
-							"customCSS": "/* Put  your custom CSS code here */\n\n        body {\n            box-sizing: border-box;\n        }"
+							"customCSS": "/* Put  your custom CSS code here */\n\n        body {\n            box-sizing: border-box;\n        }",
+							"height": "3em"
 						},
 						"c7": {
 							"model": "c3",
@@ -2057,6 +2053,10 @@
 								"section2"
 							],
 							"align": "center"
+						},
+						"c9": {
+							"model": "c3",
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -2741,7 +2741,7 @@
 					"bsStyle": "default",
 					"panelType": 3,
 					"headerBg": "",
-					"headerColor": "",
+					"headerColor": "#ffffff",
 					"bodyBg": "",
 					"bodyColor": "",
 					"panelBorder": null,
@@ -2775,7 +2775,7 @@
 			"imageBgColor": "#f2f2f2",
 			"controlsBgColor": "white",
 			"imagePosition": "right",
-			"pageCSS": "/* Put  your custom CSS code here */\n\n\n\n/* ========================================================= */\n/* VARIABLES DE COLOR */\n/* ========================================================= */\n:root {\n    --color-elegante: #FFFFFF; /* Texto Blanco para contrastar con el fondo oscuro */\n    --naranja-degradado-inicio: #03478A; /* Naranja Suave (Light Salmon) */\n    --naranja-degradado-fin: #6D98C2; /* Naranja Medio (Coral) */\n    --color-borde-base: #FF7F50; /* Color simple para el borde base */\n}\n\n/* ========================================================= */\n/* 1. Fondo de la Página: Degradado Azul Cielo (Se mantiene) */\n/* ========================================================= */\nbody, .container-fluid {\nbackground: linear-gradient(180deg, #E0F7FA 0%, #B3E5FC 100%) !important;    min-height: 100vh;\n}\n\n/* ========================================================= */\n/* 2. Estilo de las Secciones: Efecto Tarjeta/Sombreado (Se mantiene) */\n/* ========================================================= */\n.panel, .rnr-c-body, .rnr-c-grid {\n    background-color: #FFFFFF !important; \n    border: none !important; \n    border-radius: 12px !important; \n    padding: 20px;\n    margin-bottom: 25px; \n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), \n                0 2px 6px rgba(0, 0, 0, 0.05) !important; \n                \n    /* 🔑 CAMBIO CLAVE: Agrega 'transform' a la transición */\n    transition: box-shadow 0.3s ease-in-out, \n                transform 0.3s ease-in-out; /* Transición para el movimiento y escala */            \n                \n}\n\n/* ========================================================= */\n/* 3. Estilo de Encabezados de Sección (EL CAMBIO PRINCIPAL) */\n/* ========================================================= */\n.panel-heading, .rnr-c-head {\n    /* Aplicamos el degradado al fondo completo del encabezado */\n    background: linear-gradient(to right, var(--naranja-degradado-inicio), var(--naranja-degradado-fin)) !important;\n    \n    /* El texto del título ahora es blanco para contrastar con el fondo naranja */\n    color: var(--color-elegante) !important; \n    \n    font-weight: 600;\n    \n    /* Mantenemos el centrado vertical */\n    display: flex;\n    align-items: center;\n    height: 40px; /* Aseguramos una altura suficiente */\n    \n    /* Eliminamos el borde degradado y aplicamos un borde simple y fino abajo */\n    border-bottom: 1px solid var(--color-borde-base) !important; \n    border-image-source: none !important; /* Desactivar la propiedad border-image anterior */\n    \n    /* Ajustes de relleno/bordes para que el degradado se vea bien */\n    padding: 0 15px !important; \n    border-top-left-radius: 12px !important; /* Mantenemos el radio del panel superior */\n    border-top-right-radius: 12px !important;\n}\n\n/* ========================================================= */\n/* 3. Estilo de HOVER: Efecto de Elevación/Intensificación    */\n/* ========================================================= */\n.panel:hover, .rnr-c-body:hover, .rnr-c-grid:hover {\n    /* Nueva sombra más intensa y \"elevada\" */\n    box-shadow: 0 15px 400px rgba(0, 0, 0, 0.3), \n                0 5px 15px rgba(0, 0, 0, 0.1) !important; \n    \n    /* Pequeño movimiento hacia arriba para dar más sensación de elevación (opcional) */\n    transform: translateY(-5px) scale(1.005); \n}\n\n\n\n/* 4. Estilo de los Inputs (Se mantiene) */\n.form-control {\n    border-radius: 8px !important; \n    border: 1px solid #e0e0e0 !important;\n}\n.form-control:focus {\n    border-color: #48C9B0 !important; \n    box-shadow: 0 0 0 0.2rem rgba(72, 201, 176, 0.25) !important;\n}\n\n/* Aplica solo a formularios con esas secciones */\n.panel.panel-default.form-section > .panel-body { display: none; }\n\n.panel.panel-default.form-section > .panel-heading:hover {\n  cursor: pointer;\n  filter: brightness(0.98);\n}\n\n.panel-collapse.no-bs-trans {\n  transition: none !important;\n}\n",
+			"pageCSS": "/* Put  your custom CSS code here */\n\n\n\n/* ========================================================= */\n/* VARIABLES DE COLOR */\n/* ========================================================= */\n:root {\n    --color-elegante: #FFFFFF; /* Texto Blanco para contrastar con el fondo oscuro */\n    --naranja-degradado-inicio: #03478A; /* Naranja Suave (Light Salmon) */\n    --naranja-degradado-fin: #6D98C2; /* Naranja Medio (Coral) */\n    --color-borde-base: #FF7F50; /* Color simple para el borde base */\n}\n\n/* ========================================================= */\n/* 1. Fondo de la Página: Degradado Azul Cielo (Se mantiene) */\n/* ========================================================= */\nbody, .container-fluid {\nbackground: linear-gradient(180deg, #E0F7FA 0%, #B3E5FC 100%) !important;    min-height: 100vh;\n}\n\n/* ========================================================= */\n/* 2. Estilo de las Secciones: Efecto Tarjeta/Sombreado (Se mantiene) */\n/* ========================================================= */\n.panel, .rnr-c-body, .rnr-c-grid {\n    background-color: #FFFFFF !important; \n    border: none !important; \n    border-radius: 12px !important; \n    padding: 20px;\n    margin-bottom: 25px; \n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), \n                0 2px 6px rgba(0, 0, 0, 0.05) !important; \n                \n    /* 🔑 CAMBIO CLAVE: Agrega 'transform' a la transición */\n    transition: box-shadow 0.3s ease-in-out, \n                transform 0.3s ease-in-out; /* Transición para el movimiento y escala */            \n                \n}\n\n/* ========================================================= */\n/* 3. Estilo de Encabezados de Sección (EL CAMBIO PRINCIPAL) */\n/* ========================================================= */\n.panel-heading, .rnr-c-head {\n    /* Aplicamos el degradado al fondo completo del encabezado */\n    background: linear-gradient(to right, var(--naranja-degradado-inicio), var(--naranja-degradado-fin)) !important;\n    \n    /* El texto del título ahora es blanco para contrastar con el fondo naranja */\n    color: var(--color-elegante) !important; \n    \n    font-weight: 600;\n    \n    /* Mantenemos el centrado vertical */\n    display: flex;\n    align-items: center;\n    height: 40px; /* Aseguramos una altura suficiente */\n    \n    /* Eliminamos el borde degradado y aplicamos un borde simple y fino abajo */\n    border-bottom: 1px solid var(--color-borde-base) !important; \n    border-image-source: none !important; /* Desactivar la propiedad border-image anterior */\n    \n    /* Ajustes de relleno/bordes para que el degradado se vea bien */\n    padding: 0 15px !important; \n    border-top-left-radius: 12px !important; /* Mantenemos el radio del panel superior */\n    border-top-right-radius: 12px !important;\n}\n\n/* ========================================================= */\n/* 3. Estilo de HOVER: Efecto de Elevación/Intensificación    */\n/* ========================================================= */\n.panel:hover, .rnr-c-body:hover, .rnr-c-grid:hover {\n    /* Nueva sombra más intensa y \"elevada\" */\n    box-shadow: 0 15px 400px rgba(0, 0, 0, 0.3), \n                0 5px 15px rgba(0, 0, 0, 0.1) !important; \n    \n    /* Pequeño movimiento hacia arriba para dar más sensación de elevación (opcional) */\n    transform: translateY(-5px) scale(1.005); \n}\n\n\n\n/* 4. Estilo de los Inputs (Se mantiene) */\n.form-control {\n    border-radius: 8px !important; \n    border: 1px solid #e0e0e0 !important;\n}\n.form-control:focus {\n    border-color: #48C9B0 !important; \n    box-shadow: 0 0 0 0.2rem rgba(72, 201, 176, 0.25) !important;\n}\n\n/* Aplica solo a formularios con esas secciones */\n.panel.panel-default.form-section > .panel-body { display: none; }\n\n.panel.panel-default.form-section > .panel-heading:hover {\n  cursor: pointer;\n  filter: brightness(0.98);\n}\n\n/* ========================================================= */\n/* ARREGLO DE COLOR DE TEXTO DE ENCABEZADO DURANTE MODAL     */\n/* ========================================================= */\n\n/* Apuntamos directamente al panel-title, que es el elemento que contiene \n   el texto del encabezado de la sección. \n*/\n.panel-heading .panel-title {\n    color: #FFFFFF !important; \n}\n\n/* Si dentro del panel-title hay un enlace (Ej. si el encabezado permite colapsar/expandir \n   y el título es un <a>), también debemos forzar el color del enlace.\n*/\n.panel-heading .panel-title a {\n    color: #FFFFFF !important;\n}\n\n/* Asegurar que el texto dentro del panel-title no se vea afectado por reglas generales\n   que usen el estado 'modal-open' en el cuerpo de la página.\n*/\n.modal-open .panel-heading .panel-title {\n    color: #FFFFFF !important;\n}",
 			"listTotals": 1,
 			"customHtml": "",
 			"title": {}
@@ -3077,14 +3077,6 @@
 								}
 							],
 							"section": ""
-						},
-						{
-							"cells": [
-								{
-									"cell": "c2"
-								}
-							],
-							"section": ""
 						}
 					],
 					"cells": {
@@ -3092,12 +3084,6 @@
 							"model": "c1",
 							"items": [
 								"edit_message"
-							]
-						},
-						"c2": {
-							"model": "c2",
-							"items": [
-								"step_nav"
 							]
 						}
 					},
@@ -3123,7 +3109,6 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"next_step",
 								"edit_save",
 								"edit_back_list",
 								"edit_close"
@@ -3166,14 +3151,44 @@
 					"modelId": "simple-edit",
 					"grid": [
 						{
+							"section": "",
 							"cells": [
-								{
-									"cell": "c3",
-									"rowspan": 1
-								},
 								{
 									"cell": "c",
 									"rowspan": 1
+								}
+							]
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c4"
+								}
+							]
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c5"
+								}
+							]
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c6"
+								}
+							]
+						},
+						{
+							"cells": [
+								{
+									"cell": "c3",
+									"rowspan": 1,
+									"colspan": 1
 								}
 							],
 							"section": ""
@@ -3183,7 +3198,7 @@
 						"c3": {
 							"model": "c3",
 							"items": [
-								"section"
+								"section2"
 							],
 							"border": [
 								{
@@ -3195,13 +3210,30 @@
 								"right": "10px"
 							},
 							"customCSS": "\n",
-							"width": "50%"
+							"width": "50%",
+							"align": "center"
 						},
 						"c": {
 							"model": "c3",
 							"items": [
-								"section1"
-							]
+								"sec_cliente"
+							],
+							"align": "center"
+						},
+						"c4": {
+							"model": "c3",
+							"items": []
+						},
+						"c5": {
+							"model": "c3",
+							"items": [
+								"sec_venta"
+							],
+							"align": "center"
+						},
+						"c6": {
+							"model": "c3",
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -3213,9 +3245,23 @@
 					"modelId": "simple-edit",
 					"grid": [
 						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c"
+								},
+								{
+									"cell": "c2"
+								}
+							]
+						},
+						{
 							"cells": [
 								{
 									"cell": "c1"
+								},
+								{
+									"cell": "c3"
 								}
 							],
 							"section": ""
@@ -3225,13 +3271,28 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"integrated_edit_field3",
 								"integrated_edit_field4",
-								"integrated_edit_field5",
 								"integrated_edit_field1",
-								"integrated_edit_field6",
-								"integrated_edit_field9",
 								"integrated_edit_field30"
+							]
+						},
+						"c": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field3"
+							]
+						},
+						"c2": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field9"
+							]
+						},
+						"c3": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field5",
+								"integrated_edit_field6"
 							]
 						}
 					},
@@ -3244,43 +3305,239 @@
 					"modelId": "simple-edit",
 					"grid": [
 						{
+							"section": "",
 							"cells": [
+								{
+									"cell": "c4",
+									"colspan": 2
+								},
+								{
+									"cell": "c",
+									"colspan": 1
+								},
 								{
 									"cell": "c1"
 								},
 								{
-									"cell": "c"
+									"cell": "c9"
+								}
+							]
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c8"
+								},
+								{
+									"cell": "c18",
+									"colspan": 1
+								},
+								{
+									"cell": "c13",
+									"colspan": 1
+								},
+								{
+									"cell": "c2"
+								},
+								{
+									"cell": "c10"
+								}
+							]
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c12"
+								},
+								{
+									"cell": "c19",
+									"colspan": 1
+								},
+								{
+									"cell": "c14",
+									"colspan": 1
+								},
+								{
+									"cell": "c3"
+								},
+								{
+									"cell": "c11"
+								}
+							]
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c20"
+								},
+								{
+									"cell": "c21",
+									"colspan": 1
+								},
+								{
+									"cell": "c15",
+									"colspan": 1
+								},
+								{
+									"cell": "c6"
+								},
+								{
+									"cell": "c17"
+								}
+							]
+						},
+						{
+							"cells": [
+								{
+									"cell": "c5"
+								},
+								{
+									"cell": "c22",
+									"colspan": 1
+								},
+								{
+									"cell": "c16",
+									"colspan": 1
+								},
+								{
+									"cell": "c7"
+								},
+								{
+									"cell": "c23"
 								}
 							],
 							"section": ""
 						}
 					],
 					"cells": {
-						"c1": {
+						"c4": {
 							"model": "c1",
 							"items": [
-								"integrated_edit_field",
-								"integrated_edit_field20",
-								"integrated_edit_field2",
-								"integrated_edit_field7",
-								"integrated_edit_field8",
-								"integrated_edit_field25",
-								"integrated_edit_field27",
-								"integrated_edit_field28",
-								"integrated_edit_field19"
+								"integrated_edit_field"
+							]
+						},
+						"c8": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field20"
+							]
+						},
+						"c12": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field7"
+							]
+						},
+						"c20": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field23"
+							]
+						},
+						"c5": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field8"
 							]
 						},
 						"c": {
 							"model": "c1",
 							"items": [
-								"integrated_edit_field21",
-								"integrated_edit_field29",
-								"integrated_edit_field22",
-								"integrated_edit_field23",
-								"integrated_edit_field24",
+								"integrated_edit_field19"
+							]
+						},
+						"c13": {
+							"model": "c1",
+							"items": []
+						},
+						"c14": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field29"
+							]
+						},
+						"c15": {
+							"model": "c1",
+							"items": [
 								"integrated_edit_field26"
-							],
-							"width": "80%"
+							]
+						},
+						"c16": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field28"
+							]
+						},
+						"c18": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field2"
+							]
+						},
+						"c19": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field21"
+							]
+						},
+						"c21": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field24"
+							]
+						},
+						"c22": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field25"
+							]
+						},
+						"c1": {
+							"model": "c1",
+							"items": []
+						},
+						"c2": {
+							"model": "c1",
+							"items": []
+						},
+						"c3": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field22"
+							]
+						},
+						"c6": {
+							"model": "c1",
+							"items": []
+						},
+						"c7": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field27"
+							]
+						},
+						"c9": {
+							"model": "c1",
+							"items": []
+						},
+						"c10": {
+							"model": "c1",
+							"items": []
+						},
+						"c11": {
+							"model": "c1",
+							"items": []
+						},
+						"c17": {
+							"model": "c1",
+							"items": []
+						},
+						"c23": {
+							"model": "c1",
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -3288,15 +3545,21 @@
 					"inlineLabels": false,
 					"separateLabels": false
 				},
-				"step2": {
+				"section2": {
 					"modelId": "simple-edit",
 					"grid": [
 						{
 							"section": "",
 							"cells": [
 								{
-									"cell": "c",
-									"colspan": 2
+									"cell": "c"
+								},
+								{
+									"cell": "c20",
+									"colspan": 4
+								},
+								{
+									"cell": "c4"
 								}
 							]
 						},
@@ -3307,50 +3570,141 @@
 									"cell": "c2"
 								},
 								{
-									"cell": "c4"
+									"cell": "c21"
+								},
+								{
+									"cell": "c17"
+								},
+								{
+									"cell": "c13"
+								},
+								{
+									"cell": "c9"
+								},
+								{
+									"cell": "c5"
+								}
+							]
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c3"
+								},
+								{
+									"cell": "c22"
+								},
+								{
+									"cell": "c18"
+								},
+								{
+									"cell": "c14"
+								},
+								{
+									"cell": "c10"
+								},
+								{
+									"cell": "c6"
 								}
 							]
 						},
 						{
 							"cells": [
 								{
-									"cell": "c3",
-									"colspan": 2
+									"cell": "c1",
+									"colspan": 6
 								}
 							],
 							"section": ""
 						}
 					],
 					"cells": {
-						"c": {
+						"c1": {
 							"model": "c1",
 							"items": [
 								"text"
 							],
 							"align": "center"
 						},
+						"c": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field10"
+							]
+						},
 						"c2": {
 							"model": "c1",
 							"items": [
-								"integrated_edit_field16",
-								"integrated_edit_field13",
-								"integrated_edit_field14",
-								"integrated_edit_field15"
+								"integrated_edit_field16"
+							],
+							"width": "40%"
+						},
+						"c3": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field17"
 							]
 						},
 						"c4": {
 							"model": "c1",
+							"items": []
+						},
+						"c5": {
+							"model": "c1",
+							"items": []
+						},
+						"c6": {
+							"model": "c1",
+							"items": []
+						},
+						"c9": {
+							"model": "c1",
 							"items": [
-								"integrated_edit_field11",
-								"integrated_edit_field10",
-								"integrated_edit_field12",
-								"integrated_edit_field17",
-								"integrated_edit_field18"
+								"integrated_edit_field12"
 							]
 						},
-						"c3": {
-							"model": "c3",
+						"c10": {
+							"model": "c1",
 							"items": []
+						},
+						"c13": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field15"
+							]
+						},
+						"c14": {
+							"model": "c1",
+							"items": []
+						},
+						"c17": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field14"
+							]
+						},
+						"c18": {
+							"model": "c1",
+							"items": []
+						},
+						"c20": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field11"
+							]
+						},
+						"c21": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field13"
+							]
+						},
+						"c22": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field18"
+							]
 						}
 					},
 					"deferredItems": [],
@@ -3387,22 +3741,6 @@
 				},
 				"edit_view": {
 					"type": "edit_view"
-				},
-				"section": {
-					"type": "section",
-					"title": {
-						"type": 0,
-						"text": "Datos del cliente"
-					},
-					"location": "section",
-					"bsStyle": "default",
-					"panelType": 3,
-					"headerBg": "#3e58f3",
-					"headerColor": "#f9f6c1",
-					"bodyBg": "#565050",
-					"bodyColor": "#f3f3f2",
-					"panelBorder": "1px",
-					"borderColor": "#d7f5e2"
 				},
 				"integrated_edit_field3": {
 					"field": "idcliente",
@@ -3465,22 +3803,6 @@
 					"orientation": 0,
 					"updateOnEdit": false
 				},
-				"section1": {
-					"type": "section",
-					"title": {
-						"type": 0,
-						"text": "Datos de la solicitud"
-					},
-					"location": "section1",
-					"bsStyle": "default",
-					"panelType": 3,
-					"headerBg": "#3e58f3",
-					"headerColor": "#f9f6c1",
-					"bodyBg": "#565050",
-					"bodyColor": "#f3f3f2",
-					"panelBorder": "1px",
-					"borderColor": "#d7f5e2"
-				},
 				"integrated_edit_field": {
 					"field": "idproducto",
 					"type": "integrated_edit_field",
@@ -3523,76 +3845,6 @@
 						"table": "solicitudes",
 						"type": 5
 					},
-					"updateOnEdit": false
-				},
-				"integrated_edit_field13": {
-					"field": "calle",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field14": {
-					"field": "numeroext",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field15": {
-					"field": "numeroint",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field16": {
-					"field": "colonia",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false,
-					"customCSS": "/* Put  your custom CSS code here */\n\n"
-				},
-				"integrated_edit_field11": {
-					"field": "ciudad",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field10": {
-					"field": "estado",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field12": {
-					"field": "cp",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"text": {
-					"type": "text",
-					"label": {
-						"text": "<div id=\"map\" style=\"height: 400px; width: 100%; margin-bottom: 10px; border: 1px solid #ccc;\"></div>\n<p><strong>Haz clic en el mapa para obtener los datos de la ubicación (si algún campo no se acompleta automáticamente, favor de escribirlo)</strong></p>\n\n<!-- Cargar Leaflet CSS & JS -->\n<link rel=\"stylesheet\" href=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.css\" />\n<script src=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.js\"></script>\n\n<script>\n// Variables globales\nlet map;\nlet marker;\nlet mapInitialized = false;\n\nfunction initMap() {\n    if (mapInitialized) {\n        setTimeout(() => map.invalidateSize(), 100);\n        return;\n    }\n    \n    const initialLocation = [21.0038, -89.6183];\n    map = L.map('map').setView(initialLocation, 12);\n    \n    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {\n        attribution: '&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'\n    }).addTo(map);\n    \n    mapInitialized = true;\n    \n    map.on('click', function(e) {\n        placeMarkerAndGeocode(e.latlng);\n    });\n    \n    setTimeout(() => map.invalidateSize(), 300);\n}\n\nfunction placeMarkerAndGeocode(latlng) {\n    if (marker) map.removeLayer(marker);\n    marker = L.marker(latlng).addTo(map);\n    map.setView(latlng, map.getZoom());\n    \n    var apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}&zoom=18&addressdetails=1`;\n    \n    fetch(apiUrl)\n        .then(response => response.json())\n        .then(data => {\n            if (data && data.address) {\n                populateAddressFields(data.address, latlng, data.display_name);\n            } else {\n                alert('No se encontraron resultados para esta ubicación.');\n            }\n        })\n        .catch(error => {\n            console.error('Error:', error);\n            alert('Falló la geocodificación.');\n        });\n}\n\n// 🔥 NUEVA FUNCIÓN: Extraer número de dirección\nfunction extractHouseNumber(fullAddress, roadName) {\n    if (!fullAddress || !roadName) return '';\n    \n    // Buscar patrones comunes de números\n    const patterns = [\n        /(?:No\\.|Num|#)\\s*(\\d+)/i,    // No. 366, Num 366, #366\n        /(\\d+)\\s*(?:#|No\\.|Num)/i,     // 366 #, 366 No.\n        /(\\d+)\\s*[-–]\\s*\\d+/i,         // 366-368\n        /(\\d+)[a-zA-Z]?$/i,            // 366, 366A\n        /^(\\d+)\\s+/i                   // 366 Calle 30\n    ];\n    \n    for (const pattern of patterns) {\n        const match = fullAddress.match(pattern);\n        if (match && match[1]) {\n            return match[1];\n        }\n    }\n    \n    // Si no se encuentra con patrones, intentar con el campo house_number de Nominatim\n    return '';\n}\n\nfunction populateAddressFields(address, latlng, fullAddress = '') {\n    // Extraer el número de casa\n    const houseNumber = address.house_number || extractHouseNumber(fullAddress, address.road);\n    \n    // Llenar los campos del formulario\n    document.getElementById('value_estado_1').value = address.state || '';\n    document.getElementById('value_ciudad_1').value = address.city || address.town || address.village || '';\n    document.getElementById('value_cp_1').value = address.postcode || '';\n    document.getElementById('value_colonia_1').value = address.suburb || address.neighbourhood || '';\n    document.getElementById('value_calle_1').value = address.road || '';\n    \n    // 🔥 NUEVO: Llenar el número exterior\n    document.getElementById('value_numeroext_1').value = houseNumber;\n    \n    document.getElementById('value_lat_1').value = latlng.lat;\n    document.getElementById('value_lng_1').value = latlng.lng;\n    \n    console.log('Datos completos de Nominatim:', address);\n    console.log('Dirección completa:', fullAddress);\n    console.log('Número extraído:', houseNumber);\n}\n\n// 🔥 OBSERVAR CUANDO EL TAB Y SECTION SE HACEN VISIBLES\nfunction checkMapContainer() {\n    const mapContainer = document.getElementById('map');\n    if (mapContainer.offsetParent !== null && mapContainer.offsetWidth > 0) {\n        initMap();\n        return true;\n    }\n    return false;\n}\n\ndocument.addEventListener('DOMContentLoaded', function() {\n    const interval = setInterval(() => {\n        if (checkMapContainer()) {\n            clearInterval(interval);\n        }\n    }, 200);\n    \n    document.body.addEventListener('click', function(e) {\n        if (e.target.closest('[data-toggle=\"tab\"], .step-tab, .nav-link')) {\n            setTimeout(() => {\n                if (mapInitialized) map.invalidateSize();\n                else if (checkMapContainer()) console.log('Mapa inicializado desde click en tab');\n            }, 400);\n        }\n    });\n});\n\nwindow.addEventListener('resize', () => {\n    if (mapInitialized) setTimeout(() => map.invalidateSize(), 100);\n});\n\nconst observer = new MutationObserver(function(mutations) {\n    mutations.forEach(function(mutation) {\n        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {\n            setTimeout(() => {\n                if (mapInitialized) map.invalidateSize();\n            }, 200);\n        }\n    });\n});\n\nsetTimeout(() => {\n    const mapContainer = document.getElementById('map');\n    if (mapContainer) {\n        observer.observe(mapContainer, { attributes: true, attributeFilter: ['style'] });\n    }\n}, 1000);\n</script>\n\n\n\n\n\n\n\n\n\n<script>\n(function(){\n  // ========= IDs DE TUS CAMPOS =========\n  const IDS = {\n    calle:   'value_calle_1',\n    numext:  'value_numeroext_1',   // opcional\n    numint:  'value_numint_1',      // opcional\n    colonia: 'value_colonia_1',\n    ciudad:  'value_ciudad_1',\n    estado:  'value_estado_1',\n    cp:      'value_cp_1',\n    lat:     'value_lat_1',\n    lng:     'value_lng_1'\n  };\n\n  // ========= HELPERS =========\n  const $id = (id) => document.getElementById(id);\n  const safeTrim = (v) => (v || '').toString().trim();\n  const isValidLatLng = (lat, lng) => {\n    const a = Number(lat), b = Number(lng);\n    return Number.isFinite(a) && Number.isFinite(b) && a<=90 && a>=-90 && b<=180 && b>=-180;\n  };\n\n  function invalidateCoordsAndMarker(){\n    if ($id(IDS.lat)) $id(IDS.lat).value = '';\n    if ($id(IDS.lng)) $id(IDS.lng).value = '';\n    if (window.marker) { try { map.removeLayer(marker); } catch(e){} marker = null; }\n  }\n\n  function updateMarkerAndView(lat, lng, zoom){\n    if (!mapInitialized) initMap();\n    const latlng = L.latLng(lat, lng);\n    if (marker) marker.setLatLng(latlng);\n    else marker = L.marker(latlng).addTo(map);\n    map.setView(latlng, zoom || 17);\n  }\n\n  // ========= ESTADO INTERNO =========\n  let geocodeAbort = null;\n  let lastKey = '';\n\n  // ========= GEOCODERS =========\n  /** Paso 1: geocodificar colonia/CP para obtener bbox y centro */\n  async function geocodeArea({colonia, ciudad, estado, cp}) {\n    const parts = [\n      colonia || '',\n      ciudad  || 'Mérida',\n      estado  || 'Yucatán',\n      cp || '',\n      'México'\n    ].filter(Boolean).join(', ');\n\n    const url = `https://nominatim.openstreetmap.org/search?` +\n                new URLSearchParams({\n                  format: 'json',\n                  addressdetails: '1',\n                  limit: '1',\n                  countrycodes: 'mx',\n                  q: parts\n                }).toString();\n\n    const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });\n    const data = await resp.json();\n    if (Array.isArray(data) && data.length) {\n      const item = data[0];\n      const bbox = item.boundingbox ? {\n        south: parseFloat(item.boundingbox[0]),\n        north: parseFloat(item.boundingbox[1]),\n        west:  parseFloat(item.boundingbox[2]),\n        east:  parseFloat(item.boundingbox[3])\n      } : null;\n\n      return {\n        lat: parseFloat(item.lat),\n        lon: parseFloat(item.lon),\n        bbox\n      };\n    }\n    return null;\n  }\n\n  /** Paso 2: buscar calle/número dentro de un viewbox (bounded=1) */\n  async function geocodeStreetInViewbox({street, ciudad, estado, cp, bbox}) {\n    const params = new URLSearchParams({\n      format: 'json',\n      addressdetails: '1',\n      limit: '1',\n      country: 'México',\n      city: ciudad || 'Mérida',\n      state: estado || 'Yucatán',\n      bounded: '1'\n    });\n    if (street) params.append('street', street);\n    if (cp)     params.append('postalcode', cp);\n\n    if (bbox) {\n      // viewbox: left,top,right,bottom => west,north,east,south\n      params.append('viewbox', `${bbox.west},${bbox.north},${bbox.east},${bbox.south}`);\n    }\n\n    let url = `https://nominatim.openstreetmap.org/search?${params.toString()}`;\n    let resp = await fetch(url, { headers: { 'Accept': 'application/json' } });\n    let data = await resp.json();\n\n    // Fallback a texto libre si no hay hit\n    if (!Array.isArray(data) || !data.length) {\n      const free = [\n        street || '',\n        ciudad || 'Mérida',\n        estado || 'Yucatán',\n        cp || '',\n        'México'\n      ].filter(Boolean).join(', ');\n\n      url = `https://nominatim.openstreetmap.org/search?` + new URLSearchParams({\n        format: 'json', addressdetails: '1', limit: '1', countrycodes: 'mx', q: free\n      }).toString();\n\n      resp = await fetch(url, { headers: { 'Accept': 'application/json' } });\n      data = await resp.json();\n    }\n\n    if (Array.isArray(data) && data.length) {\n      return {\n        lat: parseFloat(data[0].lat),\n        lon: parseFloat(data[0].lon)\n      };\n    }\n    return null;\n  }\n\n  /** Función principal: colonia/CP -> bbox y luego calle dentro del bbox */\n  async function geocodeAddressAndUpdateStructured(force=false){\n    const calle   = safeTrim($id(IDS.calle)?.value);\n    const numext  = safeTrim($id(IDS.numext)?.value);\n    const numint  = safeTrim($id(IDS.numint)?.value);\n    const colonia = safeTrim($id(IDS.colonia)?.value);\n    const ciudad  = safeTrim($id(IDS.ciudad)?.value)  || 'MERIDA';\n    const estado  = safeTrim($id(IDS.estado)?.value)  || 'YUCATAN';\n    const cp      = safeTrim($id(IDS.cp)?.value);\n\n    const streetParts = [calle, numext, numint ? `Int ${numint}` : ''].filter(Boolean);\n    const street = streetParts.join(' ');\n\n    // Requisitos mínimos: (calle o colonia o cp) + ciudad + estado\n    if (!( (street || colonia || cp) && ciudad && estado )) return;\n\n    // Evita repeticiones si no es \"force\"\n    const key = JSON.stringify({street, colonia, ciudad, estado, cp}).toUpperCase();\n    if (!force && key === lastKey) return;\n    lastKey = key;\n\n    // Cancela petición previa si existe\n    if (geocodeAbort) geocodeAbort.abort();\n    geocodeAbort = new AbortController();\n\n    let area = null;\n\n    // 1) Si hay colonia o CP, obten bbox del área\n    if (colonia || cp) {\n      try { area = await geocodeArea({ colonia, ciudad, estado, cp }); }\n      catch(e){ console.warn('[MAP] geocodeArea error', e); }\n    }\n\n    // 2) Si hay calle, intenta ubicarla dentro del bbox del área\n    if (street) {\n      try {\n        const hit = await geocodeStreetInViewbox({ street, ciudad, estado, cp, bbox: area?.bbox });\n        if (hit && isValidLatLng(hit.lat, hit.lon)) {\n          if ($id(IDS.lat)) $id(IDS.lat).value = hit.lat;\n          if ($id(IDS.lng)) $id(IDS.lng).value = hit.lon;\n          updateMarkerAndView(hit.lat, hit.lon, 18);\n          geocodeAbort = null;\n          return;\n        }\n      } catch(e){\n        console.warn('[MAP] geocodeStreetInViewbox error', e);\n      }\n    }\n\n    // 3) Sin calle (o sin hit), usa el centro de la colonia/CP si existe\n    if (area && isValidLatLng(area.lat, area.lon)) {\n      if ($id(IDS.lat)) $id(IDS.lat).value = area.lat;\n      if ($id(IDS.lng)) $id(IDS.lng).value = area.lon;\n      const zoom = colonia ? 16 : 15;\n      updateMarkerAndView(area.lat, area.lon, zoom);\n      geocodeAbort = null;\n      return;\n    }\n\n    // 4) Fallback total: búsqueda libre con todo\n    try {\n      const free = [street, colonia, ciudad, estado, cp, 'México'].filter(Boolean).join(', ');\n      const url = `https://nominatim.openstreetmap.org/search?` + new URLSearchParams({\n        format:'json', addressdetails:'1', limit:'1', countrycodes:'mx', q: free\n      }).toString();\n      const resp = await fetch(url, { headers: { 'Accept':'application/json' } });\n      const data = await resp.json();\n      if (Array.isArray(data) && data.length) {\n        const lat = parseFloat(data[0].lat), lon = parseFloat(data[0].lon);\n        if (isValidLatLng(lat, lon)) {\n          if ($id(IDS.lat)) $id(IDS.lat).value = lat;\n          if ($id(IDS.lng)) $id(IDS.lng).value = lon;\n          updateMarkerAndView(lat, lon, street ? 18 : (colonia ? 16 : 15));\n        }\n      }\n    } catch(e){\n      console.error('[MAP] fallback free-text error', e);\n    } finally {\n      geocodeAbort = null;\n    }\n  }\n\n  // ========= LISTENERS (sin temporizadores) =========\n  function attachListeners(){\n    const finishEvents = ['change','blur','focusout','compositionend','keydown'];\n\n    function onFinish(ev){\n      if (ev.type === 'keydown' && ev.key !== 'Enter') return;\n      if (!ev.isTrusted) return; // ignora cambios programáticos\n      invalidateCoordsAndMarker();\n      geocodeAddressAndUpdateStructured(true);\n    }\n\n    // Disparadores: calle, colonia, ciudad, estado, CP\n    [IDS.calle, IDS.colonia, IDS.ciudad, IDS.estado, IDS.cp].forEach(id => {\n      const el = $id(id);\n      if (!el) return;\n      finishEvents.forEach(evt => el.addEventListener(evt, onFinish));\n    });\n\n    // Lat/Lng manuales\n    function moveByLatLng(ev){\n      if (ev.type === 'keydown' && ev.key !== 'Enter') return;\n      const lat = safeTrim($id(IDS.lat)?.value);\n      const lng = safeTrim($id(IDS.lng)?.value);\n      if (isValidLatLng(lat, lng)) updateMarkerAndView(Number(lat), Number(lng), 18);\n    }\n    [IDS.lat, IDS.lng].forEach(id => {\n      const el = $id(id);\n      if (!el) return;\n      ['change','blur','focusout','keydown'].forEach(evt => el.addEventListener(evt, moveByLatLng));\n    });\n  }\n\n  // ========= ARRANQUE =========\n  document.addEventListener('DOMContentLoaded', () => {\n    attachListeners();\n\n    // Si ya hay coords, centra ahí\n    const lat = safeTrim($id(IDS.lat)?.value);\n    const lng = safeTrim($id(IDS.lng)?.value);\n    if (isValidLatLng(lat, lng)){\n      updateMarkerAndView(Number(lat), Number(lng), 18);\n    } else {\n      // Si hay (calle o colonia o CP) + ciudad/estado, geocodifica de entrada\n      const calle   = safeTrim($id(IDS.calle)?.value);\n      const colonia = safeTrim($id(IDS.colonia)?.value);\n      const ciudad  = safeTrim($id(IDS.ciudad)?.value) || 'MERIDA';\n      const estado  = safeTrim($id(IDS.estado)?.value) || 'YUCATAN';\n      const cp      = safeTrim($id(IDS.cp)?.value);\n      if ((calle || colonia || cp) && ciudad && estado){\n        geocodeAddressAndUpdateStructured(true);\n      }\n    }\n  });\n\n})();\n</script>\n",
-						"type": 0
-					},
-					"editedByRte": false
-				},
-				"next_step": {
-					"type": "next_step",
-					"icon": {}
-				},
-				"step_nav": {
-					"type": "step_nav"
-				},
-				"integrated_edit_field17": {
-					"field": "lat",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field18": {
-					"field": "lng",
-					"type": "integrated_edit_field",
-					"orientation": 0,
 					"updateOnEdit": false
 				},
 				"integrated_edit_field19": {
@@ -3666,34 +3918,126 @@
 					"type": "integrated_edit_field",
 					"orientation": 0,
 					"updateOnEdit": false
+				},
+				"text": {
+					"type": "text",
+					"label": {
+						"text": "<div id=\"map\" style=\"height: 400px; width: 100%; margin-bottom: 10px; border: 1px solid #ccc;\"></div>\n<p><strong>Haz clic en el mapa para obtener los datos de la ubicación (si algún campo no se acompleta automáticamente, favor de escribirlo)</strong></p>\n\n<!-- Cargar Leaflet CSS & JS -->\n<link rel=\"stylesheet\" href=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.css\" />\n<script src=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.js\"></script>\n\n<script>\n// Variables globales\nlet map;\nlet marker;\nlet mapInitialized = false;\n\nfunction initMap() {\n    if (mapInitialized) {\n        setTimeout(() => map.invalidateSize(), 100);\n        return;\n    }\n    \n    const initialLocation = [21.0038, -89.6183];\n    map = L.map('map').setView(initialLocation, 12);\n    \n    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {\n        attribution: '&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'\n    }).addTo(map);\n    \n    mapInitialized = true;\n    \n    map.on('click', function(e) {\n        placeMarkerAndGeocode(e.latlng);\n    });\n    \n    setTimeout(() => map.invalidateSize(), 300);\n}\n\nfunction placeMarkerAndGeocode(latlng) {\n    if (marker) map.removeLayer(marker);\n    marker = L.marker(latlng).addTo(map);\n    map.setView(latlng, map.getZoom());\n    \n    var apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}&zoom=18&addressdetails=1`;\n    \n    fetch(apiUrl)\n        .then(response => response.json())\n        .then(data => {\n            if (data && data.address) {\n                populateAddressFields(data.address, latlng, data.display_name);\n            } else {\n                alert('No se encontraron resultados para esta ubicación.');\n            }\n        })\n        .catch(error => {\n            console.error('Error:', error);\n            alert('Falló la geocodificación.');\n        });\n}\n\n// 🔥 NUEVA FUNCIÓN: Extraer número de dirección\nfunction extractHouseNumber(fullAddress, roadName) {\n    if (!fullAddress || !roadName) return '';\n    \n    // Buscar patrones comunes de números\n    const patterns = [\n        /(?:No\\.|Num|#)\\s*(\\d+)/i,    // No. 366, Num 366, #366\n        /(\\d+)\\s*(?:#|No\\.|Num)/i,     // 366 #, 366 No.\n        /(\\d+)\\s*[-–]\\s*\\d+/i,         // 366-368\n        /(\\d+)[a-zA-Z]?$/i,            // 366, 366A\n        /^(\\d+)\\s+/i                   // 366 Calle 30\n    ];\n    \n    for (const pattern of patterns) {\n        const match = fullAddress.match(pattern);\n        if (match && match[1]) {\n            return match[1];\n        }\n    }\n    \n    // Si no se encuentra con patrones, intentar con el campo house_number de Nominatim\n    return '';\n}\n\nfunction populateAddressFields(address, latlng, fullAddress = '') {\n    // Extraer el número de casa\n    const houseNumber = address.house_number || extractHouseNumber(fullAddress, address.road);\n    \n    // Llenar los campos del formulario\n    document.getElementById('value_estado_1').value = address.state || '';\n    document.getElementById('value_ciudad_1').value = address.city || address.town || address.village || '';\n    document.getElementById('value_cp_1').value = address.postcode || '';\n    document.getElementById('value_colonia_1').value = address.suburb || address.neighbourhood || '';\n    document.getElementById('value_calle_1').value = address.road || '';\n    \n    // 🔥 NUEVO: Llenar el número exterior\n    document.getElementById('value_numeroext_1').value = houseNumber;\n    \n    document.getElementById('value_lat_1').value = latlng.lat;\n    document.getElementById('value_lng_1').value = latlng.lng;\n    \n    console.log('Datos completos de Nominatim:', address);\n    console.log('Dirección completa:', fullAddress);\n    console.log('Número extraído:', houseNumber);\n}\n\n// 🔥 OBSERVAR CUANDO EL TAB Y SECTION SE HACEN VISIBLES\nfunction checkMapContainer() {\n    const mapContainer = document.getElementById('map');\n    if (mapContainer.offsetParent !== null && mapContainer.offsetWidth > 0) {\n        initMap();\n        return true;\n    }\n    return false;\n}\n\ndocument.addEventListener('DOMContentLoaded', function() {\n    const interval = setInterval(() => {\n        if (checkMapContainer()) {\n            clearInterval(interval);\n        }\n    }, 200);\n    \n    document.body.addEventListener('click', function(e) {\n        if (e.target.closest('[data-toggle=\"tab\"], .step-tab, .nav-link')) {\n            setTimeout(() => {\n                if (mapInitialized) map.invalidateSize();\n                else if (checkMapContainer()) console.log('Mapa inicializado desde click en tab');\n            }, 400);\n        }\n    });\n});\n\nwindow.addEventListener('resize', () => {\n    if (mapInitialized) setTimeout(() => map.invalidateSize(), 100);\n});\n\nconst observer = new MutationObserver(function(mutations) {\n    mutations.forEach(function(mutation) {\n        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {\n            setTimeout(() => {\n                if (mapInitialized) map.invalidateSize();\n            }, 200);\n        }\n    });\n});\n\nsetTimeout(() => {\n    const mapContainer = document.getElementById('map');\n    if (mapContainer) {\n        observer.observe(mapContainer, { attributes: true, attributeFilter: ['style'] });\n    }\n}, 1000);\n</script>\n\n\n\n\n\n\n\n\n\n<script>\n(function(){\n  // ========= IDs DE TUS CAMPOS =========\n  const IDS = {\n    calle:   'value_calle_1',\n    numext:  'value_numeroext_1',   // opcional\n    numint:  'value_numint_1',      // opcional\n    colonia: 'value_colonia_1',\n    ciudad:  'value_ciudad_1',\n    estado:  'value_estado_1',\n    cp:      'value_cp_1',\n    lat:     'value_lat_1',\n    lng:     'value_lng_1'\n  };\n\n  // ========= HELPERS =========\n  const $id = (id) => document.getElementById(id);\n  const safeTrim = (v) => (v || '').toString().trim();\n  const isValidLatLng = (lat, lng) => {\n    const a = Number(lat), b = Number(lng);\n    return Number.isFinite(a) && Number.isFinite(b) && a<=90 && a>=-90 && b<=180 && b>=-180;\n  };\n\n  function invalidateCoordsAndMarker(){\n    if ($id(IDS.lat)) $id(IDS.lat).value = '';\n    if ($id(IDS.lng)) $id(IDS.lng).value = '';\n    if (window.marker) { try { map.removeLayer(marker); } catch(e){} marker = null; }\n  }\n\n  function updateMarkerAndView(lat, lng, zoom){\n    if (!mapInitialized) initMap();\n    const latlng = L.latLng(lat, lng);\n    if (marker) marker.setLatLng(latlng);\n    else marker = L.marker(latlng).addTo(map);\n    map.setView(latlng, zoom || 17);\n  }\n\n  // ========= ESTADO INTERNO =========\n  let geocodeAbort = null;\n  let lastKey = '';\n\n  // ========= GEOCODERS =========\n  /** Paso 1: geocodificar colonia/CP para obtener bbox y centro */\n  async function geocodeArea({colonia, ciudad, estado, cp}) {\n    const parts = [\n      colonia || '',\n      ciudad  || 'Mérida',\n      estado  || 'Yucatán',\n      cp || '',\n      'México'\n    ].filter(Boolean).join(', ');\n\n    const url = `https://nominatim.openstreetmap.org/search?` +\n                new URLSearchParams({\n                  format: 'json',\n                  addressdetails: '1',\n                  limit: '1',\n                  countrycodes: 'mx',\n                  q: parts\n                }).toString();\n\n    const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });\n    const data = await resp.json();\n    if (Array.isArray(data) && data.length) {\n      const item = data[0];\n      const bbox = item.boundingbox ? {\n        south: parseFloat(item.boundingbox[0]),\n        north: parseFloat(item.boundingbox[1]),\n        west:  parseFloat(item.boundingbox[2]),\n        east:  parseFloat(item.boundingbox[3])\n      } : null;\n\n      return {\n        lat: parseFloat(item.lat),\n        lon: parseFloat(item.lon),\n        bbox\n      };\n    }\n    return null;\n  }\n\n  /** Paso 2: buscar calle/número dentro de un viewbox (bounded=1) */\n  async function geocodeStreetInViewbox({street, ciudad, estado, cp, bbox}) {\n    const params = new URLSearchParams({\n      format: 'json',\n      addressdetails: '1',\n      limit: '1',\n      country: 'México',\n      city: ciudad || 'Mérida',\n      state: estado || 'Yucatán',\n      bounded: '1'\n    });\n    if (street) params.append('street', street);\n    if (cp)     params.append('postalcode', cp);\n\n    if (bbox) {\n      // viewbox: left,top,right,bottom => west,north,east,south\n      params.append('viewbox', `${bbox.west},${bbox.north},${bbox.east},${bbox.south}`);\n    }\n\n    let url = `https://nominatim.openstreetmap.org/search?${params.toString()}`;\n    let resp = await fetch(url, { headers: { 'Accept': 'application/json' } });\n    let data = await resp.json();\n\n    // Fallback a texto libre si no hay hit\n    if (!Array.isArray(data) || !data.length) {\n      const free = [\n        street || '',\n        ciudad || 'Mérida',\n        estado || 'Yucatán',\n        cp || '',\n        'México'\n      ].filter(Boolean).join(', ');\n\n      url = `https://nominatim.openstreetmap.org/search?` + new URLSearchParams({\n        format: 'json', addressdetails: '1', limit: '1', countrycodes: 'mx', q: free\n      }).toString();\n\n      resp = await fetch(url, { headers: { 'Accept': 'application/json' } });\n      data = await resp.json();\n    }\n\n    if (Array.isArray(data) && data.length) {\n      return {\n        lat: parseFloat(data[0].lat),\n        lon: parseFloat(data[0].lon)\n      };\n    }\n    return null;\n  }\n\n  /** Función principal: colonia/CP -> bbox y luego calle dentro del bbox */\n  async function geocodeAddressAndUpdateStructured(force=false){\n    const calle   = safeTrim($id(IDS.calle)?.value);\n    const numext  = safeTrim($id(IDS.numext)?.value);\n    const numint  = safeTrim($id(IDS.numint)?.value);\n    const colonia = safeTrim($id(IDS.colonia)?.value);\n    const ciudad  = safeTrim($id(IDS.ciudad)?.value)  || 'MERIDA';\n    const estado  = safeTrim($id(IDS.estado)?.value)  || 'YUCATAN';\n    const cp      = safeTrim($id(IDS.cp)?.value);\n\n    const streetParts = [calle, numext, numint ? `Int ${numint}` : ''].filter(Boolean);\n    const street = streetParts.join(' ');\n\n    // Requisitos mínimos: (calle o colonia o cp) + ciudad + estado\n    if (!( (street || colonia || cp) && ciudad && estado )) return;\n\n    // Evita repeticiones si no es \"force\"\n    const key = JSON.stringify({street, colonia, ciudad, estado, cp}).toUpperCase();\n    if (!force && key === lastKey) return;\n    lastKey = key;\n\n    // Cancela petición previa si existe\n    if (geocodeAbort) geocodeAbort.abort();\n    geocodeAbort = new AbortController();\n\n    let area = null;\n\n    // 1) Si hay colonia o CP, obten bbox del área\n    if (colonia || cp) {\n      try { area = await geocodeArea({ colonia, ciudad, estado, cp }); }\n      catch(e){ console.warn('[MAP] geocodeArea error', e); }\n    }\n\n    // 2) Si hay calle, intenta ubicarla dentro del bbox del área\n    if (street) {\n      try {\n        const hit = await geocodeStreetInViewbox({ street, ciudad, estado, cp, bbox: area?.bbox });\n        if (hit && isValidLatLng(hit.lat, hit.lon)) {\n          if ($id(IDS.lat)) $id(IDS.lat).value = hit.lat;\n          if ($id(IDS.lng)) $id(IDS.lng).value = hit.lon;\n          updateMarkerAndView(hit.lat, hit.lon, 18);\n          geocodeAbort = null;\n          return;\n        }\n      } catch(e){\n        console.warn('[MAP] geocodeStreetInViewbox error', e);\n      }\n    }\n\n    // 3) Sin calle (o sin hit), usa el centro de la colonia/CP si existe\n    if (area && isValidLatLng(area.lat, area.lon)) {\n      if ($id(IDS.lat)) $id(IDS.lat).value = area.lat;\n      if ($id(IDS.lng)) $id(IDS.lng).value = area.lon;\n      const zoom = colonia ? 16 : 15;\n      updateMarkerAndView(area.lat, area.lon, zoom);\n      geocodeAbort = null;\n      return;\n    }\n\n    // 4) Fallback total: búsqueda libre con todo\n    try {\n      const free = [street, colonia, ciudad, estado, cp, 'México'].filter(Boolean).join(', ');\n      const url = `https://nominatim.openstreetmap.org/search?` + new URLSearchParams({\n        format:'json', addressdetails:'1', limit:'1', countrycodes:'mx', q: free\n      }).toString();\n      const resp = await fetch(url, { headers: { 'Accept':'application/json' } });\n      const data = await resp.json();\n      if (Array.isArray(data) && data.length) {\n        const lat = parseFloat(data[0].lat), lon = parseFloat(data[0].lon);\n        if (isValidLatLng(lat, lon)) {\n          if ($id(IDS.lat)) $id(IDS.lat).value = lat;\n          if ($id(IDS.lng)) $id(IDS.lng).value = lon;\n          updateMarkerAndView(lat, lon, street ? 18 : (colonia ? 16 : 15));\n        }\n      }\n    } catch(e){\n      console.error('[MAP] fallback free-text error', e);\n    } finally {\n      geocodeAbort = null;\n    }\n  }\n\n  // ========= LISTENERS (sin temporizadores) =========\n  function attachListeners(){\n    const finishEvents = ['change','blur','focusout','compositionend','keydown'];\n\n    function onFinish(ev){\n      if (ev.type === 'keydown' && ev.key !== 'Enter') return;\n      if (!ev.isTrusted) return; // ignora cambios programáticos\n      invalidateCoordsAndMarker();\n      geocodeAddressAndUpdateStructured(true);\n    }\n\n    // Disparadores: calle, colonia, ciudad, estado, CP\n    [IDS.calle, IDS.colonia, IDS.ciudad, IDS.estado, IDS.cp].forEach(id => {\n      const el = $id(id);\n      if (!el) return;\n      finishEvents.forEach(evt => el.addEventListener(evt, onFinish));\n    });\n\n    // Lat/Lng manuales\n    function moveByLatLng(ev){\n      if (ev.type === 'keydown' && ev.key !== 'Enter') return;\n      const lat = safeTrim($id(IDS.lat)?.value);\n      const lng = safeTrim($id(IDS.lng)?.value);\n      if (isValidLatLng(lat, lng)) updateMarkerAndView(Number(lat), Number(lng), 18);\n    }\n    [IDS.lat, IDS.lng].forEach(id => {\n      const el = $id(id);\n      if (!el) return;\n      ['change','blur','focusout','keydown'].forEach(evt => el.addEventListener(evt, moveByLatLng));\n    });\n  }\n\n  // ========= ARRANQUE =========\n  document.addEventListener('DOMContentLoaded', () => {\n    attachListeners();\n\n    // Si ya hay coords, centra ahí\n    const lat = safeTrim($id(IDS.lat)?.value);\n    const lng = safeTrim($id(IDS.lng)?.value);\n    if (isValidLatLng(lat, lng)){\n      updateMarkerAndView(Number(lat), Number(lng), 18);\n    } else {\n      // Si hay (calle o colonia o CP) + ciudad/estado, geocodifica de entrada\n      const calle   = safeTrim($id(IDS.calle)?.value);\n      const colonia = safeTrim($id(IDS.colonia)?.value);\n      const ciudad  = safeTrim($id(IDS.ciudad)?.value) || 'MERIDA';\n      const estado  = safeTrim($id(IDS.estado)?.value) || 'YUCATAN';\n      const cp      = safeTrim($id(IDS.cp)?.value);\n      if ((calle || colonia || cp) && ciudad && estado){\n        geocodeAddressAndUpdateStructured(true);\n      }\n    }\n  });\n\n})();\n</script>\n",
+						"type": 0
+					},
+					"editedByRte": false
+				},
+				"integrated_edit_field16": {
+					"field": "colonia",
+					"type": "integrated_edit_field",
+					"updateOnEdit": false,
+					"customCSS": "/* Put  your custom CSS code here */\n\n",
+					"orientation": 0
+				},
+				"integrated_edit_field13": {
+					"field": "calle",
+					"type": "integrated_edit_field",
+					"updateOnEdit": false,
+					"orientation": 0
+				},
+				"integrated_edit_field14": {
+					"field": "numeroext",
+					"type": "integrated_edit_field",
+					"updateOnEdit": false,
+					"orientation": 0
+				},
+				"integrated_edit_field15": {
+					"field": "numeroint",
+					"type": "integrated_edit_field",
+					"updateOnEdit": false,
+					"orientation": 0
+				},
+				"integrated_edit_field11": {
+					"field": "ciudad",
+					"type": "integrated_edit_field",
+					"updateOnEdit": false,
+					"orientation": 0
+				},
+				"integrated_edit_field10": {
+					"field": "estado",
+					"type": "integrated_edit_field",
+					"updateOnEdit": false,
+					"orientation": 0
+				},
+				"integrated_edit_field12": {
+					"field": "cp",
+					"type": "integrated_edit_field",
+					"updateOnEdit": false,
+					"orientation": 0
+				},
+				"integrated_edit_field17": {
+					"field": "lat",
+					"type": "integrated_edit_field",
+					"updateOnEdit": false,
+					"orientation": 0
+				},
+				"integrated_edit_field18": {
+					"field": "lng",
+					"type": "integrated_edit_field",
+					"updateOnEdit": false,
+					"orientation": 0
+				},
+				"section2": {
+					"type": "section",
+					"title": {
+						"text": "<i class=\"fa-solid fa-location-dot\" style=\"font-size:1.5em; color:#fff;\"></i> Dirección de Entrega",
+						"type": 0
+					},
+					"location": "section2",
+					"bsStyle": "default",
+					"panelType": 3,
+					"initiallyClosed": true
+				},
+				"sec_venta": {
+					"type": "section",
+					"title": {
+						"text": "<i class=\"fa-solid fa-cart-shopping\" style=\"font-size:1.5em; color:#fff;\"></i> Información de la Venta",
+						"type": 0
+					},
+					"location": "section1",
+					"bsStyle": "default",
+					"panelType": 3,
+					"headerBg": "",
+					"headerColor": "",
+					"bodyBg": "",
+					"bodyColor": "",
+					"panelBorder": null,
+					"borderColor": "",
+					"initiallyClosed": true
+				},
+				"sec_cliente": {
+					"type": "section",
+					"title": {
+						"text": "<i class=\"fa-solid fa-user\" style=\"font-size:1.5em; color:#fff;\"></i> Datos del Cliente",
+						"type": 0
+					},
+					"location": "section",
+					"bsStyle": "default",
+					"panelType": 3,
+					"headerBg": "",
+					"headerColor": "",
+					"bodyBg": "",
+					"bodyColor": "",
+					"panelBorder": null,
+					"borderColor": "",
+					"initiallyClosed": true
 				}
 			},
 			"dbProps": {},
-			"steps": [
-				{
-					"location": "grid",
-					"label": {
-						"text": "Datos iniciales",
-						"type": 0
-					}
-				},
-				{
-					"location": "step2",
-					"label": {
-						"text": "Datos de la Entrega",
-						"type": 0
-					}
-				}
-			],
 			"version": 13,
-			"pageWidth": "full",
+			"pageWidth": "standard",
 			"imageItem": {
 				"type": "page_image"
 			},
 			"imageBgColor": "#f2f2f2",
 			"controlsBgColor": "white",
 			"imagePosition": "right",
-			"pageCSS": "\n",
+			"pageCSS": "\n/* Put  your custom CSS code here */\n\n\n\n/* ========================================================= */\n/* VARIABLES DE COLOR */\n/* ========================================================= */\n:root {\n    --color-elegante: #FFFFFF; /* Texto Blanco para contrastar con el fondo oscuro */\n    --naranja-degradado-inicio: #03478A; /* Naranja Suave (Light Salmon) */\n    --naranja-degradado-fin: #6D98C2; /* Naranja Medio (Coral) */\n    --color-borde-base: #FF7F50; /* Color simple para el borde base */\n}\n\n/* ========================================================= */\n/* 1. Fondo de la Página: Degradado Azul Cielo (Se mantiene) */\n/* ========================================================= */\nbody, .container-fluid {\nbackground: linear-gradient(180deg, #FCFAFA 0%, #EDEBEB 100%) !important;    min-height: 100vh;\n}\n\n/* ========================================================= */\n/* 2. Estilo de las Secciones: Efecto Tarjeta/Sombreado (Se mantiene) */\n/* ========================================================= */\n.panel, .rnr-c-body, .rnr-c-grid {\n    background-color: #FFFFFF !important; \n    border: none !important; \n    border-radius: 12px !important; \n    padding: 20px;\n    margin-bottom: 25px; \n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), \n                0 2px 6px rgba(0, 0, 0, 0.05) !important; \n                \n    /* 🔑 CAMBIO CLAVE: Agrega 'transform' a la transición */\n    transition: box-shadow 0.3s ease-in-out, \n                transform 0.3s ease-in-out; /* Transición para el movimiento y escala */            \n                \n}\n\n/* ========================================================= */\n/* 3. Estilo de Encabezados de Sección (EL CAMBIO PRINCIPAL) */\n/* ========================================================= */\n.panel-heading, .rnr-c-head {\n    /* Aplicamos el degradado al fondo completo del encabezado */\n    background: linear-gradient(to right, var(--naranja-degradado-inicio), var(--naranja-degradado-fin)) !important;\n    \n    /* El texto del título ahora es blanco para contrastar con el fondo naranja */\n    color: var(--color-elegante) !important; \n    \n    font-weight: 600;\n    \n    /* Mantenemos el centrado vertical */\n    display: flex;\n    align-items: center;\n    height: 40px; /* Aseguramos una altura suficiente */\n    \n    /* Eliminamos el borde degradado y aplicamos un borde simple y fino abajo */\n    border-bottom: 1px solid var(--color-borde-base) !important; \n    border-image-source: none !important; /* Desactivar la propiedad border-image anterior */\n    \n    /* Ajustes de relleno/bordes para que el degradado se vea bien */\n    padding: 0 15px !important; \n    border-top-left-radius: 12px !important; /* Mantenemos el radio del panel superior */\n    border-top-right-radius: 12px !important;\n}\n\n/* ========================================================= */\n/* 3. Estilo de HOVER: Efecto de Elevación/Intensificación    */\n/* ========================================================= */\n.panel:hover, .rnr-c-body:hover, .rnr-c-grid:hover {\n    /* Nueva sombra más intensa y \"elevada\" */\n    box-shadow: 0 15px 400px rgba(0, 0, 0, 0.3), \n                0 5px 15px rgba(0, 0, 0, 0.1) !important; \n    \n    /* Pequeño movimiento hacia arriba para dar más sensación de elevación (opcional) */\n    transform: translateY(-5px) scale(1.005); \n}\n\n\n\n/* 4. Estilo de los Inputs (Se mantiene) */\n.form-control {\n    border-radius: 8px !important; \n    border: 1px solid #e0e0e0 !important;\n}\n.form-control:focus {\n    border-color: #48C9B0 !important; \n    box-shadow: 0 0 0 0.2rem rgba(72, 201, 176, 0.25) !important;\n}\n\n/* Aplica solo a formularios con esas secciones */\n.panel.panel-default.form-section > .panel-body { display: none; }\n\n.panel.panel-default.form-section > .panel-heading:hover {\n  cursor: pointer;\n  filter: brightness(0.98);\n}\n\n.panel-collapse.no-bs-trans {\n  transition: none !important;\n}\n",
 			"listTotals": 1,
 			"title": {}
 		},
