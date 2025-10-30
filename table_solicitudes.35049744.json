@@ -6690,6 +6690,14 @@
 								}
 							],
 							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
 						}
 					],
 					"cells": {
@@ -6698,6 +6706,10 @@
 							"items": [
 								"edit_message"
 							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -6784,12 +6796,16 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"details_preview"
-							]
+								"text"
+							],
+							"align": "center"
 						},
 						"c3": {
 							"model": "c3",
-							"items": []
+							"items": [
+								"details_preview"
+							],
+							"align": "center"
 						}
 					},
 					"deferredItems": [],
@@ -6833,6 +6849,14 @@
 					"items": [],
 					"popup": false,
 					"pageId": "list"
+				},
+				"text": {
+					"type": "text",
+					"label": {
+						"text": "<!-- QUICK ADD logisticavnp -->\n<style>\n  .qa-card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;margin:12px 0 18px;\n           box-shadow:0 10px 25px -5px rgba(0,0,0,.1),0 10px 10px -5px rgba(0,0,0,.04)}\n  .qa-head{padding:14px 18px;border-bottom:1px solid #eef2ff;\n           background:linear-gradient(90deg,#667eea,#764ba2);color:#fff;\n           border-top-left-radius:16px;border-top-right-radius:16px}\n  .qa-title{font-size:18px;font-weight:700;display:flex;align-items:center;gap:8px}\n  /* 2 columnas para Fecha y SIM; el botón ocupa toda la fila de abajo */\n  .qa-body{padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end}\n  .qa-input{width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:10px;font-size:14px}\n  .qa-btn{grid-column:1 / -1; display:inline-flex;align-items:center;justify-content:center;\n          padding:12px 14px;border:none;border-radius:10px;color:#fff;font-weight:700;cursor:pointer;\n          background:linear-gradient(90deg,#10b981,#3b82f6); transition:transform .06s ease}\n  .qa-btn:active{transform:scale(.98)} /* efecto de click */\n  .qa-btn:disabled{opacity:.6;cursor:not-allowed}\n  @media (max-width: 900px){ .qa-body{grid-template-columns:1fr} }\n</style>\n\n<div id=\"qa_logisticavnp\" class=\"qa-card\">\n  <div class=\"qa-head\"><div class=\"qa-title\">📱 Nueva SIM Card</div></div>\n  <div class=\"qa-body\">\n    <div>\n      <label style=\"display:block;margin:0 0 6px 4px;color:#374151;font-weight:600;font-size:12px\">Fecha</label>\n      <input id=\"qa_fecha\" class=\"qa-input\" type=\"date\">\n    </div>\n    <div>\n      <label style=\"display:block;margin:0 0 6px 4px;color:#374151;font-weight:600;font-size:12px\">Número de SIM Card</label>\n      <input id=\"qa_sim\" class=\"qa-input\" type=\"text\" placeholder=\"Ej: 1234567890\">\n    </div>\n    <button id=\"qa_add\" class=\"qa-btn\" type=\"button\">Agregar Nueva SIM Card</button>\n  </div>\n</div>\n\n<script>\n(function(){\n  // ===== Ajusta SI tus nombres de campos son distintos =====\n  var DATE_FIELD    = 'fechaHora';     // campo fecha en logisticavnp\n  var SIM_FIELD     = 'SIMEntregado';  // campo sim en logisticavnp\n  var IDSOL_FIELD   = 'idsolicitud';   // por si está visible/editable en el detalle (normalmente PHPRunner lo hereda)\n  var AUTO_SAVE     = true;            // pulsa “Guardar todo” tras llenar\n\n  // ===== helpers =====\n  function $(s,root){ return (root||document).querySelector(s); }\n  function $all(s,root){ return Array.prototype.slice.call((root||document).querySelectorAll(s)); }\n  function todayISO(){ try{ var z=(new Date()).getTimezoneOffset()*60000; return new Date(Date.now()-z).toISOString().slice(0,10);}catch(_){return ''} }\n  function toast(msg, ok){\n    var id='qa_toast', el=document.getElementById(id);\n    if(!el){ el=document.createElement('div'); el.id=id; document.body.appendChild(el); }\n    el.textContent = msg || 'Listo';\n    el.style.cssText='position:fixed;top:16px;right:16px;padding:10px 14px;border-radius:10px;color:#fff;font-weight:700;z-index:99999;'\n                    +'box-shadow:0 10px 20px rgba(0,0,0,.18);background:'+(ok?'#10b981':'#ef4444');\n    setTimeout(function(){ el && el.remove(); }, 1600);\n  }\n  function waitFor(fn, ms, step){\n    var t0 = Date.now();\n    return new Promise(function(res,rej){\n      (function tick(){\n        try{ var v = fn(); if(v) return res(v); }catch(_){}\n        if(Date.now()-t0 >= (ms||6000)) return rej(new Error('timeout'));\n        setTimeout(tick, step||90);\n      })();\n    });\n  }\n  function findLogisticaPanel(){\n    // por título “Logisticavnp”\n    var p = $all('.bs-details .panel.panel-info.details-grid').find(function(node){\n      var h = node.querySelector('.panel-heading .panel-title');\n      return h && /logisticavnp/i.test(h.textContent||'');\n    });\n    if (p) return p;\n    // fallback: por data-table\n    var any = document.querySelector('[data-table=\"logisticavnp\"]');\n    return any ? any.closest('.panel,.bs-details,.rnr-b-grid,.rnr-grid-block') : null;\n  }\n\n  // valor por defecto de fecha\n  var inpFecha = $('#qa_fecha'); if (inpFecha) inpFecha.value = todayISO();\n\n  // botón: efecto visual ya lo da :active en CSS; aquí manejamos la lógica de inserción\n  document.addEventListener('click', async function(ev){\n    var btn = ev.target.closest('#qa_add'); if (!btn) return;\n\n    var fecha = ($('#qa_fecha')||{}).value || '';\n    var sim   = (($('#qa_sim')||{}).value||'').trim();\n    if (!fecha || !sim){ toast('Completa Fecha y SIM', false); return; }\n\n    var panel = findLogisticaPanel();\n    if (!panel){ toast('No encuentro el subform logisticavnp', false); return; }\n\n    btn.disabled = true;\n    try{\n      // 1) disparar “Añadir nuevo”\n      var addBtn = panel.querySelector('[data-buttonevent=\"inlineadd\"], #inlineAdd2');\n      if (!addBtn) throw new Error('No encontré el botón \"Añadir nuevo\"');\n      addBtn.click();\n\n      // 2) esperar a que esté la fila inline con los controles\n      var row = await waitFor(function(){\n        var fe = panel.querySelector('[id^=\"value_'+DATE_FIELD+'_\"]');\n        var si = panel.querySelector('[id^=\"value_'+SIM_FIELD+'_\"]');\n        return (fe && si) ? fe.closest('tr') : null;\n      }, 7000, 100);\n\n      // 3) llenar valores\n      var feIn = row.querySelector('[id^=\"value_'+DATE_FIELD+'_\"]');\n      var siIn = row.querySelector('[id^=\"value_'+SIM_FIELD+'_\"]');\n      feIn.value = fecha; feIn.dispatchEvent(new Event('change', {bubbles:true}));\n      siIn.value = sim;   siIn.dispatchEvent(new Event('input',{bubbles:true}));\n                           siIn.dispatchEvent(new Event('change',{bubbles:true}));\n\n      // 3.1) si el detalle muestra editable el idsolicitud, lo ponemos\n      var idSol = (document.querySelector('[id^=\"value_idsolicitud_\"]')||{}).value\n               || (document.querySelector('[name=\"editid1\"]')||{}).value\n               || (new URLSearchParams(location.search).get('editid1'));\n      var idIn = row.querySelector('[id^=\"value_'+IDSOL_FIELD+'_\"]');\n      if (idIn && idSol){ idIn.value = idSol; idIn.dispatchEvent(new Event('change',{bubbles:true})); }\n\n      // 4) guardar todo (opcional)\n      if (AUTO_SAVE){\n        var saveBtn = panel.querySelector('[data-buttonevent=\"saveall\"]');\n        if (saveBtn) setTimeout(function(){ saveBtn.click(); }, 150);\n      }\n\n      // limpiar SIM para siguiente alta\n      var simInput = $('#qa_sim'); if (simInput) simInput.value = '';\n      toast('Registro agregado', true);\n    } catch(e){\n      console.error(e);\n      toast('No se pudo agregar', false);\n    } finally {\n      btn.disabled = false;\n    }\n  });\n})();\n</script>\n",
+						"type": 0
+					},
+					"editedByRte": false
 				}
 			},
 			"dbProps": {},
