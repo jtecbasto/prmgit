@@ -861,7 +861,6 @@
 			],
 			"editFormats": [
 				{
-					"defaultValue": "YUCATAN",
 					"textHTML5Input": "Text"
 				}
 			],

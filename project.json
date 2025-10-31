@@ -5,6 +5,13 @@
 	"mainDiagram": {
 		"tables": [
 			{
+				"gid": 3680839223,
+				"y": 685,
+				"x": 315,
+				"width": 153.734375,
+				"height": 400
+			},
+			{
 				"gid": 3030998547,
 				"y": 345,
 				"x": 1070,
@@ -482,6 +489,20 @@
 							"table": 3904369708,
 							"pageType": "list"
 						}
+					},
+					{
+						"id": "12",
+						"data": {
+							"name": {
+								"table": "addons",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 3680839223,
+							"pageType": "list"
+						}
 					}
 				]
 			}
@@ -568,7 +589,8 @@
 							"items": [
 								"welcome_item2",
 								"welcome_item",
-								"welcome_item1"
+								"welcome_item1",
+								"welcome_item3"
 							]
 						}
 					},
@@ -659,6 +681,25 @@
 						"type": 0
 					},
 					"background": "#1e90ff",
+					"linkType": 0
+				},
+				"welcome_item3": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "addons",
+					"linkPage": "list",
+					"linkText": {
+						"table": "addons",
+						"type": 6
+					},
+					"linkIcon": {
+						"glyph": "earphone"
+					},
+					"linkComments": {
+						"text": "Addons description",
+						"type": 0
+					},
+					"background": "#e8926f",
 					"linkType": 0
 				}
 			},
@@ -2147,7 +2188,7 @@
 		"sidebarCustomThemeColor": "legacy",
 		"topbarCustomThemeColor": "legacy",
 		"logoCustomThemeColor": "legacy",
-		"customCss": "\r\n@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css');\r\n\r\n/* pega en CSS de la página o global */\r\n.panel-collapse.no-bs-trans {\r\n  transition: none !important;\r\n}\r\n\r\n\r\n/* HOVER global */\r\nbody.function-edit .form-control:hover,\r\nbody.function-add  .form-control:hover{\r\n  background: #ececec !important;\r\n  border-bottom-color: rgba(0,0,0,.87) !important;\r\n}\r\n\r\n/* FOCUS global */\r\nbody.function-edit .form-control:focus,\r\nbody.function-add  .form-control:focus{\r\n\r\n                    border-color: #0366d6;\r\n                    outline: none;\r\n                    box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;\r\n}\r\n\r\n/* Evita que afecte a checkbox/radio/file/range */\r\nbody.function-edit input.form-control[type=checkbox],\r\nbody.function-edit input.form-control[type=radio],\r\nbody.function-edit input.form-control[type=file],\r\nbody.function-edit input.form-control[type=range],\r\nbody.function-add  input.form-control[type=checkbox],\r\nbody.function-add  input.form-control[type=radio],\r\nbody.function-add  input.form-control[type=file],\r\nbody.function-add  input.form-control[type=range]{\r\n  background: transparent !important;\r\n  border: none !important;\r\n}\r\n\r\n.form-control:disabled,\r\n.form-control[readonly]{\r\n  background: #eeeeee !important;\r\n  border-bottom-color: rgba(0,0,0,.12) !important;\r\n  color: rgba(0,0,0,.45) !important;\r\n  cursor: not-allowed;\r\n}\r\n\r\n\r\n\r\n\r\n/************************************************************/\r\n\r\n/* ---- Configura tus tonos ---- */\r\n\r\n:root{\r\n  --accent: #FF4500; /*#7B68EE;   */      /* morado oscuro */\r\n  --accent-hover: #FFD700;   /* morado al pasar el mouse */\r\n}\r\n\r\n/* Listas/Lookups hechos con tablas Bootstrap */\r\n.table > thead > tr > th a:not(.btn),\r\n/*.table > tbody > tr > td a:not(.btn),*/\r\n.table > tfoot > tr > td a:not(.btn) {\r\n  color: var(--accent) !important;\r\n}\r\n.table > thead > tr > th a:not(.btn):hover,\r\n/*.table > tbody > tr > td a:not(.btn):hover,*/\r\n.table > tfoot > tr > td a:not(.btn):hover {\r\n  color: var(--accent-hover) !important;\r\n}\r\n\r\n/* Por si la grid no usa .table en alguna página */\r\n.r-grid table a:not(.btn) {\r\n  color: var(--accent) !important;\r\n}\r\n.r-grid table a:not(.btn):hover {\r\n  color: var(--accent-hover) !important;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+		"customCss": "\r\n@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css');\r\n\r\n/* pega en CSS de la página o global */\r\n.panel-collapse.no-bs-trans {\r\n  transition: none !important;\r\n}\r\n\r\n\r\n/* HOVER global */\r\nbody.function-edit .form-control:hover,\r\nbody.function-add  .form-control:hover{\r\n  background: #ececec !important;\r\n  border-bottom-color: rgba(0,0,0,.87) !important;\r\n}\r\n\r\n/* FOCUS global */\r\nbody.function-edit .form-control:focus,\r\nbody.function-add  .form-control:focus{\r\n\r\n                    border-color: #0366d6;\r\n                    outline: none;\r\n                    box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;\r\n}\r\n\r\n/* Evita que afecte a checkbox/radio/file/range */\r\nbody.function-edit input.form-control[type=checkbox],\r\nbody.function-edit input.form-control[type=radio],\r\nbody.function-edit input.form-control[type=file],\r\nbody.function-edit input.form-control[type=range],\r\nbody.function-add  input.form-control[type=checkbox],\r\nbody.function-add  input.form-control[type=radio],\r\nbody.function-add  input.form-control[type=file],\r\nbody.function-add  input.form-control[type=range]{\r\n  background: transparent !important;\r\n  border: none !important;\r\n}\r\n\r\n.form-control:disabled,\r\n.form-control[readonly]{\r\n  background: #eeeeee !important;\r\n  border-bottom-color: rgba(0,0,0,.12) !important;\r\n  color: rgba(0,0,0,.45) !important;\r\n  cursor: not-allowed;\r\n}\r\n\r\n\r\n\r\n\r\n/************************************************************/\r\n\r\n/* ---- Configura tus tonos ---- */\r\n\r\n:root{\r\n  --accent: #FF4500; /*#7B68EE;   */      /* morado oscuro */\r\n  --accent-hover: #FFD700;   /* morado al pasar el mouse */\r\n}\r\n\r\n/* Listas/Lookups hechos con tablas Bootstrap */\r\n.table > thead > tr > th a:not(.btn),\r\n/*.table > tbody > tr > td a:not(.btn),*/\r\n.table > tfoot > tr > td a:not(.btn) {\r\n  color: var(--accent) !important;\r\n}\r\n.table > thead > tr > th a:not(.btn):hover,\r\n/*.table > tbody > tr > td a:not(.btn):hover,*/\r\n.table > tfoot > tr > td a:not(.btn):hover {\r\n  color: var(--accent-hover) !important;\r\n}\r\n\r\n/* Por si la grid no usa .table en alguna página */\r\n.r-grid table a:not(.btn) {\r\n  color: var(--accent) !important;\r\n}\r\n.r-grid table a:not(.btn):hover {\r\n  color: var(--accent-hover) !important;\r\n}\r\n\r\n\r\n\r\n/***********************************************************************/\r\n\r\n",
 		"gpHeaderBg": "legacy",
 		"gpHeaderColor": "legacy",
 		"gpFooterBg": "legacy",
