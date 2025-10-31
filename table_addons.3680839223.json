@@ -1,5 +1,13 @@
 {
-	"sql": "SELECT\r\nidventaaddon,\r\nidventa,\r\nidaddon,\r\nprecio,\r\nfcanceladdon,\r\nfactivaaddon,\r\nfcapturaaddon,\r\nusuario,\r\ncontrato,\r\ntelefono,\r\nidtienda,\r\nidcliente,\r\ndn,\r\ncuenta\r\nFROM addons\r\nWHERE (idventa is null) AND (contrato is not null)",
+	"orderInfo": [
+		{
+			"index": 1,
+			"field": "idventaaddon",
+			"expr": "idventaaddon",
+			"asc": false
+		}
+	],
+	"sql": "SELECT\r\nidventaaddon,\r\nidventa,\r\nidaddon,\r\nprecio,\r\nfcanceladdon,\r\nfactivaaddon,\r\nfcapturaaddon,\r\nusuario,\r\ncontrato,\r\ntelefono,\r\nidtienda,\r\nidcliente,\r\ndn,\r\ncuenta\r\nFROM addons\r\nWHERE ((idventa is null) AND (contrato is not null))   order by idventaaddon desc",
 	"connId": "conn",
 	"originalTable": "addons",
 	"name": "addons",
@@ -58,11 +66,16 @@
 				{
 					"format": "Lookup wizard",
 					"required": true,
-					"lookupType": 2,
 					"lookupTable": "cataddons",
 					"lookupTableConnection": "conn",
 					"lookupLinkField": "idaddon",
-					"lookupDisplayField": "addon"
+					"lookupDisplayField": "addon",
+					"lookupAutofillFields": [
+						{
+							"masterField": "precio",
+							"lookupField": "precio"
+						}
+					]
 				}
 			],
 			"label": {
@@ -83,6 +96,7 @@
 			],
 			"editFormats": [
 				{
+					"format": "Readonly",
 					"validateAs": "Number"
 				}
 			],
@@ -127,6 +141,7 @@
 			"editFormats": [
 				{
 					"format": "Date",
+					"defaultValue": "now()",
 					"dateEditType": 11
 				}
 			],
@@ -296,6 +311,28 @@
 				"Spanish": "Cuenta"
 			},
 			"tableName": "addons"
+		}
+	],
+	"whereTabs": [
+		{
+			"where": "if(usuario=':session.UserID',true,if(:session.acceso=1,idtienda=:session.Tienda,if(:session.Acceso=0 or upper(':session.UserID')='ADMIN',true,false)))"
+		}
+	],
+	"eventHandlers": [
+		{
+			"eventId": "EVENT_JS_ONLOAD",
+			"pageType": "add",
+			"code": "\n(function(){\n  // Ajustes (puedes cambiarlos)\n  var CAGE_WIDTH  = 820; // ancho total del \"card\"\n  var FIELD_WIDTH = 420; // ancho máx. de controles\n\n  // Marca la página para los estilos\n  $('body').addClass('addons-narrow');\n\n  function cageOnce() {\n    var $page = $('[data-page=\"addons_add\"]');\n    if (!$page.length) return;\n\n    // Encapsula top, grid (form) y bottom en \"cages\" SOLO si aún no lo están\n    [\n      ['.r-form[data-location=\"top\"]',        'addons-cage-top'],\n      ['.r-form[data-location=\"grid\"]',       'addons-cage'],\n      ['.r-form[data-location=\"below-grid\"]', 'addons-cage-bot']\n    ].forEach(function(pair){\n      var sel = pair[0], cls = pair[1];\n      var $blk = $page.find(sel).first();\n      if ($blk.length && !$blk.parent().hasClass(cls)) {\n        $blk.wrap('<div class=\"'+cls+'\"></div>');\n      }\n    });\n  }\n\n  // 1) Inicial\n  cageOnce();\n\n  // 2) Tras pequeños cambios/animaciones iniciales\n  setTimeout(cageOnce, 120);\n\n  // 3) Observa el body por si PHPRunner reinyecta el form\n  new MutationObserver(function(muts){\n    for (var i=0;i<muts.length;i++){\n      var m = muts[i];\n      if (m.addedNodes && m.addedNodes.length){\n        cageOnce();\n        break;\n      }\n    }\n  }).observe(document.body, {childList:true, subtree:true});\n\n  // 4) Ganchos extra (por si usas callbacks personalizados)\n  //   Llama a $(document).trigger('addons:cage') cuando guardes/recargues manualmente\n  $(document).on('addons:cage', cageOnce);\n})();\n"
+		},
+		{
+			"eventId": "EVENT_BEFOREADD",
+			"pageType": "add",
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n$values['usuario']=$_SESSION[\"UserID\"];\n$values['idtienda']=$_SESSION[\"Tienda\"];\n\nreturn true;"
+		},
+		{
+			"eventId": "EVENT_JS_ONLOAD",
+			"pageType": "edit",
+			"code": "/*(function(){\n  // Ajustes (puedes cambiarlos)\n  var CAGE_WIDTH  = 820; // ancho total del \"card\"\n  var FIELD_WIDTH = 420; // ancho máx. de controles\n\n  // Marca la página para que el CSS específico se active\n  $('body').addClass('addons-narrow');\n\n  // Ubica el \"root\" de esta página (admite addons_add, addons_edit, addons_edit1, etc.)\n  function getPageRoot(){\n    var $c = $('[data-page]');\n    for (var i = 0; i < $c.length; i++){\n      var v = ($c[i].getAttribute('data-page') || '').toLowerCase();\n      if (/^addons_(add|edit)/.test(v)) return $($c[i]);\n    }\n    return $(document.body);\n  }\n\n  function cageOnce() {\n    var $page = getPageRoot();\n    if (!$page.length) return;\n\n    // Encapsula top, grid (form) y below-grid en \"cages\" si no lo están\n    [\n      ['.r-form[data-location=\"top\"]',        'addons-cage-top'],\n      ['.r-form[data-location=\"grid\"]',       'addons-cage'],\n      ['.r-form[data-location=\"below-grid\"]', 'addons-cage-bot']\n    ].forEach(function(pair){\n      var sel = pair[0], cls = pair[1];\n      var $blk = $page.find(sel).first();\n      if ($blk.length && !$blk.parent().hasClass(cls)) {\n        $blk.wrap('<div class=\"'+cls+'\"></div>');\n      }\n    });\n  }\n\n  // 1) Inicial\n  cageOnce();\n\n  // 2) Por si hay animaciones/carga diferida\n  setTimeout(cageOnce, 120);\n\n  // 3) Observa *la página* (no todo el body) para re-aplicar si PHPRunner re-renderiza\n  var $root = getPageRoot();\n  new MutationObserver(function(muts){\n    for (var i=0;i<muts.length;i++){\n      if (muts[i].addedNodes && muts[i].addedNodes.length){ cageOnce(); break; }\n    }\n  }).observe($root[0] || document.body, { childList:true, subtree:true });\n\n  // 4) Gancho manual por si quieres forzar desde otros scripts: $(document).trigger('addons:cage')\n  $(document).on('addons:cage', cageOnce);\n})();\n\n*/\n"
 		}
 	],
 	"dbTableInfo": {
@@ -618,56 +655,13 @@
 					"modelId": "simple-edit",
 					"grid": [
 						{
-							"section": "",
-							"cells": [
-								{
-									"cell": "c2",
-									"colspan": 1
-								},
-								{
-									"cell": "c3"
-								},
-								{
-									"cell": "c9"
-								},
-								{
-									"cell": "c6"
-								}
-							]
-						},
-						{
-							"section": "",
-							"cells": [
-								{
-									"cell": "c4",
-									"colspan": 1
-								},
-								{
-									"cell": "c5"
-								},
-								{
-									"cell": "c10"
-								},
-								{
-									"cell": "c7"
-								}
-							]
-						},
-						{
 							"cells": [
 								{
 									"cell": "c1",
 									"colspan": 1
 								},
 								{
-									"cell": "c",
-									"colspan": 1
-								},
-								{
 									"cell": "c11"
-								},
-								{
-									"cell": "c8"
 								}
 							],
 							"section": ""
@@ -677,64 +671,26 @@
 						"c1": {
 							"model": "c1",
 							"items": [
+								"integrated_edit_field11",
+								"integrated_edit_field8",
 								"integrated_edit_field10",
 								"integrated_edit_field1",
 								"integrated_edit_field4"
-							]
-						},
-						"c": {
-							"model": "c1",
-							"items": []
-						},
-						"c2": {
-							"model": "c1",
-							"items": [
-								"integrated_edit_field11"
-							]
-						},
-						"c3": {
-							"model": "c1",
-							"items": []
-						},
-						"c4": {
-							"model": "c1",
-							"items": [
-								"integrated_edit_field8"
-							]
-						},
-						"c5": {
-							"model": "c1",
-							"items": []
-						},
-						"c6": {
-							"model": "c1",
-							"items": []
-						},
-						"c7": {
-							"model": "c1",
-							"items": []
-						},
-						"c8": {
-							"model": "c1",
-							"items": []
-						},
-						"c9": {
-							"model": "c1",
-							"items": [
-								"integrated_edit_field7"
-							]
-						},
-						"c10": {
-							"model": "c1",
-							"items": [
-								"integrated_edit_field12"
-							]
+							],
+							"padding": {
+								"right": "10%"
+							}
 						},
 						"c11": {
 							"model": "c1",
 							"items": [
+								"integrated_edit_field7",
+								"integrated_edit_field12",
 								"integrated_edit_field2"
-							]
+							],
+							"padding": {
+								"right": "10%"
+							}
 						}
 					},
 					"deferredItems": [],
@@ -822,7 +778,7 @@
 			"imageBgColor": "#f2f2f2",
 			"controlsBgColor": "white",
 			"imagePosition": "right",
-			"pageCSS": "\n/* Put  your custom CSS code here */\n\n\n\n/* ========================================================= */\n/* VARIABLES DE COLOR */\n/* ========================================================= */\n:root {\n    --color-elegante: #FFFFFF; /* Texto Blanco para contrastar con el fondo oscuro */\n    --naranja-degradado-inicio: #03478A; /* Naranja Suave (Light Salmon) */\n    --naranja-degradado-fin: #6D98C2; /* Naranja Medio (Coral) */\n    --color-borde-base: #FF7F50; /* Color simple para el borde base */\n}\n\n/* ========================================================= */\n/* 1. Fondo de la Página: Degradado Azul Cielo (Se mantiene) */\n/* ========================================================= */\nbody, .container-fluid {\nbackground: linear-gradient(180deg, #FAFAF7 0%, #D6D6D4 100%) !important;    min-height: 100vh;\n}\n\n/* ========================================================= */\n/* 2. Estilo de las Secciones: Efecto Tarjeta/Sombreado (Se mantiene) */\n/* ========================================================= */\n.panel, .rnr-c-body, .rnr-c-grid {\n    background-color: #FFFFFF !important; \n    border: none !important; \n    border-radius: 12px !important; \n    padding: 20px;\n    margin-bottom: 25px; \n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), \n                0 2px 6px rgba(0, 0, 0, 0.05) !important; \n                \n    /* 🔑 CAMBIO CLAVE: Agrega 'transform' a la transición */\n    transition: box-shadow 0.3s ease-in-out, \n                transform 0.3s ease-in-out; /* Transición para el movimiento y escala */            \n                \n}\n\n/* ========================================================= */\n/* 3. Estilo de Encabezados de Sección (EL CAMBIO PRINCIPAL) */\n/* ========================================================= */\n.panel-heading, .rnr-c-head {\n    /* Aplicamos el degradado al fondo completo del encabezado */\n    background: linear-gradient(to right, var(--naranja-degradado-inicio), var(--naranja-degradado-fin)) !important;\n    \n    /* El texto del título ahora es blanco para contrastar con el fondo naranja */\n    color: var(--color-elegante) !important; \n    \n    font-weight: 600;\n    \n    /* Mantenemos el centrado vertical */\n    display: flex;\n    align-items: center;\n    height: 40px; /* Aseguramos una altura suficiente */\n    \n    /* Eliminamos el borde degradado y aplicamos un borde simple y fino abajo */\n    border-bottom: 1px solid var(--color-borde-base) !important; \n    border-image-source: none !important; /* Desactivar la propiedad border-image anterior */\n    \n    /* Ajustes de relleno/bordes para que el degradado se vea bien */\n    padding: 0 15px !important; \n    border-top-left-radius: 12px !important; /* Mantenemos el radio del panel superior */\n    border-top-right-radius: 12px !important;\n}\n\n/* ========================================================= */\n/* 3. Estilo de HOVER: Efecto de Elevación/Intensificación    */\n/* ========================================================= */\n.panel:hover, .rnr-c-body:hover, .rnr-c-grid:hover {\n    /* Nueva sombra más intensa y \"elevada\" */\n    box-shadow: 0 15px 400px rgba(0, 0, 0, 0.3), \n                0 5px 15px rgba(0, 0, 0, 0.1) !important; \n    \n    /* Pequeño movimiento hacia arriba para dar más sensación de elevación (opcional) */\n    transform: translateY(-5px) scale(1.005); \n}\n\n\n\n/* 4. Estilo de los Inputs (Se mantiene) */\n.form-control {\n    border-radius: 8px !important; \n    border: 1px solid #e0e0e0 !important;\n}\n.form-control:focus {\n    border-color: #48C9B0 !important; \n    box-shadow: 0 0 0 0.2rem rgba(72, 201, 176, 0.25) !important;\n}\n\n/* Aplica solo a formularios con esas secciones */\n.panel.panel-default.form-section > .panel-body { display: none; }\n\n.panel.panel-default.form-section > .panel-heading:hover {\n  cursor: pointer;\n  filter: brightness(0.98);\n}\n\n.panel-collapse.no-bs-trans {\n  transition: none !important;\n}\n\n/* ========================================================= */\n/* ARREGLO DE COLOR DE TEXTO DE ENCABEZADO DURANTE MODAL     */\n/* ========================================================= */\n\n/* Apuntamos directamente al panel-title, que es el elemento que contiene \n   el texto del encabezado de la sección. \n*/\n.panel-heading .panel-title {\n    color: #FFFFFF !important; \n}\n\n/* Si dentro del panel-title hay un enlace (Ej. si el encabezado permite colapsar/expandir \n   y el título es un <a>), también debemos forzar el color del enlace.\n*/\n.panel-heading .panel-title a {\n    color: #FFFFFF !important;\n}\n\n/* Asegurar que el texto dentro del panel-title no se vea afectado por reglas generales\n   que usen el estado 'modal-open' en el cuerpo de la página.\n*/\n.modal-open .panel-heading .panel-title {\n    color: #FFFFFF !important;\n}\n\n\n/*******************************************************************/\n",
+			"pageCSS": "\n\n/* ========================================================= */\n/* VARIABLES DE COLOR */\n/* ========================================================= */\n:root {\n    --color-elegante: #FFFFFF; /* Texto Blanco para contrastar con el fondo oscuro */\n    --naranja-degradado-inicio: #03478A; /* Naranja Suave (Light Salmon) */\n    --naranja-degradado-fin: #6D98C2; /* Naranja Medio (Coral) */\n    --color-borde-base: #FF7F50; /* Color simple para el borde base */\n}\n\n/* ========================================================= */\n/* 1. Fondo de la Página: Degradado Azul Cielo (Se mantiene) */\n/* ========================================================= */\n\nbody, .container-fluid {\nbackground: linear-gradient(180deg, #E0F7FA 0%, #B3E5FC 100%) !important;    min-height: 100vh;\n}\n/* ========================================================= */\n/* 2. Estilo de las Secciones: Efecto Tarjeta/Sombreado (Se mantiene) */\n/* ========================================================= */\n.panel, .rnr-c-body, .rnr-c-grid {\n    background-color: #FFFFFF !important; \n    border: none !important; \n    border-radius: 12px !important; \n    padding: 20px;\n    margin-bottom: 25px; \n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), \n                0 2px 6px rgba(0, 0, 0, 0.05) !important; \n                \n    /* 🔑 CAMBIO CLAVE: Agrega 'transform' a la transición */\n    transition: box-shadow 0.3s ease-in-out, \n                transform 0.3s ease-in-out; /* Transición para el movimiento y escala */            \n                \n}\n\n/* ========================================================= */\n/* 3. Estilo de Encabezados de Sección (EL CAMBIO PRINCIPAL) */\n/* ========================================================= */\n.panel-heading, .rnr-c-head {\n    /* Aplicamos el degradado al fondo completo del encabezado */\n    background: linear-gradient(to right, var(--naranja-degradado-inicio), var(--naranja-degradado-fin)) !important;\n    \n    /* El texto del título ahora es blanco para contrastar con el fondo naranja */\n    color: var(--color-elegante) !important; \n    \n    font-weight: 600;\n    \n    /* Mantenemos el centrado vertical */\n    display: flex;\n    align-items: center;\n    height: 40px; /* Aseguramos una altura suficiente */\n    \n    /* Eliminamos el borde degradado y aplicamos un borde simple y fino abajo */\n    border-bottom: 1px solid var(--color-borde-base) !important; \n    border-image-source: none !important; /* Desactivar la propiedad border-image anterior */\n    \n    /* Ajustes de relleno/bordes para que el degradado se vea bien */\n    padding: 0 15px !important; \n    border-top-left-radius: 12px !important; /* Mantenemos el radio del panel superior */\n    border-top-right-radius: 12px !important;\n}\n\n/* ========================================================= */\n/* 3. Estilo de HOVER: Efecto de Elevación/Intensificación    */\n/* ========================================================= */\n.panel:hover, .rnr-c-body:hover, .rnr-c-grid:hover {\n    /* Nueva sombra más intensa y \"elevada\" */\n    box-shadow: 0 15px 400px rgba(0, 0, 0, 0.3), \n                0 5px 15px rgba(0, 0, 0, 0.1) !important; \n    \n    /* Pequeño movimiento hacia arriba para dar más sensación de elevación (opcional) */\n    transform: translateY(-5px) scale(1.005); \n}\n\n\n\n/* 4. Estilo de los Inputs (Se mantiene) */\n.form-control {\n    border-radius: 8px !important; \n    border: 1px solid #e0e0e0 !important;\n}\n.form-control:focus {\n    border-color: #48C9B0 !important; \n    box-shadow: 0 0 0 0.2rem rgba(72, 201, 176, 0.25) !important;\n}\n\n/* Aplica solo a formularios con esas secciones */\n.panel.panel-default.form-section > .panel-body { display: none; }\n\n.panel.panel-default.form-section > .panel-heading:hover {\n  cursor: pointer;\n  filter: brightness(0.98);\n}\n\n.panel-collapse.no-bs-trans {\n  transition: none !important;\n}\n\n/* ========================================================= */\n/* ARREGLO DE COLOR DE TEXTO DE ENCABEZADO DURANTE MODAL     */\n/* ========================================================= */\n\n/* Apuntamos directamente al panel-title, que es el elemento que contiene \n   el texto del encabezado de la sección. \n*/\n.panel-heading .panel-title {\n    color: #FFFFFF !important; \n}\n\n/* Si dentro del panel-title hay un enlace (Ej. si el encabezado permite colapsar/expandir \n   y el título es un <a>), también debemos forzar el color del enlace.\n*/\n.panel-heading .panel-title a {\n    color: #FFFFFF !important;\n}\n\n/* Asegurar que el texto dentro del panel-title no se vea afectado por reglas generales\n   que usen el estado 'modal-open' en el cuerpo de la página.\n*/\n.modal-open .panel-heading .panel-title {\n    color: #FFFFFF !important;\n}\n\n\n/*******************************************************************/\n/* === Contenedores que enjaulan el ancho === */\n/* 1) Limitar el ancho de TODOS los bloques de la página add */\nbody.function-add #form_top_1,\nbody.function-add #form_above-grid_1,\nbody.function-add .panel.panel-default.form-section {\n  max-width: 720px;        /* ajusta a tu gusto: 720, 840, 920… */\n  margin-left: auto;\n  margin-right: auto;\n}\n\n/* 2) Evitar que col-md-12 fuerce 100% cuando queremos centrar */\nbody.function-add .r-form .row > .col-md-12 {\n  float: none;              /* elimina flote de Bootstrap */\n}\n\n/* 3) La mesa del formulario viene con width:100%; la hacemos fija y centrada */\nbody.function-add #form_section_1.r-edit-form {\n  width: 720px !important;  /* mismo valor que arriba */\n  margin-left: auto;\n  margin-right: auto;\n}\n\n/* 4) Hacer que los controles no queden “larguísimos” */\nbody.function-add #form_section_1 .form-control,\nbody.function-add #form_section_1 select.form-control {\n  max-width: 2660px;         /* o 360/380px según te guste */\n}\n\n/* 5) Un poco de respiro en pantallas chicas */\n@media (max-width: 770px) {\n  body.function-add #form_section_1.r-edit-form,\n  body.function-add #form_top_1,\n  body.function-add #form_above-grid_1,\n  body.function-add .panel.panel-default.form-section {\n    max-width: 100%;\n    width: auto !important;\n    padding-left: 12px;\n    padding-right: 12px;\n  }\n  body.function-add #form_section_1 .form-control,\n  body.function-add #form_section_1 select.form-control {\n    max-width: 100%;\n  }\n}\n\n/* === BELOW-GRID: mismo ancho que el form y alineado === */\nbody.function-add #form_below-grid_1 {\n  max-width: 720px;        /* el mismo valor que uses para el form */\n  margin: 8px auto 28px;   /* centra la franja bajo el formulario */\n  padding: 0 4px;\n  text-align: left;       /* o 'center' si lo prefieres centrado */\n}\n\n/* Espaciado y layout de botones */\nbody.function-add #form_below-grid_1 .btn-toolbar,\nbody.function-add #form_below-grid_1 .rnr-buttons-group {\n  display: inline-flex;    /* mantiene los botones en línea */\n  gap: 8px;  /* separación entre botones */\n  justify-content: flex-start;  \n  flex-wrap: wrap;         /* por si colapsan en pantallas chicas */\n}\n\n/* Por si algún tema pone floats o pull-right */\nbody.function-add #form_below-grid_1 .btn,\nbody.function-add #form_below-grid_1 .rnr-buttons-group {\n  float: none !important;\n}\n\n/* En móviles: céntralos */\n@media (max-width: 768px) {\n  body.function-add #form_below-grid_1 { text-align: center; }\n}\n",
 			"listTotals": 1,
 			"title": {}
 		},
@@ -1213,9 +1169,7 @@
 						},
 						"c2": {
 							"model": "c2",
-							"items": [
-								"hamburger"
-							]
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -1296,7 +1250,10 @@
 								"integrated_edit_field10",
 								"integrated_edit_field1",
 								"integrated_edit_field4"
-							]
+							],
+							"padding": {
+								"right": "10%"
+							}
 						},
 						"c": {
 							"model": "c1",
@@ -1306,7 +1263,10 @@
 								"integrated_edit_field2",
 								"integrated_edit_field3",
 								"integrated_edit_field6"
-							]
+							],
+							"padding": {
+								"right": "10%"
+							}
 						}
 					},
 					"deferredItems": [],
@@ -1318,16 +1278,6 @@
 			"items": {
 				"edit_header": {
 					"type": "edit_header"
-				},
-				"hamburger": {
-					"type": "hamburger",
-					"items": [
-						"edit_reset",
-						"edit_view"
-					]
-				},
-				"edit_reset": {
-					"type": "edit_reset"
 				},
 				"edit_message": {
 					"type": "edit_message"
@@ -1407,9 +1357,6 @@
 					"orientation": 0,
 					"updateOnEdit": false
 				},
-				"edit_view": {
-					"type": "edit_view"
-				},
 				"section": {
 					"type": "section",
 					"title": {
@@ -1430,6 +1377,7 @@
 			"imageBgColor": "#f2f2f2",
 			"controlsBgColor": "white",
 			"imagePosition": "right",
+			"pageCSS": "\n\n/* ========================================================= */\n/* VARIABLES DE COLOR */\n/* ========================================================= */\n:root {\n    --color-elegante: #FFFFFF; /* Texto Blanco para contrastar con el fondo oscuro */\n    --naranja-degradado-inicio: #03478A; /* Naranja Suave (Light Salmon) */\n    --naranja-degradado-fin: #6D98C2; /* Naranja Medio (Coral) */\n    --color-borde-base: #FF7F50; /* Color simple para el borde base */\n}\n\n/* ========================================================= */\n/* 1. Fondo de la Página: Degradado Azul Cielo (Se mantiene) */\n/* ========================================================= */\n\nbody, .container-fluid {\nbackground: linear-gradient(180deg, #E0F7FA 0%, #B3E5FC 100%) !important;    min-height: 100vh;\n}\n/* ========================================================= */\n/* 2. Estilo de las Secciones: Efecto Tarjeta/Sombreado (Se mantiene) */\n/* ========================================================= */\n.panel, .rnr-c-body, .rnr-c-grid {\n    background-color: #FFFFFF !important; \n    border: none !important; \n    border-radius: 12px !important; \n    padding: 20px;\n    margin-bottom: 25px; \n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), \n                0 2px 6px rgba(0, 0, 0, 0.05) !important; \n                \n    /* 🔑 CAMBIO CLAVE: Agrega 'transform' a la transición */\n    transition: box-shadow 0.3s ease-in-out, \n                transform 0.3s ease-in-out; /* Transición para el movimiento y escala */            \n                \n}\n\n/* ========================================================= */\n/* 3. Estilo de Encabezados de Sección (EL CAMBIO PRINCIPAL) */\n/* ========================================================= */\n.panel-heading, .rnr-c-head {\n    /* Aplicamos el degradado al fondo completo del encabezado */\n    background: linear-gradient(to right, var(--naranja-degradado-inicio), var(--naranja-degradado-fin)) !important;\n    \n    /* El texto del título ahora es blanco para contrastar con el fondo naranja */\n    color: var(--color-elegante) !important; \n    \n    font-weight: 600;\n    \n    /* Mantenemos el centrado vertical */\n    display: flex;\n    align-items: center;\n    height: 40px; /* Aseguramos una altura suficiente */\n    \n    /* Eliminamos el borde degradado y aplicamos un borde simple y fino abajo */\n    border-bottom: 1px solid var(--color-borde-base) !important; \n    border-image-source: none !important; /* Desactivar la propiedad border-image anterior */\n    \n    /* Ajustes de relleno/bordes para que el degradado se vea bien */\n    padding: 0 15px !important; \n    border-top-left-radius: 12px !important; /* Mantenemos el radio del panel superior */\n    border-top-right-radius: 12px !important;\n}\n\n/* ========================================================= */\n/* 3. Estilo de HOVER: Efecto de Elevación/Intensificación    */\n/* ========================================================= */\n.panel:hover, .rnr-c-body:hover, .rnr-c-grid:hover {\n    /* Nueva sombra más intensa y \"elevada\" */\n    box-shadow: 0 15px 400px rgba(0, 0, 0, 0.3), \n                0 5px 15px rgba(0, 0, 0, 0.1) !important; \n    \n    /* Pequeño movimiento hacia arriba para dar más sensación de elevación (opcional) */\n    transform: translateY(-5px) scale(1.005); \n}\n\n\n\n/* 4. Estilo de los Inputs (Se mantiene) */\n.form-control {\n    border-radius: 8px !important; \n    border: 1px solid #e0e0e0 !important;\n}\n.form-control:focus {\n    border-color: #48C9B0 !important; \n    box-shadow: 0 0 0 0.2rem rgba(72, 201, 176, 0.25) !important;\n}\n\n/* Aplica solo a formularios con esas secciones */\n.panel.panel-default.form-section > .panel-body { display: none; }\n\n.panel.panel-default.form-section > .panel-heading:hover {\n  cursor: pointer;\n  filter: brightness(0.98);\n}\n\n.panel-collapse.no-bs-trans {\n  transition: none !important;\n}\n\n/* ========================================================= */\n/* ARREGLO DE COLOR DE TEXTO DE ENCABEZADO DURANTE MODAL     */\n/* ========================================================= */\n\n/* Apuntamos directamente al panel-title, que es el elemento que contiene \n   el texto del encabezado de la sección. \n*/\n.panel-heading .panel-title {\n    color: #FFFFFF !important; \n}\n\n/* Si dentro del panel-title hay un enlace (Ej. si el encabezado permite colapsar/expandir \n   y el título es un <a>), también debemos forzar el color del enlace.\n*/\n.panel-heading .panel-title a {\n    color: #FFFFFF !important;\n}\n\n/* Asegurar que el texto dentro del panel-title no se vea afectado por reglas generales\n   que usen el estado 'modal-open' en el cuerpo de la página.\n*/\n.modal-open .panel-heading .panel-title {\n    color: #FFFFFF !important;\n}\n\n\n/*******************************************************************/\n/* ===== 1) Limitar el ancho de la zona principal (grid) y la franja de botones (below-grid) ===== */\nbody.function-edit .r-form[data-location=\"grid\"],\nbody.function-edit .r-form[data-location=\"below-grid\"],\nbody.function-edit .panel.form-section {\n  max-width: 820px;                 /* AJUSTA aquí el ancho del “card” */\n  margin-left: auto;\n  margin-right: auto;\n}\n\n/* ===== 2) Evitar que el col-md-12 obligue a 100% ===== */\nbody.function-edit .r-form .row > [class*=\"col-\"] {\n  float: none;                      /* quita el float que estira al 100% */\n}\n\n/* ===== 3) La mesa del formulario suele tener width:100% por defecto ===== */\nbody.function-edit .r-edit-form {\n  width: 820px !important;          /* MISMO valor del max-width de arriba */\n  margin-left: auto;\n  margin-right: auto;\n  max-width: 100%;\n}\n\n/* ===== 4) Controles más cortos ===== */\nbody.function-edit .r-form[data-location=\"grid\"] .form-control,\nbody.function-edit .r-form[data-location=\"grid\"] select.form-control,\nbody.function-edit .r-form[data-location=\"grid\"] .input-group,\nbody.function-edit .r-form[data-location=\"grid\"] .input-group .form-control,\nbody.function-edit .r-form[data-location=\"grid\"] .select2-container {\n  max-width: 420px;                 /* AJUSTA el ancho de los campos */\n  width: 100%;\n}\n\n/* ===== 5) Botones a la IZQUIERDA y con buen gap ===== */\nbody.function-edit .r-form[data-location=\"below-grid\"] {\n  padding: 0 4px 0 24px;            /* alinea con el panel (ajusta 0–24px) */\n  text-align: left;\n}\nbody.function-edit .r-form[data-location=\"below-grid\"] .btn-toolbar,\nbody.function-edit .r-form[data-location=\"below-grid\"] .rnr-buttons-group {\n  display: inline-flex;\n  gap: 8px;\n  flex-wrap: wrap;\n}\nbody.function-edit .r-form[data-location=\"below-grid\"] .btn,\nbody.function-edit .r-form[data-location=\"below-grid\"] .rnr-buttons-group {\n  float: none !important;\n}\n\n/* ===== 6) Responsive ===== */\n@media (max-width: 992px){\n  body.function-edit .r-edit-form { width: auto !important; }\n  body.function-edit .r-form[data-location=\"grid\"],\n  body.function-edit .r-form[data-location=\"below-grid\"],\n  body.function-edit .panel.form-section {\n    max-width: 100%;\n    padding-left: 12px;\n    padding-right: 12px;\n  }\n  body.function-edit .r-form[data-location=\"grid\"] .form-control,\n  body.function-edit .r-form[data-location=\"grid\"] .select2-container {\n    max-width: 100%;\n  }\n}\n",
 			"listTotals": 1,
 			"title": {}
 		},
