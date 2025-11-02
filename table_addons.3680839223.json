@@ -242,7 +242,7 @@
 					"lookupLinkField": "IdTienda",
 					"lookupDisplayField": "Tienda",
 					"lookupOrderBy": "Tienda",
-					"lookupControlType": 1
+					"lookupListPage": "list"
 				}
 			],
 			"label": {
@@ -327,12 +327,22 @@
 		{
 			"eventId": "EVENT_BEFOREADD",
 			"pageType": "add",
-			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n$values['usuario']=$_SESSION[\"UserID\"];\n$values['idtienda']=$_SESSION[\"Tienda\"];\n\nreturn true;"
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\ndate_default_timezone_set('America/Mexico_City');\n$values['usuario']=$_SESSION[\"UserID\"];\n$values['idtienda']=$_SESSION[\"Tienda\"];\n$values['fcapturaaddon'];\n\nreturn true;"
 		},
 		{
 			"eventId": "EVENT_JS_ONLOAD",
 			"pageType": "edit",
-			"code": "/*(function(){\n  // Ajustes (puedes cambiarlos)\n  var CAGE_WIDTH  = 820; // ancho total del \"card\"\n  var FIELD_WIDTH = 420; // ancho máx. de controles\n\n  // Marca la página para que el CSS específico se active\n  $('body').addClass('addons-narrow');\n\n  // Ubica el \"root\" de esta página (admite addons_add, addons_edit, addons_edit1, etc.)\n  function getPageRoot(){\n    var $c = $('[data-page]');\n    for (var i = 0; i < $c.length; i++){\n      var v = ($c[i].getAttribute('data-page') || '').toLowerCase();\n      if (/^addons_(add|edit)/.test(v)) return $($c[i]);\n    }\n    return $(document.body);\n  }\n\n  function cageOnce() {\n    var $page = getPageRoot();\n    if (!$page.length) return;\n\n    // Encapsula top, grid (form) y below-grid en \"cages\" si no lo están\n    [\n      ['.r-form[data-location=\"top\"]',        'addons-cage-top'],\n      ['.r-form[data-location=\"grid\"]',       'addons-cage'],\n      ['.r-form[data-location=\"below-grid\"]', 'addons-cage-bot']\n    ].forEach(function(pair){\n      var sel = pair[0], cls = pair[1];\n      var $blk = $page.find(sel).first();\n      if ($blk.length && !$blk.parent().hasClass(cls)) {\n        $blk.wrap('<div class=\"'+cls+'\"></div>');\n      }\n    });\n  }\n\n  // 1) Inicial\n  cageOnce();\n\n  // 2) Por si hay animaciones/carga diferida\n  setTimeout(cageOnce, 120);\n\n  // 3) Observa *la página* (no todo el body) para re-aplicar si PHPRunner re-renderiza\n  var $root = getPageRoot();\n  new MutationObserver(function(muts){\n    for (var i=0;i<muts.length;i++){\n      if (muts[i].addedNodes && muts[i].addedNodes.length){ cageOnce(); break; }\n    }\n  }).observe($root[0] || document.body, { childList:true, subtree:true });\n\n  // 4) Gancho manual por si quieres forzar desde otros scripts: $(document).trigger('addons:cage')\n  $(document).on('addons:cage', cageOnce);\n})();\n\n*/\n"
+			"code": "(function () {\r\n  var acceso = (proxy.Acceso) || null;\r\n  var userId = (proxy.UserID) || '';\r\n\r\n  // true si puede editar: Acceso==0 o UserID == 'ADMIN' (case-insensitive)\r\n  var canEdit = (acceso === 0) || (String(userId).toUpperCase() === 'ADMIN');\r\n  if (!canEdit) {\r\n    var c = Runner.getControl(pageid, \"idtienda\");\r\n    var u = Runner.getControl(pageid, \"usuario\")\r\n    if (c) {\r\n      if (c.setReadOnly) c.setReadOnly(true);\r\n      if (c.setDisabled) c.setDisabled(true);\r\n    }\r\n    \r\n    \r\n    // Si es lookup, oculta el botón del popup\r\n    $('#open_lookup_idtienda_' + pageid).hide();\r\n    // Blindaje adicional por si fuera input simple\r\n    $('[id^=\"value_idtienda_\"][id$=\"' + pageid + '\"]').prop('readonly', true).addClass('disabled');\r\n  }\r\n  \r\n      if (u) {\r\n      if (u.setReadOnly) u.setReadOnly(true);\r\n      if (u.setDisabled) u.setDisabled(true);\r\n    }\r\n})();\r\n\r\n"
+		},
+		{
+			"eventId": "EVENT_BEFORESHOW_EDIT",
+			"pageType": "edit",
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n// Pásale el Acceso a JavaScript (queda disponible como window.proxy.Acceso)\n$pageObject->setProxyValue(\"Acceso\", intval($_SESSION[\"Acceso\"]));\n$pageObject->setProxyValue(\"UserID\", $_SESSION[\"UserID\"]);"
+		},
+		{
+			"eventId": "EVENT_BEFOREEDIT",
+			"pageType": "edit",
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n\n// Si NO es rango 0, fuerza a conservar el idtienda original\nif (@$_SESSION[\"Acceso\"] != 0) {\n  // En edición: ignora lo que venga del POST y deja el valor anterior\n  $values[\"idtienda\"] = $oldvalues[\"idtienda\"];\n  // o bien puedes quitarlo del update: unset($values[\"idtienda\"]);\n}\nreturn true;\n\n"
 		}
 	],
 	"dbTableInfo": {

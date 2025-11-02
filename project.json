@@ -33,6 +33,13 @@
 				"height": 152
 			},
 			{
+				"gid": 3096246501,
+				"y": 760,
+				"x": 970,
+				"width": 109.40625,
+				"height": 348
+			},
+			{
 				"gid": 1358825431,
 				"y": 425,
 				"x": 170,
@@ -421,6 +428,34 @@
 						}
 					},
 					{
+						"id": "13",
+						"data": {
+							"name": {
+								"text": "Call Center - Citas a Tiendas",
+								"type": 0
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 3096246501,
+							"pageType": "list"
+						}
+					},
+					{
+						"id": "12",
+						"data": {
+							"name": {
+								"text": "Call Center - Addones",
+								"type": 0
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 3680839223,
+							"pageType": "list"
+						}
+					},
+					{
 						"id": "7",
 						"data": {
 							"name": {
@@ -487,20 +522,6 @@
 							"itemType": 2,
 							"linkType": 0,
 							"table": 3904369708,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "12",
-						"data": {
-							"name": {
-								"table": "addons",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 3680839223,
 							"pageType": "list"
 						}
 					}
@@ -590,7 +611,8 @@
 								"welcome_item2",
 								"welcome_item",
 								"welcome_item1",
-								"welcome_item3"
+								"welcome_item3",
+								"welcome_item4"
 							]
 						}
 					},
@@ -700,6 +722,25 @@
 						"type": 0
 					},
 					"background": "#e8926f",
+					"linkType": 0
+				},
+				"welcome_item4": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "citas",
+					"linkPage": "list",
+					"linkText": {
+						"table": "citas",
+						"type": 6
+					},
+					"linkIcon": {
+						"glyph": "hand-right"
+					},
+					"linkComments": {
+						"text": "Citas description",
+						"type": 0
+					},
+					"background": "#d2691e",
 					"linkType": 0
 				}
 			},
