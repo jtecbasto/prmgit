@@ -1,5 +1,5 @@
 {
-	"sql": "SELECT\r\n\tID,\r\n\tusername,\r\n\tpassword,\r\n\temail,\r\n\tfullname,\r\n\tgroupid,\r\n\tactive,\r\n\tTienda,\r\n\tfechaingreso,\r\n\tfechabaja,\r\n\tmediotiempo,\r\n\tapellidopaterno,\r\n\tapellidomaterno,\r\n\tnombres,\r\n\tnombrecompleto1,\r\n\tnombrecompleto2,\r\n\tattuid,\r\n\tidempleado,\r\n\tsufijoempleado,\r\n\tidtipocomision,\r\n\tidatt\r\nFROM\r\n\tserviciosmoviles_users",
+	"sql": "SELECT\r\n\tID,\r\n\tusername,\r\n\tpassword,\r\n\temail,\r\n\tfullname,\r\n\tgroupid,\r\n\tactive,\r\n\tTienda,\r\n\tfechaingreso,\r\n\tfechabaja,\r\n\tmediotiempo,\r\n\tapellidopaterno,\r\n\tapellidomaterno,\r\n\tnombres,\r\n\tnombrecompleto1,\r\n\tnombrecompleto2,\r\n\tattuid,\r\n\tidempleado,\r\n\tsufijoempleado,\r\n\tidtipocomision,\r\n\tidatt,\r\n\tfolioagentevnp\r\nFROM\r\n\tserviciosmoviles_users",
 	"type": 1,
 	"connId": "conn",
 	"originalTable": "serviciosmoviles_users",
@@ -9,11 +9,12 @@
 	"keyFields": [
 		"ID"
 	],
-	"detailsBadgeColor": "cfae83",
+	"detailsBadgeColor": "3cb371",
 	"fields": [
 		{
 			"name": "ID",
 			"sqlExpression": "ID",
+			"index": 1,
 			"strField": "ID",
 			"type": 3,
 			"autoinc": true,
@@ -31,6 +32,7 @@
 		{
 			"name": "username",
 			"sqlExpression": "username",
+			"index": 2,
 			"strField": "username",
 			"type": 200,
 			"viewFormats": [
@@ -47,6 +49,7 @@
 		{
 			"name": "password",
 			"sqlExpression": "password",
+			"index": 3,
 			"strField": "password",
 			"type": 200,
 			"viewFormats": [
@@ -63,6 +66,7 @@
 		{
 			"name": "email",
 			"sqlExpression": "email",
+			"index": 4,
 			"strField": "email",
 			"type": 200,
 			"viewFormats": [
@@ -79,6 +83,7 @@
 		{
 			"name": "fullname",
 			"sqlExpression": "fullname",
+			"index": 5,
 			"strField": "fullname",
 			"type": 200,
 			"viewFormats": [
@@ -95,6 +100,7 @@
 		{
 			"name": "groupid",
 			"sqlExpression": "groupid",
+			"index": 6,
 			"strField": "groupid",
 			"type": 200,
 			"viewFormats": [
@@ -111,8 +117,9 @@
 		{
 			"name": "active",
 			"sqlExpression": "active",
+			"index": 7,
 			"strField": "active",
-			"type": 16,
+			"type": 2,
 			"viewFormats": [
 				{}
 			],
@@ -127,6 +134,7 @@
 		{
 			"name": "Tienda",
 			"sqlExpression": "Tienda",
+			"index": 8,
 			"strField": "Tienda",
 			"type": 3,
 			"viewFormats": [
@@ -143,6 +151,7 @@
 		{
 			"name": "fechaingreso",
 			"sqlExpression": "fechaingreso",
+			"index": 9,
 			"strField": "fechaingreso",
 			"type": 7,
 			"viewFormats": [
@@ -164,6 +173,7 @@
 		{
 			"name": "fechabaja",
 			"sqlExpression": "fechabaja",
+			"index": 10,
 			"strField": "fechabaja",
 			"type": 7,
 			"viewFormats": [
@@ -185,8 +195,9 @@
 		{
 			"name": "mediotiempo",
 			"sqlExpression": "mediotiempo",
+			"index": 11,
 			"strField": "mediotiempo",
-			"type": 16,
+			"type": 2,
 			"viewFormats": [
 				{}
 			],
@@ -201,6 +212,7 @@
 		{
 			"name": "apellidopaterno",
 			"sqlExpression": "apellidopaterno",
+			"index": 12,
 			"strField": "apellidopaterno",
 			"type": 200,
 			"viewFormats": [
@@ -217,6 +229,7 @@
 		{
 			"name": "apellidomaterno",
 			"sqlExpression": "apellidomaterno",
+			"index": 13,
 			"strField": "apellidomaterno",
 			"type": 200,
 			"viewFormats": [
@@ -233,6 +246,7 @@
 		{
 			"name": "nombres",
 			"sqlExpression": "nombres",
+			"index": 14,
 			"strField": "nombres",
 			"type": 200,
 			"viewFormats": [
@@ -249,6 +263,7 @@
 		{
 			"name": "nombrecompleto1",
 			"sqlExpression": "nombrecompleto1",
+			"index": 15,
 			"strField": "nombrecompleto1",
 			"type": 200,
 			"viewFormats": [
@@ -265,6 +280,7 @@
 		{
 			"name": "nombrecompleto2",
 			"sqlExpression": "nombrecompleto2",
+			"index": 16,
 			"strField": "nombrecompleto2",
 			"type": 200,
 			"viewFormats": [
@@ -281,6 +297,7 @@
 		{
 			"name": "attuid",
 			"sqlExpression": "attuid",
+			"index": 17,
 			"strField": "attuid",
 			"type": 200,
 			"viewFormats": [
@@ -297,6 +314,7 @@
 		{
 			"name": "idempleado",
 			"sqlExpression": "idempleado",
+			"index": 18,
 			"strField": "idempleado",
 			"type": 200,
 			"viewFormats": [
@@ -313,6 +331,7 @@
 		{
 			"name": "sufijoempleado",
 			"sqlExpression": "sufijoempleado",
+			"index": 19,
 			"strField": "sufijoempleado",
 			"type": 200,
 			"viewFormats": [
@@ -329,6 +348,7 @@
 		{
 			"name": "idtipocomision",
 			"sqlExpression": "idtipocomision",
+			"index": 20,
 			"strField": "idtipocomision",
 			"type": 3,
 			"viewFormats": [
@@ -345,6 +365,7 @@
 		{
 			"name": "idatt",
 			"sqlExpression": "idatt",
+			"index": 21,
 			"strField": "idatt",
 			"type": 200,
 			"viewFormats": [
@@ -357,9 +378,25 @@
 				"Spanish": "Idatt"
 			},
 			"tableName": "serviciosmoviles_users"
+		},
+		{
+			"name": "folioagentevnp",
+			"sqlExpression": "folioagentevnp",
+			"index": 22,
+			"strField": "folioagentevnp",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Folioagentevnp"
+			},
+			"tableName": "serviciosmoviles_users"
 		}
 	],
-	"afterEditAction": 0,
 	"dbTableInfo": {
 		"type": 0,
 		"foreignKeys": [],
@@ -594,6 +631,17 @@
 				"autoinc": false,
 				"defaultValueSQL": null,
 				"defaultValue": ""
+			},
+			{
+				"name": "folioagentevnp",
+				"type": 200,
+				"size": 20,
+				"scale": 0,
+				"typeName": "varchar(20)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
 			}
 		],
 		"primaryKeys": [
@@ -717,7 +765,8 @@
 								"integrated_edit_field16",
 								"integrated_edit_field17",
 								"integrated_edit_field18",
-								"integrated_edit_field19"
+								"integrated_edit_field19",
+								"integrated_edit_field20"
 							]
 						}
 					},
@@ -845,6 +894,11 @@
 					"field": "idatt",
 					"type": "integrated_edit_field",
 					"orientation": 0
+				},
+				"integrated_edit_field20": {
+					"field": "folioagentevnp",
+					"type": "integrated_edit_field",
+					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -945,7 +999,8 @@
 								"export_field17",
 								"export_field18",
 								"export_field19",
-								"export_field20"
+								"export_field20",
+								"export_field21"
 							]
 						}
 					},
@@ -1077,6 +1132,10 @@
 				"export_field20": {
 					"field": "idatt",
 					"type": "export_field"
+				},
+				"export_field21": {
+					"field": "folioagentevnp",
+					"type": "export_field"
 				}
 			},
 			"dbProps": {},
@@ -1181,7 +1240,8 @@
 								"import_field17",
 								"import_field18",
 								"import_field19",
-								"import_field20"
+								"import_field20",
+								"import_field21"
 							]
 						}
 					},
@@ -1275,6 +1335,10 @@
 				},
 				"import_field20": {
 					"field": "idatt",
+					"type": "import_field"
+				},
+				"import_field21": {
+					"field": "folioagentevnp",
 					"type": "import_field"
 				}
 			},
@@ -1411,7 +1475,8 @@
 								"integrated_edit_field16",
 								"integrated_edit_field17",
 								"integrated_edit_field18",
-								"integrated_edit_field19"
+								"integrated_edit_field19",
+								"integrated_edit_field20"
 							]
 						}
 					},
@@ -1549,6 +1614,11 @@
 				},
 				"edit_view": {
 					"type": "edit_view"
+				},
+				"integrated_edit_field20": {
+					"field": "folioagentevnp",
+					"type": "integrated_edit_field",
+					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -1683,7 +1753,8 @@
 								"integrated_edit_field17",
 								"integrated_edit_field18",
 								"integrated_edit_field19",
-								"integrated_edit_field20"
+								"integrated_edit_field20",
+								"integrated_edit_field21"
 							]
 						}
 					},
@@ -1816,6 +1887,11 @@
 				},
 				"view_edit": {
 					"type": "view_edit"
+				},
+				"integrated_edit_field21": {
+					"field": "folioagentevnp",
+					"type": "integrated_edit_field",
+					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -2004,7 +2080,8 @@
 								"simple_grid_field17",
 								"simple_grid_field18",
 								"simple_grid_field19",
-								"simple_grid_field20"
+								"simple_grid_field20",
+								"simple_grid_field21"
 							]
 						}
 					},
@@ -2140,6 +2217,7 @@
 					"type": "search_panel",
 					"items": [
 						"search_panel_field",
+						"search_panel_field21",
 						"search_panel_field20",
 						"search_panel_field19",
 						"search_panel_field18",
@@ -2339,6 +2417,14 @@
 				},
 				"delete_selected": {
 					"type": "delete_selected"
+				},
+				"simple_grid_field21": {
+					"field": "folioagentevnp",
+					"type": "simple_grid_field"
+				},
+				"search_panel_field21": {
+					"field": "folioagentevnp",
+					"type": "search_panel_field"
 				}
 			},
 			"dbProps": {},
@@ -2463,7 +2549,8 @@
 								"simple_grid_field17",
 								"simple_grid_field18",
 								"simple_grid_field19",
-								"simple_grid_field20"
+								"simple_grid_field20",
+								"simple_grid_field21"
 							]
 						}
 					},
@@ -2563,6 +2650,10 @@
 				},
 				"simple_grid_field20": {
 					"field": "idatt",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field21": {
+					"field": "folioagentevnp",
 					"type": "simple_grid_field"
 				}
 			},

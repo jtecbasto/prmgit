@@ -524,6 +524,20 @@
 							"table": 3904369708,
 							"pageType": "list"
 						}
+					},
+					{
+						"id": "14",
+						"data": {
+							"name": {
+								"table": "serviciosmoviles_users",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 3616522410,
+							"pageType": "list"
+						}
 					}
 				]
 			}
@@ -612,7 +626,8 @@
 								"welcome_item",
 								"welcome_item1",
 								"welcome_item3",
-								"welcome_item4"
+								"welcome_item4",
+								"welcome_item5"
 							]
 						}
 					},
@@ -741,6 +756,21 @@
 						"type": 0
 					},
 					"background": "#d2691e",
+					"linkType": 0
+				},
+				"welcome_item5": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "serviciosmoviles_users",
+					"linkPage": "list",
+					"linkText": {
+						"table": "serviciosmoviles_users",
+						"type": 6
+					},
+					"linkIcon": {
+						"glyph": "tree-conifer"
+					},
+					"background": "#dc143c",
 					"linkType": 0
 				}
 			},
@@ -2211,7 +2241,7 @@
 		{
 			"eventId": "EVENT_AFTERSUCCESSFULLLOGIN",
 			"pageType": "login",
-			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\ndate_default_timezone_set('America/Mexico_City');\nglobal $conn;\n\n\n\n$strSQLExists = \"SELECT\n    serviciosmoviles_ugmembers.UserName\n    , IFNULL(serviciosmoviles_uggroups.Acceso,11) Acceso\n    , IFNULL(serviciosmoviles_users.Tienda,0) Tienda\n\t\t, IFNULL(serviciosmoviles_uggroups.Label,'') Label\nFROM\n    serviciosmoviles_ugmembers\n    LEFT JOIN serviciosmoviles_uggroups \n        ON (serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID)\n LEFT JOIN serviciosmoviles_users\n        ON (serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName)\nWHERE serviciosmoviles_ugmembers.username='\".$username .\"'\" ;\n\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\nif($data)\n{\n\t$_SESSION[\"Acceso\"]=$data[\"Acceso\"];\n\t$_SESSION[\"Tienda\"]=$data[\"Tienda\"];\n\t$_SESSION[\"UserID\"]=strtoupper($username);\n\t$_SESSION[\"Label\"]=strtoupper($data[\"Label\"]);\n\n\n}\n"
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\ndate_default_timezone_set('America/Mexico_City');\nglobal $conn;\n\n\n\n$strSQLExists = \"SELECT\n    serviciosmoviles_ugmembers.UserName\n    , IFNULL(serviciosmoviles_uggroups.Acceso,11) Acceso\n    , IFNULL(serviciosmoviles_users.Tienda,0) Tienda\n\t\t, IFNULL(serviciosmoviles_uggroups.Label,'') Label,\n\tIFNULL(serviciosmoviles_users.folioagentevnp,'') FolioAgenteVNP\nFROM\n    serviciosmoviles_ugmembers\n    LEFT JOIN serviciosmoviles_uggroups \n        ON (serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID)\n LEFT JOIN serviciosmoviles_users\n        ON (serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName)\nWHERE serviciosmoviles_ugmembers.username='\".$username .\"'\" ;\n\n    error_log($strSQLExists,3,\"debug_log.txt\");\n\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\nif($data)\n{\n\t$_SESSION[\"Acceso\"]=$data[\"Acceso\"];\n\t$_SESSION[\"Tienda\"]=$data[\"Tienda\"];\n\t$_SESSION[\"UserID\"]=strtoupper($username);\n\t$_SESSION[\"Label\"]=strtoupper($data[\"Label\"]);\n\t$_SESSION[\"FolioAgenteVNP\"]=strtoupper($data[\"FolioAgenteVNP\"]);\n    error_log(\"FolioAgenteVNP\".$_SESSION[\"FolioAgenteVNP\"],3,\"debug_log.txt\");\n\n}\n"
 		},
 		{
 			"eventId": "EVENT_BEFORELOGIN",

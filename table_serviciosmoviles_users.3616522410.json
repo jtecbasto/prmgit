@@ -1,5 +1,5 @@
 {
-	"sql": "SELECT\r\n\tID,\r\n\tusername,\r\n\tpassword,\r\n\temail,\r\n\tfullname,\r\n\tgroupid,\r\n\tactive,\r\n\tTienda,\r\n\tfechaingreso,\r\n\tfechabaja,\r\n\tmediotiempo,\r\n\tapellidopaterno,\r\n\tapellidomaterno,\r\n\tnombres,\r\n\tnombrecompleto1,\r\n\tnombrecompleto2,\r\n\tattuid,\r\n\tidempleado,\r\n\tsufijoempleado,\r\n\tidtipocomision,\r\n\tidatt\r\nFROM\r\n\tserviciosmoviles_users",
+	"sql": "SELECT\r\n\tID,\r\n\tusername,\r\n\tpassword,\r\n\temail,\r\n\tfullname,\r\n\tgroupid,\r\n\tactive,\r\n\tTienda,\r\n\tfechaingreso,\r\n\tfechabaja,\r\n\tmediotiempo,\r\n\tapellidopaterno,\r\n\tapellidomaterno,\r\n\tnombres,\r\n\tnombrecompleto1,\r\n\tnombrecompleto2,\r\n\tattuid,\r\n\tidempleado,\r\n\tsufijoempleado,\r\n\tidtipocomision,\r\n\tidatt,\r\n\tfolioagentevnp\r\nFROM\r\n\tserviciosmoviles_users",
 	"connId": "conn",
 	"originalTable": "serviciosmoviles_users",
 	"name": "serviciosmoviles_users",
@@ -8,7 +8,7 @@
 	"keyFields": [
 		"ID"
 	],
-	"detailsBadgeColor": "d2691e",
+	"detailsBadgeColor": "dc143c",
 	"fields": [
 		{
 			"name": "ID",
@@ -24,7 +24,7 @@
 				{}
 			],
 			"label": {
-				"English": "ID"
+				"Spanish": "ID"
 			},
 			"tableName": "serviciosmoviles_users"
 		},
@@ -41,7 +41,7 @@
 				{}
 			],
 			"label": {
-				"English": "Username"
+				"Spanish": "Username"
 			},
 			"tableName": "serviciosmoviles_users"
 		},
@@ -58,7 +58,7 @@
 				{}
 			],
 			"label": {
-				"English": "Password"
+				"Spanish": "Password"
 			},
 			"tableName": "serviciosmoviles_users"
 		},
@@ -75,7 +75,7 @@
 				{}
 			],
 			"label": {
-				"English": "Email"
+				"Spanish": "Email"
 			},
 			"tableName": "serviciosmoviles_users"
 		},
@@ -92,7 +92,7 @@
 				{}
 			],
 			"label": {
-				"English": "Fullname"
+				"Spanish": "Fullname"
 			},
 			"tableName": "serviciosmoviles_users"
 		},
@@ -109,7 +109,7 @@
 				{}
 			],
 			"label": {
-				"English": "Groupid"
+				"Spanish": "Groupid"
 			},
 			"tableName": "serviciosmoviles_users"
 		},
@@ -126,7 +126,7 @@
 				{}
 			],
 			"label": {
-				"English": "Active"
+				"Spanish": "Active"
 			},
 			"tableName": "serviciosmoviles_users"
 		},
@@ -143,7 +143,7 @@
 				{}
 			],
 			"label": {
-				"English": "Tienda"
+				"Spanish": "Tienda"
 			},
 			"tableName": "serviciosmoviles_users"
 		},
@@ -165,7 +165,7 @@
 				}
 			],
 			"label": {
-				"English": "Fechaingreso"
+				"Spanish": "Fechaingreso"
 			},
 			"tableName": "serviciosmoviles_users"
 		},
@@ -187,7 +187,7 @@
 				}
 			],
 			"label": {
-				"English": "Fechabaja"
+				"Spanish": "Fechabaja"
 			},
 			"tableName": "serviciosmoviles_users"
 		},
@@ -204,7 +204,7 @@
 				{}
 			],
 			"label": {
-				"English": "Mediotiempo"
+				"Spanish": "Mediotiempo"
 			},
 			"tableName": "serviciosmoviles_users"
 		},
@@ -221,7 +221,7 @@
 				{}
 			],
 			"label": {
-				"English": "Apellidopaterno"
+				"Spanish": "Apellidopaterno"
 			},
 			"tableName": "serviciosmoviles_users"
 		},
@@ -238,7 +238,7 @@
 				{}
 			],
 			"label": {
-				"English": "Apellidomaterno"
+				"Spanish": "Apellidomaterno"
 			},
 			"tableName": "serviciosmoviles_users"
 		},
@@ -255,7 +255,7 @@
 				{}
 			],
 			"label": {
-				"English": "Nombres"
+				"Spanish": "Nombres"
 			},
 			"tableName": "serviciosmoviles_users"
 		},
@@ -272,7 +272,7 @@
 				{}
 			],
 			"label": {
-				"English": "Nombrecompleto1"
+				"Spanish": "Nombrecompleto1"
 			},
 			"tableName": "serviciosmoviles_users"
 		},
@@ -289,7 +289,7 @@
 				{}
 			],
 			"label": {
-				"English": "Nombrecompleto2"
+				"Spanish": "Nombrecompleto2"
 			},
 			"tableName": "serviciosmoviles_users"
 		},
@@ -306,7 +306,7 @@
 				{}
 			],
 			"label": {
-				"English": "Attuid"
+				"Spanish": "Attuid"
 			},
 			"tableName": "serviciosmoviles_users"
 		},
@@ -323,7 +323,7 @@
 				{}
 			],
 			"label": {
-				"English": "Idempleado"
+				"Spanish": "Idempleado"
 			},
 			"tableName": "serviciosmoviles_users"
 		},
@@ -340,7 +340,7 @@
 				{}
 			],
 			"label": {
-				"English": "Sufijoempleado"
+				"Spanish": "Sufijoempleado"
 			},
 			"tableName": "serviciosmoviles_users"
 		},
@@ -357,7 +357,7 @@
 				{}
 			],
 			"label": {
-				"English": "Idtipocomision"
+				"Spanish": "Idtipocomision"
 			},
 			"tableName": "serviciosmoviles_users"
 		},
@@ -374,12 +374,28 @@
 				{}
 			],
 			"label": {
-				"English": "Idatt"
+				"Spanish": "Idatt"
+			},
+			"tableName": "serviciosmoviles_users"
+		},
+		{
+			"name": "folioagentevnp",
+			"sqlExpression": "folioagentevnp",
+			"index": 22,
+			"strField": "folioagentevnp",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Folioagentevnp"
 			},
 			"tableName": "serviciosmoviles_users"
 		}
 	],
-	"afterEditAction": 0,
 	"dbTableInfo": {
 		"type": 0,
 		"foreignKeys": [],
@@ -614,6 +630,17 @@
 				"autoinc": false,
 				"defaultValueSQL": null,
 				"defaultValue": ""
+			},
+			{
+				"name": "folioagentevnp",
+				"type": 200,
+				"size": 20,
+				"scale": 0,
+				"typeName": "varchar(20)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
 			}
 		],
 		"primaryKeys": [
@@ -737,7 +764,8 @@
 								"integrated_edit_field16",
 								"integrated_edit_field17",
 								"integrated_edit_field18",
-								"integrated_edit_field19"
+								"integrated_edit_field19",
+								"integrated_edit_field20"
 							]
 						}
 					},
@@ -865,6 +893,11 @@
 					"field": "idatt",
 					"type": "integrated_edit_field",
 					"orientation": 0
+				},
+				"integrated_edit_field20": {
+					"field": "folioagentevnp",
+					"type": "integrated_edit_field",
+					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -965,7 +998,8 @@
 								"export_field17",
 								"export_field18",
 								"export_field19",
-								"export_field20"
+								"export_field20",
+								"export_field21"
 							]
 						}
 					},
@@ -1097,6 +1131,10 @@
 				"export_field20": {
 					"field": "idatt",
 					"type": "export_field"
+				},
+				"export_field21": {
+					"field": "folioagentevnp",
+					"type": "export_field"
 				}
 			},
 			"dbProps": {},
@@ -1201,7 +1239,8 @@
 								"import_field17",
 								"import_field18",
 								"import_field19",
-								"import_field20"
+								"import_field20",
+								"import_field21"
 							]
 						}
 					},
@@ -1295,6 +1334,10 @@
 				},
 				"import_field20": {
 					"field": "idatt",
+					"type": "import_field"
+				},
+				"import_field21": {
+					"field": "folioagentevnp",
 					"type": "import_field"
 				}
 			},
@@ -1431,7 +1474,8 @@
 								"integrated_edit_field16",
 								"integrated_edit_field17",
 								"integrated_edit_field18",
-								"integrated_edit_field19"
+								"integrated_edit_field19",
+								"integrated_edit_field20"
 							]
 						}
 					},
@@ -1569,6 +1613,11 @@
 				},
 				"edit_view": {
 					"type": "edit_view"
+				},
+				"integrated_edit_field20": {
+					"field": "folioagentevnp",
+					"type": "integrated_edit_field",
+					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -1703,7 +1752,8 @@
 								"integrated_edit_field17",
 								"integrated_edit_field18",
 								"integrated_edit_field19",
-								"integrated_edit_field20"
+								"integrated_edit_field20",
+								"integrated_edit_field21"
 							]
 						}
 					},
@@ -1836,6 +1886,11 @@
 				},
 				"view_edit": {
 					"type": "view_edit"
+				},
+				"integrated_edit_field21": {
+					"field": "folioagentevnp",
+					"type": "integrated_edit_field",
+					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -2025,7 +2080,8 @@
 								"simple_grid_field17",
 								"simple_grid_field18",
 								"simple_grid_field19",
-								"simple_grid_field20"
+								"simple_grid_field20",
+								"simple_grid_field21"
 							]
 						}
 					},
@@ -2161,6 +2217,7 @@
 					"type": "search_panel",
 					"items": [
 						"search_panel_field",
+						"search_panel_field21",
 						"search_panel_field20",
 						"search_panel_field19",
 						"search_panel_field18",
@@ -2288,6 +2345,27 @@
 					"field": "idatt",
 					"type": "search_panel_field"
 				},
+				"username_button": {
+					"type": "username_button",
+					"items": [
+						"userinfo_link",
+						"logout_link",
+						"adminarea_link"
+					]
+				},
+				"loginform_login": {
+					"type": "loginform_login",
+					"popup": false
+				},
+				"userinfo_link": {
+					"type": "userinfo_link"
+				},
+				"logout_link": {
+					"type": "logout_link"
+				},
+				"adminarea_link": {
+					"type": "adminarea_link"
+				},
 				"expand_menu_button": {
 					"type": "expand_menu_button"
 				},
@@ -2344,26 +2422,13 @@
 				"delete_selected": {
 					"type": "delete_selected"
 				},
-				"username_button": {
-					"type": "username_button",
-					"items": [
-						"userinfo_link",
-						"logout_link",
-						"adminarea_link"
-					]
+				"simple_grid_field21": {
+					"field": "folioagentevnp",
+					"type": "simple_grid_field"
 				},
-				"loginform_login": {
-					"type": "loginform_login",
-					"popup": false
-				},
-				"userinfo_link": {
-					"type": "userinfo_link"
-				},
-				"logout_link": {
-					"type": "logout_link"
-				},
-				"adminarea_link": {
-					"type": "adminarea_link"
+				"search_panel_field21": {
+					"field": "folioagentevnp",
+					"type": "search_panel_field"
 				}
 			},
 			"dbProps": {},
@@ -2488,7 +2553,8 @@
 								"simple_grid_field17",
 								"simple_grid_field18",
 								"simple_grid_field19",
-								"simple_grid_field20"
+								"simple_grid_field20",
+								"simple_grid_field21"
 							]
 						}
 					},
@@ -2589,6 +2655,10 @@
 				"simple_grid_field20": {
 					"field": "idatt",
 					"type": "simple_grid_field"
+				},
+				"simple_grid_field21": {
+					"field": "folioagentevnp",
+					"type": "simple_grid_field"
 				}
 			},
 			"dbProps": {},
@@ -2610,6 +2680,6 @@
 		"addressFields": []
 	},
 	"caption": {
-		"English": "Serviciosmoviles Users"
+		"Spanish": "Serviciosmoviles Users"
 	}
 }

@@ -1987,27 +1987,7 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"simple_grid_field",
-								"simple_grid_field1",
-								"simple_grid_field2",
-								"simple_grid_field3",
-								"simple_grid_field4",
-								"simple_grid_field5",
-								"simple_grid_field6",
-								"simple_grid_field7",
-								"simple_grid_field8",
-								"simple_grid_field9",
-								"simple_grid_field10",
-								"simple_grid_field11",
-								"simple_grid_field12",
-								"simple_grid_field13",
-								"simple_grid_field14",
-								"simple_grid_field15",
-								"simple_grid_field16",
-								"simple_grid_field17",
-								"simple_grid_field18",
-								"simple_grid_field19",
-								"simple_grid_field20"
+								"simple_grid_field1"
 							]
 						}
 					},
@@ -2053,128 +2033,8 @@
 				"details_found": {
 					"type": "details_found"
 				},
-				"simple_grid_field": {
-					"field": "IdTienda",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
 				"simple_grid_field1": {
 					"field": "Tienda",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field2": {
-					"field": "Tipo",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field3": {
-					"field": "Resp1",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field4": {
-					"field": "Resp2",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field5": {
-					"field": "idcuentabanc",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field6": {
-					"field": "idregion",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field7": {
-					"field": "activa",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field8": {
-					"field": "pvrmc",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field9": {
-					"field": "pvsms",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field10": {
-					"field": "clavepv",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field11": {
-					"field": "subinvrmc",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field12": {
-					"field": "subinvsms",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field13": {
-					"field": "tiendarmc",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field14": {
-					"field": "clavepvsms",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field15": {
-					"field": "idsector",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field16": {
-					"field": "idtiendaesquema",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field17": {
-					"field": "fechaapertura",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field18": {
-					"field": "idorigenpdv",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field19": {
-					"field": "nombreATT",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field20": {
-					"field": "idcentrocosto",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
 					"inlineEdit": false
@@ -2182,26 +2042,6 @@
 				"search_panel": {
 					"type": "search_panel",
 					"items": [
-						"search_panel_field",
-						"search_panel_field20",
-						"search_panel_field19",
-						"search_panel_field18",
-						"search_panel_field17",
-						"search_panel_field16",
-						"search_panel_field15",
-						"search_panel_field14",
-						"search_panel_field13",
-						"search_panel_field12",
-						"search_panel_field11",
-						"search_panel_field10",
-						"search_panel_field9",
-						"search_panel_field8",
-						"search_panel_field7",
-						"search_panel_field6",
-						"search_panel_field5",
-						"search_panel_field4",
-						"search_panel_field3",
-						"search_panel_field2",
 						"search_panel_field1"
 					],
 					"_flexiblePanel": true
@@ -2219,88 +2059,8 @@
 				"hide_search_panel": {
 					"type": "hide_search_panel"
 				},
-				"search_panel_field": {
-					"field": "IdTienda",
-					"type": "search_panel_field"
-				},
 				"search_panel_field1": {
 					"field": "Tienda",
-					"type": "search_panel_field"
-				},
-				"search_panel_field2": {
-					"field": "Tipo",
-					"type": "search_panel_field"
-				},
-				"search_panel_field3": {
-					"field": "Resp1",
-					"type": "search_panel_field"
-				},
-				"search_panel_field4": {
-					"field": "Resp2",
-					"type": "search_panel_field"
-				},
-				"search_panel_field5": {
-					"field": "idcuentabanc",
-					"type": "search_panel_field"
-				},
-				"search_panel_field6": {
-					"field": "idregion",
-					"type": "search_panel_field"
-				},
-				"search_panel_field7": {
-					"field": "activa",
-					"type": "search_panel_field"
-				},
-				"search_panel_field8": {
-					"field": "pvrmc",
-					"type": "search_panel_field"
-				},
-				"search_panel_field9": {
-					"field": "pvsms",
-					"type": "search_panel_field"
-				},
-				"search_panel_field10": {
-					"field": "clavepv",
-					"type": "search_panel_field"
-				},
-				"search_panel_field11": {
-					"field": "subinvrmc",
-					"type": "search_panel_field"
-				},
-				"search_panel_field12": {
-					"field": "subinvsms",
-					"type": "search_panel_field"
-				},
-				"search_panel_field13": {
-					"field": "tiendarmc",
-					"type": "search_panel_field"
-				},
-				"search_panel_field14": {
-					"field": "clavepvsms",
-					"type": "search_panel_field"
-				},
-				"search_panel_field15": {
-					"field": "idsector",
-					"type": "search_panel_field"
-				},
-				"search_panel_field16": {
-					"field": "idtiendaesquema",
-					"type": "search_panel_field"
-				},
-				"search_panel_field17": {
-					"field": "fechaapertura",
-					"type": "search_panel_field"
-				},
-				"search_panel_field18": {
-					"field": "idorigenpdv",
-					"type": "search_panel_field"
-				},
-				"search_panel_field19": {
-					"field": "nombreATT",
-					"type": "search_panel_field"
-				},
-				"search_panel_field20": {
-					"field": "idcentrocosto",
 					"type": "search_panel_field"
 				},
 				"expand_menu_button": {
@@ -2348,6 +2108,7 @@
 			"imageBgColor": "#f2f2f2",
 			"controlsBgColor": "white",
 			"imagePosition": "right",
+			"pageCSS": "/* Put  your custom CSS code here */\n\n/* Put  your custom CSS code here */\n/*\n.table {\n    font-family: 'Arial', sans-serif !important;\n    font-size: 12px !important;\n    border-collapse: collapse !important;\n}*/\n\n\n/* ========================================================= */\n/* VARIABLES DE COLOR */\n/* ========================================================= */\n:root {\n    /* Color de acento para botones, foco y texto */\n    --color-acento: #48C9B0; /* Turquesa/Menta */ \n    --color-elegante: #1C334A; /* Azul Marino Oscuro */\n}\n\n/* ========================================================= */\n/* 1. Fondo de la Página: Degradado Azul Cielo Intenso       */\n/* ========================================================= */\nbody, .container-fluid {\n    /* Mismo fondo azul que usamos en el formulario de agregar */\n    background: linear-gradient(180deg, #E0F7FA 0%, #B3E5FC 100%) !important; \n    min-height: 100vh;\n}\n\n/* ========================================================= */\n/* 2. Contenedor de la Lista (El \"Body\" principal de la tabla) */\n/* Aplicamos el efecto de Tarjeta y Sombra a este contenedor */\n/* El selector depende del tema, pero '.rnr-b-grid' suele ser el contenedor de la tabla */\n.rnr-body .rnr-c-body, \n.rnr-b-grid, \n.rnr-c-grid,\n.panel-default {\n    background-color: #FFFFFF !important; \n    border: none !important; \n    border-radius: 12px !important; \n    \n    /* Sombreado elegante de la tarjeta */\n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), \n                0 2px 6px rgba(0, 0, 0, 0.05) !important; \n}\n\n/* 3. Encabezados y Barras de Herramientas (Parte superior e inferior) */\n/* Limpiamos el diseño de los paneles que rodean la tabla */\n.rnr-c-hsucc, .rnr-c-message, .rnr-c-hcell {\n    background-color: transparent !important;\n    border: none !important;\n}\n\n/* 4. Estilo de las Filas de Datos (Efecto Hover de Elevación) */\n/* Le da interactividad a la tabla */\n.rnr-body tr {\n    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;\n}\n\n.rnr-body tr:hover {\n    background-color: #fcfcfc !important; /* Ligeramente más claro al pasar el mouse */\n    \n    /* Sombra y elevación sutil para destacar la fila */\n    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1), \n                0 1px 3px rgba(0, 0, 0, 0.05) !important;\n    transform: translateY(-1px);\n}\n\n/* 5. Asegurar que las celdas del encabezado de la tabla se vean bien */\n.rnr-c-grid th {\n    background-color: #f7f7f7 !important; /* Fondo sutil para el header de la tabla */\n    color: var(--color-elegante) !important;\n    font-weight: 600;\n    border-bottom: 2px solid var(--color-acento) !important;\n}\n\n/* 6. Barras de Paginación y Búsqueda */\n.rnr-bottom .panel, .rnr-c-search, .rnr-c-top, .rnr-bottom-nav {\n    background-color: transparent !important;\n    border: none !important;\n    box-shadow: none !important; /* Quitamos la sombra a estos elementos */\n}\n\n\n\n/* ========================================================= */\n/* ESTILOS PARA CELDAS DE ESTADO (FORMATO CONDICIONAL)       */\n/* ========================================================= */\n\n/* Clase base para el estilo de \"badge\" o \"tag\" */\n.status-badge {\n    display: inline-block; /* Para que tome el tamaño del contenido */\n    padding: 5px 10px; /* Relleno interno */\n    border-radius: 20px; /* MUY REDONDEADO para el efecto de píldora */\n    font-weight: bold;\n    font-size: 0.85em;\n    text-align: center;\n    min-width: 80px; /* Ancho mínimo para que no se vea muy pequeño */\n    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Sombra sutil */\n}\n\n/* Estado: Entregado (Verde) */\n.status-entregado {\n    background-color: #D4EDDA; /* Verde pastel claro */\n    color: #155724; /* Texto verde oscuro */\n    border: 1px solid #C3E6CB; /* Borde sutil */\n}\n\n/* Estado: Pendiente (Amarillo) */\n.status-pendiente {\n    background-color: #FFF3CD; /* Amarillo pastel claro */\n    color: #856404; /* Texto amarillo oscuro */\n    border: 1px solid #FFEEBA;\n}\n\n/* Estado: Cancelado (Rojo) */\n.status-cancelado {\n    background-color: #F8D7DA; /* Rojo pastel claro */\n    color: #721C24; /* Texto rojo oscuro */\n    border: 1px solid #F5C6CB;\n}\n\n/* Agrega más estados según sea necesario */\n/* Estado: En Proceso (Azul) */\n.status-en-proceso {\n    background-color: #D1ECF1; /* Azul pastel claro */\n    color: #0C5460; /* Texto azul oscuro */\n    border: 1px solid #BEE5EB;\n}\n\n\n/* ========================================================= */\n/* ELIMINAR SEPARADORES DE COLUMNA (LÍNEAS VERTICALES)        */\n/* ========================================================= */\n/* Mantén líneas horizontales ligeras, borra las verticales */\n.rnr-gridtable td,\n.rnr-gridtable th {\n  border-left: none !important;\n  border-right: none !important;\n  box-shadow: none !important; /* algunos temas usan sombras como divisores */\n}\n\n/* Si quieres una línea horizontal sutil */\n.rnr-gridtable td {\n  border-top: 1px solid #eee !important;\n}\n.rnr-gridtable thead th {\n  border-bottom: 1px solid #e6e6e6 !important;\n}\n",
 			"listTotals": 1,
 			"title": {}
 		},
