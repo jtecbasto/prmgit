@@ -3287,8 +3287,7 @@
 							"model": "c1",
 							"items": [
 								"integrated_edit_field4",
-								"integrated_edit_field1",
-								"integrated_edit_field30"
+								"integrated_edit_field1"
 							]
 						},
 						"c": {
@@ -3941,12 +3940,6 @@
 				},
 				"integrated_edit_field29": {
 					"field": "dnpreferido",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field30": {
-					"field": "estatusentrega",
 					"type": "integrated_edit_field",
 					"orientation": 0,
 					"updateOnEdit": false
