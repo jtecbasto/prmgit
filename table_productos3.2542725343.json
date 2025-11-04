@@ -1,9 +1,10 @@
 {
-	"sql": "select l.idproducto,l.codigoiusa codigo,l.tienda, l.descripcion equipo, l.saldo from (\r\nSELECT p.idproducto, p.codigoIUSA, s.tienda, p.descripcion, s.saldo\r\nFROM (\r\n  SELECT c.codigoproducto,c.tienda, COUNT(*) AS saldo\r\n  FROM compras c\r\n  WHERE c.clasif=2 \r\n    AND NOT EXISTS (SELECT 1 FROM ventas v WHERE v.esnimei=c.noserie)\r\n    AND NOT EXISTS (SELECT 1 FROM movimientos m WHERE m.esnimei=c.noserie)\r\n    AND NOT EXISTS (SELECT 1 FROM seriessolicitadas ss WHERE ss.esnimei=c.noserie)\r\n    AND NOT EXISTS (SELECT 1 FROM seriesreservadas  sr WHERE sr.noserie=c.noserie)\r\n  GROUP BY c.codigoproducto\r\n) s\r\nJOIN productos p\r\n  ON p.codigoIUSA = s.codigoproducto\r\n AND p.Clasif = 'Equipo'\r\n\r\n\r\n  UNION ALL\r\n\r\n SELECT p2.idproducto, p2.codigoIUSA, p2.descripcion, 0,0 \r\n  FROM productos p2\r\n  WHERE p2.idproducto = :session.idactual           -- aquí tu prueba\r\n) l",
+	"sql": "select l.idproducto,l.codigoiusa codigo,l.tienda, l.descripcion equipo, l.saldo from (\r\nSELECT p.idproducto, p.codigoIUSA, s.tienda, p.descripcion, s.saldo\r\nFROM (\r\n  SELECT c.codigoproducto,c.tienda, COUNT(*) AS saldo\r\n  FROM compras c\r\n  WHERE c.clasif=2 \r\n    AND NOT EXISTS (SELECT 1 FROM ventas v WHERE v.esnimei=c.noserie)\r\n    AND NOT EXISTS (SELECT 1 FROM movimientos m WHERE m.esnimei=c.noserie)\r\n    AND NOT EXISTS (SELECT 1 FROM seriessolicitadas ss WHERE ss.esnimei=c.noserie)\r\n    AND NOT EXISTS (SELECT 1 FROM seriesreservadas  sr WHERE sr.noserie=c.noserie)\r\n  GROUP BY c.codigoproducto\r\n) s\r\nJOIN productos p\r\n  ON p.codigoIUSA = s.codigoproducto\r\n AND p.Clasif = 'Equipo'\r\n\r\n) l\r\n",
+	"type": 1,
 	"connId": "conn",
 	"originalTable": "productos",
-	"name": "productos",
-	"shortTableName": "productos",
+	"name": "productos_citas",
+	"shortTableName": "productos3",
 	"dbType": 0,
 	"keyFields": [
 		"idproducto"
@@ -29,6 +30,23 @@
 			"tableName": ""
 		},
 		{
+			"name": "saldo",
+			"sqlExpression": "l.saldo",
+			"index": 5,
+			"strField": "saldo",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Saldo"
+			},
+			"tableName": ""
+		},
+		{
 			"name": "codigo",
 			"sqlExpression": "l.codigoiusa",
 			"index": 2,
@@ -42,23 +60,6 @@
 			],
 			"label": {
 				"Spanish": "Codigo"
-			},
-			"tableName": ""
-		},
-		{
-			"name": "tienda",
-			"sqlExpression": "l.tienda",
-			"index": 3,
-			"strField": "tienda",
-			"type": 200,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{}
-			],
-			"label": {
-				"Spanish": "Tienda"
 			},
 			"tableName": ""
 		},
@@ -80,10 +81,10 @@
 			"tableName": ""
 		},
 		{
-			"name": "saldo",
-			"sqlExpression": "l.saldo",
-			"index": 5,
-			"strField": "saldo",
+			"name": "tienda",
+			"sqlExpression": "l.tienda",
+			"index": 3,
+			"strField": "tienda",
 			"type": 3,
 			"viewFormats": [
 				{}
@@ -92,12 +93,15 @@
 				{}
 			],
 			"label": {
-				"Spanish": "Saldo"
+				"Spanish": "Tienda"
 			},
 			"tableName": ""
 		}
 	],
 	"afterEditAction": 0,
+	"whereTabs": [
+		{}
+	],
 	"queryContext": {
 		"session.idactual": "0"
 	},
@@ -1034,9 +1038,9 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"simple_grid_field",
 								"simple_grid_field1",
 								"simple_grid_field2",
+								"simple_grid_field",
 								"simple_grid_field3"
 							]
 						}
@@ -1143,35 +1147,43 @@
 					"type": "-"
 				},
 				"simple_grid_field": {
-					"field": "codigo",
-					"type": "simple_grid_field"
+					"field": "saldo",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"search_panel_field": {
+					"field": "saldo",
+					"type": "search_panel_field"
 				},
 				"simple_grid_field1": {
-					"field": "tienda",
-					"type": "simple_grid_field"
+					"field": "codigo",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
 				},
 				"simple_grid_field2": {
 					"field": "equipo",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field3": {
-					"field": "saldo",
-					"type": "simple_grid_field"
-				},
-				"search_panel_field": {
-					"field": "codigo",
-					"type": "search_panel_field"
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
 				},
 				"search_panel_field1": {
-					"field": "tienda",
+					"field": "codigo",
 					"type": "search_panel_field"
 				},
 				"search_panel_field2": {
 					"field": "equipo",
 					"type": "search_panel_field"
 				},
+				"simple_grid_field3": {
+					"field": "tienda",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
 				"search_panel_field3": {
-					"field": "saldo",
+					"field": "tienda",
 					"type": "search_panel_field"
 				}
 			},
@@ -1320,6 +1332,6 @@
 		"addressFields": []
 	},
 	"caption": {
-		"Spanish": "Productos"
+		"Spanish": "Productos Citas"
 	}
 }

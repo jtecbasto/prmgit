@@ -7,7 +7,7 @@
 			"asc": false
 		}
 	],
-	"sql": "SELECT\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tsolicitudes.estatusentrega,\n\tcte.nombre,\n\tcte.paterno,\n\tcte.materno,\n\tev.estado,\n\tev.ciudad,\n\tev.cp,\n\tev.calle,\n\tev.numeroext,\n\tev.numeroint,\n\tev.colonia,\n\tp.descripcion,\n\tCONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(TRIM(CONCAT_WS(' ',\n             IFNULL(ev.numeroext,''),IFNULL(ev.calle,''),IFNULL(ev.numeroint,''),\n             IFNULL(ev.colonia,''),IFNULL(ev.cp,''),IFNULL(ev.ciudad,''),IFNULL(ev.estado,'')\n           )),' ','+')) AS maps_url,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      IF(IFNULL(ev.calle,'')='','', CONCAT('C.',ev.calle)),\n      IFNULL(CONCAT('No.',ev.numeroext),''),\n      IFNULL(CONCAT('Int.',ev.numeroint),''),\n      IFNULL(ev.colonia,''), IFNULL(CONCAT('C.P.',ev.cp),''),\n      IFNULL(ev.ciudad,''), IFNULL(ev.estado,'')\n    ))) AS direccion,\n\tsolicitudes.idsolicitud AS idsolicitud,\n\tss.equipo AS noserie,\n\tss.chip,\n\tev.lat,\n\tev.lng,\n\tsolicitudes.dn AS dn,\n\tsolicitudes.dnpreferido AS dnpreferido,\n\tsolicitudes.cuenta AS cuenta,\n\tsolicitudes.contrato AS contrato,\n\tsolicitudes.contratoportal AS contratoportal,\n\tsolicitudes.plazopendiente AS plazopendiente,\n\tsolicitudes.Factura AS factura,\n\tsolicitudes.fechavenci AS fechavenci,\n\tsolicitudes.ciclo AS ciclo\nFROM\n\tsolicitudes AS solicitudes\n\tLEFT OUTER JOIN clientes AS cte ON cte.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp AS ev ON ev.idsolicitud = solicitudes.idsolicitud\n\tLEFT OUTER JOIN productos AS p ON p.idproducto = solicitudes.idproducto\n\tLEFT OUTER JOIN (SELECT\n\tss.idsolicitud,\n\tMAX(CASE WHEN pr.clasif = 'Equipo' THEN ss.esnimei END) AS equipo,\n\tMAX(CASE WHEN pr.clasif = 'Chip'   THEN ss.esnimei END) AS chip\nFROM\n\tseriessolicitadas AS ss\n\tINNER JOIN compras AS cp ON cp.noserie = ss.esnimei\n\tINNER JOIN productos AS pr ON pr.codigoIUSA = cp.codigoproducto\nGROUP BY\n\tss.idsolicitud\n) AS ss ON ss.idsolicitud = solicitudes.idsolicitud\nWHERE\nsolicitudes.idtienda = 2\nORDER BY\n\tsolicitudes.idsolicitud DESC\n",
+	"sql": "SELECT\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tsolicitudes.estatusentrega,\n\tcte.nombre,\n\tcte.paterno,\n\tcte.materno,\n\tev.estado,\n\tev.ciudad,\n\tev.cp,\n\tev.calle,\n\tev.numeroext,\n\tev.numeroint,\n\tev.colonia,\n\tp.descripcion,\n\tCONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(TRIM(CONCAT_WS(' ',\n             IFNULL(ev.numeroext,''),IFNULL(ev.calle,''),IFNULL(ev.numeroint,''),\n             IFNULL(ev.colonia,''),IFNULL(ev.cp,''),IFNULL(ev.ciudad,''),IFNULL(ev.estado,'')\n           )),' ','+')) AS maps_url,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      IF(IFNULL(ev.calle,'')='','', CONCAT('C.',ev.calle)),\n      IFNULL(CONCAT('No.',ev.numeroext),''),\n      IFNULL(CONCAT('Int.',ev.numeroint),''),\n      IFNULL(ev.colonia,''), IFNULL(CONCAT('C.P.',ev.cp),''),\n      IFNULL(ev.ciudad,''), IFNULL(ev.estado,'')\n    ))) AS direccion,\n\tsolicitudes.idsolicitud AS idsolicitud,\n\tss.equipo AS noserie,\n\tss.chip,\n\tev.lat,\n\tev.lng,\n\tsolicitudes.dn AS dn,\n\tsolicitudes.dnpreferido AS dnpreferido,\n\tsolicitudes.cuenta AS cuenta,\n\tsolicitudes.contrato AS contrato,\n\tsolicitudes.contratoportal AS contratoportal,\n\tsolicitudes.plazopendiente AS plazopendiente,\n\tsolicitudes.Factura AS factura,\n\tsolicitudes.fechavenci AS fechavenci,\n\tsolicitudes.ciclo AS ciclo\nFROM\n\tsolicitudes AS solicitudes\n\tLEFT OUTER JOIN clientes AS cte ON cte.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp AS ev ON ev.idsolicitud = solicitudes.idsolicitud\n\tLEFT OUTER JOIN productos AS p ON p.idproducto = solicitudes.idproducto\n\tLEFT OUTER JOIN (SELECT\n\tss.idsolicitud,\n\tMAX(CASE WHEN pr.clasif = 'Equipo' THEN ss.esnimei END) AS equipo,\n\tMAX(CASE WHEN pr.clasif = 'Chip'   THEN ss.esnimei END) AS chip\nFROM\n\tseriessolicitadas AS ss\n\tINNER JOIN compras AS cp ON cp.noserie = ss.esnimei\n\tINNER JOIN productos AS pr ON pr.codigoIUSA = cp.codigoproducto\nGROUP BY\n\tss.idsolicitud\n) AS ss ON ss.idsolicitud = solicitudes.idsolicitud\nORDER BY\n\tsolicitudes.idsolicitud DESC\n",
 	"connId": "conn",
 	"originalTable": "solicitudes",
 	"name": "solicitudes",
@@ -215,21 +215,8 @@
 			"index": 5,
 			"strField": "idproducto",
 			"type": 3,
-			"separateEditViewFormats": true,
 			"viewFormats": [
 				{
-					"textShowFirstN": 20
-				},
-				{
-					"pageType": "list",
-					"textShowFirstN": 20
-				},
-				{
-					"pageType": "print",
-					"textShowFirstN": 20
-				},
-				{
-					"pageType": "export",
 					"textShowFirstN": 20
 				}
 			],
@@ -238,37 +225,10 @@
 					"format": "Lookup wizard",
 					"required": true,
 					"lookupType": 2,
-					"lookupTable": "productos",
+					"lookupTable": "productos_solicitudes",
 					"lookupTableConnection": "conn",
 					"lookupLinkField": "idproducto",
-					"lookupDisplayField": "descripcion",
-					"lookupOrderBy": "descripcion",
-					"lookupControlType": 2,
-					"lookupListPage": "list"
-				},
-				{
-					"format": "Lookup wizard",
-					"pageType": "add",
-					"lookupType": 2,
-					"lookupTable": "productos",
-					"lookupTableConnection": "conn",
-					"lookupLinkField": "idproducto",
-					"lookupDisplayField": "descripcion",
-					"lookupOrderBy": "descripcion",
-					"lookupControlType": 2,
-					"lookupListPage": "list"
-				},
-				{
-					"format": "Lookup wizard",
-					"pageType": "search",
-					"required": true,
-					"lookupType": 2,
-					"lookupTable": "productos",
-					"lookupTableConnection": "conn",
-					"lookupLinkField": "idproducto",
-					"lookupDisplayField": "descripcion",
-					"lookupOrderBy": "descripcion",
-					"lookupControlType": 2,
+					"lookupDisplayField": "equipo",
 					"lookupListPage": "list"
 				}
 			],
@@ -1342,7 +1302,9 @@
 		}
 	],
 	"whereTabs": [
-		{}
+		{
+			"where": "if(solicitudes.usuario=':session.UserID',true,if(:session.acceso=1,solicitudes.idtienda=:session.Tienda,if(:session.Acceso=0 or upper(':session.UserID')='ADMIN',true,false)))"
+		}
 	],
 	"eventHandlers": [
 		{
@@ -1383,7 +1345,7 @@
 		{
 			"eventId": "EVENT_BEFORESHOW_ADD",
 			"pageType": "add",
-			"code": "\n\n// BeforeDisplay (Add)\nglobal $xt;\n\n// Si hubo fallo previo, repinta lo capturado:\nif (isset($_SESSION['add_data_temp']) && is_array($_SESSION['add_data_temp'])) {\n    $xt->assign(\"message\", \"⚠️ Se recuperaron los datos del intento anterior. Revise y guarde nuevamente.\");\n    $xt->assign(\"message_class\", \"alert-warning\");\n\n    // Prefill directo de los campos que existan en el form (opcional)\n    foreach($_SESSION['add_data_temp'] as $field => $value){\n        if ($value !== '' && $value !== null) {\n            $pageObject->setProxyValue(\"value_{$field}_1\", $value);\n        }\n    }\n    // No borramos add_data_temp aquí; se borra tras éxito\n}\n\n// Flash de éxito\nif (isset($_SESSION['flash_ok'])) {\n    $xt->assign(\"message\", $_SESSION['flash_ok']);\n    $xt->assign(\"message_class\", \"alert-success\");\n    unset($_SESSION['flash_ok'], $_SESSION['add_data_temp']);\n    unset($_SESSION['idactual']);\n    unset($_SESSION['currentErr']);\n}\n\n\n\nreturn true;\n"
+			"code": "\n\n// BeforeDisplay (Add)\nglobal $xt;\n\n// Si hubo fallo previo, repinta lo capturado:\nif (isset($_SESSION['add_data_temp']) && is_array($_SESSION['add_data_temp'])) {\n    $xt->assign(\"message\", \"⚠️ Se recuperaron los datos del intento anterior. Revise y guarde nuevamente.\");\n    $xt->assign(\"message_class\", \"alert-warning\");\n\n    // Prefill directo de los campos que existan en el form (opcional)\n    foreach($_SESSION['add_data_temp'] as $field => $value){\n        if ($value !== '' && $value !== null) {\n            $pageObject->setProxyValue(\"value_{$field}_1\", $value);\n        }\n    }\n    // No borramos add_data_temp aquí; se borra tras éxito\n}\n\n// Flash de éxito\nif (isset($_SESSION['flash_ok'])) {\n    $xt->assign(\"message\", $_SESSION['flash_ok']);\n    $xt->assign(\"message_class\", \"alert-success\");\n    unset($_SESSION['flash_ok'], $_SESSION['add_data_temp']);\n    unset($_SESSION['idactual']);\n    unset($_SESSION['currentErr']);\n}\n\n\n\n\nreturn true;\n"
 		},
 		{
 			"eventId": "EVENT_BEFOREEDIT",
@@ -2147,8 +2109,10 @@
 									"colspan": 2
 								},
 								{
-									"cell": "c10",
-									"colspan": 2
+									"cell": "c10"
+								},
+								{
+									"cell": "c"
 								}
 							]
 						},
@@ -2320,6 +2284,10 @@
 							"items": [
 								"integrated_edit_field25"
 							]
+						},
+						"c": {
+							"model": "c1",
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -2613,7 +2581,9 @@
 				"integrated_edit_field19": {
 					"field": "noserie",
 					"type": "integrated_edit_field",
-					"orientation": 0
+					"orientation": 0,
+					"bold": true,
+					"font-size": "2em"
 				},
 				"integrated_edit_field20": {
 					"field": "idtipoventa",

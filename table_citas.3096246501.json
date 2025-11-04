@@ -318,6 +318,11 @@
 			"eventId": "EVENT_BEFOREADD",
 			"pageType": "add",
 			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\ndate_default_timezone_set('America/Mexico_City');\n\n\n$usuario = $_SESSION[\"UserID\"];\n\n\n$fecha_objeto = new DateTime();\n\n// 2. Asigna el formato que desees a una variable de cadena\n$fecha_actual = $fecha_objeto->format('Y-m-d H:i:s');\n$values[\"fechacaptura\"]=$fecha_actual;\n$values[\"usuario\"] = $usuario;\n$values[\"idtienda\"] = ($_SESSION[\"Tienda\"]);\n$values[\"folioagentevnp\"] = ($_SESSION[\"FolioAgenteVNP\"]);\n\n\nreturn true;"
+		},
+		{
+			"eventId": "EVENT_JS_ONLOAD",
+			"pageType": "add",
+			"code": "/*(function(){\n  var pid = (typeof pageid!==\"undefined\") ? pageid : 1;\n  function gc(f){ try { return Runner.getControl(pid,f); } catch(e){ return null; } }\n\n  var padre = gc('idtiendacita');\n  var hijo  = gc('idequipo');\n\n  function toggle(){\n    var v = padre && padre.getValue ? padre.getValue() : '';\n    if(hijo && hijo.setDisabled) {\n      hijo.setDisabled(!v);\n      if(!v && hijo.setValue) hijo.setValue('');\n    }\n  }\n\n  toggle();\n  if(padre && padre.on){ padre.on('change', toggle); }\n})();\n\n*/"
 		}
 	],
 	"dbTableInfo": {

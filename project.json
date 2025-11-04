@@ -82,6 +82,20 @@
 				"height": 320
 			},
 			{
+				"gid": 2542725343,
+				"y": 820,
+				"x": 20,
+				"width": 167.0625,
+				"height": 180
+			},
+			{
+				"gid": 1578085135,
+				"y": 784,
+				"x": 483,
+				"width": 203.640625,
+				"height": 180
+			},
+			{
 				"gid": 4193777068,
 				"y": 425,
 				"x": 20,
@@ -538,6 +552,34 @@
 							"table": 3616522410,
 							"pageType": "list"
 						}
+					},
+					{
+						"id": "15",
+						"data": {
+							"name": {
+								"table": "productos_solicitudes",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 1578085135,
+							"pageType": "list"
+						}
+					},
+					{
+						"id": "16",
+						"data": {
+							"name": {
+								"table": "productos_citas",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 2542725343,
+							"pageType": "list"
+						}
 					}
 				]
 			}
@@ -627,7 +669,9 @@
 								"welcome_item1",
 								"welcome_item3",
 								"welcome_item4",
-								"welcome_item5"
+								"welcome_item5",
+								"welcome_item6",
+								"welcome_item7"
 							]
 						}
 					},
@@ -771,6 +815,33 @@
 						"glyph": "tree-conifer"
 					},
 					"background": "#dc143c",
+					"linkType": 0
+				},
+				"welcome_item6": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "productos_solicitudes",
+					"linkPage": "list",
+					"linkText": {
+						"table": "productos_solicitudes",
+						"type": 6
+					},
+					"linkIcon": {
+						"glyph": "barcode"
+					},
+					"background": "#bc8f8f",
+					"linkType": 0
+				},
+				"welcome_item7": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "productos_citas",
+					"linkPage": "list",
+					"linkText": {
+						"table": "productos_citas",
+						"type": 6
+					},
+					"background": "#bc8f8f",
 					"linkType": 0
 				}
 			},
