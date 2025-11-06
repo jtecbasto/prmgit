@@ -682,7 +682,6 @@
 							"model": "c1",
 							"items": [
 								"integrated_edit_field11",
-								"integrated_edit_field8",
 								"integrated_edit_field10",
 								"integrated_edit_field1",
 								"integrated_edit_field4"
@@ -730,7 +729,9 @@
 				"integrated_edit_field2": {
 					"field": "precio",
 					"type": "integrated_edit_field",
-					"orientation": 0
+					"orientation": 0,
+					"font-size": "3em",
+					"bold": true
 				},
 				"integrated_edit_field4": {
 					"field": "factivaaddon",
@@ -739,11 +740,6 @@
 				},
 				"integrated_edit_field7": {
 					"field": "contrato",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field8": {
-					"field": "telefono",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
@@ -861,7 +857,6 @@
 								"export_field5",
 								"export_field7",
 								"export_field8",
-								"export_field9",
 								"export_field10",
 								"export_field11",
 								"export_field12",
@@ -936,10 +931,6 @@
 				},
 				"export_field8": {
 					"field": "contrato",
-					"type": "export_field"
-				},
-				"export_field9": {
-					"field": "telefono",
 					"type": "export_field"
 				},
 				"export_field10": {
@@ -1047,7 +1038,6 @@
 								"import_field5",
 								"import_field7",
 								"import_field8",
-								"import_field9",
 								"import_field10",
 								"import_field11",
 								"import_field12",
@@ -1085,10 +1075,6 @@
 				},
 				"import_field8": {
 					"field": "contrato",
-					"type": "import_field"
-				},
-				"import_field9": {
-					"field": "telefono",
 					"type": "import_field"
 				},
 				"import_field10": {
@@ -1252,7 +1238,6 @@
 							"items": [
 								"integrated_edit_field11",
 								"integrated_edit_field9",
-								"integrated_edit_field8",
 								"integrated_edit_field10",
 								"integrated_edit_field1",
 								"integrated_edit_field4"
@@ -1323,12 +1308,6 @@
 				},
 				"integrated_edit_field7": {
 					"field": "contrato",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field8": {
-					"field": "telefono",
 					"type": "integrated_edit_field",
 					"orientation": 0,
 					"updateOnEdit": false
@@ -1514,7 +1493,6 @@
 							"items": [
 								"integrated_edit_field11",
 								"integrated_edit_field9",
-								"integrated_edit_field8",
 								"integrated_edit_field10",
 								"integrated_edit_field1",
 								"integrated_edit_field4"
@@ -1571,12 +1549,6 @@
 					"updateOnEdit": false,
 					"bold": true,
 					"font-size": "2em"
-				},
-				"integrated_edit_field8": {
-					"field": "telefono",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
 				},
 				"integrated_edit_field10": {
 					"field": "idcliente",
@@ -1796,7 +1768,6 @@
 							"model": "c1",
 							"items": [
 								"simple_grid_field12",
-								"simple_grid_field9",
 								"simple_grid_field11",
 								"simple_grid_field13",
 								"simple_grid_field2",
@@ -1889,12 +1860,6 @@
 					"inlineAdd": false,
 					"inlineEdit": false
 				},
-				"simple_grid_field9": {
-					"field": "telefono",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
 				"simple_grid_field10": {
 					"field": "idtienda",
 					"type": "simple_grid_field",
@@ -1926,7 +1891,6 @@
 						"search_panel_field12",
 						"search_panel_field11",
 						"search_panel_field10",
-						"search_panel_field9",
 						"search_panel_field8",
 						"search_panel_field7",
 						"search_panel_field5",
@@ -1978,10 +1942,6 @@
 				},
 				"search_panel_field8": {
 					"field": "contrato",
-					"type": "search_panel_field"
-				},
-				"search_panel_field9": {
-					"field": "telefono",
 					"type": "search_panel_field"
 				},
 				"search_panel_field10": {
@@ -2187,7 +2147,6 @@
 								"simple_grid_field5",
 								"simple_grid_field7",
 								"simple_grid_field8",
-								"simple_grid_field9",
 								"simple_grid_field10",
 								"simple_grid_field11",
 								"simple_grid_field12",
@@ -2231,10 +2190,6 @@
 				},
 				"simple_grid_field8": {
 					"field": "contrato",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field9": {
-					"field": "telefono",
 					"type": "simple_grid_field"
 				},
 				"simple_grid_field10": {

@@ -1,5 +1,5 @@
 {
-	"sql": "select l.idproducto,l.codigoiusa codigo,l.tienda, l.descripcion equipo, l.saldo from (\r\nSELECT p.idproducto, p.codigoIUSA, s.tienda, p.descripcion, s.saldo\r\nFROM (\r\n  SELECT c.codigoproducto,c.tienda, COUNT(*) AS saldo\r\n  FROM compras c\r\n  WHERE c.clasif=2 and c.tienda= :session.Tienda\r\n    AND NOT EXISTS (SELECT 1 FROM ventas v WHERE v.esnimei=c.noserie)\r\n    AND NOT EXISTS (SELECT 1 FROM movimientos m WHERE m.esnimei=c.noserie)\r\n    AND NOT EXISTS (SELECT 1 FROM seriessolicitadas ss WHERE ss.esnimei=c.noserie)\r\n    AND NOT EXISTS (SELECT 1 FROM seriesreservadas  sr WHERE sr.noserie=c.noserie)\r\n  GROUP BY c.codigoproducto\r\n) s\r\nJOIN productos p\r\n  ON p.codigoIUSA = s.codigoproducto\r\n AND p.Clasif = 'Equipo'\r\n\r\n\r\n  UNION ALL\r\n\r\n SELECT p2.idproducto, p2.codigoIUSA, p2.descripcion, 0,0 \r\n  FROM productos p2\r\n  WHERE p2.idproducto = :session.idactual           -- aquí tu prueba\r\n) l\r\n-- opcional: si temes duplicados cuando 1738 sí tiene saldo\r\n-- GROUP BY L.idproducto, L.codigoIUSA, L.descripcion\r\n--         ; -- y si agruparas, usa MAX(L.saldo) saldo\r\n",
+	"sql": "SELECT\n  p2.idproducto,\n  p2.descripcion,\n  e.tienda_actual AS idtienda,\n  COUNT(*) AS saldo\nFROM (\n  /* nunca traspasadas: la tienda actual es compras.tienda */\n  SELECT c.noserie, c.codigoproducto, c.tienda AS tienda_actual\n  FROM compras c\n  JOIN productos p\n    ON p.codigoIUSA = c.codigoproducto AND p.Clasif = 'Equipo'\n  LEFT JOIN ventas v      ON v.esnimei = c.noserie\n  LEFT JOIN movimientos m ON m.esnimei = c.noserie\n  WHERE v.esnimei IS NULL\n    AND m.esnimei IS NULL\n    AND NOT EXISTS (SELECT 1 FROM traspasosdet x WHERE x.esnimei = c.noserie)\n\n  UNION ALL\n\n  /* con traspasos: tienda actual = último destino */\n  SELECT c.noserie, c.codigoproducto, t.tiendadestino AS tienda_actual\n  FROM compras c\n  JOIN productos p\n    ON p.codigoIUSA = c.codigoproducto AND p.Clasif = 'Equipo'\n  JOIN (\n      SELECT esnimei, MAX(fecharecepcion) AS maxf\n      FROM traspasosdet\n      GROUP BY esnimei\n  ) u  ON u.esnimei = c.noserie\n  JOIN traspasosdet t\n    ON t.esnimei = u.esnimei AND t.fecharecepcion = u.maxf\n  LEFT JOIN ventas v      ON v.esnimei = c.noserie\n  LEFT JOIN movimientos m ON m.esnimei = c.noserie\n  WHERE v.esnimei IS NULL\n    AND m.esnimei IS NULL\n) AS e\nJOIN productos p2\n  ON p2.codigoIUSA = e.codigoproducto\nWHERE e.tienda_actual = :session.Tienda\nGROUP BY p2.idproducto, p2.descripcion, e.tienda_actual\nORDER BY p2.descripcion;\n",
 	"type": 1,
 	"connId": "conn",
 	"originalTable": "productos",
@@ -26,23 +26,6 @@
 			],
 			"label": {
 				"Spanish": "Idproducto"
-			},
-			"tableName": ""
-		},
-		{
-			"name": "equipo",
-			"sqlExpression": "l.descripcion",
-			"index": 4,
-			"strField": "descripcion",
-			"type": 200,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{}
-			],
-			"label": {
-				"Spanish": "Equipo"
 			},
 			"tableName": ""
 		},
@@ -94,6 +77,23 @@
 			],
 			"label": {
 				"Spanish": "Tienda"
+			},
+			"tableName": ""
+		},
+		{
+			"name": "equipo",
+			"sqlExpression": "l.descripcion",
+			"index": 4,
+			"strField": "descripcion",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Equipo"
 			},
 			"tableName": ""
 		}
@@ -1038,8 +1038,8 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"simple_grid_field",
 								"simple_grid_field1",
+								"simple_grid_field",
 								"simple_grid_field2",
 								"simple_grid_field3"
 							]
@@ -1090,7 +1090,9 @@
 				"search_panel": {
 					"type": "search_panel",
 					"items": [
-						"search_panel_field"
+						"search_panel_field",
+						"search_panel_field2",
+						"search_panel_field1"
 					],
 					"_flexiblePanel": true
 				},
@@ -1143,33 +1145,35 @@
 				"-2": {
 					"type": "-"
 				},
-				"simple_grid_field": {
-					"field": "equipo",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
 				"simple_grid_field1": {
 					"field": "saldo",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
 					"inlineEdit": false
 				},
-				"search_panel_field": {
-					"field": "equipo",
-					"type": "search_panel_field"
+				"simple_grid_field": {
+					"field": "codigo",
+					"type": "simple_grid_field"
 				},
 				"simple_grid_field2": {
-					"field": "codigo",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
+					"field": "tienda",
+					"type": "simple_grid_field"
 				},
 				"simple_grid_field3": {
+					"field": "equipo",
+					"type": "simple_grid_field"
+				},
+				"search_panel_field": {
+					"field": "codigo",
+					"type": "search_panel_field"
+				},
+				"search_panel_field1": {
 					"field": "tienda",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
+					"type": "search_panel_field"
+				},
+				"search_panel_field2": {
+					"field": "equipo",
+					"type": "search_panel_field"
 				}
 			},
 			"dbProps": {},

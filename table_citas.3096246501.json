@@ -160,14 +160,14 @@
 					"lookupTable": "productos",
 					"lookupTableConnection": "conn",
 					"lookupLinkField": "idproducto",
-					"lookupDisplayField": "equipo",
+					"lookupDisplayField": "descripcion",
 					"lookupControlType": 2,
 					"lookupListPage": "list",
 					"lookupDependent": true,
 					"lookupDependentFields": [
 						{
 							"masterField": "idtiendacita",
-							"lookupField": "tienda"
+							"lookupField": "idtienda"
 						}
 					]
 				}
@@ -323,6 +323,21 @@
 			"eventId": "EVENT_JS_ONLOAD",
 			"pageType": "add",
 			"code": "/*(function(){\n  var pid = (typeof pageid!==\"undefined\") ? pageid : 1;\n  function gc(f){ try { return Runner.getControl(pid,f); } catch(e){ return null; } }\n\n  var padre = gc('idtiendacita');\n  var hijo  = gc('idequipo');\n\n  function toggle(){\n    var v = padre && padre.getValue ? padre.getValue() : '';\n    if(hijo && hijo.setDisabled) {\n      hijo.setDisabled(!v);\n      if(!v && hijo.setValue) hijo.setValue('');\n    }\n  }\n\n  toggle();\n  if(padre && padre.on){ padre.on('change', toggle); }\n})();\n\n*/"
+		},
+		{
+			"eventId": "EVENT_BEFOREPROCESS_LIST",
+			"pageType": "list",
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n$_SESSION[\"Modulo\"]=2;"
+		},
+		{
+			"eventId": "EVENT_BEFOREPROCESS_ADD",
+			"pageType": "add",
+			"code": "$_SESSION[\"Modulo\"]=2;\n\n"
+		},
+		{
+			"eventId": "EVENT_BEFOREPROCESS_EDIT",
+			"pageType": "edit",
+			"code": "$_SESSION[\"Modulo\"]=2;\n\n"
 		}
 	],
 	"dbTableInfo": {
