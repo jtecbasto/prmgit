@@ -380,7 +380,7 @@
 				"customConnections": [
 					{
 						"name": "New connection",
-						"code": "$host = 'rocasamexico.com';\n$user = 'rocasamexico_admin';\n$pwd = 'Rocas@Mexico.2025**';\n$port = 3306;\n$sys_dbname = 'rocasamexico_prm';"
+						"code": "$host = 'localhost';\r\n$user = 'root';\r\n$pwd = 'jsusxt1510';\r\n$port = 3306;\r\n$sys_dbname = 'servicio_mov';"
 					}
 				],
 				"selectedCustomConn": "New connection"
