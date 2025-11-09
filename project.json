@@ -585,6 +585,12 @@
 			}
 		}
 	],
+	"customPages": [
+		{
+			"table": 3847630651,
+			"pageId": "list"
+		}
+	],
 	"globalPages": [
 		{
 			"id": "menu",

@@ -7,7 +7,7 @@
 			"asc": false
 		}
 	],
-	"sql": "SELECT\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tsolicitudes.estatusentrega,\n\tcte.nombre,\n\tcte.paterno,\n\tcte.materno,\n\tev.estado,\n\tev.ciudad,\n\tev.cp,\n\tev.calle,\n\tev.numeroext,\n\tev.numeroint,\n\tev.colonia,\n\tp.descripcion,\n\tCONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(TRIM(CONCAT_WS(' ',\n             IFNULL(ev.numeroext,''),IFNULL(ev.calle,''),IFNULL(ev.numeroint,''),\n             IFNULL(ev.colonia,''),IFNULL(ev.cp,''),IFNULL(ev.ciudad,''),IFNULL(ev.estado,'')\n           )),' ','+')) AS maps_url,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      IF(IFNULL(ev.calle,'')='','', CONCAT('C.',ev.calle)),\n      IFNULL(CONCAT('No.',ev.numeroext),''),\n      IFNULL(CONCAT('Int.',ev.numeroint),''),\n      IFNULL(ev.colonia,''), IFNULL(CONCAT('C.P.',ev.cp),''),\n      IFNULL(ev.ciudad,''), IFNULL(ev.estado,'')\n    ))) AS direccion,\n\tsolicitudes.idsolicitud AS idsolicitud,\n\tss.equipo AS noserie,\n\tss.chip,\n\tev.lat,\n\tev.lng,\n\tsolicitudes.dn AS dn,\n\tsolicitudes.dnpreferido AS dnpreferido,\n\tsolicitudes.cuenta AS cuenta,\n\tsolicitudes.contrato AS contrato,\n\tsolicitudes.contratoportal AS contratoportal,\n\tsolicitudes.plazopendiente AS plazopendiente,\n\tsolicitudes.Factura AS factura,\n\tsolicitudes.fechavenci AS fechavenci,\n\tsolicitudes.ciclo AS ciclo\nFROM\n\tsolicitudes AS solicitudes\n\tLEFT OUTER JOIN clientes AS cte ON cte.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp AS ev ON ev.idsolicitud = solicitudes.idsolicitud\n\tLEFT OUTER JOIN productos AS p ON p.idproducto = solicitudes.idproducto\n\tLEFT OUTER JOIN (SELECT\n\tss.idsolicitud,\n\tMAX(CASE WHEN pr.clasif = 'Equipo' THEN ss.esnimei END) AS equipo,\n\tMAX(CASE WHEN pr.clasif = 'Chip'   THEN ss.esnimei END) AS chip\nFROM\n\tseriessolicitadas AS ss\n\tINNER JOIN compras AS cp ON cp.noserie = ss.esnimei\n\tINNER JOIN productos AS pr ON pr.codigoIUSA = cp.codigoproducto\nGROUP BY\n\tss.idsolicitud\n) AS ss ON ss.idsolicitud = solicitudes.idsolicitud\nORDER BY\n\tsolicitudes.idsolicitud DESC\n",
+	"sql": "SELECT\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tsolicitudes.estatusentrega,\n\tcte.nombre,\n\tcte.paterno,\n\tcte.materno,\n\tev.estado,\n\tev.ciudad,\n\tev.cp,\n\tev.calle,\n\tev.numeroext,\n\tev.numeroint,\n\tev.colonia,\n\tp.descripcion,\n\tCONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(TRIM(CONCAT_WS(' ',\n             IFNULL(ev.numeroext,''),IFNULL(ev.calle,''),IFNULL(ev.numeroint,''),\n             IFNULL(ev.colonia,''),IFNULL(ev.cp,''),IFNULL(ev.ciudad,''),IFNULL(ev.estado,'')\n           )),' ','+')) AS maps_url,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      IF(IFNULL(ev.calle,'')='','', CONCAT('C.',ev.calle)),\n      IFNULL(CONCAT('No.',ev.numeroext),''),\n      IFNULL(CONCAT('Int.',ev.numeroint),''),\n      IFNULL(ev.colonia,''), IFNULL(CONCAT('C.P.',ev.cp),''),\n      IFNULL(ev.ciudad,''), IFNULL(ev.estado,'')\n    ))) AS direccion,\n\tsolicitudes.idsolicitud AS idsolicitud,\n\tsolicitudes.esnimei AS noserie,\n\tsolicitudes.simcard as simcard,\n\tss.chip,\n\tev.lat,\n\tev.lng,\n\tsolicitudes.dn AS dn,\n\tsolicitudes.dnpreferido AS dnpreferido,\n\tsolicitudes.cuenta AS cuenta,\n\tsolicitudes.contrato AS contrato,\n\tsolicitudes.contratoportal AS contratoportal,\n\tsolicitudes.plazopendiente AS plazopendiente,\n\tsolicitudes.Factura AS factura,\n\tsolicitudes.fechavenci AS fechavenci,\n\tsolicitudes.ciclo AS ciclo\nFROM\n\tsolicitudes AS solicitudes\n\tLEFT OUTER JOIN clientes AS cte ON cte.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp AS ev ON ev.idsolicitud = solicitudes.idsolicitud\n\tLEFT OUTER JOIN productos AS p ON p.idproducto = solicitudes.idproducto\n\tLEFT OUTER JOIN (SELECT\n\tss.idsolicitud,\n\tMAX(CASE WHEN pr.clasif = 'Equipo' THEN ss.esnimei END) AS equipo,\n\tMAX(CASE WHEN pr.clasif = 'Chip'   THEN ss.esnimei END) AS chip\nFROM\n\tseriessolicitadas AS ss\n\tINNER JOIN compras AS cp ON cp.noserie = ss.esnimei\n\tINNER JOIN productos AS pr ON pr.codigoIUSA = cp.codigoproducto\nGROUP BY\n\tss.idsolicitud\n) AS ss ON ss.idsolicitud = solicitudes.idsolicitud\nORDER BY\n\tsolicitudes.idsolicitud DESC\n",
 	"connId": "conn",
 	"originalTable": "solicitudes",
 	"name": "solicitudes",
@@ -1056,7 +1056,7 @@
 		{
 			"name": "chip",
 			"sqlExpression": "ss.chip",
-			"index": 45,
+			"index": 46,
 			"strField": "chip",
 			"type": 200,
 			"viewFormats": [
@@ -1075,7 +1075,7 @@
 		{
 			"name": "lat",
 			"sqlExpression": "ev.lat",
-			"index": 46,
+			"index": 47,
 			"strField": "lat",
 			"type": 14,
 			"viewFormats": [
@@ -1094,7 +1094,7 @@
 		{
 			"name": "lng",
 			"sqlExpression": "ev.lng",
-			"index": 47,
+			"index": 48,
 			"strField": "lng",
 			"type": 14,
 			"viewFormats": [
@@ -1110,9 +1110,9 @@
 		},
 		{
 			"name": "noserie",
-			"sqlExpression": "ss.equipo",
+			"sqlExpression": "solicitudes.esnimei",
 			"index": 44,
-			"strField": "equipo",
+			"strField": "esnimei",
 			"type": 200,
 			"viewFormats": [
 				{}
@@ -1125,12 +1125,12 @@
 			"label": {
 				"Spanish": "IMEI"
 			},
-			"tableName": ""
+			"tableName": "solicitudes"
 		},
 		{
 			"name": "dn",
 			"sqlExpression": "solicitudes.dn",
-			"index": 48,
+			"index": 49,
 			"strField": "dn",
 			"type": 200,
 			"viewFormats": [
@@ -1151,7 +1151,7 @@
 		{
 			"name": "cuenta",
 			"sqlExpression": "solicitudes.cuenta",
-			"index": 50,
+			"index": 51,
 			"strField": "cuenta",
 			"type": 200,
 			"viewFormats": [
@@ -1171,7 +1171,7 @@
 		{
 			"name": "contrato",
 			"sqlExpression": "solicitudes.contrato",
-			"index": 51,
+			"index": 52,
 			"strField": "contrato",
 			"type": 200,
 			"viewFormats": [
@@ -1190,7 +1190,7 @@
 		{
 			"name": "contratoportal",
 			"sqlExpression": "solicitudes.contratoportal",
-			"index": 52,
+			"index": 53,
 			"strField": "contratoportal",
 			"type": 200,
 			"viewFormats": [
@@ -1207,7 +1207,7 @@
 		{
 			"name": "plazopendiente",
 			"sqlExpression": "solicitudes.plazopendiente",
-			"index": 53,
+			"index": 54,
 			"strField": "plazopendiente",
 			"type": 2,
 			"viewFormats": [
@@ -1226,7 +1226,7 @@
 		{
 			"name": "factura",
 			"sqlExpression": "solicitudes.Factura",
-			"index": 54,
+			"index": 55,
 			"strField": "Factura",
 			"type": 200,
 			"viewFormats": [
@@ -1245,7 +1245,7 @@
 		{
 			"name": "fechavenci",
 			"sqlExpression": "solicitudes.fechavenci",
-			"index": 55,
+			"index": 56,
 			"strField": "fechavenci",
 			"type": 7,
 			"viewFormats": [
@@ -1264,7 +1264,7 @@
 		{
 			"name": "ciclo",
 			"sqlExpression": "solicitudes.ciclo",
-			"index": 56,
+			"index": 57,
 			"strField": "ciclo",
 			"type": 3,
 			"viewFormats": [
@@ -1290,7 +1290,7 @@
 		{
 			"name": "dnpreferido",
 			"sqlExpression": "solicitudes.dnpreferido",
-			"index": 49,
+			"index": 50,
 			"strField": "dnpreferido",
 			"type": 200,
 			"viewFormats": [
@@ -1303,6 +1303,23 @@
 			],
 			"label": {
 				"Spanish": "DN Preferido"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "simcard",
+			"sqlExpression": "solicitudes.simcard",
+			"index": 45,
+			"strField": "simcard",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Simcard"
 			},
 			"tableName": "solicitudes"
 		}
@@ -1361,7 +1378,7 @@
 		{
 			"eventId": "EVENT_JS_ONLOAD",
 			"pageType": "list",
-			"code": "// ====== API ENDPOINTS (si no los tienes ya en listado) ======\nwindow.API_UPDATE = window.API_UPDATE || 'solicitud_update_api.php';\nwindow.ENDPOINT   = window.ENDPOINT   || 'serial_reserve.php';\n\n// ====== helpers básicos (versión \"list\") ======\nfunction getPid(){ return $('[data-pageid]').first().attr('data-pageid') || ''; }\n\n// PHPRunner: intenta control con rowId; si no, cae al DOM\nfunction getCtrlL(field, rowId){\n  try {\n    if (window.Runner && typeof Runner.getControl === 'function') {\n      return Runner.getControl(getPid(), field, rowId);\n    }\n  } catch(e){}\n  return null;\n}\n\nfunction readValL(field, rowId){\n  var c = getCtrlL(field, rowId);\n  if (c && typeof c.getValue === 'function') return c.getValue();\n\n  // Fallback DOM común en list (value_<field>_<pid>_<rowid>)\n  var pid = getPid();\n  var sel = '#value_'+field+'_'+pid+'_'+rowId+', #display_value_'+field+'_'+pid+'_'+rowId;\n  var $el = $(sel);\n  if ($el.length) {\n    if ($el.is('select')) {\n      return $el.val();\n    } else {\n      return ($el.val() || $el.text() || '').trim();\n    }\n  }\n  return '';\n}\n\n// Intenta obtener rowId desde el <tr> o desde la celda/checkbox\nfunction getRowIdFromElem(el){\n  var $tr = $(el).closest('tr');\n  return $tr.attr('data-rowid') || $tr.attr('data-record-id') || $tr.data('rowid') || $tr.data('recordId') || '';\n}\n\n// Ids seleccionados por checkbox de PHPRunner\nfunction getSelectedRowIds(){\n  var ids = [];\n  $('.rnr-dbody input[type=checkbox]:checked').each(function(){\n    var $tr = $(this).closest('tr');\n    var rowId = $tr.attr('data-rowid') || $tr.attr('data-record-id') || '';\n    if (rowId) ids.push(rowId);\n  });\n  return ids;\n}\n\n// Obtiene el valor de \"idsolicitud\" visible en la fila\nfunction getIdSolicitudFromRow(rowId){\n  var v = readValL('idsolicitud', rowId);\n  if (v) return parseInt(v, 10) || 0;\n\n  var $tr = $('tr[data-rowid=\"'+rowId+'\"], tr[data-record-id=\"'+rowId+'\"]');\n  var d = $tr.data('idsolicitud') || $tr.attr('data-idsolicitud');\n  return d ? parseInt(d,10) : 0;\n}\n\n// Construye payload con los campos necesarios\nfunction buildPayloadFromRow(rowId){\n  var idsol = getIdSolicitudFromRow(rowId);\n\n  return {\n    idsolicitud: idsol,\n\n    // (ajusta si tus columnas tienen otros nombres o no están visibles)\n    idproducto:    readValL('idproducto', rowId),\n    idtipoventa:   readValL('idtipoventa', rowId),\n    idplan:        readValL('idplan', rowId),\n    idcliente:     readValL('idcliente', rowId),\n    orden:         readValL('orden', rowId),\n    plazo:         readValL('plazo', rowId),\n    rfc:           readValL('rfc', rowId),\n    idcli:         readValL('idcli', rowId),\n    dn:            readValL('dn', rowId),\n    cuenta:        readValL('cuenta', rowId),\n    contrato:      readValL('contrato', rowId),\n    contratoportal:readValL('contratoportal', rowId),\n    plazopendiente:readValL('plazopendiente', rowId),\n    dnpreferido:   readValL('dnpreferido', rowId),\n    factura:       readValL('factura', rowId),\n    fechavenci:    readValL('fechavenci', rowId),\n    noserie:       readValL('noserie', rowId),\n    estado:        readValL('estado', rowId),\n    ciudad:        readValL('ciudad', rowId),\n    cp:            readValL('cp', rowId),\n    calle:         readValL('calle', rowId),\n    numeroext:     readValL('numeroext', rowId),\n    numeroint:     readValL('numeroint', rowId),\n    colonia:       readValL('colonia', rowId),\n    lat:           readValL('lat', rowId),\n    lng:           readValL('lng', rowId),\n    idtienda:      readValL('idtienda', rowId)\n  };\n}\n\n// Consola bonita para la respuesta con debug embebido\nfunction logApiResponseDebug(tag, res){\n  console.group(tag);\n  if (res && (res.debug || res.debug_log)) {\n    var dbg = res.debug || res.debug_log;\n    try { if (typeof dbg === 'string') dbg = JSON.parse(dbg); } catch(e){}\n    if (Array.isArray(dbg)) {\n      var t0 = (dbg[0] && dbg[0].t) ? dbg[0].t : null;\n      var rows = dbg.map(function(d,i){\n        return {\n          i,\n          ms: (t0 && d.t) ? Math.round((d.t - t0) * 1000) : null,\n          msg: d.msg || d.message || '',\n          ctx: d.ctx || null\n        };\n      });\n      console.table(rows);\n    } else {\n      console.log('debug:', dbg);\n    }\n  } else {\n    console.log('sin debug en payload');\n  }\n  console.log('respuesta:', res);\n  console.groupEnd();\n}\n\n// SweetAlert reusables\nfunction swalOk(msg){\n  return Swal.fire({ title:'Éxito', text: msg||'Actualizado correctamente.', icon:'success', confirmButtonText:'OK' });\n}\nfunction swalError(msg){\n  return Swal.fire({ title:'Error', text: msg||'No se pudo actualizar.', icon:'error', confirmButtonText:'OK' });\n}\n\n// ====================================================================\n// ================== SISTEMA DE PERMISOS POR ROL ==================\n// ====================================================================\n(function () {\n  const CONFIG = {\n    fields: ['estatus', 'estatusentrega', 'idproducto', 'idplan', 'idtipoventa', 'orden', 'plazo', 'rfc', 'idcli', \n             'dn', 'cuenta', 'contrato', 'contratoportal', 'plazopendiente', 'dnpreferido', 'factura', 'fechavenci',\n              'estado', 'ciudad', 'cp', 'calle', 'numeroext', 'numeroint', 'colonia', 'lat', 'lng',\n             'idcliente', 'ciclo'],\n\n    roleAliases: { \n      'ADMIN': 'ADMIN', \n      'VALIDADOR': 'VALIDADOR',\n      'VENDEDORES': 'VENDEDORES',\n      'GERENTES': 'GERENTES',\n      'MESADECONTROL': 'MESADECONTROL'\n    },\n\n    rules: [\n      { match: { user: ['ADMIN'] }, enable: ['*'] },    \n      { match: { role: ['ADMIN'] }, enable: ['*'] },\n      \n      { match: { role: ['VALIDADOR'] }, \n        enable: ['*'], \n        disable: ['estatusentrega'] \n      },\n      \n      { match: { role: ['MESADECONTROL'], statusCondition: 'ACEPTADA' }, \n        enable: ['estatusentrega'] \n      },\n      \n      { match: { role: ['MESADECONTROL'] }, \n        enable: ['estatusentrega'] \n      },\n      \n      { match: { role: ['VENDEDORES','GERENTES'], statusCondition: 'ACEPTADA' }, \n        disable: ['*'] \n      },\n      \n      { match: { role: ['VENDEDORES','GERENTES'], statusCondition: '!ACEPTADA' }, \n        enable: ['*'], \n        disable: ['estatus', 'estatusentrega'] \n      },\n      \n      { match: { default: true }, disable: ['*'] }\n    ]\n  };\n\n  const DEBUG = true;\n  const plog = (...a)=>{ if (DEBUG) console.log('[permisos]', ...a); };\n\n  // ========== OBTENER ROL Y USUARIO ==========\n  function getUserInfo() {\n    let role = '';\n    let user = '';\n    console.log('=== INTENTANDO OBTENER INFORMACIÓN DEL USUARIO ===');\n    \n    // Método correcto para PHPRunner usando proxy\n    if (typeof proxy !== 'undefined') {\n      role = (proxy.currentRole || '').toString().trim();\n      user = (proxy.currentUser || '').toString().trim();\n      plog('✓ Obtenido desde proxy.currentRole:', role);\n      plog('✓ Obtenido desde proxy.currentUser:', user);\n    } else {\n      plog('❌ Objeto proxy no disponible');\n    }\n    \n    // Método 1: Desde window (inyectado por PHP)\n    if (window.userRole) {\n      role = window.userRole.toString();\n      console.log('✓ Rol obtenido desde window.userRole:', role);\n    }\n    if (window.userName) {\n      user = window.userName.toString();\n      console.log('✓ Usuario obtenido desde window.userName:', user);\n    }\n    \n    // Método 2: Desde Runner.vars\n    if (!role && window.Runner && Runner.vars) {\n      console.log('Explorando Runner.vars:', Runner.vars);\n      if (Runner.vars.userInfo) {\n        role = (Runner.vars.userInfo.groupId || Runner.vars.userInfo.group || '').toString();\n        user = (Runner.vars.userInfo.userName || Runner.vars.userInfo.name || '').toString();\n        console.log('✓ Desde Runner.vars.userInfo - Rol:', role, 'Usuario:', user);\n      }\n    }\n    \n    // Método 3: Desde variables globales comunes de PHPRunner\n    if (!role && window.userGroupId) {\n      role = window.userGroupId.toString();\n      console.log('✓ Rol obtenido desde window.userGroupId:', role);\n    }\n    if (!user && window.currentUser) {\n      user = window.currentUser.toString();\n      console.log('✓ Usuario obtenido desde window.currentUser:', user);\n    }\n    \n    // Método 4: Desde proxy (si existe)\n    if (!role && window.proxy && proxy.currentRole) {\n      role = proxy.currentRole.toString();\n      console.log('✓ Rol obtenido desde proxy.currentRole:', role);\n    }\n    if (!user && window.proxy && proxy.currentUser) {\n      user = proxy.currentUser.toString();\n      console.log('✓ Usuario obtenido desde proxy.currentUser:', user);\n    }\n    \n    console.log('=== RESULTADO FINAL ===');\n    console.log('Rol (antes de procesar):', role);\n    console.log('Usuario (antes de procesar):', user);\n    \n    return { role, user };\n  }\n  \n  const userInfo = getUserInfo();\n  let ROLE = userInfo.role.trim();\n  let USER = userInfo.user.trim().toUpperCase();\n  \n  // Aplicar alias si existe\n  if (CONFIG.roleAliases[ROLE]) {\n    console.log('Aplicando alias:', ROLE, '->', CONFIG.roleAliases[ROLE]);\n    ROLE = CONFIG.roleAliases[ROLE];\n  }\n  ROLE = ROLE.toUpperCase();\n  \n  console.log('==========================================');\n  console.log('ROL FINAL:', ROLE);\n  console.log('USUARIO FINAL:', USER);\n  console.log('==========================================');\n\n  function getCurrentStatus() {\n    const $estatusField = $('[id^=\"value_estatus_\"],[id^=\"display_value_estatus_\"]').first();\n    let currentStatus = '';\n    \n    if ($estatusField.length) {\n      if ($estatusField.is('select')) {\n        currentStatus = $estatusField.find('option:selected').text().trim().toUpperCase();\n      } else {\n        currentStatus = ($estatusField.val() || '').trim().toUpperCase();\n      }\n    }\n    \n    if (!currentStatus) {\n      const $displayField = $('[id^=\"readonly_value_estatus_\"]').first();\n      if ($displayField.length) {\n        currentStatus = $displayField.text().trim().toUpperCase();\n      }\n    }\n    \n    plog('Status actual detectado:', currentStatus);\n    return currentStatus;\n  }\n\n  function resolveRule() {\n    const currentStatus = getCurrentStatus();\n    plog('Resolviendo regla para ROL:', ROLE, '| ESTATUS:', currentStatus);\n    \n    for (let i = 0; i < CONFIG.rules.length; i++) {\n      const r = CONFIG.rules[i];\n      const m = r.match || {};\n      \n      if (m.default) {\n        plog('✓ Aplicando regla DEFAULT');\n        return r;\n      }\n      \n      const byRole = !m.role || m.role.map(x=>x.toString().toUpperCase()).includes(ROLE);\n      const byUser = !m.user || m.user.map(x=>x.toString().toUpperCase()).includes(USER);\n      \n      let byStatus = true;\n      if (m.statusCondition) {\n        if (m.statusCondition === 'ACEPTADA') {\n          byStatus = currentStatus === 'ACEPTADA';\n        } else if (m.statusCondition === '!ACEPTADA') {\n          byStatus = currentStatus !== 'ACEPTADA';\n        }\n      }\n      \n      plog(`Regla #${i}: byRole=${byRole}, byUser=${byUser}, byStatus=${byStatus}`);\n      \n      if (byRole && byUser && byStatus) {\n        plog('✓✓✓ REGLA APLICADA #' + i + ':', r);\n        return r;\n      }\n    }\n    \n    plog('Ninguna regla coincidió, aplicando fallback');\n    return { disable: ['*'] };\n  }\n  \n  function expand(list) {\n    if (!list) return [];\n    return list.includes('*') ? CONFIG.fields.slice() : list.slice();\n  }\n\n  function applyRules() {\n    const rule = resolveRule();\n    \n    let enableList = expand(rule.enable);\n    let readonlyList = expand(rule.readonly);\n    let disableList = expand(rule.disable);\n    \n    if (disableList.length > 0 && !disableList.includes('*')) {\n      enableList = enableList.filter(f => !disableList.includes(f));\n      readonlyList = readonlyList.filter(f => !disableList.includes(f));\n    }\n    \n    if (disableList.includes('*') && enableList.length > 0 && !enableList.includes('*')) {\n      disableList = CONFIG.fields.filter(f => !enableList.includes(f));\n    }\n    \n    if (disableList.includes('*') && enableList.includes('*')) {\n      disableList = [];\n    }\n    \n    plog('Campos a HABILITAR:', enableList.length);\n    plog('Campos a DESHABILITAR:', disableList.length);\n    \n    let enable   = new Set(enableList);\n    let readonly = new Set(readonlyList.filter(f=>!enable.has(f)));\n    let disable  = new Set(disableList.filter(f=>!enable.has(f) && !readonly.has(f)));\n\n    const ALL = [...new Set([...enable, ...readonly, ...disable])];\n\n    const qCtrl   = (f, scope)=>$(scope||document).find(`[id^=\"value_${f}_\"],[id^=\"display_value_${f}_\"]`);\n    const qLookup = (f, scope)=>$(scope||document).find(`[id^=\"open_lookup_${f}_\"]`);\n\n    function doEnable(f, scope){\n      const $els = qCtrl(f,scope).removeClass('ph-disabled');\n      $els.each(function(){\n        $(this).prop('disabled', false).prop('readonly', false);\n        const $s2 = $(this).next('.select2-container, .select2');\n        if ($s2.length) $s2.removeClass('ph-disabled').css('pointer-events','');\n      });\n      qLookup(f,scope).removeClass('ph-disabled').css('pointer-events','').attr('aria-disabled',null).off('click._lock');\n    }\n    \n    function doReadonly(f, scope){\n      const $els = qCtrl(f,scope).addClass('ph-disabled');\n      $els.each(function(){\n        if (this.tagName === 'SELECT') $(this).prop('disabled', true);\n        else $(this).prop('readonly', true);\n        const $s2 = $(this).next('.select2-container, .select2');\n        if ($s2.length) $s2.addClass('ph-disabled').css('pointer-events','none');\n      });\n    }\n    \n    function doDisable(f, scope){\n      const $els = qCtrl(f,scope).addClass('ph-disabled');\n      $els.each(function(){\n        $(this).prop('disabled', true).prop('readonly', true);\n        const $s2 = $(this).next('.select2-container, .select2');\n        if ($s2.length) $s2.addClass('ph-disabled').css('pointer-events','none');\n      });\n      qLookup(f,scope).addClass('ph-disabled').css('pointer-events','none')\n        .attr('aria-disabled','true').on('click._lock', e => { e.preventDefault(); e.stopImmediatePropagation(); return false; });\n    }\n\n    function applyScope(scope){\n      enable.forEach(f=>doEnable(f,scope));\n      readonly.forEach(f=>doReadonly(f,scope));\n      disable.forEach(f=>doDisable(f,scope));\n    }\n\n    applyScope(document);\n\n    const selInputs = ALL.map(f=>`[id^=\"value_${f}_\"],[id^=\"display_value_${f}_\"]`).join(',');\n    if (selInputs) {\n      $(document).off('focusin.lock click.lock', selInputs);\n      $(document).on('focusin.lock click.lock', selInputs, function(){\n        const id = this.id||'';\n        const f = ALL.find(x => id.startsWith('value_'+x+'_') || id.startsWith('display_value_'+x+'_'));\n        if (!f) return;\n        if (disable.has(f))      doDisable(f, document);\n        else if (readonly.has(f))doReadonly(f, document);\n        else                     doEnable(f, document);\n      });\n    }\n    \n    const selLookup = ALL.map(f=>`[id^=\"open_lookup_${f}_\"]`).join(',');\n    if (selLookup) {\n      $(document).off('click.lock', selLookup);\n      $(document).on('click.lock', selLookup, function(e){\n        const id = this.id||'';\n        const f = ALL.find(x => id.startsWith('open_lookup_'+x+'_'));\n        if (!f) return;\n        if (disable.has(f) || readonly.has(f)) {\n          e.preventDefault(); e.stopImmediatePropagation();\n          (disable.has(f) ? doDisable : doReadonly)(f, document);\n          return false;\n        }\n      });\n    }\n  }\n\n  function waitFor(list, timeout=2000, scope){\n    const t0 = performance.now();\n    return new Promise(resolve=>{\n      (function tick(){\n        const ok = list.every(f => $(scope||document).find(`[id^=\"value_${f}_\"],[id^=\"display_value_${f}_\"]`).length);\n        if (ok || performance.now()-t0 > timeout) resolve();\n        else requestAnimationFrame(tick);\n      })();\n    });\n  }\n\n  (async function initPermisos(){\n    await waitFor(['estatus'], 3000);\n    plog('Iniciando aplicación de permisos...');\n    applyRules();\n    \n    $(document).on('change', '[id^=\"value_estatus_\"],[id^=\"display_value_estatus_\"]', function(){\n      plog('Estatus cambió, reaplicando reglas...');\n      setTimeout(applyRules, 100);\n    });\n    \n    const grid = document.querySelector('.r-grid') || document.body;\n    new MutationObserver(async muts=>{\n      for (const m of muts) {\n        if (m.addedNodes && m.addedNodes.length) {\n          await waitFor(['estatus'], 2000, grid);\n          applyRules();\n          break;\n        }\n      }\n    }).observe(grid, { childList:true, subtree:true });\n  })();\n})();\n\n// ========== CONFIGURACIÓN API ==========\nwindow.API_UPDATE_INLINE = 'solicitud_update_api.php';\n\n// ========== GUARDAR DATOS ORIGINALES AL ENTRAR AL INLINE EDIT ==========\nRunner.on('inline_edit_before_display', function(pageObj, keys, row) {\n    console.log('[INLINE] Guardando datos originales para ID:', keys);\n    \n    window.__origInlineData = {\n        idsolicitud: keys[0] || keys,\n        idproducto: row.idproducto || '',\n        noserie: row.noserie || '',\n        rowData: row // Guardar toda la fila por si acaso\n    };\n    \n    console.log('[INLINE] Datos originales:', window.__origInlineData);\n});\n\n// ========== INTERCEPTAR BOTÓN GUARDAR EN LÍNEA ==========\n(function interceptInlineSave() {\n    console.log('[INLINE] Buscando botón grid_inline_save...');\n    \n    var checkButton = setInterval(function() {\n        var $saveBtn = $('#grid_inline_save');\n        \n        if ($saveBtn.length && !$saveBtn.data('intercepted')) {\n            clearInterval(checkButton);\n            \n            console.log('[INLINE] Botón grid_inline_save encontrado, interceptando...');\n            \n            // Marcar como interceptado\n            $saveBtn.data('intercepted', true);\n            \n            // Remover TODOS los eventos anteriores\n            $saveBtn.off('click');\n            $saveBtn.off('mousedown');\n            $saveBtn.off('mouseup');\n            \n            // Agregar nuestro handler con máxima prioridad\n            $saveBtn.on('click.custom', function(e) {\n                e.preventDefault();\n                e.stopPropagation();\n                e.stopImmediatePropagation();\n                \n                console.log('[INLINE] Click interceptado - Llamando API personalizada');\n                \n                sendInlineUpdateAPI();\n                \n                return false;\n            });\n            \n            console.log('[INLINE] ✓ Botón interceptado exitosamente');\n        }\n    }, 100);\n    \n    // Detener después de 10 segundos\n    setTimeout(function() {\n        clearInterval(checkButton);\n    }, 10000);\n})();\n\n// ========== FUNCIÓN PARA ENVIAR A LA API ==========\nfunction sendInlineUpdateAPI() {\n    console.log('[INLINE API] Iniciando envío...');\n    \n    // Prevenir múltiples envíos\n    if (window.__saving_inline) {\n        console.log('[INLINE API] Ya hay un guardado en proceso');\n        return;\n    }\n    window.__saving_inline = true;\n    \n    // Obtener el ID de la solicitud\n    var idsolicitud = window.__origInlineData ? window.__origInlineData.idsolicitud : 0;\n    \n    if (!idsolicitud) {\n        console.error('[INLINE API] No se pudo obtener el ID de solicitud');\n        window.__saving_inline = false;\n        Swal.fire({\n            icon: 'error',\n            title: 'Error',\n            text: 'No se pudo determinar el ID de la solicitud'\n        });\n        return;\n    }\n    \n    console.log('[INLINE API] ID Solicitud:', idsolicitud);\n    \n    // Obtener valores de los campos\n    var ctrl = pageObj.controlManager;\n    \n    // Función helper para leer valores\n    function readVal(fieldName) {\n        try {\n            var val = ctrl.getFieldValue(fieldName);\n            return val !== undefined && val !== null ? val : '';\n        } catch(e) {\n            console.warn('[INLINE API] Error leyendo campo ' + fieldName + ':', e);\n            return '';\n        }\n    }\n    \n    // ROL Y USUARIO\n    var currentRole = '';\n    var currentUser = '';\n    \n    if (typeof proxy !== 'undefined') {\n        currentRole = proxy.currentRole || '';\n        currentUser = proxy.currentUser || '';\n    }\n    \n    console.log('[INLINE API] Rol:', currentRole, 'Usuario:', currentUser);\n    \n    var datos = {\n        idsolicitud: idsolicitud,\n        \n        // ROL Y USUARIO\n        current_role: currentRole,\n        current_user: currentUser,\n        \n        // Valores originales\n        orig_idproducto: window.__origInlineData ? window.__origInlineData.idproducto : '',\n        orig_noserie: window.__origInlineData ? window.__origInlineData.noserie : '',\n        \n        // Valores del formulario inline\n        idproducto: readVal('idproducto'),\n        idtipoventa: readVal('idtipoventa'),\n        idplan: readVal('idplan'),\n        idcliente: readVal('idcliente'),\n        orden: readVal('orden'),\n        plazo: readVal('plazo'),\n        rfc: readVal('rfc'),\n        idcli: readVal('idcli'),\n        dn: readVal('dn'),\n        cuenta: readVal('cuenta'),\n        contrato: readVal('contrato'),\n        contratoportal: readVal('contratoportal'),\n        plazopendiente: readVal('plazopendiente'),\n        dnpreferido: readVal('dnpreferido'),\n        factura: readVal('factura'),\n        fechavenci: readVal('fechavenci'),\n        noserie: readVal('noserie'),\n        \n        // Dirección\n        estado: readVal('estado'),\n        ciudad: readVal('ciudad'),\n        cp: readVal('cp'),\n        calle: readVal('calle'),\n        numeroext: readVal('numeroext'),\n        numeroint: readVal('numeroint'),\n        colonia: readVal('colonia'),\n        lat: readVal('lat'),\n        lng: readVal('lng')\n    };\n    \n    console.log('[INLINE API] Datos a enviar:', datos);\n    \n    // Mostrar loading\n    Swal.fire({\n        title: 'Guardando...',\n        text: 'Por favor espere',\n        allowOutsideClick: false,\n        allowEscapeKey: false,\n        didOpen: () => {\n            Swal.showLoading();\n        }\n    });\n    \n    // Enviar a la API\n    $.post(window.API_UPDATE_INLINE, datos, function(respRaw) {\n        var r = (typeof respRaw === 'object') ? respRaw : \n                (function(){ try { return JSON.parse(respRaw); } catch(e){ return null; } })();\n        \n        console.log('[INLINE API] Respuesta:', r);\n        \n        // Mostrar debug si existe\n        if (r && r.debug) {\n            console.log('=== DEBUG LOG ===');\n            r.debug.forEach(function(entry) {\n                console.log('[' + entry.time + '] ' + entry.msg, entry.data || '');\n            });\n        }\n        \n        window.__saving_inline = false;\n        \n        if (!r) {\n            Swal.fire({\n                icon: 'error',\n                title: 'Error',\n                text: 'Respuesta inválida del servidor'\n            });\n            return;\n        }\n        \n        if (r.ok) {\n            Swal.fire({\n                icon: 'success',\n                title: 'Éxito',\n                text: r.message || 'Solicitud actualizada correctamente',\n                timer: 2000\n            }).then(function() {\n                // Recargar la página/tabla\n                location.reload();\n            });\n        } else {\n            Swal.fire({\n                icon: 'error',\n                title: 'Error',\n                text: r.error || 'Error desconocido al actualizar'\n            });\n        }\n    })\n    .fail(function(xhr) {\n        console.error('[INLINE API] Error AJAX:', xhr.status, xhr.responseText);\n        window.__saving_inline = false;\n        \n        Swal.fire({\n            icon: 'error',\n            title: 'Error de comunicación',\n            text: 'No se pudo conectar con el servidor: ' + xhr.status\n        });\n    });\n}\n\n// ========== LOG DE INICIO ==========\nconsole.log('[INLINE] Script de intercepción cargado');\nconsole.log('[INLINE] API URL:', window.API_UPDATE_INLINE);\n\n// ===============================\n// Interceptor SAVE (dinámico, con observer + captura)\n// ===============================\n(function () {\n  // DEBUG muy ruidoso\n  var DEBUG = true;              // alerts + console\n  var BLOCK_ORIGINAL = true;     // detenemos el click original hasta llamar la API\n  var API_URL = window.API_UPDATE || 'solicitud_update_api.php';\n\n  // contenedor y selector del botón real que crea PHPRunner al entrar a edición en línea\n  var WRAP_SEL = 'span[data-itemtype=\"grid_inline_save\"], span[data-itemid=\"grid_inline_save\"]';\n  var LINK_SEL = 'a[id^=\"saveLink\"]';\n\n  // Evita recursión cuando re-disparamos el click\n  var BYPASS = false;\n\n  function log() { if (DEBUG) console.log.apply(console, ['[INLINE-INT]'].concat([].slice.call(arguments))); }\n  function ding(msg){ if (DEBUG) try { alert(msg); } catch(e){} }\n\n  // Saca rowId del span envolvente\n  function getRowIdFrom(el){\n    var span = el.closest(WRAP_SEL);\n    if (!span) return '';\n    var $s = $(span);\n    return $s.attr('data-record-id') || $s.attr('data-rowid') || '';\n  }\n\n  // arma payload desde tus helpers (ya definidos en tu onload)\n  function makePayload(btn){\n    var rowId = getRowIdFrom(btn);\n    var payload = buildPayloadFromRow(rowId) || {};\n    // refuerzo por si idsolicitud no está en la grid\n    if (!payload.idsolicitud) {\n      var $tr = $(btn).closest('tr');\n      var txt = $tr.find('[data-field=\"idsolicitud\"], td[id*=\"idsolicitud\"]').text().trim();\n      if (txt) payload.idsolicitud = parseInt(txt, 10) || 0;\n    }\n    return { rowId: rowId, payload: payload };\n  }\n\n  // Se engancha a un <a id=\"saveLink…\">\n  function wireOne(link) {\n    if (!link || link.__wiredInlineSave) return;\n    link.__wiredInlineSave = true;\n\n    // marca visual para verificar que sí lo “agarramos”\n    link.style.outline = '2px solid red';\n\n    log('Enganchado SAVE:', link.id);\n    ding('[DEBUG] SAVE enganchado: ' + link.id);\n\n    link.addEventListener('click', function(ev){\n      if (BYPASS) return; // dejamos pasar el click re-disparado\n\n      log('CLICK capturado en', link.id);\n      ding('[DEBUG] Click capturado en ' + link.id);\n\n      if (BLOCK_ORIGINAL) {\n        ev.preventDefault();\n        ev.stopPropagation();\n        ev.stopImmediatePropagation();\n      }\n\n      var info = makePayload(link);\n      log('rowId:', info.rowId, 'payload.idsolicitud:', info.payload.idsolicitud);\n      ding('[DEBUG] rowId=' + info.rowId + '\\nidsolicitud=' + (info.payload.idsolicitud || 'N/D'));\n\n      if (!info.payload.idsolicitud) {\n        ding('[DEBUG][ERROR] No se pudo determinar idsolicitud. Dejo seguir el guardado original.');\n        if (BLOCK_ORIGINAL) {\n          BYPASS = true;\n          setTimeout(function(){ link.click(); BYPASS = false; }, 0);\n        }\n        return;\n      }\n\n      // Llamada a tu API (visible)\n      $.post(API_URL, info.payload, function(respRaw){\n        var r = (typeof respRaw === 'object') ? respRaw : (function(){ try { return JSON.parse(respRaw); } catch(e){ return null; } })();\n        log('Respuesta API:', r || respRaw);\n        ding('[DEBUG] Respuesta API:\\n' + (r ? JSON.stringify(r, null, 2) : String(respRaw)));\n\n        // tras la API → disparar el click original para que PHPRunner guarde\n        if (BLOCK_ORIGINAL) {\n          BYPASS = true;\n          setTimeout(function(){ link.click(); BYPASS = false; }, 0);\n        }\n      })\n      .fail(function(xhr){\n        log('AJAX FAIL', xhr.status, xhr.responseText);\n        ding('[DEBUG][AJAX FAIL] status=' + xhr.status + '\\n' + xhr.responseText);\n        // incluso con error, deja seguir el guardado original\n        if (BLOCK_ORIGINAL) {\n          BYPASS = true;\n          setTimeout(function(){ link.click(); BYPASS = false; }, 0);\n        }\n      });\n    }, true); // <<— captura verdadera\n  }\n\n  // Observa mutaciones y cablea cualquier botón nuevo\n  var obs = new MutationObserver(function(muts){\n    muts.forEach(function(m){\n      m.addedNodes && m.addedNodes.forEach(function(n){\n        if (!(n instanceof Element)) return;\n        // ¿apareció un contenedor SAVE?\n        if (n.matches && n.matches(WRAP_SEL)) {\n          var a = n.querySelector(LINK_SEL);\n          if (a) wireOne(a);\n        }\n        // ¿o apareció directamente el <a id=\"saveLink…\">?\n        if (n.matches && n.matches(LINK_SEL)) {\n          wireOne(n);\n        }\n        // ¿o hay varios dentro?\n        var list = n.querySelectorAll && n.querySelectorAll(LINK_SEL);\n        list && list.forEach(wireOne);\n      });\n    });\n  });\n\n  // Arranca el observer sobre la grilla y todo el body (por si la grilla cambia)\n  var root = document.querySelector('.r-grid') || document.body;\n  obs.observe(root, { childList: true, subtree: true });\n\n  // Cablea los que ya existan si entraste a edición en línea antes de cargar este script\n  setTimeout(function(){\n    document.querySelectorAll(LINK_SEL).forEach(wireOne);\n    ding('[DEBUG] Interceptor listo. Botones detectados: ' + document.querySelectorAll(LINK_SEL).length);\n  }, 300);\n\n})();\n"
+			"code": "// ====== API ENDPOINTS (si no los tienes ya en listado) ======\nwindow.API_UPDATE = window.API_UPDATE || 'solicitud_update_api.php';\nwindow.ENDPOINT   = window.ENDPOINT   || 'serial_reserve.php';\n\n// ====== helpers básicos (versión \"list\") ======\nfunction getPid(){ return $('[data-pageid]').first().attr('data-pageid') || ''; }\n\n// PHPRunner: intenta control con rowId; si no, cae al DOM\nfunction getCtrlL(field, rowId){\n  try {\n    if (window.Runner && typeof Runner.getControl === 'function') {\n      return Runner.getControl(getPid(), field, rowId);\n    }\n  } catch(e){}\n  return null;\n}\n\nfunction readValL(field, rowId){\n  var c = getCtrlL(field, rowId);\n  if (c && typeof c.getValue === 'function') return c.getValue();\n\n  // Fallback DOM común en list (value_<field>_<pid>_<rowid>)\n  var pid = getPid();\n  var sel = '#value_'+field+'_'+pid+'_'+rowId+', #display_value_'+field+'_'+pid+'_'+rowId;\n  var $el = $(sel);\n  if ($el.length) {\n    if ($el.is('select')) {\n      return $el.val();\n    } else {\n      return ($el.val() || $el.text() || '').trim();\n    }\n  }\n  return '';\n}\n\n// Intenta obtener rowId desde el <tr> o desde la celda/checkbox\nfunction getRowIdFromElem(el){\n  var $tr = $(el).closest('tr');\n  return $tr.attr('data-rowid') || $tr.attr('data-record-id') || $tr.data('rowid') || $tr.data('recordId') || '';\n}\n\n// Ids seleccionados por checkbox de PHPRunner\nfunction getSelectedRowIds(){\n  var ids = [];\n  $('.rnr-dbody input[type=checkbox]:checked').each(function(){\n    var $tr = $(this).closest('tr');\n    var rowId = $tr.attr('data-rowid') || $tr.attr('data-record-id') || '';\n    if (rowId) ids.push(rowId);\n  });\n  return ids;\n}\n\n// Obtiene el valor de \"idsolicitud\" visible en la fila\nfunction getIdSolicitudFromRow(rowId){\n  var v = readValL('idsolicitud', rowId);\n  if (v) return parseInt(v, 10) || 0;\n\n  var $tr = $('tr[data-rowid=\"'+rowId+'\"], tr[data-record-id=\"'+rowId+'\"]');\n  var d = $tr.data('idsolicitud') || $tr.attr('data-idsolicitud');\n  return d ? parseInt(d,10) : 0;\n}\n\n// Construye payload con los campos necesarios\nfunction buildPayloadFromRow(rowId){\n  var idsol = getIdSolicitudFromRow(rowId);\n\n  return {\n    idsolicitud: idsol,\n\n    // (ajusta si tus columnas tienen otros nombres o no están visibles)\n    idproducto:    readValL('idproducto', rowId),\n    idtipoventa:   readValL('idtipoventa', rowId),\n    idplan:        readValL('idplan', rowId),\n    idcliente:     readValL('idcliente', rowId),\n    orden:         readValL('orden', rowId),\n    plazo:         readValL('plazo', rowId),\n    rfc:           readValL('rfc', rowId),\n    idcli:         readValL('idcli', rowId),\n    dn:            readValL('dn', rowId),\n    cuenta:        readValL('cuenta', rowId),\n    contrato:      readValL('contrato', rowId),\n    contratoportal:readValL('contratoportal', rowId),\n    plazopendiente:readValL('plazopendiente', rowId),\n    dnpreferido:   readValL('dnpreferido', rowId),\n    factura:       readValL('factura', rowId),\n    fechavenci:    readValL('fechavenci', rowId),\n    noserie:       readValL('noserie', rowId),\n    estado:        readValL('estado', rowId),\n    ciudad:        readValL('ciudad', rowId),\n    cp:            readValL('cp', rowId),\n    calle:         readValL('calle', rowId),\n    numeroext:     readValL('numeroext', rowId),\n    numeroint:     readValL('numeroint', rowId),\n    colonia:       readValL('colonia', rowId),\n    lat:           readValL('lat', rowId),\n    lng:           readValL('lng', rowId),\n    idtienda:      readValL('idtienda', rowId)\n  };\n}\n\n// Consola bonita para la respuesta con debug embebido\nfunction logApiResponseDebug(tag, res){\n  console.group(tag);\n  if (res && (res.debug || res.debug_log)) {\n    var dbg = res.debug || res.debug_log;\n    try { if (typeof dbg === 'string') dbg = JSON.parse(dbg); } catch(e){}\n    if (Array.isArray(dbg)) {\n      var t0 = (dbg[0] && dbg[0].t) ? dbg[0].t : null;\n      var rows = dbg.map(function(d,i){\n        return {\n          i,\n          ms: (t0 && d.t) ? Math.round((d.t - t0) * 1000) : null,\n          msg: d.msg || d.message || '',\n          ctx: d.ctx || null\n        };\n      });\n      console.table(rows);\n    } else {\n      console.log('debug:', dbg);\n    }\n  } else {\n    console.log('sin debug en payload');\n  }\n  console.log('respuesta:', res);\n  console.groupEnd();\n}\n\n// SweetAlert reusables\nfunction swalOk(msg){\n  return Swal.fire({ title:'Éxito', text: msg||'Actualizado correctamente.', icon:'success', confirmButtonText:'OK' });\n}\nfunction swalError(msg){\n  return Swal.fire({ title:'Error', text: msg||'No se pudo actualizar.', icon:'error', confirmButtonText:'OK' });\n}\n\n// ====================================================================\n// ================== SISTEMA DE PERMISOS POR ROL ==================\n// ====================================================================\n(function () {\n  const CONFIG = {\n    fields: ['estatus', 'estatusentrega', 'idproducto', 'idplan', 'idtipoventa', 'orden', 'plazo', 'rfc', 'idcli', \n             'dn', 'cuenta', 'contrato', 'contratoportal', 'plazopendiente', 'dnpreferido', 'factura', 'fechavenci',\n              'estado', 'ciudad', 'cp', 'calle', 'numeroext', 'numeroint', 'colonia', 'lat', 'lng',\n             'idcliente', 'ciclo'],\n\n    roleAliases: { \n      'ADMIN': 'ADMIN', \n      'VALIDADOR': 'VALIDADOR',\n      'VENDEDORES': 'VENDEDORES',\n      'GERENTES': 'GERENTES',\n      'MESADECONTROL': 'MESADECONTROL'\n    },\n\n    rules: [\n      { match: { user: ['ADMIN'] }, enable: ['*'] },    \n      { match: { role: ['ADMIN'] }, enable: ['*'] },\n      \n      { match: { role: ['VALIDADOR'] }, \n        enable: ['*'], \n        disable: ['estatusentrega'] \n      },\n      \n      { match: { role: ['MESADECONTROL'], statusCondition: 'ACEPTADA' }, \n        enable: ['estatusentrega'] \n      },\n      \n      { match: { role: ['MESADECONTROL'] }, \n        enable: ['estatusentrega'] \n      },\n      \n      { match: { role: ['VENDEDORES','GERENTES'], statusCondition: 'ACEPTADA' }, \n        disable: ['*'] \n      },\n      \n      { match: { role: ['VENDEDORES','GERENTES'], statusCondition: '!ACEPTADA' }, \n        enable: ['*'], \n        disable: ['estatus', 'estatusentrega'] \n      },\n      \n      { match: { default: true }, disable: ['*'] }\n    ]\n  };\n\n  const DEBUG = true;\n  const plog = (...a)=>{ if (DEBUG) console.log('[permisos]', ...a); };\n\n  // ========== OBTENER ROL Y USUARIO ==========\n  function getUserInfo() {\n    let role = '';\n    let user = '';\n    console.log('=== INTENTANDO OBTENER INFORMACIÓN DEL USUARIO ===');\n    \n    // Método correcto para PHPRunner usando proxy\n    if (typeof proxy !== 'undefined') {\n      role = (proxy.currentRole || '').toString().trim();\n      user = (proxy.currentUser || '').toString().trim();\n      plog('✓ Obtenido desde proxy.currentRole:', role);\n      plog('✓ Obtenido desde proxy.currentUser:', user);\n    } else {\n      plog('❌ Objeto proxy no disponible');\n    }\n    \n    // Método 1: Desde window (inyectado por PHP)\n    if (window.userRole) {\n      role = window.userRole.toString();\n      console.log('✓ Rol obtenido desde window.userRole:', role);\n    }\n    if (window.userName) {\n      user = window.userName.toString();\n      console.log('✓ Usuario obtenido desde window.userName:', user);\n    }\n    \n    // Método 2: Desde Runner.vars\n    if (!role && window.Runner && Runner.vars) {\n      console.log('Explorando Runner.vars:', Runner.vars);\n      if (Runner.vars.userInfo) {\n        role = (Runner.vars.userInfo.groupId || Runner.vars.userInfo.group || '').toString();\n        user = (Runner.vars.userInfo.userName || Runner.vars.userInfo.name || '').toString();\n        console.log('✓ Desde Runner.vars.userInfo - Rol:', role, 'Usuario:', user);\n      }\n    }\n    \n    // Método 3: Desde variables globales comunes de PHPRunner\n    if (!role && window.userGroupId) {\n      role = window.userGroupId.toString();\n      console.log('✓ Rol obtenido desde window.userGroupId:', role);\n    }\n    if (!user && window.currentUser) {\n      user = window.currentUser.toString();\n      console.log('✓ Usuario obtenido desde window.currentUser:', user);\n    }\n    \n    // Método 4: Desde proxy (si existe)\n    if (!role && window.proxy && proxy.currentRole) {\n      role = proxy.currentRole.toString();\n      console.log('✓ Rol obtenido desde proxy.currentRole:', role);\n    }\n    if (!user && window.proxy && proxy.currentUser) {\n      user = proxy.currentUser.toString();\n      console.log('✓ Usuario obtenido desde proxy.currentUser:', user);\n    }\n    \n    console.log('=== RESULTADO FINAL ===');\n    console.log('Rol (antes de procesar):', role);\n    console.log('Usuario (antes de procesar):', user);\n    \n    return { role, user };\n  }\n  \n  const userInfo = getUserInfo();\n  let ROLE = userInfo.role.trim();\n  let USER = userInfo.user.trim().toUpperCase();\n  \n  // Aplicar alias si existe\n  if (CONFIG.roleAliases[ROLE]) {\n    console.log('Aplicando alias:', ROLE, '->', CONFIG.roleAliases[ROLE]);\n    ROLE = CONFIG.roleAliases[ROLE];\n  }\n  ROLE = ROLE.toUpperCase();\n  \n  console.log('==========================================');\n  console.log('ROL FINAL:', ROLE);\n  console.log('USUARIO FINAL:', USER);\n  console.log('==========================================');\n\n  function getCurrentStatus() {\n    const $estatusField = $('[id^=\"value_estatus_\"],[id^=\"display_value_estatus_\"]').first();\n    let currentStatus = '';\n    \n    if ($estatusField.length) {\n      if ($estatusField.is('select')) {\n        currentStatus = $estatusField.find('option:selected').text().trim().toUpperCase();\n      } else {\n        currentStatus = ($estatusField.val() || '').trim().toUpperCase();\n      }\n    }\n    \n    if (!currentStatus) {\n      const $displayField = $('[id^=\"readonly_value_estatus_\"]').first();\n      if ($displayField.length) {\n        currentStatus = $displayField.text().trim().toUpperCase();\n      }\n    }\n    \n    plog('Status actual detectado:', currentStatus);\n    return currentStatus;\n  }\n\n  function resolveRule() {\n    const currentStatus = getCurrentStatus();\n    plog('Resolviendo regla para ROL:', ROLE, '| ESTATUS:', currentStatus);\n    \n    for (let i = 0; i < CONFIG.rules.length; i++) {\n      const r = CONFIG.rules[i];\n      const m = r.match || {};\n      \n      if (m.default) {\n        plog('✓ Aplicando regla DEFAULT');\n        return r;\n      }\n      \n      const byRole = !m.role || m.role.map(x=>x.toString().toUpperCase()).includes(ROLE);\n      const byUser = !m.user || m.user.map(x=>x.toString().toUpperCase()).includes(USER);\n      \n      let byStatus = true;\n      if (m.statusCondition) {\n        if (m.statusCondition === 'ACEPTADA') {\n          byStatus = currentStatus === 'ACEPTADA';\n        } else if (m.statusCondition === '!ACEPTADA') {\n          byStatus = currentStatus !== 'ACEPTADA';\n        }\n      }\n      \n      plog(`Regla #${i}: byRole=${byRole}, byUser=${byUser}, byStatus=${byStatus}`);\n      \n      if (byRole && byUser && byStatus) {\n        plog('✓✓✓ REGLA APLICADA #' + i + ':', r);\n        return r;\n      }\n    }\n    \n    plog('Ninguna regla coincidió, aplicando fallback');\n    return { disable: ['*'] };\n  }\n  \n  function expand(list) {\n    if (!list) return [];\n    return list.includes('*') ? CONFIG.fields.slice() : list.slice();\n  }\n\n  function applyRules() {\n    const rule = resolveRule();\n    \n    let enableList = expand(rule.enable);\n    let readonlyList = expand(rule.readonly);\n    let disableList = expand(rule.disable);\n    \n    if (disableList.length > 0 && !disableList.includes('*')) {\n      enableList = enableList.filter(f => !disableList.includes(f));\n      readonlyList = readonlyList.filter(f => !disableList.includes(f));\n    }\n    \n    if (disableList.includes('*') && enableList.length > 0 && !enableList.includes('*')) {\n      disableList = CONFIG.fields.filter(f => !enableList.includes(f));\n    }\n    \n    if (disableList.includes('*') && enableList.includes('*')) {\n      disableList = [];\n    }\n    \n    plog('Campos a HABILITAR:', enableList.length);\n    plog('Campos a DESHABILITAR:', disableList.length);\n    \n    let enable   = new Set(enableList);\n    let readonly = new Set(readonlyList.filter(f=>!enable.has(f)));\n    let disable  = new Set(disableList.filter(f=>!enable.has(f) && !readonly.has(f)));\n\n    const ALL = [...new Set([...enable, ...readonly, ...disable])];\n\n    const qCtrl   = (f, scope)=>$(scope||document).find(`[id^=\"value_${f}_\"],[id^=\"display_value_${f}_\"]`);\n    const qLookup = (f, scope)=>$(scope||document).find(`[id^=\"open_lookup_${f}_\"]`);\n\n    function doEnable(f, scope){\n      const $els = qCtrl(f,scope).removeClass('ph-disabled');\n      $els.each(function(){\n        $(this).prop('disabled', false).prop('readonly', false);\n        const $s2 = $(this).next('.select2-container, .select2');\n        if ($s2.length) $s2.removeClass('ph-disabled').css('pointer-events','');\n      });\n      qLookup(f,scope).removeClass('ph-disabled').css('pointer-events','').attr('aria-disabled',null).off('click._lock');\n    }\n    \n    function doReadonly(f, scope){\n      const $els = qCtrl(f,scope).addClass('ph-disabled');\n      $els.each(function(){\n        if (this.tagName === 'SELECT') $(this).prop('disabled', true);\n        else $(this).prop('readonly', true);\n        const $s2 = $(this).next('.select2-container, .select2');\n        if ($s2.length) $s2.addClass('ph-disabled').css('pointer-events','none');\n      });\n    }\n    \n    function doDisable(f, scope){\n      const $els = qCtrl(f,scope).addClass('ph-disabled');\n      $els.each(function(){\n        $(this).prop('disabled', true).prop('readonly', true);\n        const $s2 = $(this).next('.select2-container, .select2');\n        if ($s2.length) $s2.addClass('ph-disabled').css('pointer-events','none');\n      });\n      qLookup(f,scope).addClass('ph-disabled').css('pointer-events','none')\n        .attr('aria-disabled','true').on('click._lock', e => { e.preventDefault(); e.stopImmediatePropagation(); return false; });\n    }\n\n    function applyScope(scope){\n      enable.forEach(f=>doEnable(f,scope));\n      readonly.forEach(f=>doReadonly(f,scope));\n      disable.forEach(f=>doDisable(f,scope));\n    }\n\n    applyScope(document);\n\n    const selInputs = ALL.map(f=>`[id^=\"value_${f}_\"],[id^=\"display_value_${f}_\"]`).join(',');\n    if (selInputs) {\n      $(document).off('focusin.lock click.lock', selInputs);\n      $(document).on('focusin.lock click.lock', selInputs, function(){\n        const id = this.id||'';\n        const f = ALL.find(x => id.startsWith('value_'+x+'_') || id.startsWith('display_value_'+x+'_'));\n        if (!f) return;\n        if (disable.has(f))      doDisable(f, document);\n        else if (readonly.has(f))doReadonly(f, document);\n        else                     doEnable(f, document);\n      });\n    }\n    \n    const selLookup = ALL.map(f=>`[id^=\"open_lookup_${f}_\"]`).join(',');\n    if (selLookup) {\n      $(document).off('click.lock', selLookup);\n      $(document).on('click.lock', selLookup, function(e){\n        const id = this.id||'';\n        const f = ALL.find(x => id.startsWith('open_lookup_'+x+'_'));\n        if (!f) return;\n        if (disable.has(f) || readonly.has(f)) {\n          e.preventDefault(); e.stopImmediatePropagation();\n          (disable.has(f) ? doDisable : doReadonly)(f, document);\n          return false;\n        }\n      });\n    }\n  }\n\n  function waitFor(list, timeout=2000, scope){\n    const t0 = performance.now();\n    return new Promise(resolve=>{\n      (function tick(){\n        const ok = list.every(f => $(scope||document).find(`[id^=\"value_${f}_\"],[id^=\"display_value_${f}_\"]`).length);\n        if (ok || performance.now()-t0 > timeout) resolve();\n        else requestAnimationFrame(tick);\n      })();\n    });\n  }\n\n  (async function initPermisos(){\n    await waitFor(['estatus'], 3000);\n    plog('Iniciando aplicación de permisos...');\n    applyRules();\n    \n    $(document).on('change', '[id^=\"value_estatus_\"],[id^=\"display_value_estatus_\"]', function(){\n      plog('Estatus cambió, reaplicando reglas...');\n      setTimeout(applyRules, 100);\n    });\n    \n    const grid = document.querySelector('.r-grid') || document.body;\n    new MutationObserver(async muts=>{\n      for (const m of muts) {\n        if (m.addedNodes && m.addedNodes.length) {\n          await waitFor(['estatus'], 2000, grid);\n          applyRules();\n          break;\n        }\n      }\n    }).observe(grid, { childList:true, subtree:true });\n  })();\n})();\n\n(function () {\n  // --- detecta rol ---\n  var role = '';\n  try { if (typeof proxy !== 'undefined' && proxy.currentRole) role = String(proxy.currentRole); } catch(e){}\n  if (!role && window.userRole) role = String(window.userRole);\n  var isMesa = role.toUpperCase().trim() === 'MESADECONTROL';\n  console.log('[EDIT-HREF] role=\"%s\" isMesa=%s', role, isMesa);\n  if (!isMesa) return;\n\n  // --- selectores de links \"Editar\" en PHPRunner ---\n  var EDIT_SEL = [\n    'span[data-itemid=\"edit_record\"] a[id^=\"editLink\"]',\n    'span[data-itemtype=\"grid_edit\"] a[id^=\"editLink\"]',\n    'a[id^=\"editLink\"]',\n    'a[href*=\"solicitudes_edit.php\"][href*=\"editid1=\"]' // fallback\n  ].join(',');\n\n  function retarget(a){\n    if (!a || a.__retargeted) return;\n    var oldHref = a.getAttribute('href') || '';\n    try {\n      var url = new URL(oldHref, location.origin);\n      // conserva editid1 y el resto, sólo añade/ajusta estos dos:\n      url.searchParams.set('page', 'edit1');\n      url.searchParams.set('menuItemId', '11');\n      a.setAttribute('href', url.toString());\n      a.__retargeted = true;\n      console.log('[EDIT-HREF] actualizado:', oldHref, '→', a.getAttribute('href'));\n    } catch (e) {\n      // fallback si URL falla\n      var sep = oldHref.indexOf('?') >= 0 ? '&' : '?';\n      var newHref = oldHref + sep + 'page=edit1&menuItemId=11';\n      a.setAttribute('href', newHref);\n      a.__retargeted = true;\n      console.log('[EDIT-HREF] actualizado (fallback):', oldHref, '→', newHref);\n    }\n  }\n\n  function retargetAll(ctx){\n    (ctx || document).querySelectorAll(EDIT_SEL).forEach(retarget);\n    var n = (ctx || document).querySelectorAll(EDIT_SEL).length;\n    console.log('[EDIT-HREF] links encontrados:', n);\n  }\n\n  // inicial\n  retargetAll();\n  setTimeout(retargetAll, 250);\n\n  // si la grilla renderiza después, observar y retargetear\n  var root = document.querySelector('.r-grid') || document.body;\n  new MutationObserver(function(muts){\n    muts.forEach(function(m){\n      m.addedNodes && m.addedNodes.forEach(function(n){\n        if (n.querySelectorAll){\n          n.querySelectorAll(EDIT_SEL).forEach(retarget);\n        }\n        if (n.matches && n.matches(EDIT_SEL)) retarget(n);\n      });\n    });\n  }).observe(root, { childList: true, subtree: true });\n})();\n"
 		},
 		{
 			"eventId": "EVENT_AFTEREDIT",
@@ -1834,6 +1851,28 @@
 				"autoinc": false,
 				"defaultValueSQL": null,
 				"defaultValue": ""
+			},
+			{
+				"name": "esnimei",
+				"type": 200,
+				"size": 30,
+				"scale": 0,
+				"typeName": "varchar(30)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "simcard",
+				"type": 200,
+				"size": 30,
+				"scale": 0,
+				"typeName": "varchar(30)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
 			}
 		],
 		"primaryKeys": [
@@ -1983,15 +2022,6 @@
 								}
 							],
 							"section": ""
-						},
-						{
-							"section": "",
-							"cells": [
-								{
-									"cell": "c7",
-									"colspan": 1
-								}
-							]
 						}
 					],
 					"cells": {
@@ -2015,11 +2045,6 @@
 							"background": "transparent",
 							"customCSS": "/* Put  your custom CSS code here */\n\n        body {\n            box-sizing: border-box;\n        }",
 							"height": "3em"
-						},
-						"c7": {
-							"model": "c3",
-							"items": [],
-							"align": "center"
 						},
 						"c8": {
 							"model": "c3",
@@ -3184,15 +3209,6 @@
 								}
 							],
 							"section": ""
-						},
-						{
-							"section": "",
-							"cells": [
-								{
-									"cell": "c7",
-									"colspan": 1
-								}
-							]
 						}
 					],
 					"cells": {
@@ -3216,11 +3232,6 @@
 							"background": "transparent",
 							"customCSS": "/* Put  your custom CSS code here */\n\n        body {\n            box-sizing: border-box;\n        }",
 							"height": "3em"
-						},
-						"c7": {
-							"model": "c3",
-							"items": [],
-							"align": "center"
 						},
 						"c8": {
 							"model": "c3",
@@ -4778,6 +4789,9 @@
 								},
 								{
 									"cell": "headcell_field13"
+								},
+								{
+									"cell": "headcell_field1"
 								}
 							]
 						},
@@ -4822,6 +4836,9 @@
 								},
 								{
 									"cell": "cell_field7"
+								},
+								{
+									"cell": "cell_field1"
 								}
 							]
 						},
@@ -4829,7 +4846,7 @@
 							"cells": [
 								{
 									"cell": "cell_dpreview",
-									"colspan": 13
+									"colspan": 14
 								}
 							],
 							"section": "body"
@@ -4873,6 +4890,9 @@
 								},
 								{
 									"cell": "footcell_field7"
+								},
+								{
+									"cell": "footcell_field1"
 								}
 							]
 						}
@@ -5165,6 +5185,25 @@
 							],
 							"field": "",
 							"columnName": ""
+						},
+						"headcell_field1": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label1"
+							],
+							"field": "simcard"
+						},
+						"cell_field1": {
+							"model": "cell_field",
+							"items": [
+								"grid_field1"
+							],
+							"field": "simcard"
+						},
+						"footcell_field1": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "simcard"
 						}
 					},
 					"deferredItems": [],
@@ -5466,6 +5505,16 @@
 				"grid_field_label5": {
 					"type": "grid_field_label",
 					"field": "idtipoventa"
+				},
+				"grid_field1": {
+					"field": "simcard",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label1": {
+					"type": "grid_field_label",
+					"field": "simcard"
 				}
 			},
 			"dbProps": {},
@@ -5741,7 +5790,8 @@
 								"integrated_search_field6",
 								"integrated_search_field7",
 								"integrated_search_field8",
-								"integrated_search_field9"
+								"integrated_search_field9",
+								"integrated_search_field10"
 							]
 						}
 					},
@@ -5812,6 +5862,11 @@
 				},
 				"integrated_search_field9": {
 					"field": "dnpreferido",
+					"type": "integrated_search_field",
+					"orientation": 0
+				},
+				"integrated_search_field10": {
+					"field": "simcard",
 					"type": "integrated_search_field",
 					"orientation": 0
 				}
@@ -6730,6 +6785,14 @@
 								}
 							],
 							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c"
+								}
+							],
+							"section": ""
 						}
 					],
 					"cells": {
@@ -6746,6 +6809,10 @@
 								"details_preview"
 							],
 							"align": "center"
+						},
+						"c": {
+							"model": "c3",
+							"items": []
 						}
 					},
 					"deferredItems": [],
