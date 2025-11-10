@@ -380,7 +380,7 @@
 				"customConnections": [
 					{
 						"name": "New connection",
-						"code": "$host = 'localhost';\r\n$user = 'root';\r\n$pwd = 'jsusxt1510';\r\n$port = 3306;\r\n$sys_dbname = 'servicio_mov';"
+						"code": "$host = 'rocasamexico.com';\r\n$user = 'rocasamexico_admin';\r\n$pwd = 'Rocas@Mexico.2025**';\r\n$port = 3306;\r\n$sys_dbname = 'rocasamexico_intranet';"
 					}
 				],
 				"selectedCustomConn": "New connection"
@@ -388,6 +388,12 @@
 		}
 	],
 	"defaultConnID": "conn",
+	"landingSettings": {
+		"table": "solicitudes",
+		"pageId": "list",
+		"page": "list",
+		"url": "solicitudes_list.php?page=list"
+	},
 	"mapSettings": {
 		"apikey": "XXXXXXXXXXXXXXXXXXXXXXXXX"
 	},
@@ -2197,7 +2203,7 @@
 		{
 			"eventId": "EVENT_AFTERSUCCESSFULLLOGIN",
 			"pageType": "login",
-			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\ndate_default_timezone_set('America/Mexico_City');\nglobal $conn;\n\n\n\n$strSQLExists = \"SELECT\n    serviciosmoviles_ugmembers.UserName\n    , IFNULL(serviciosmoviles_uggroups.Acceso,11) Acceso\n    , IFNULL(serviciosmoviles_users.Tienda,0) Tienda\n\t\t, IFNULL(serviciosmoviles_uggroups.Label,'') Label,\n\tIFNULL(serviciosmoviles_users.folioagentevnp,'') FolioAgenteVNP\nFROM\n    serviciosmoviles_ugmembers\n    LEFT JOIN serviciosmoviles_uggroups \n        ON (serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID)\n LEFT JOIN serviciosmoviles_users\n        ON (serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName)\nWHERE serviciosmoviles_ugmembers.username='\".$username .\"'\" ;\n\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\nif($data)\n{\n\t$_SESSION[\"Acceso\"]=$data[\"Acceso\"];\n\t$_SESSION[\"Tienda\"]=$data[\"Tienda\"];\n\t$_SESSION[\"UserID\"]=strtoupper($username);\n\t$_SESSION[\"Label\"]=strtoupper($data[\"Label\"]);\n\t$_SESSION[\"FolioAgenteVNP\"]=strtoupper($data[\"FolioAgenteVNP\"]);\n\n\n}\n"
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\ndate_default_timezone_set('America/Mexico_City');\nglobal $conn;\n\n\n\n$strSQLExists = \"SELECT\n    serviciosmoviles_ugmembers.UserName\n    , IFNULL(serviciosmoviles_uggroups.Acceso,11) Acceso\n    , IFNULL(serviciosmoviles_users.Tienda,0) Tienda\n\t\t, IFNULL(serviciosmoviles_uggroups.Label,'') Label,\n\tIFNULL(serviciosmoviles_users.folioagentevnp,'') FolioAgenteVNP\nFROM\n    serviciosmoviles_ugmembers\n    LEFT JOIN serviciosmoviles_uggroups \n        ON (serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID)\n LEFT JOIN serviciosmoviles_users\n        ON (serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName)\nWHERE serviciosmoviles_ugmembers.username='\".$username .\"'\" ;\n\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\nif($data)\n{\n\t$_SESSION[\"Acceso\"]=$data[\"Acceso\"];\n\t$_SESSION[\"Tienda\"]=$data[\"Tienda\"];\n\t$_SESSION[\"UserID\"]=strtoupper($username);\n\t$_SESSION[\"Label\"]=strtoupper($data[\"Label\"]);\n\t$_SESSION[\"FolioAgenteVNP\"]=strtoupper($data[\"FolioAgenteVNP\"]);\n\n\n}\n\n\n// Por ejemplo a la lista de \"solicitudes\"\n$menuItemId = 11;  // tu item del menú lateral\nheader(\"Location: \".GetTableLink(\"solicitudes\", \"list\", \"menuItemId=\".$menuItemId));\nexit();\n"
 		},
 		{
 			"eventId": "EVENT_BEFORELOGIN",
