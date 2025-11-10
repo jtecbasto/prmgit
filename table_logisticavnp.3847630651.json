@@ -1251,7 +1251,6 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"simple_grid_field1",
 								"simple_grid_field2",
 								"simple_grid_field3",
 								"simple_grid_field4",
@@ -1319,12 +1318,6 @@
 				},
 				"details_found": {
 					"type": "details_found"
-				},
-				"simple_grid_field1": {
-					"field": "idsolicitud",
-					"type": "simple_grid_field",
-					"inlineEdit": true,
-					"inlineAdd": true
 				},
 				"simple_grid_field2": {
 					"field": "fechaHora",

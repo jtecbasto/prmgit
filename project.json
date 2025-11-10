@@ -400,9 +400,10 @@
 						"id": "3",
 						"data": {
 							"name": {
-								"table": "solicitudes",
-								"type": 6
+								"text": "VNP - Activaciones",
+								"type": 0
 							},
+							"params": "tipoventa=1",
 							"pageId": "list",
 							"itemType": 2,
 							"linkType": 0,
@@ -414,31 +415,21 @@
 						}
 					},
 					{
-						"id": "11",
+						"id": "17",
 						"data": {
 							"name": {
-								"text": "Solicitudes vnp",
+								"text": "VNP - Renovaciones",
 								"type": 0
 							},
-							"pageId": "edit1",
+							"params": "tipoventa=4",
+							"pageId": "list",
 							"itemType": 2,
 							"linkType": 0,
+							"iconType": 2,
+							"iconName": "glyphicon-headphones",
+							"showIconType": 2,
 							"table": 35049744,
-							"pageType": "edit"
-						}
-					},
-					{
-						"id": "8",
-						"data": {
-							"name": {
-								"text": "Solicitudes2",
-								"type": 0
-							},
-							"pageId": "edit1",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 35049744,
-							"pageType": "edit"
+							"pageType": "list"
 						}
 					},
 					{
@@ -466,118 +457,6 @@
 							"itemType": 2,
 							"linkType": 0,
 							"table": 3680839223,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "7",
-						"data": {
-							"name": {
-								"table": "productos",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 1987350758,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "5",
-						"data": {
-							"name": {
-								"table": "vw_saldosnp",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 1182658781,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "6",
-						"data": {
-							"name": {
-								"table": "logisticavnp",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 3847630651,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "9",
-						"data": {
-							"name": {
-								"table": "tiposventa",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 4181045712,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "10",
-						"data": {
-							"name": {
-								"table": "ciclos",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 3904369708,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "14",
-						"data": {
-							"name": {
-								"table": "serviciosmoviles_users",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 3616522410,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "15",
-						"data": {
-							"name": {
-								"table": "productos_solicitudes",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 1578085135,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "16",
-						"data": {
-							"name": {
-								"table": "productos_citas",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 2542725343,
 							"pageType": "list"
 						}
 					}
