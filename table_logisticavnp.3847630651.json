@@ -163,6 +163,9 @@
 		}
 	],
 	"afterEditAction": 0,
+	"whereTabs": [
+		{}
+	],
 	"eventHandlers": [
 		{
 			"eventId": "EVENT_BEFOREADD",

@@ -106,6 +106,9 @@
 		}
 	],
 	"afterEditAction": 0,
+	"whereTabs": [
+		{}
+	],
 	"queryContext": {
 		"session.idactual": "0",
 		"session.Modulo": "2",
