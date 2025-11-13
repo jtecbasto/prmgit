@@ -375,15 +375,19 @@
 		{
 			"id": "conn",
 			"name": "servicio_mov at localhost",
-			"connString": "mysql;rocasamexico.com;rocasamexico_admin;Rocas@Mexico.2025**;;rocasamexico_prm;;1",
+			"connString": "mysql;rocasamexico.com;rocasamexico_admin;Rocas@Mexico.2025**;;rocasamexico_intranet;;1",
 			"buildParams": {
 				"customConnections": [
 					{
 						"name": "New connection",
 						"code": "$host = 'rocasamexico.com';\r\n$user = 'rocasamexico_admin';\r\n$pwd = 'Rocas@Mexico.2025**';\r\n$port = 3306;\r\n$sys_dbname = 'rocasamexico_intranet';"
+					},
+					{
+						"name": "Local",
+						"code": "$host = 'localhost';\r\n$user = 'root';\r\n$pwd = 'jsusxt1510';\r\n$port = 3306;\r\n$sys_dbname = 'servicio_mov';"
 					}
 				],
-				"selectedCustomConn": "New connection"
+				"selectedCustomConn": "Local"
 			}
 		}
 	],

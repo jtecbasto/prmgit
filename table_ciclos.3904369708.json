@@ -14,6 +14,7 @@
 		{
 			"name": "ciclo",
 			"sqlExpression": "ciclo",
+			"index": 1,
 			"strField": "ciclo",
 			"type": 3,
 			"viewFormats": [
@@ -30,6 +31,7 @@
 		{
 			"name": "corte",
 			"sqlExpression": "corte",
+			"index": 2,
 			"strField": "corte",
 			"type": 3,
 			"viewFormats": [
@@ -46,6 +48,7 @@
 		{
 			"name": "pago",
 			"sqlExpression": "pago",
+			"index": 3,
 			"strField": "pago",
 			"type": 3,
 			"viewFormats": [
@@ -62,6 +65,7 @@
 		{
 			"name": "clasif",
 			"sqlExpression": "clasif",
+			"index": 4,
 			"strField": "clasif",
 			"type": 3,
 			"viewFormats": [

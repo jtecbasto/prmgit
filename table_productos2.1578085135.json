@@ -1,4 +1,12 @@
 {
+	"orderInfo": [
+		{
+			"index": 2,
+			"field": "saldo",
+			"expr": "p2.descripcion",
+			"asc": true
+		}
+	],
 	"sql": "SELECT\n  p2.idproducto,\n  p2.descripcion,\n  e.tienda_actual AS idtienda,\n  COUNT(*) AS saldo\nFROM (\n  /* nunca traspasadas: la tienda actual es compras.tienda */\n  SELECT c.noserie, c.codigoproducto, c.tienda AS tienda_actual\n  FROM compras c\n  JOIN productos p\n    ON p.codigoIUSA = c.codigoproducto AND p.Clasif = 'Equipo'\n  LEFT JOIN ventas v      ON v.esnimei = c.noserie\n  LEFT JOIN movimientos m ON m.esnimei = c.noserie\n  WHERE v.esnimei IS NULL\n    AND m.esnimei IS NULL\n    AND NOT EXISTS (SELECT 1 FROM traspasosdet x WHERE x.esnimei = c.noserie)\n\n  UNION ALL\n\n  /* con traspasos: tienda actual = último destino */\n  SELECT c.noserie, c.codigoproducto, t.tiendadestino AS tienda_actual\n  FROM compras c\n  JOIN productos p\n    ON p.codigoIUSA = c.codigoproducto AND p.Clasif = 'Equipo'\n  JOIN (\n      SELECT esnimei, MAX(fecharecepcion) AS maxf\n      FROM traspasosdet\n      GROUP BY esnimei\n  ) u  ON u.esnimei = c.noserie\n  JOIN traspasosdet t\n    ON t.esnimei = u.esnimei AND t.fecharecepcion = u.maxf\n  LEFT JOIN ventas v      ON v.esnimei = c.noserie\n  LEFT JOIN movimientos m ON m.esnimei = c.noserie\n  WHERE v.esnimei IS NULL\n    AND m.esnimei IS NULL\n) AS e\nJOIN productos p2\n  ON p2.codigoIUSA = e.codigoproducto\nWHERE e.tienda_actual = :session.Tienda\nGROUP BY p2.idproducto, p2.descripcion, e.tienda_actual\nORDER BY p2.descripcion;\n",
 	"type": 1,
 	"connId": "conn",
@@ -13,7 +21,7 @@
 	"fields": [
 		{
 			"name": "idproducto",
-			"sqlExpression": "l.idproducto",
+			"sqlExpression": "p2.idproducto",
 			"index": 1,
 			"strField": "idproducto",
 			"type": 3,
@@ -27,12 +35,12 @@
 			"label": {
 				"Spanish": "Idproducto"
 			},
-			"tableName": ""
+			"tableName": "productos"
 		},
 		{
 			"name": "saldo",
-			"sqlExpression": "l.saldo",
-			"index": 5,
+			"sqlExpression": "COUNT(*)",
+			"index": 4,
 			"strField": "saldo",
 			"type": 3,
 			"viewFormats": [
@@ -47,43 +55,9 @@
 			"tableName": ""
 		},
 		{
-			"name": "codigo",
-			"sqlExpression": "l.codigoiusa",
+			"name": "descripcion",
+			"sqlExpression": "p2.descripcion",
 			"index": 2,
-			"strField": "codigoIUSA",
-			"type": 200,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{}
-			],
-			"label": {
-				"Spanish": "Codigo"
-			},
-			"tableName": ""
-		},
-		{
-			"name": "tienda",
-			"sqlExpression": "l.tienda",
-			"index": 3,
-			"strField": "tienda",
-			"type": 200,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{}
-			],
-			"label": {
-				"Spanish": "Tienda"
-			},
-			"tableName": ""
-		},
-		{
-			"name": "equipo",
-			"sqlExpression": "l.descripcion",
-			"index": 4,
 			"strField": "descripcion",
 			"type": 200,
 			"viewFormats": [
@@ -93,7 +67,24 @@
 				{}
 			],
 			"label": {
-				"Spanish": "Equipo"
+				"Spanish": "Descripcion"
+			},
+			"tableName": "productos"
+		},
+		{
+			"name": "idtienda",
+			"sqlExpression": "e.tienda_actual",
+			"index": 3,
+			"strField": "tienda_actual",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Idtienda"
 			},
 			"tableName": ""
 		}
@@ -1040,8 +1031,7 @@
 							"items": [
 								"simple_grid_field1",
 								"simple_grid_field",
-								"simple_grid_field2",
-								"simple_grid_field3"
+								"simple_grid_field2"
 							]
 						}
 					},
@@ -1091,7 +1081,6 @@
 					"type": "search_panel",
 					"items": [
 						"search_panel_field",
-						"search_panel_field2",
 						"search_panel_field1"
 					],
 					"_flexiblePanel": true
@@ -1152,27 +1141,19 @@
 					"inlineEdit": false
 				},
 				"simple_grid_field": {
-					"field": "codigo",
+					"field": "descripcion",
 					"type": "simple_grid_field"
 				},
 				"simple_grid_field2": {
-					"field": "tienda",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field3": {
-					"field": "equipo",
+					"field": "idtienda",
 					"type": "simple_grid_field"
 				},
 				"search_panel_field": {
-					"field": "codigo",
+					"field": "descripcion",
 					"type": "search_panel_field"
 				},
 				"search_panel_field1": {
-					"field": "tienda",
-					"type": "search_panel_field"
-				},
-				"search_panel_field2": {
-					"field": "equipo",
+					"field": "idtienda",
 					"type": "search_panel_field"
 				}
 			},
