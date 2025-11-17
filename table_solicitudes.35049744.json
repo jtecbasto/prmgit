@@ -1,13 +1,13 @@
 {
 	"orderInfo": [
 		{
-			"index": 43,
-			"field": "estatusentrega",
+			"index": 44,
+			"field": "chip",
 			"expr": "solicitudes.idsolicitud",
 			"asc": false
 		}
 	],
-	"sql": "SELECT\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tsolicitudes.estatusentrega,\n\tcte.nombre,\n\tcte.paterno,\n\tcte.materno,\n\tev.estado,\n\tev.ciudad,\n\tev.cp,\n\tev.calle,\n\tev.numeroext,\n\tev.numeroint,\n\tev.colonia,\n\tp.descripcion,\n\tCONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(TRIM(CONCAT_WS(' ',\n             IFNULL(ev.numeroext,''),IFNULL(ev.calle,''),IFNULL(ev.numeroint,''),\n             IFNULL(ev.colonia,''),IFNULL(ev.cp,''),IFNULL(ev.ciudad,''),IFNULL(ev.estado,'')\n           )),' ','+')) AS maps_url,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      IF(IFNULL(ev.calle,'')='','', CONCAT('C.',ev.calle)),\n      IFNULL(CONCAT('No.',ev.numeroext),''),\n      IFNULL(CONCAT('Int.',ev.numeroint),''),\n      IFNULL(ev.colonia,''), IFNULL(CONCAT('C.P.',ev.cp),''),\n      IFNULL(ev.ciudad,''), IFNULL(ev.estado,'')\n    ))) AS direccion,\n\tsolicitudes.idsolicitud AS idsolicitud,\n\tsolicitudes.esnimei AS noserie,\n\tsolicitudes.simcard as simcard,\n\tss.chip,\n\tev.lat,\n\tev.lng,\n\tsolicitudes.dn AS dn,\n\tsolicitudes.dnpreferido AS dnpreferido,\n\tsolicitudes.cuenta AS cuenta,\n\tsolicitudes.contrato AS contrato,\n\tsolicitudes.contratoportal AS contratoportal,\n\tsolicitudes.plazopendiente AS plazopendiente,\n\tsolicitudes.Factura AS factura,\n\tsolicitudes.fechavenci AS fechavenci,\n\tsolicitudes.ciclo AS ciclo,\n\tsolicitudes.renta AS renta,\n\tsolicitudes.ine,\n\tsolicitudes.cartaburocredito,\n\tsolicitudes.polizaseguro,\n\tsolicitudes.contratodocto\nFROM\n\tsolicitudes AS solicitudes\n\tLEFT OUTER JOIN clientes AS cte ON cte.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp AS ev ON ev.idsolicitud = solicitudes.idsolicitud\n\tLEFT OUTER JOIN productos AS p ON p.idproducto = solicitudes.idproducto\n\tleft join tiposventa AS t on solicitudes.idtipoventa=t.idtipoventa\n\tleft join gtiposventa as g on t.idgtipoventa=g.idgtipoventa\n\tLEFT OUTER JOIN (SELECT\n\tss.idsolicitud,\n\tMAX(CASE WHEN pr.clasif = 'Equipo' THEN ss.esnimei END) AS equipo,\n\tMAX(CASE WHEN pr.clasif = 'Chip'   THEN ss.esnimei END) AS chip\nFROM\n\tseriessolicitadas AS ss\n\tINNER JOIN compras AS cp ON cp.noserie = ss.esnimei \n\tINNER JOIN productos AS pr ON pr.codigoIUSA = cp.codigoproducto\n\t\nGROUP BY\n\tss.idsolicitud\n) AS ss ON ss.idsolicitud = solicitudes.idsolicitud\nwhere solicitudes.idtienda=146 and g.idggtipoventa=:session.idggtipoventa and if(solicitudes.usuario=':session.UserID',true,if(':session.Label'='MESADECONTROL' OR ':session.Label'='VALIDADOR',true,false))\nORDER BY\n\tsolicitudes.idsolicitud DESC\n",
+	"sql": "SELECT\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tsolicitudes.estatusentrega,\n\tcte.nombre,\n\tcte.paterno,\n\tcte.materno,\n\tcte.nombre_completo,\n\tev.estado,\n\tev.ciudad,\n\tev.cp,\n\tev.calle,\n\tev.numeroext,\n\tev.numeroint,\n\tev.colonia,\n\tp.descripcion,\n\tCONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(TRIM(CONCAT_WS(' ',\n             IFNULL(ev.numeroext,''),IFNULL(ev.calle,''),IFNULL(ev.numeroint,''),\n             IFNULL(ev.colonia,''),IFNULL(ev.cp,''),IFNULL(ev.ciudad,''),IFNULL(ev.estado,'')\n           )),' ','+')) AS maps_url,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      IF(IFNULL(ev.calle,'')='','', CONCAT('C.',ev.calle)),\n      IFNULL(CONCAT('No.',ev.numeroext),''),\n      IFNULL(CONCAT('Int.',ev.numeroint),''),\n      IFNULL(ev.colonia,''), IFNULL(CONCAT('C.P.',ev.cp),''),\n      IFNULL(ev.ciudad,''), IFNULL(ev.estado,'')\n    ))) AS direccion,\n\tsolicitudes.idsolicitud AS idsolicitud,\n\tsolicitudes.esnimei AS noserie,\n\tsolicitudes.simcard as simcard,\n\tss.chip,\n\tev.lat,\n\tev.lng,\n\tsolicitudes.dn AS dn,\n\tsolicitudes.dnpreferido AS dnpreferido,\n\tsolicitudes.cuenta AS cuenta,\n\tsolicitudes.contrato AS contrato,\n\tsolicitudes.contratoportal AS contratoportal,\n\tsolicitudes.plazopendiente AS plazopendiente,\n\tsolicitudes.Factura AS factura,\n\tsolicitudes.fechavenci AS fechavenci,\n\tsolicitudes.ciclo AS ciclo,\n\tsolicitudes.renta AS renta,\n\tsolicitudes.ine,\n\tsolicitudes.cartaburocredito,\n\tsolicitudes.polizaseguro,\n\tsolicitudes.contratodocto\nFROM\n\tsolicitudes AS solicitudes\n\tLEFT OUTER JOIN clientes AS cte ON cte.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp AS ev ON ev.idsolicitud = solicitudes.idsolicitud\n\tLEFT OUTER JOIN productos AS p ON p.idproducto = solicitudes.idproducto\n\tleft join tiposventa AS t on solicitudes.idtipoventa=t.idtipoventa\n\tleft join gtiposventa as g on t.idgtipoventa=g.idgtipoventa\n\tLEFT OUTER JOIN (SELECT\n\tss.idsolicitud,\n\tMAX(CASE WHEN pr.clasif = 'Equipo' THEN ss.esnimei END) AS equipo,\n\tMAX(CASE WHEN pr.clasif = 'Chip'   THEN ss.esnimei END) AS chip\nFROM\n\tseriessolicitadas AS ss\n\tINNER JOIN compras AS cp ON cp.noserie = ss.esnimei \n\tINNER JOIN productos AS pr ON pr.codigoIUSA = cp.codigoproducto\n\t\nGROUP BY\n\tss.idsolicitud\n) AS ss ON ss.idsolicitud = solicitudes.idsolicitud\nwhere solicitudes.idtienda=146 and g.idggtipoventa=:session.idggtipoventa and if(solicitudes.usuario=':session.UserID',true,if(':session.Label'='MESADECONTROL' OR ':session.Label'='VALIDADOR',true,false))\nORDER BY\n\tsolicitudes.idsolicitud DESC\n",
 	"connId": "conn",
 	"originalTable": "solicitudes",
 	"name": "solicitudes",
@@ -35,7 +35,7 @@
 		{
 			"name": "idsolicitud",
 			"sqlExpression": "solicitudes.idsolicitud",
-			"index": 43,
+			"index": 44,
 			"strField": "idsolicitud",
 			"type": 3,
 			"autoinc": true,
@@ -816,7 +816,7 @@
 		{
 			"name": "estado",
 			"sqlExpression": "ev.estado",
-			"index": 33,
+			"index": 34,
 			"strField": "estado",
 			"type": 200,
 			"viewFormats": [
@@ -835,7 +835,7 @@
 		{
 			"name": "ciudad",
 			"sqlExpression": "ev.ciudad",
-			"index": 34,
+			"index": 35,
 			"strField": "ciudad",
 			"type": 200,
 			"viewFormats": [
@@ -852,7 +852,7 @@
 		{
 			"name": "cp",
 			"sqlExpression": "ev.cp",
-			"index": 35,
+			"index": 36,
 			"strField": "cp",
 			"type": 200,
 			"viewFormats": [
@@ -869,7 +869,7 @@
 		{
 			"name": "calle",
 			"sqlExpression": "ev.calle",
-			"index": 36,
+			"index": 37,
 			"strField": "calle",
 			"type": 200,
 			"viewFormats": [
@@ -886,7 +886,7 @@
 		{
 			"name": "numeroext",
 			"sqlExpression": "ev.numeroext",
-			"index": 37,
+			"index": 38,
 			"strField": "numeroext",
 			"type": 200,
 			"viewFormats": [
@@ -903,7 +903,7 @@
 		{
 			"name": "numeroint",
 			"sqlExpression": "ev.numeroint",
-			"index": 38,
+			"index": 39,
 			"strField": "numeroint",
 			"type": 200,
 			"viewFormats": [
@@ -920,7 +920,7 @@
 		{
 			"name": "colonia",
 			"sqlExpression": "ev.colonia",
-			"index": 39,
+			"index": 40,
 			"strField": "colonia",
 			"type": 200,
 			"viewFormats": [
@@ -937,7 +937,7 @@
 		{
 			"name": "descripcion",
 			"sqlExpression": "p.descripcion",
-			"index": 40,
+			"index": 41,
 			"strField": "descripcion",
 			"type": 200,
 			"viewFormats": [
@@ -956,7 +956,7 @@
 		{
 			"name": "maps_url",
 			"sqlExpression": "CONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(TRIM(CONCAT_WS(' ',\n             IFNULL(ev.numeroext,''),IFNULL(ev.calle,''),IFNULL(ev.numeroint,''),\n             IFNULL(ev.colonia,''),IFNULL(ev.cp,''),IFNULL(ev.ciudad,''),IFNULL(ev.estado,'')\n           )),' ','+'))",
-			"index": 41,
+			"index": 42,
 			"strField": "maps_url",
 			"type": 200,
 			"viewFormats": [
@@ -982,7 +982,7 @@
 		{
 			"name": "direccion",
 			"sqlExpression": "CONCAT(TRIM(CONCAT_WS(' ',\n      IF(IFNULL(ev.calle,'')='','', CONCAT('C.',ev.calle)),\n      IFNULL(CONCAT('No.',ev.numeroext),''),\n      IFNULL(CONCAT('Int.',ev.numeroint),''),\n      IFNULL(ev.colonia,''), IFNULL(CONCAT('C.P.',ev.cp),''),\n      IFNULL(ev.ciudad,''), IFNULL(ev.estado,'')\n    )))",
-			"index": 42,
+			"index": 43,
 			"strField": "direccion",
 			"type": 200,
 			"viewFormats": [
@@ -1056,7 +1056,7 @@
 		{
 			"name": "chip",
 			"sqlExpression": "ss.chip",
-			"index": 46,
+			"index": 47,
 			"strField": "chip",
 			"type": 200,
 			"viewFormats": [
@@ -1075,7 +1075,7 @@
 		{
 			"name": "lat",
 			"sqlExpression": "ev.lat",
-			"index": 47,
+			"index": 48,
 			"strField": "lat",
 			"type": 14,
 			"viewFormats": [
@@ -1094,7 +1094,7 @@
 		{
 			"name": "lng",
 			"sqlExpression": "ev.lng",
-			"index": 48,
+			"index": 49,
 			"strField": "lng",
 			"type": 14,
 			"viewFormats": [
@@ -1111,7 +1111,7 @@
 		{
 			"name": "noserie",
 			"sqlExpression": "solicitudes.esnimei",
-			"index": 44,
+			"index": 45,
 			"strField": "esnimei",
 			"type": 200,
 			"viewFormats": [
@@ -1130,7 +1130,7 @@
 		{
 			"name": "dn",
 			"sqlExpression": "solicitudes.dn",
-			"index": 49,
+			"index": 50,
 			"strField": "dn",
 			"type": 200,
 			"viewFormats": [
@@ -1151,7 +1151,7 @@
 		{
 			"name": "cuenta",
 			"sqlExpression": "solicitudes.cuenta",
-			"index": 51,
+			"index": 52,
 			"strField": "cuenta",
 			"type": 200,
 			"viewFormats": [
@@ -1171,7 +1171,7 @@
 		{
 			"name": "contrato",
 			"sqlExpression": "solicitudes.contrato",
-			"index": 52,
+			"index": 53,
 			"strField": "contrato",
 			"type": 200,
 			"viewFormats": [
@@ -1190,7 +1190,7 @@
 		{
 			"name": "contratoportal",
 			"sqlExpression": "solicitudes.contratoportal",
-			"index": 53,
+			"index": 54,
 			"strField": "contratoportal",
 			"type": 200,
 			"viewFormats": [
@@ -1207,7 +1207,7 @@
 		{
 			"name": "plazopendiente",
 			"sqlExpression": "solicitudes.plazopendiente",
-			"index": 54,
+			"index": 55,
 			"strField": "plazopendiente",
 			"type": 2,
 			"viewFormats": [
@@ -1226,7 +1226,7 @@
 		{
 			"name": "factura",
 			"sqlExpression": "solicitudes.Factura",
-			"index": 55,
+			"index": 56,
 			"strField": "Factura",
 			"type": 200,
 			"viewFormats": [
@@ -1245,7 +1245,7 @@
 		{
 			"name": "fechavenci",
 			"sqlExpression": "solicitudes.fechavenci",
-			"index": 56,
+			"index": 57,
 			"strField": "fechavenci",
 			"type": 7,
 			"viewFormats": [
@@ -1264,7 +1264,7 @@
 		{
 			"name": "ciclo",
 			"sqlExpression": "solicitudes.ciclo",
-			"index": 57,
+			"index": 58,
 			"strField": "ciclo",
 			"type": 3,
 			"viewFormats": [
@@ -1291,7 +1291,7 @@
 		{
 			"name": "dnpreferido",
 			"sqlExpression": "solicitudes.dnpreferido",
-			"index": 50,
+			"index": 51,
 			"strField": "dnpreferido",
 			"type": 200,
 			"viewFormats": [
@@ -1310,7 +1310,7 @@
 		{
 			"name": "simcard",
 			"sqlExpression": "solicitudes.simcard",
-			"index": 45,
+			"index": 46,
 			"strField": "simcard",
 			"type": 200,
 			"viewFormats": [
@@ -1327,7 +1327,7 @@
 		{
 			"name": "renta",
 			"sqlExpression": "solicitudes.renta",
-			"index": 58,
+			"index": 59,
 			"strField": "renta",
 			"type": 14,
 			"viewFormats": [
@@ -1348,7 +1348,7 @@
 		{
 			"name": "ine",
 			"sqlExpression": "solicitudes.ine",
-			"index": 59,
+			"index": 60,
 			"strField": "ine",
 			"type": 200,
 			"viewFormats": [
@@ -1377,7 +1377,7 @@
 		{
 			"name": "cartaburocredito",
 			"sqlExpression": "solicitudes.cartaburocredito",
-			"index": 60,
+			"index": 61,
 			"strField": "cartaburocredito",
 			"type": 200,
 			"viewFormats": [
@@ -1397,7 +1397,7 @@
 		{
 			"name": "polizaseguro",
 			"sqlExpression": "solicitudes.polizaseguro",
-			"index": 61,
+			"index": 62,
 			"strField": "polizaseguro",
 			"type": 200,
 			"viewFormats": [
@@ -1417,7 +1417,7 @@
 		{
 			"name": "contratodocto",
 			"sqlExpression": "solicitudes.contratodocto",
-			"index": 62,
+			"index": 63,
 			"strField": "contratodocto",
 			"type": 200,
 			"viewFormats": [
@@ -1432,6 +1432,23 @@
 				"Spanish": "Contrato"
 			},
 			"tableName": ""
+		},
+		{
+			"name": "nombre_completo",
+			"sqlExpression": "cte.nombre_completo",
+			"index": 33,
+			"strField": "nombre_completo",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Nombre Completo"
+			},
+			"tableName": "clientes"
 		}
 	],
 	"whereTabs": [
@@ -1509,6 +1526,11 @@
 			"eventId": "EVENT_PROCESSVALUES_ADD",
 			"pageType": "add",
 			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n$values['idtienda']=$_SESSION['Tienda'];"
+		},
+		{
+			"eventId": "EVENT_BEFORESHOW_PRINT",
+			"pageType": "print",
+			"code": "// solicitudes -> Events -> BeforeShowPrint\r\nfunction BeforeShowPrint(&$xt, &$templatefile, &$pageObject)\r\n{\r\n    // Si abres por clave: solicitudes_print.php?page=print&editid1=123\r\n    $idsol = postvalue(\"editid1\"); // también podría venir por GET\r\n\r\n    // Defaults de cabecera (ajusta)\r\n    $xt->assign(\"empresa\", \"Tu Empresa S.A. de C.V.\");\r\n    $xt->assign(\"telefono_soporte\", \"999-123-4567\");\r\n    $xt->assign(\"correo_soporte\", \"soporte@tuempresa.com\");\r\n    $xt->assign(\"fecha_hoy\", strftime(\"%d/%m/%Y\"));\r\n\r\n    // Si imprimes 1 registro, puedes cargar datos adicionales (cliente/plan) aquí\r\n    if ($idsol != \"\") {\r\n        global $conn;\r\n        $idsol = (int)$idsol;\r\n\r\n        // Trae campos faltantes (ajusta nombres/campos según tu esquema)\r\n        $sql = \"\r\n          SELECT s.idsolicitud, s.rfc, s.dn, s.idplan, p.plan AS plan_nombre,\r\n                 c.nombre, c.paterno, c.materno\r\n          FROM solicitudes s\r\n          LEFT JOIN clientes c ON c.idcliente = s.idcliente\r\n          LEFT JOIN planes   p ON p.idplan = s.idplan\r\n          WHERE s.idsolicitud = \".$idsol;\r\n\r\n        $rs = db_query($sql, $conn);\r\n        if ($rs && ($data = db_fetch_array($rs))) {\r\n            $xt->assign(\"idsolicitud\", $data[\"idsolicitud\"]);\r\n            $xt->assign(\"rfc\", $data[\"rfc\"]);\r\n            $xt->assign(\"dn\", $data[\"dn\"]);\r\n            $xt->assign(\"plan\", $data[\"plan_nombre\"] ? $data[\"plan_nombre\"] : $data[\"idplan\"]);\r\n            $xt->assign(\"nombre\", $data[\"nombre\"]);\r\n            $xt->assign(\"paterno\", $data[\"paterno\"]);\r\n            $xt->assign(\"materno\", $data[\"materno\"]);\r\n        } else {\r\n            // fallback si no encontró datos\r\n            $xt->assign(\"idsolicitud\", $idsol);\r\n        }\r\n    }\r\n}\r\n"
 		}
 	],
 	"dbTableInfo": {
@@ -3211,7 +3233,8 @@
 								"export_field13",
 								"export_field14",
 								"export_field15",
-								"export_field16"
+								"export_field16",
+								"export_field17"
 							]
 						}
 					},
@@ -3326,6 +3349,10 @@
 				},
 				"export_field16": {
 					"field": "contratodocto",
+					"type": "export_field"
+				},
+				"export_field17": {
+					"field": "nombre_completo",
 					"type": "export_field"
 				}
 			},
@@ -3606,12 +3633,9 @@
 						"c3": {
 							"model": "c3",
 							"items": [
-								"integrated_edit_field31",
-								"integrated_edit_field32",
-								"integrated_edit_field33",
-								"integrated_edit_field34",
-								"integrated_edit_field35"
-							]
+								"section"
+							],
+							"align": "center"
 						}
 					},
 					"deferredItems": [],
@@ -3812,7 +3836,7 @@
 						"c3": {
 							"model": "c1",
 							"items": [
-								"integrated_edit_field30"
+								"integrated_edit_field31"
 							]
 						},
 						"c5": {
@@ -3891,7 +3915,9 @@
 						},
 						"c22": {
 							"model": "c1",
-							"items": []
+							"items": [
+								"integrated_edit_field30"
+							]
 						}
 					},
 					"deferredItems": [],
@@ -4058,6 +4084,73 @@
 						"c26": {
 							"model": "c1",
 							"items": []
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				},
+				"section3": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1",
+									"colspan": 2
+								},
+								{
+									"cell": "c"
+								}
+							],
+							"section": ""
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c2"
+								},
+								{
+									"cell": "c4"
+								},
+								{
+									"cell": "c3"
+								}
+							]
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field32",
+								"integrated_edit_field33"
+							]
+						},
+						"c": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field34",
+								"integrated_edit_field35"
+							]
+						},
+						"c2": {
+							"model": "c1",
+							"items": [
+								"custom_button1"
+							]
+						},
+						"c3": {
+							"model": "c1",
+							"items": []
+						},
+						"c4": {
+							"model": "c1",
+							"items": [
+								"custom_button"
+							]
 						}
 					},
 					"deferredItems": [],
@@ -4423,6 +4516,36 @@
 					"type": "integrated_edit_field",
 					"orientation": 0,
 					"updateOnEdit": false
+				},
+				"section": {
+					"type": "section",
+					"title": {
+						"text": "<i class=\"far fa-address-card\" style=\"font-size:1.5em; color:#fff;\"></i> Carga documental",
+						"type": 0
+					},
+					"location": "section3",
+					"bsStyle": "default",
+					"panelType": 3,
+					"initiallyClosed": true
+				},
+				"custom_button": {
+					"type": "custom_button",
+					"eventGid": 2369441068,
+					"label": {
+						"text": "Button2",
+						"type": 0
+					},
+					"icon": {},
+					"customCSS": "/* Put  your custom CSS code here */\n@page { size: A4; margin: 22mm 18mm 20mm 18mm; }\nbody { font-family: Arial, Helvetica, sans-serif; color:#111; }\n.letter { font-size: 12pt; }\n.hdr { display:flex; align-items:center; justify-content:space-between; gap:16px; }\n.hdr img { height:38px; }\n.hdr h2 { flex:1; text-align:center; margin:0; font-size:14pt; font-weight:700; }\n.date { white-space:nowrap; font-weight:600; }\n.hr { border:0; border-top:1px solid #cfcfcf; margin:14px 0 22px; }\nh1 { text-align:center; font-size:16pt; margin:12px 0 16px; }\np { margin: 0 0 10px; line-height:1.55; }\n.just { text-align: justify; text-justify: inter-word; }\n"
+				},
+				"custom_button1": {
+					"type": "custom_button",
+					"eventGid": 4198366650,
+					"label": {
+						"text": "Button3",
+						"type": 0
+					},
+					"icon": {}
 				}
 			},
 			"dbProps": {},
@@ -5143,7 +5266,8 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"menu"
+								"menu",
+								"search_panel"
 							]
 						}
 					},
@@ -5210,6 +5334,9 @@
 									"cell": "headcell_field2"
 								},
 								{
+									"cell": "headcell_field19"
+								},
+								{
 									"cell": "headcell_field3"
 								},
 								{
@@ -5263,6 +5390,9 @@
 									"cell": "cell_field2"
 								},
 								{
+									"cell": "cell_field10"
+								},
+								{
 									"cell": "headcell_field5"
 								},
 								{
@@ -5307,7 +5437,7 @@
 							"cells": [
 								{
 									"cell": "cell_dpreview",
-									"colspan": 16
+									"colspan": 17
 								}
 							],
 							"section": "body"
@@ -5322,7 +5452,8 @@
 									"cell": "footcell_checkbox"
 								},
 								{
-									"cell": "footcell_field2"
+									"cell": "footcell_field2",
+									"colspan": 2
 								},
 								{
 									"cell": "headcell_field6",
@@ -5367,17 +5498,13 @@
 					"cells": {
 						"headcell_field2": {
 							"model": "headcell_field",
-							"items": [
-								"simple_grid_field31"
-							],
+							"items": [],
 							"field": "fecha",
 							"columnName": "field"
 						},
 						"cell_field2": {
 							"model": "cell_field",
-							"items": [
-								"simple_grid_field2"
-							],
+							"items": [],
 							"field": "fecha",
 							"columnName": "field"
 						},
@@ -5717,6 +5844,22 @@
 							"items": [],
 							"field": "usuario",
 							"columnName": "field"
+						},
+						"headcell_field19": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field31"
+							],
+							"field": "fecha",
+							"columnName": "field"
+						},
+						"cell_field10": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field2"
+							],
+							"field": "fecha",
+							"columnName": "field"
 						}
 					},
 					"deferredItems": [],
@@ -5753,6 +5896,8 @@
 						"delete_selected",
 						"-10",
 						"advsearch_link",
+						"show_search_panel",
+						"hide_search_panel",
 						"-9",
 						"export"
 					]
@@ -5973,7 +6118,10 @@
 				"print_panel": {
 					"type": "print_panel",
 					"items": [
-						"print_details"
+						"print_scope",
+						"print_details",
+						"print_records",
+						"print_button"
 					]
 				},
 				"print_details": {
@@ -6042,6 +6190,31 @@
 				"grid_field_label7": {
 					"type": "grid_field_label",
 					"field": "usuario"
+				},
+				"print_scope": {
+					"type": "print_scope"
+				},
+				"print_button": {
+					"type": "print_button"
+				},
+				"print_records": {
+					"type": "print_records"
+				},
+				"search_panel": {
+					"type": "search_panel",
+					"items": [
+						"search_panel_field"
+					]
+				},
+				"show_search_panel": {
+					"type": "show_search_panel"
+				},
+				"hide_search_panel": {
+					"type": "hide_search_panel"
+				},
+				"search_panel_field": {
+					"field": "nombre_completo",
+					"type": "search_panel_field"
 				}
 			},
 			"dbProps": {},
@@ -6063,7 +6236,7 @@
 			"id": "print",
 			"type": "print",
 			"layoutId": "basic",
-			"disabled": true,
+			"disabled": false,
 			"default": 0,
 			"forms": {
 				"above-grid": {
@@ -6081,9 +6254,7 @@
 					"cells": {
 						"c1": {
 							"model": "c1",
-							"items": [
-								"print_pages"
-							]
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -6116,6 +6287,14 @@
 						{
 							"cells": [
 								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						},
+						{
+							"cells": [
+								{
 									"cell": "c2"
 								}
 							],
@@ -6126,8 +6305,13 @@
 						"c2": {
 							"model": "c2",
 							"items": [
-								"print_header",
-								"print_subheader"
+								"text"
+							]
+						},
+						"c1": {
+							"model": "c1",
+							"items": [
+								"print_pdf"
 							]
 						}
 					},
@@ -6144,30 +6328,12 @@
 								}
 							],
 							"section": ""
-						},
-						{
-							"cells": [
-								{
-									"cell": "c2"
-								}
-							],
-							"section": ""
 						}
 					],
 					"cells": {
 						"c1": {
 							"model": "c1",
-							"items": [
-								"simple_grid_field",
-								"simple_grid_field1",
-								"simple_grid_field2"
-							]
-						},
-						"c2": {
-							"model": "c2",
-							"items": [
-								"details_preview"
-							]
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -6175,32 +6341,19 @@
 				}
 			},
 			"items": {
-				"print_header": {
-					"type": "print_header"
+				"text": {
+					"type": "text",
+					"label": {
+						"text": "<style>\n  @page { size: A4; margin: 20mm 18mm 22mm 18mm; }\n  body  { font-family: Arial, Helvetica, sans-serif; font-size: 12pt; color:#111; }\n  .wrap { max-width: 700px; margin: 0 auto; }\n  .hdr  { display:flex; align-items:center; gap:16px; margin-bottom: 10px; }\n  .logo { height: 48px; }\n  .ttl  { font-size: 18pt; font-weight:700; color:#222; }\n  .meta { font-size: 10.5pt; color:#333; margin: 10px 0 20px; }\n  .meta div { margin:2px 0; }\n  .body { text-align: justify; text-justify: inter-word; line-height: 1.5; }\n  .body p { margin: 0 0 10pt; }\n  .sig  { margin-top: 16pt; }\n  @media print { .hide-print { display:none !important; } }\n</style>\n\n<div class=\"wrap\">\n  <div class=\"hdr\">\n    <!-- cambia la ruta del logo o quita la img si no usas logo -->\n    <img class=\"logo\" src=\"images/logo.png\" alt=\"\">\n    <div class=\"ttl\">Carta de Bienvenida</div>\n  </div>\n\n  <div class=\"meta\">\n    <div><b>Cliente:</b> {$nombre} {$paterno} {$materno}</div>\n    <div><b>RFC:</b> {$rfc}</div>\n    <div><b>DN:</b> {$dn}</div>\n    <div><b>Plan:</b> {$plan}</div>\n    <div><b>Fecha:</b> {$fecha_hoy}</div>\n    <div><b>Solicitud #:</b> {$idsolicitud}</div>\n  </div>\n\n  <div class=\"body\">\n    <p>Estimado(a) {$nombre} {$paterno} {$materno},</p>\n    <p>\n      ¡Bienvenido(a) a <b>{$empresa}</b>! Esta carta confirma su contratación\n      del servicio <b>{$plan}</b> con número <b>{$dn}</b>. A partir de hoy, tendrá\n      acceso a los beneficios descritos en su contrato.\n    </p>\n    <p>\n      Ante cualquier duda, contáctenos al {$telefono_soporte} o vía correo {$correo_soporte}.\n      Nos encantará atenderle.\n    </p>\n    <p class=\"sig\">\n      Atentamente,<br>\n      <b>{$empresa}</b>\n    </p>\n  </div>\n\n  <!-- Botón opcional para probar desde la print page -->\n  <div class=\"hide-print\" style=\"margin-top:12px\">\n    <button onclick=\"window.print()\">Imprimir / PDF</button>\n  </div>\n</div>\n",
+						"type": 0
+					},
+					"editedByRte": false
 				},
-				"print_subheader": {
-					"type": "print_subheader"
-				},
-				"print_pages": {
-					"type": "print_pages"
-				},
-				"simple_grid_field": {
-					"field": "direccion",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field1": {
-					"field": "lat",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field2": {
-					"field": "lng",
-					"type": "simple_grid_field"
-				},
-				"details_preview": {
-					"type": "details_preview",
-					"table": 3847630651,
-					"items": [],
-					"popup": false
+				"print_pdf": {
+					"type": "print_pdf",
+					"targetPages": [],
+					"splitModes": [],
+					"scopes": []
 				}
 			},
 			"dbProps": {},
@@ -6323,7 +6476,8 @@
 								"integrated_search_field12",
 								"integrated_search_field13",
 								"integrated_search_field14",
-								"integrated_search_field15"
+								"integrated_search_field15",
+								"integrated_search_field16"
 							]
 						}
 					},
@@ -6424,6 +6578,11 @@
 				},
 				"integrated_search_field15": {
 					"field": "contratodocto",
+					"type": "integrated_search_field",
+					"orientation": 0
+				},
+				"integrated_search_field16": {
+					"field": "nombre_completo",
 					"type": "integrated_search_field",
 					"orientation": 0
 				}
@@ -6588,7 +6747,8 @@
 								"simple_grid_field57",
 								"simple_grid_field58",
 								"simple_grid_field59",
-								"simple_grid_field60"
+								"simple_grid_field60",
+								"simple_grid_field61"
 							]
 						}
 					},
@@ -6846,6 +7006,10 @@
 				"simple_grid_field60": {
 					"field": "contratodocto",
 					"type": "simple_grid_field"
+				},
+				"simple_grid_field61": {
+					"field": "nombre_completo",
+					"type": "simple_grid_field"
 				}
 			},
 			"dbProps": {},
@@ -7007,7 +7171,8 @@
 								"simple_grid_field57",
 								"simple_grid_field58",
 								"simple_grid_field59",
-								"simple_grid_field60"
+								"simple_grid_field60",
+								"simple_grid_field61"
 							]
 						}
 					},
@@ -7262,6 +7427,10 @@
 				"simple_grid_field60": {
 					"field": "contratodocto",
 					"type": "simple_grid_field"
+				},
+				"simple_grid_field61": {
+					"field": "nombre_completo",
+					"type": "simple_grid_field"
 				}
 			},
 			"dbProps": {},
@@ -7450,7 +7619,8 @@
 					"type": "edit_message"
 				},
 				"edit_save": {
-					"type": "edit_save"
+					"type": "edit_save",
+					"icon": {}
 				},
 				"edit_back_list": {
 					"type": "edit_back_list"
