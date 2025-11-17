@@ -5334,6 +5334,9 @@
 									"cell": "headcell_field2"
 								},
 								{
+									"cell": "headcell_field22"
+								},
+								{
 									"cell": "headcell_field19"
 								},
 								{
@@ -5374,6 +5377,12 @@
 								},
 								{
 									"cell": "headcell_field18"
+								},
+								{
+									"cell": "headcell_field20"
+								},
+								{
+									"cell": "headcell_field21"
 								}
 							]
 						},
@@ -5388,6 +5397,9 @@
 								},
 								{
 									"cell": "cell_field2"
+								},
+								{
+									"cell": "cell_field14"
 								},
 								{
 									"cell": "cell_field10"
@@ -5430,6 +5442,12 @@
 								},
 								{
 									"cell": "cell_field9"
+								},
+								{
+									"cell": "cell_field11"
+								},
+								{
+									"cell": "cell_field13"
 								}
 							]
 						},
@@ -5437,7 +5455,7 @@
 							"cells": [
 								{
 									"cell": "cell_dpreview",
-									"colspan": 17
+									"colspan": 20
 								}
 							],
 							"section": "body"
@@ -5453,7 +5471,7 @@
 								},
 								{
 									"cell": "footcell_field2",
-									"colspan": 2
+									"colspan": 3
 								},
 								{
 									"cell": "headcell_field6",
@@ -5491,6 +5509,12 @@
 								},
 								{
 									"cell": "footcell_field9"
+								},
+								{
+									"cell": "footcell_field10"
+								},
+								{
+									"cell": "footcell_field11"
 								}
 							]
 						}
@@ -5504,7 +5528,9 @@
 						},
 						"cell_field2": {
 							"model": "cell_field",
-							"items": [],
+							"items": [
+								"custom_button"
+							],
 							"field": "fecha",
 							"columnName": "field"
 						},
@@ -5858,6 +5884,58 @@
 							"items": [
 								"simple_grid_field2"
 							],
+							"field": "fecha",
+							"columnName": "field"
+						},
+						"headcell_field20": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label8"
+							],
+							"field": "idsolicitud"
+						},
+						"cell_field11": {
+							"model": "cell_field",
+							"items": [
+								"grid_field8"
+							],
+							"field": "idsolicitud"
+						},
+						"footcell_field10": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "idsolicitud"
+						},
+						"headcell_field21": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label9"
+							],
+							"field": "nombre_completo"
+						},
+						"cell_field13": {
+							"model": "cell_field",
+							"items": [
+								"grid_field9"
+							],
+							"field": "nombre_completo"
+						},
+						"footcell_field11": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "nombre_completo"
+						},
+						"cell_field14": {
+							"model": "cell_field",
+							"items": [
+								"custom_button1"
+							],
+							"field": "fecha",
+							"columnName": "field"
+						},
+						"headcell_field22": {
+							"model": "headcell_field",
+							"items": [],
 							"field": "fecha",
 							"columnName": "field"
 						}
@@ -6215,6 +6293,44 @@
 				"search_panel_field": {
 					"field": "nombre_completo",
 					"type": "search_panel_field"
+				},
+				"grid_field8": {
+					"field": "idsolicitud",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label8": {
+					"type": "grid_field_label",
+					"field": "idsolicitud"
+				},
+				"grid_field9": {
+					"field": "nombre_completo",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label9": {
+					"type": "grid_field_label",
+					"field": "nombre_completo"
+				},
+				"custom_button": {
+					"type": "custom_button",
+					"eventGid": 1683580953,
+					"label": {
+						"text": "Button4",
+						"type": 0
+					},
+					"icon": {}
+				},
+				"custom_button1": {
+					"type": "custom_button",
+					"eventGid": 324950159,
+					"label": {
+						"text": "Button5",
+						"type": 0
+					},
+					"icon": {}
 				}
 			},
 			"dbProps": {},
@@ -6254,7 +6370,9 @@
 					"cells": {
 						"c1": {
 							"model": "c1",
-							"items": []
+							"items": [
+								"view_pdf"
+							]
 						}
 					},
 					"deferredItems": [],
@@ -6351,6 +6469,12 @@
 				},
 				"print_pdf": {
 					"type": "print_pdf",
+					"targetPages": [],
+					"splitModes": [],
+					"scopes": []
+				},
+				"view_pdf": {
+					"type": "view_pdf",
 					"targetPages": [],
 					"splitModes": [],
 					"scopes": []
