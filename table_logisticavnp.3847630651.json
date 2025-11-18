@@ -70,6 +70,7 @@
 			"editFormats": [
 				{
 					"format": "Readonly",
+					"defaultValue": "now();",
 					"dateShowTime": true
 				}
 			],

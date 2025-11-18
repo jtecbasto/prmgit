@@ -7,7 +7,7 @@
 			"asc": false
 		}
 	],
-	"sql": "SELECT\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tsolicitudes.estatusentrega,\n\tcte.nombre,\n\tcte.paterno,\n\tcte.materno,\n\tcte.nombre_completo,\n\tev.estado,\n\tev.ciudad,\n\tev.cp,\n\tev.calle,\n\tev.numeroext,\n\tev.numeroint,\n\tev.colonia,\n\tp.descripcion,\n\tCONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(TRIM(CONCAT_WS(' ',\n             IFNULL(ev.numeroext,''),IFNULL(ev.calle,''),IFNULL(ev.numeroint,''),\n             IFNULL(ev.colonia,''),IFNULL(ev.cp,''),IFNULL(ev.ciudad,''),IFNULL(ev.estado,'')\n           )),' ','+')) AS maps_url,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      IF(IFNULL(ev.calle,'')='','', CONCAT('C.',ev.calle)),\n      IFNULL(CONCAT('No.',ev.numeroext),''),\n      IFNULL(CONCAT('Int.',ev.numeroint),''),\n      IFNULL(ev.colonia,''), IFNULL(CONCAT('C.P.',ev.cp),''),\n      IFNULL(ev.ciudad,''), IFNULL(ev.estado,'')\n    ))) AS direccion,\n\tsolicitudes.idsolicitud AS idsolicitud,\n\tsolicitudes.esnimei AS noserie,\n\tsolicitudes.simcard as simcard,\n\tss.chip,\n\tev.lat,\n\tev.lng,\n\tsolicitudes.dn AS dn,\n\tsolicitudes.dnpreferido AS dnpreferido,\n\tsolicitudes.cuenta AS cuenta,\n\tsolicitudes.contrato AS contrato,\n\tsolicitudes.contratoportal AS contratoportal,\n\tsolicitudes.plazopendiente AS plazopendiente,\n\tsolicitudes.Factura AS factura,\n\tsolicitudes.fechavenci AS fechavenci,\n\tsolicitudes.ciclo AS ciclo,\n\tsolicitudes.renta AS renta,\n\tsolicitudes.ine,\n\tsolicitudes.cartaburocredito,\n\tsolicitudes.polizaseguro,\n\tsolicitudes.contratodocto\nFROM\n\tsolicitudes AS solicitudes\n\tLEFT OUTER JOIN clientes AS cte ON cte.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp AS ev ON ev.idsolicitud = solicitudes.idsolicitud\n\tLEFT OUTER JOIN productos AS p ON p.idproducto = solicitudes.idproducto\n\tleft join tiposventa AS t on solicitudes.idtipoventa=t.idtipoventa\n\tleft join gtiposventa as g on t.idgtipoventa=g.idgtipoventa\n\tLEFT OUTER JOIN (SELECT\n\tss.idsolicitud,\n\tMAX(CASE WHEN pr.clasif = 'Equipo' THEN ss.esnimei END) AS equipo,\n\tMAX(CASE WHEN pr.clasif = 'Chip'   THEN ss.esnimei END) AS chip\nFROM\n\tseriessolicitadas AS ss\n\tINNER JOIN compras AS cp ON cp.noserie = ss.esnimei \n\tINNER JOIN productos AS pr ON pr.codigoIUSA = cp.codigoproducto\n\t\nGROUP BY\n\tss.idsolicitud\n) AS ss ON ss.idsolicitud = solicitudes.idsolicitud\nwhere solicitudes.idtienda=146 and g.idggtipoventa=:session.idggtipoventa and if(solicitudes.usuario=':session.UserID',true,if(':session.Label'='MESADECONTROL' OR ':session.Label'='VALIDADOR',true,false))\nORDER BY\n\tsolicitudes.idsolicitud DESC\n",
+	"sql": "SELECT\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tsolicitudes.estatusentrega,\n\tcte.nombre,\n\tcte.paterno,\n\tcte.materno,\n\tcte.nombre_completo,\n\tev.estado,\n\tev.ciudad,\n\tev.cp,\n\tev.calle,\n\tev.numeroext,\n\tev.numeroint,\n\tev.colonia,\n\tp.descripcion,\n\tCONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(TRIM(CONCAT_WS(' ',\n             IFNULL(ev.numeroext,''),IFNULL(ev.calle,''),IFNULL(ev.numeroint,''),\n             IFNULL(ev.colonia,''),IFNULL(ev.cp,''),IFNULL(ev.ciudad,''),IFNULL(ev.estado,'')\n           )),' ','+')) AS maps_url,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      IF(IFNULL(ev.calle,'')='','', CONCAT('C.',ev.calle)),\n      IFNULL(CONCAT('No.',ev.numeroext),''),\n      IFNULL(CONCAT('Int.',ev.numeroint),''),\n      IFNULL(ev.colonia,''), IFNULL(CONCAT('C.P.',ev.cp),''),\n      IFNULL(ev.ciudad,''), IFNULL(ev.estado,'')\n    ))) AS direccion,\n\tsolicitudes.idsolicitud AS idsolicitud,\n\tsolicitudes.esnimei AS noserie,\n\tsolicitudes.simcard as simcard,\n\tss.chip,\n\tev.lat,\n\tev.lng,\n\tsolicitudes.dn AS dn,\n\tsolicitudes.dnpreferido AS dnpreferido,\n\tsolicitudes.cuenta AS cuenta,\n\tsolicitudes.contrato AS contrato,\n\tsolicitudes.contratoportal AS contratoportal,\n\tsolicitudes.plazopendiente AS plazopendiente,\n\tsolicitudes.Factura AS factura,\n\tsolicitudes.fechavenci AS fechavenci,\n\tsolicitudes.ciclo AS ciclo,\n\tsolicitudes.renta AS renta,\n\tsolicitudes.ine,\n\tsolicitudes.cartaburocredito,\n\tsolicitudes.polizaseguro,\n\tsolicitudes.contratodocto,\n\tsolicitudes.contratolog,\n\tsolicitudes.anticipolog\nFROM\n\tsolicitudes AS solicitudes\n\tLEFT OUTER JOIN clientes AS cte ON cte.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp AS ev ON ev.idsolicitud = solicitudes.idsolicitud\n\tLEFT OUTER JOIN productos AS p ON p.idproducto = solicitudes.idproducto\n\tleft join tiposventa AS t on solicitudes.idtipoventa=t.idtipoventa\n\tleft join gtiposventa as g on t.idgtipoventa=g.idgtipoventa\n\tLEFT OUTER JOIN (SELECT\n\tss.idsolicitud,\n\tMAX(CASE WHEN pr.clasif = 'Equipo' THEN ss.esnimei END) AS equipo,\n\tMAX(CASE WHEN pr.clasif = 'Chip'   THEN ss.esnimei END) AS chip\nFROM\n\tseriessolicitadas AS ss\n\tINNER JOIN compras AS cp ON cp.noserie = ss.esnimei \n\tINNER JOIN productos AS pr ON pr.codigoIUSA = cp.codigoproducto\n\t\nGROUP BY\n\tss.idsolicitud\n) AS ss ON ss.idsolicitud = solicitudes.idsolicitud\nwhere solicitudes.idtienda=146 and g.idggtipoventa=:session.idggtipoventa and if(solicitudes.usuario=':session.UserID',true,if(':session.Label'='MESADECONTROL' OR ':session.Label'='VALIDADOR',true,false))\nORDER BY\n\tsolicitudes.idsolicitud DESC\n",
 	"connId": "conn",
 	"originalTable": "solicitudes",
 	"name": "solicitudes",
@@ -1449,6 +1449,48 @@
 				"Spanish": "Nombre Completo"
 			},
 			"tableName": "clientes"
+		},
+		{
+			"name": "contratolog",
+			"sqlExpression": "solicitudes.contratolog",
+			"index": 64,
+			"strField": "contratolog",
+			"type": 2,
+			"viewFormats": [
+				{
+					"format": "Checkbox"
+				}
+			],
+			"editFormats": [
+				{
+					"format": "Checkbox"
+				}
+			],
+			"label": {
+				"Spanish": "Contrato Firma"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "anticipolog",
+			"sqlExpression": "solicitudes.anticipolog",
+			"index": 65,
+			"strField": "anticipolog",
+			"type": 2,
+			"viewFormats": [
+				{
+					"format": "Checkbox"
+				}
+			],
+			"editFormats": [
+				{
+					"format": "Checkbox"
+				}
+			],
+			"label": {
+				"Spanish": "Anticipo"
+			},
+			"tableName": "solicitudes"
 		}
 	],
 	"whereTabs": [
@@ -1465,7 +1507,7 @@
 		{
 			"eventId": "EVENT_BEFOREMOVENEXT_LIST",
 			"pageType": "list",
-			"code": "date_default_timezone_set('America/Mexico_City');\r\n\r\n\r\n$data[\"tienda\"]=$_SESSION[\"Tienda\"];\r\n$data['fechacaptura']=date('Y-m-d H:i:s');\r\n$data[\"almacenatt\"]=$_SESSION[\"Tienda\"];\r\n$data['ventadomicilio'] = 1;\r\n$data['equipoincluido']=1;\r\n$data['tiendamovil']=1;\r\n$data['clasif']=1;\r\n\r\n\r\n\r\n// Coloring por estatus (igual que ya tienes)\r\n$st = (int)$data[\"estatusentrega\"];\r\nswitch ($st) {\r\n  case 2:  $cls = 'table-success'; break;\r\n  case 3:  $cls = 'table-danger';  break;\r\n  default: $cls = 'table-warning';\r\n}\r\nif (!isset($row[\"rowattrs\"])) $row[\"rowattrs\"] = '';\r\n$row[\"rowattrs\"] .= ' class=\"'.$cls.'\"';\r\n\r\nif ($st === 3) {\r\n    $record[\"css\"]                  = 'background:#FF3A30';\r\n    $record['fecha_css']            = 'color:white';\r\n    $record['idcliente_css']        = 'color:white';\r\n    $record['descripcion_css']      = 'color:white';\r\n    $record['estatus_css']          = 'color:white';\r\n    $record['plazo_css']            = 'color:white';\r\n    $record['orden_css']            = 'color:white';\r\n    $record['maps_url_css']         = 'color:white';\r\n    $record['estatusentrega_css']   = 'color:white';\r\n    $record['equipo_css']           = 'color:white';\r\n    $record['chip_css']             = 'color:white';\r\n}\r\n\r\n// PK\r\n// PK\r\n$pk = $data[\"idsolicitud\"];\r\nif (!$pk) return;\r\n\r\n// Elige la página (usa tu lógica real)\r\n$role = strtoupper($_SESSION[\"Label\"] ?? ''); \r\n\r\n// === 2) Elegir página target ===\r\n// === 2) Página destino ===\r\n$targetPage = ($role === 'MESADECONTROL') ? 'edit1' : 'edit';\r\n\r\n// === 3) Base SIEMPRE a \"edit\" para obtener solicitudes_edit.php\r\n$baseHref = GetTableLink(\"solicitudes\", \"edit\"); // => solicitudes_edit.php\r\n\r\n// === 4) Querystring: page=..., editid1=..., menuItemId (si existe)\r\n$qs = [];\r\n$qs[] = \"page=\".$targetPage;\r\n$qs[] = \"editid1=\".$pk;\r\n\r\n// Conserva menuItemId si llegó por GET/POST\r\n$menuItemId = postvalue(\"menuItemId\");\r\nif( strlen($menuItemId) ){\r\n    $qs[] = \"menuItemId=\".rawurlencode($menuItemId);\r\n}\r\n\r\n$href = $baseHref . \"?\" . implode(\"&\", $qs);\r\n\r\n// === 5) Data-attrs que PHPRunner usa para popup/handlers ===\r\n$keys = array(\"idsolicitud\" => $pk);\r\n$keysJson = runner_htmlspecialchars(my_json_encode($keys));\r\n\r\n$attrs  = 'href=\"'.runner_htmlspecialchars($href).'\"';\r\n$attrs .= ' data-href=\"'.runner_htmlspecialchars($href).'\"';\r\n$attrs .= ' data-table=\"'.GetTableURL(\"solicitudes\").'\"';\r\n$attrs .= ' data-pagetype=\"edit\"';\r\n$attrs .= ' data-page=\"'.$targetPage.'\"';\r\n$attrs .= ' data-keys=\"'.$keysJson.'\"';\r\n$attrs .= ' class=\"rnr-editlink\"';\r\n\r\n// === 6) Reasignar a los tres puntos de enlace comunes ===\r\n$record[\"editlink_attrs\"]        = $attrs;\r\n$record[\"editlink_attrs_icon\"]   = $attrs;\r\n$record[\"editlink_button_attrs\"] = $attrs;\r\n\r\n\r\n\r\n// Debug\r\n//error_log(\"DEBUG-REDIR: Role=$role TargetPage=$targetPage Href=$href\", 3, 'debug_file.log');"
+			"code": "date_default_timezone_set('America/Mexico_City');\r\n\r\n\r\n$data[\"tienda\"]=$_SESSION[\"Tienda\"];\r\n$data['fechacaptura']=date('Y-m-d H:i:s');\r\n$data[\"almacenatt\"]=$_SESSION[\"Tienda\"];\r\n$data['ventadomicilio'] = 1;\r\n$data['equipoincluido']=1;\r\n$data['tiendamovil']=1;\r\n$data['clasif']=1;\r\n\r\n\r\n\r\n\r\n//$pageObject->hideItem(\"btnCarta\", $recordId);\r\n\r\n\r\n\r\n\r\n\r\n// Coloring por estatus (igual que ya tienes)\r\n$st = (int)$data[\"estatusentrega\"];\r\nswitch ($st) {\r\n  case 2:  $cls = 'table-success'; break;\r\n  case 3:  $cls = 'table-danger';  break;\r\n  default: $cls = 'table-warning';\r\n}\r\nif (!isset($row[\"rowattrs\"])) $row[\"rowattrs\"] = '';\r\n$row[\"rowattrs\"] .= ' class=\"'.$cls.'\"';\r\n\r\nif ($st === 3) {\r\n    $record[\"css\"]                  = 'background:#FF3A30';\r\n    $record['fecha_css']            = 'color:white';\r\n    $record['idcliente_css']        = 'color:white';\r\n    $record['descripcion_css']      = 'color:white';\r\n    $record['estatus_css']          = 'color:white';\r\n    $record['plazo_css']            = 'color:white';\r\n    $record['orden_css']            = 'color:white';\r\n    $record['maps_url_css']         = 'color:white';\r\n    $record['estatusentrega_css']   = 'color:white';\r\n    $record['equipo_css']           = 'color:white';\r\n    $record['chip_css']             = 'color:white';\r\n}\r\n\r\n// PK\r\n// PK\r\n$pk = $data[\"idsolicitud\"];\r\nif (!$pk) return;\r\n\r\n// Elige la página (usa tu lógica real)\r\n$role = strtoupper($_SESSION[\"Label\"] ?? ''); \r\n\r\n// === 2) Elegir página target ===\r\n// === 2) Página destino ===\r\n$targetPage = ($role === 'MESADECONTROL') ? 'edit1' : 'edit';\r\n\r\n// === 3) Base SIEMPRE a \"edit\" para obtener solicitudes_edit.php\r\n$baseHref = GetTableLink(\"solicitudes\", \"edit\"); // => solicitudes_edit.php\r\n\r\n// === 4) Querystring: page=..., editid1=..., menuItemId (si existe)\r\n$qs = [];\r\n$qs[] = \"page=\".$targetPage;\r\n$qs[] = \"editid1=\".$pk;\r\n\r\n// Conserva menuItemId si llegó por GET/POST\r\n$menuItemId = postvalue(\"menuItemId\");\r\nif( strlen($menuItemId) ){\r\n    $qs[] = \"menuItemId=\".rawurlencode($menuItemId);\r\n}\r\n\r\n$href = $baseHref . \"?\" . implode(\"&\", $qs);\r\n\r\n// === 5) Data-attrs que PHPRunner usa para popup/handlers ===\r\n$keys = array(\"idsolicitud\" => $pk);\r\n$keysJson = runner_htmlspecialchars(my_json_encode($keys));\r\n\r\n$attrs  = 'href=\"'.runner_htmlspecialchars($href).'\"';\r\n$attrs .= ' data-href=\"'.runner_htmlspecialchars($href).'\"';\r\n$attrs .= ' data-table=\"'.GetTableURL(\"solicitudes\").'\"';\r\n$attrs .= ' data-pagetype=\"edit\"';\r\n$attrs .= ' data-page=\"'.$targetPage.'\"';\r\n$attrs .= ' data-keys=\"'.$keysJson.'\"';\r\n$attrs .= ' class=\"rnr-editlink\"';\r\n\r\n// === 6) Reasignar a los tres puntos de enlace comunes ===\r\n$record[\"editlink_attrs\"]        = $attrs;\r\n$record[\"editlink_attrs_icon\"]   = $attrs;\r\n$record[\"editlink_button_attrs\"] = $attrs;\r\n\r\n\r\n\r\n// Debug\r\n//error_log(\"DEBUG-REDIR: Role=$role TargetPage=$targetPage Href=$href\", 3, 'debug_file.log');"
 		},
 		{
 			"eventId": "EVENT_BEFOREQUERY_LIST",
@@ -1480,7 +1522,7 @@
 		{
 			"eventId": "EVENT_BEFORESHOW_LIST",
 			"pageType": "list",
-			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n// Detecta ADMIN y otras banderas servidor-side\n// Detecta ADMIN y otras banderas servidor-side\n// --- Reglas de acceso ---\n$userId      = isset($_SESSION['UserID']) ? strtoupper((string)$_SESSION['UserID']) : '';\n$isAdmin     = ($userId === 'ADMIN');\n$isValidador = (isset($_SESSION['Label'])  && $_SESSION['Label'] === 'VALIDADOR');\n$hasAcceso   = (isset($_SESSION['Acceso']) && intval($_SESSION['Acceso']) === 1);\n\n$role = $_SESSION['Label'];\n\n$pageObject->hideField(\"idsolicitud\");\n$pageObject->hideField(\"nombre_completo\");\n$pageObject->hideField(\"carta\");\n\n$pageObject->setProxyValue(\"currentRole\", $role);\n$pageObject->setProxyValue(\"currentUser\", $userId);\n// Cambia la condición a tu gusto:\n$allowLogistic =  $isAdmin || ($isValidador && $hasAcceso);\n\n// IMPORTANTE: usa el *itemid* real del botón en el diseñador (Builder).\n// Te recomiendo renombrarlo a \"logistic_btn\". Si en tu HTML ves data-itemid=\"custom_button\",\n// entonces cambia \"logistic_btn\" por \"custom_button\".\nif (!$allowLogistic) {\n  //  $pageObject->hideItem(\"logistic_btn\");   // oculta la columna/botón para ese usuario\n} else {\n    // lo exponemos por si quieres usarlo del lado cliente (opcional)\n    $pageObject->setProxyValue(\"allowLogistic\", true);\n}\n\n\n\n"
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n// Detecta ADMIN y otras banderas servidor-side\n// Detecta ADMIN y otras banderas servidor-side\n// --- Reglas de acceso ---\n$userId      = isset($_SESSION['UserID']) ? strtoupper((string)$_SESSION['UserID']) : '';\n$isAdmin     = ($userId === 'ADMIN');\n$isValidador = (isset($_SESSION['Label'])  && $_SESSION['Label'] === 'VALIDADOR');\n$hasAcceso   = (isset($_SESSION['Acceso']) && intval($_SESSION['Acceso']) === 1);\n\n$role = $_SESSION['Label'];\n\n$pageObject->hideField(\"idsolicitud\");\n$pageObject->hideField(\"nombre_completo\");\n$pageObject->hideField(\"idtienda\");\n\n$pageObject->setProxyValue(\"currentRole\", $role);\n$pageObject->setProxyValue(\"currentUser\", $userId);\n// Cambia la condición a tu gusto:\n$allowLogistic =  $isAdmin || ($isValidador && $hasAcceso);\n\n// IMPORTANTE: usa el *itemid* real del botón en el diseñador (Builder).\n// Te recomiendo renombrarlo a \"logistic_btn\". Si en tu HTML ves data-itemid=\"custom_button\",\n// entonces cambia \"logistic_btn\" por \"custom_button\".\nif (!$allowLogistic) {\n  //  $pageObject->hideItem(\"logistic_btn\");   // oculta la columna/botón para ese usuario\n} else {\n    // lo exponemos por si quieres usarlo del lado cliente (opcional)\n    $pageObject->setProxyValue(\"allowLogistic\", true);\n}\n\n\n\n"
 		},
 		{
 			"eventId": "EVENT_BEFOREPROCESS_LIST",
@@ -5363,9 +5405,6 @@
 									"cell": "headcell_field8"
 								},
 								{
-									"cell": "headcell_field13"
-								},
-								{
 									"cell": "headcell_field1"
 								},
 								{
@@ -5381,7 +5420,10 @@
 									"cell": "headcell_field21"
 								},
 								{
-									"cell": "headcell_field23"
+									"cell": "headcell_field24"
+								},
+								{
+									"cell": "headcell_field25"
 								}
 							]
 						},
@@ -5431,9 +5473,6 @@
 									"cell": "cell_field5"
 								},
 								{
-									"cell": "cell_field7"
-								},
-								{
 									"cell": "cell_field1"
 								},
 								{
@@ -5449,7 +5488,10 @@
 									"cell": "cell_field13"
 								},
 								{
-									"cell": "cell_field15"
+									"cell": "cell_field16"
+								},
+								{
+									"cell": "cell_field17"
 								}
 							]
 						},
@@ -5501,9 +5543,6 @@
 									"cell": "footcell_field5"
 								},
 								{
-									"cell": "footcell_field7"
-								},
-								{
 									"cell": "footcell_field1"
 								},
 								{
@@ -5519,7 +5558,10 @@
 									"cell": "footcell_field11"
 								},
 								{
-									"cell": "footcell_field13"
+									"cell": "footcell_field14"
+								},
+								{
+									"cell": "footcell_field15"
 								}
 							]
 						}
@@ -5734,7 +5776,7 @@
 							"model": "cell_dpreview",
 							"items": [],
 							"columnName": "field",
-							"field": "carta"
+							"field": "anticipolog"
 						},
 						"headcell_field10": {
 							"model": "headcell_field",
@@ -5779,24 +5821,6 @@
 							"items": [],
 							"field": "",
 							"columnName": "details"
-						},
-						"headcell_field13": {
-							"model": "headcell_field",
-							"items": [],
-							"field": "",
-							"columnName": ""
-						},
-						"cell_field7": {
-							"model": "cell_field",
-							"items": [],
-							"field": "",
-							"columnName": ""
-						},
-						"footcell_field7": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "",
-							"columnName": ""
 						},
 						"headcell_field15": {
 							"model": "cell_field",
@@ -5958,22 +5982,48 @@
 							"columnName": "",
 							"align": "center"
 						},
-						"headcell_field23": {
+						"headcell_field24": {
 							"model": "headcell_field",
-							"items": [],
-							"field": "carta",
+							"items": [
+								"grid_field_label10"
+							],
+							"field": "contratolog",
 							"columnName": "field"
 						},
-						"cell_field15": {
+						"cell_field16": {
 							"model": "cell_field",
-							"items": [],
-							"field": "carta",
+							"items": [
+								"grid_field10"
+							],
+							"field": "contratolog",
 							"columnName": "field"
 						},
-						"footcell_field13": {
+						"footcell_field14": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "carta",
+							"field": "contratolog",
+							"columnName": "field"
+						},
+						"headcell_field25": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label11"
+							],
+							"field": "anticipolog",
+							"columnName": "field"
+						},
+						"cell_field17": {
+							"model": "cell_field",
+							"items": [
+								"grid_field11"
+							],
+							"field": "anticipolog",
+							"columnName": "field"
+						},
+						"footcell_field15": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "anticipolog",
 							"columnName": "field"
 						}
 					},
@@ -6370,6 +6420,31 @@
 					"icon": {
 						"fa": "tasks"
 					}
+				},
+				"grid_field10": {
+					"field": "contratolog",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label10": {
+					"type": "grid_field_label",
+					"field": "contratolog",
+					"label": {
+						"field": "contratolog",
+						"table": "solicitudes",
+						"type": 3
+					}
+				},
+				"grid_field11": {
+					"field": "anticipolog",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label11": {
+					"type": "grid_field_label",
+					"field": "anticipolog"
 				}
 			},
 			"dbProps": {},
@@ -6640,7 +6715,9 @@
 								"integrated_search_field13",
 								"integrated_search_field14",
 								"integrated_search_field15",
-								"integrated_search_field16"
+								"integrated_search_field16",
+								"integrated_search_field17",
+								"integrated_search_field18"
 							]
 						}
 					},
@@ -6746,6 +6823,16 @@
 				},
 				"integrated_search_field16": {
 					"field": "nombre_completo",
+					"type": "integrated_search_field",
+					"orientation": 0
+				},
+				"integrated_search_field17": {
+					"field": "contratolog",
+					"type": "integrated_search_field",
+					"orientation": 0
+				},
+				"integrated_search_field18": {
+					"field": "anticipolog",
 					"type": "integrated_search_field",
 					"orientation": 0
 				}
@@ -7751,11 +7838,7 @@
 						},
 						"c": {
 							"model": "c3",
-							"items": [
-								"integrated_edit_field",
-								"integrated_edit_field1",
-								"integrated_edit_field2"
-							],
+							"items": [],
 							"customCSS": "/* Put  your custom CSS code here */\n/* ========================================================= */\n/* ESTILOS DE TU TEMPLATE */\n/* ========================================================= */\nbody {\n    box-sizing: border-box;\n    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;\n    /* Corrección de encogimiento por scroll */\n    overflow-y: scroll !important;\n}\n.gradient-bg {\n    /* Degradado de ejemplo, ajusta tus colores si es necesario */\n    background: linear-gradient(135deg, #03478A 0%, #6D98C2 100%);\n}\n.card-shadow {\n    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);\n}\n.check-animation {\n    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);\n}\n.check-animation:hover {\n    transform: scale(1.1);\n}\n\n/* ========================================================= */\n/* ESTILOS ESPECÍFICOS PARA PHP RUNNER */\n/* ========================================================= */\n\n/* Esconde el checkbox nativo de PHPRunner, ya que lo vamos a reemplazar visualmente */\n.custom-checkbox-phprunner input[type=\"checkbox\"] {\n    opacity: 0; \n    position: absolute; \n    width: 1px;\n    height: 1px;\n    padding: 0;\n    margin: -1px;\n    overflow: hidden;\n    clip: rect(0, 0, 0, 0);\n    border: 0;\n}\n\n/* Estilo del input de SIM Card (u otro campo de texto) */\n#control_simcard_1 input[type=\"text\"], \n#control_simcard_1 input[type=\"number\"] {\n    width: 100%;\n    padding: 0.75rem 1rem;\n    border: 1px solid #d1d5db; /* gray-300 */\n    border-radius: 0.5rem; /* rounded-lg */\n    transition: all 0.2s;\n}\n#control_simcard_1 input[type=\"text\"]:focus, \n#control_simcard_1 input[type=\"number\"]:focus {\n    border-color: #3b82f6; /* blue-500 */\n    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);\n}"
 						}
 					},
@@ -7801,25 +7884,10 @@
 				"text": {
 					"type": "text",
 					"label": {
-						"text": "<!-- QUICK ADD logisticavnp -->\n<style>\n  .qa-card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;margin:12px 0 18px;\n           box-shadow:0 10px 25px -5px rgba(0,0,0,.1),0 10px 10px -5px rgba(0,0,0,.04)}\n  .qa-head{padding:14px 18px;border-bottom:1px solid #eef2ff;\n           background:linear-gradient(90deg,#667eea,#764ba2);color:#fff;\n           border-top-left-radius:16px;border-top-right-radius:16px}\n  .qa-title{font-size:18px;font-weight:700;display:flex;align-items:center;gap:8px}\n  .qa-body{padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end}\n  .qa-input{width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:10px;font-size:14px}\n  .qa-btn{grid-column:1 / -1; display:inline-flex;align-items:center;justify-content:center;\n          padding:12px 14px;border:none;border-radius:10px;color:#fff;font-weight:700;cursor:pointer;\n          background:linear-gradient(90deg,#10b981,#3b82f6); transition:transform .06s ease}\n  .qa-btn:active{transform:scale(.98)}\n  .qa-btn:disabled{opacity:.6;cursor:not-allowed}\n  @media (max-width: 900px){ .qa-body{grid-template-columns:1fr} }\n</style>\n\n<div id=\"qa_logisticavnp\" class=\"qa-card\">\n  <div class=\"qa-head\"><div class=\"qa-title\">📱 Nueva SIM Card</div></div>\n  <div class=\"qa-body\">\n    <div>\n      <label style=\"display:block;margin:0 0 6px 4px;color:#374151;font-weight:600;font-size:12px\">Fecha</label>\n      <input id=\"qa_fecha\" class=\"qa-input\" type=\"date\">\n    </div>\n    <div>\n      <label style=\"display:block;margin:0 0 6px 4px;color:#374151;font-weight:600;font-size:12px\">Número de SIM Card</label>\n      <input id=\"qa_sim\" class=\"qa-input\" type=\"text\" placeholder=\"Ej: 1234567890\">\n    </div>\n    <button id=\"qa_add\" class=\"qa-btn\" type=\"button\">Agregar Nueva SIM Card</button>\n  </div>\n</div>\n\n<script>\n(function(){\n  // ===== Config =====\n  var DATE_FIELD  = 'fechaHora';     // DATETIME en logisticavnp\n  var SIM_FIELD   = 'SIMEntregado';\n  var IDSOL_FIELD = 'idsolicitud';\n  var AUTO_SAVE   = true;\n\n  // ===== Helpers =====\n  function $(s,root){ return (root||document).querySelector(s); }\n  function $all(s,root){ return Array.prototype.slice.call((root||document).querySelectorAll(s)); }\n  function todayISO(){ try{ var z=(new Date()).getTimezoneOffset()*60000; return new Date(Date.now()-z).toISOString().slice(0,10);}catch(_){return ''} }\n  function toast(msg, ok){\n    var id='qa_toast', el=document.getElementById(id);\n    if(!el){ el=document.createElement('div'); el.id=id; document.body.appendChild(el); }\n    el.textContent = msg || 'Listo';\n    el.style.cssText='position:fixed;top:16px;right:16px;padding:10px 14px;border-radius:10px;color:#fff;font-weight:700;z-index:99999;'\n                    +'box-shadow:0 10px 20px rgba(0,0,0,.18);background:'+(ok?'#10b981':'#ef4444');\n    setTimeout(function(){ el && el.remove(); }, 1600);\n  }\n  function waitFor(fn, ms, step){\n    var t0 = Date.now();\n    return new Promise(function(res,rej){\n      (function tick(){\n        try{ var v = fn(); if(v) return res(v); }catch(_){}\n        if(Date.now()-t0 >= (ms||6000)) return rej(new Error('timeout'));\n        setTimeout(tick, step||90);\n      })();\n    });\n  }\n  function findLogisticaPanel(){\n    var p = $all('.bs-details .panel.panel-info.details-grid').find(function(node){\n      var h = node.querySelector('.panel-heading .panel-title');\n      return h && /logisticavnp/i.test(h.textContent||'');\n    });\n    if (p) return p;\n    var any = document.querySelector('[data-table=\"logisticavnp\"]');\n    return any ? any.closest('.panel,.bs-details,.rnr-b-grid,.rnr-grid-block') : null;\n  }\n\n  // === Setear DATETIME robusto en fila inline ===\n  // isoDate: 'YYYY-MM-DD' | hhmm: 'HH:MM' o 'HH:MM:SS' (opcional)\n  async function setInlineDatePHR(rowEl, fieldName, isoDate, hhmm){\n    hhmm = hhmm || '00:00';\n    var hasSS = /^\\d{2}:\\d{2}:\\d{2}$/.test(hhmm);\n    var hh = (hhmm.split(':')[0]||'00'),\n        mm = (hhmm.split(':')[1]||'00'),\n        ss = hasSS ? hhmm.split(':')[2] : '00';\n    var isoDT = isoDate + ' ' + hh + ':' + mm + ':' + ss;\n\n    // 1) Runner control (espera hasta ~1.2s)\n    function getCtrl(){\n      try{\n        var pid = (document.querySelector('[data-pageid]')||{}).getAttribute?.('data-pageid')||'';\n        var rid = rowEl.getAttribute('data-rowid') || rowEl.getAttribute('data-record-id') || '';\n        return (window.Runner && Runner.getControl) ? Runner.getControl(pid, fieldName, rid) : null;\n      }catch(e){ return null; }\n    }\n    var ctrl=null, t0=Date.now();\n    while(!(ctrl=getCtrl()) && Date.now()-t0<1200){ await new Promise(r=>setTimeout(r,90)); }\n    if (ctrl && typeof ctrl.setValue==='function'){\n      ctrl.setValue(isoDT);\n      if (typeof ctrl.fireEvent==='function') ctrl.fireEvent('change');\n      return true;\n    }\n\n    // 2) Dentro del TD del campo, cubre tipos conocidos\n    var td = rowEl.querySelector('td[data-field=\"'+fieldName+'\"]') || rowEl;\n\n    var dtl = td.querySelector('input[type=\"datetime-local\"]');\n    if (dtl){ dtl.value = isoDate + 'T' + hh + ':' + mm; dtl.dispatchEvent(new Event('change',{bubbles:true})); return true; }\n\n    var di = td.querySelector('input[type=\"date\"]');\n    var ti = td.querySelector('input[type=\"time\"], input.timepicker');\n    if (di){\n      di.value = isoDate; di.dispatchEvent(new Event('change',{bubbles:true}));\n      if (ti){ ti.value = hh + ':' + mm + (hasSS? ':'+ss : ''); ti.dispatchEvent(new Event('change',{bubbles:true})); }\n      return true;\n    }\n\n    var sel = (s)=> td.querySelector(s);\n    var y=sel('[id$=\"_year\"],select[name$=\"_year\"]'),\n        m=sel('[id$=\"_month\"],select[name$=\"_month\"]'),\n        d=sel('[id$=\"_day\"],select[name$=\"_day\"]'),\n        H=sel('[id$=\"_hour\"],select[name$=\"_hour\"]'),\n        M=sel('[id$=\"_minute\"],select[name$=\"_minute\"]'),\n        S=sel('[id$=\"_second\"],select[name$=\"_second\"]');\n    if (y&&m&&d){\n      y.value = isoDate.slice(0,4); y.dispatchEvent(new Event('change',{bubbles:true}));\n      m.value = String(parseInt(isoDate.slice(5,7),10)); m.dispatchEvent(new Event('change',{bubbles:true}));\n      d.value = String(parseInt(isoDate.slice(8,10),10)); d.dispatchEvent(new Event('change',{bubbles:true}));\n      if (H){ H.value = hh; H.dispatchEvent(new Event('change',{bubbles:true})); }\n      if (M){ M.value = mm; M.dispatchEvent(new Event('change',{bubbles:true})); }\n      if (S){ S.value = ss; S.dispatchEvent(new Event('change',{bubbles:true})); }\n      return true;\n    }\n\n    var txt = td.querySelector('input[type=\"text\"], input:not([type])');\n    if (txt){ txt.value = isoDT; txt.dispatchEvent(new Event('change',{bubbles:true})); return true; }\n\n    return false;\n  }\n\n  // valor por defecto de la fecha del card\n  var inpFecha = $('#qa_fecha'); if (inpFecha) inpFecha.value = todayISO();\n\n  // === Click en botón \"Agregar Nueva SIM Card\" ===\n  document.addEventListener('click', async function(ev){\n    var btn = ev.target.closest('#qa_add'); if (!btn) return;\n\n    var fecha = ($('#qa_fecha')||{}).value || '';\n    var sim   = (($('#qa_sim')||{}).value||'').trim();\n    if (!fecha || !sim){ toast('Completa Fecha y SIM', false); return; }\n\n    var panel = findLogisticaPanel();\n    if (!panel){ toast('No encuentro el subform logisticavnp', false); return; }\n\n    btn.disabled = true;\n    try{\n      // 1) “Añadir nuevo”\n      var addBtn = panel.querySelector('[data-buttonevent=\"inlineadd\"], #inlineAdd2');\n      if (!addBtn) throw new Error('No encontré el botón \"Añadir nuevo\"');\n      addBtn.click();\n\n      // 2) Espera fila inline (nos apoyamos en SIM, que sí existe)\n      var row = await waitFor(function(){\n        var si = panel.querySelector('[id^=\"value_'+SIM_FIELD+'_\"]');\n        return si ? si.closest('tr') : null;\n      }, 8000, 100);\n\n      // 3) Llenar fechaHora (datetime) de forma robusta\n      var now = new Date();\n      var hh = String(now.getHours()).padStart(2,'0');\n      var mm = String(now.getMinutes()).padStart(2,'0');\n      var okFecha = await setInlineDatePHR(row, DATE_FIELD, fecha, hh+':'+mm);\n      if (!okFecha) console.warn('No pude setear', DATE_FIELD);\n\n      // 4) Llenar SIM\n      var siIn = row.querySelector('[id^=\"value_'+SIM_FIELD+'_\"]');\n      if (siIn){\n        siIn.value = sim;\n        siIn.dispatchEvent(new Event('input',{bubbles:true}));\n        siIn.dispatchEvent(new Event('change',{bubbles:true}));\n      }\n\n      // 5) (Opcional) Setear idsolicitud si el campo está visible\n      var idSol = (document.querySelector('[id^=\"value_idsolicitud_\"]')||{}).value\n               || (document.querySelector('[name=\"editid1\"]')||{}).value\n               || (new URLSearchParams(location.search).get('editid1'));\n      var idIn = row.querySelector('[id^=\"value_'+IDSOL_FIELD+'_\"]');\n      if (idIn && idSol){ idIn.value = idSol; idIn.dispatchEvent(new Event('change',{bubbles:true})); }\n\n      // 6) Guardar todo\n      if (AUTO_SAVE){\n        var saveBtn = panel.querySelector('[data-buttonevent=\"saveall\"]');\n        if (saveBtn) setTimeout(function(){ saveBtn.click(); }, 150);\n      }\n\n      // limpiar SIM para siguiente alta\n      var simInput = $('#qa_sim'); if (simInput) simInput.value = '';\n      toast('Registro agregado', true);\n    } catch(e){\n      console.error(e);\n      toast('No se pudo agregar', false);\n    } finally {\n      btn.disabled = false;\n    }\n  });\n})();\n</script>\n",
+						"text": "<!-- QUICK ADD logisticavnp -->\n<style>\n  .qa-card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;margin:12px 0 18px;\n           box-shadow:0 10px 25px -5px rgba(0,0,0,.1),0 10px 10px -5px rgba(0,0,0,.04)}\n  .qa-head{padding:14px 18px;border-bottom:1px solid #eef2ff;\n           background:linear-gradient(90deg,#667eea,#764ba2);color:#fff;\n           border-top-left-radius:16px;border-top-right-radius:16px}\n  .qa-title{font-size:18px;font-weight:700;display:flex;align-items:center;gap:8px}\n  .qa-body{padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end}\n  .qa-input{width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:10px;font-size:14px}\n  .qa-btn{grid-column:1 / -1; display:inline-flex;align-items:center;justify-content:center;\n          padding:12px 14px;border:none;border-radius:10px;color:#fff;font-weight:700;cursor:pointer;\n          background:linear-gradient(90deg,#10b981,#3b82f6); transition:transform .06s ease}\n  .qa-btn:active{transform:scale(.98)}\n  .qa-btn:disabled{opacity:.6;cursor:not-allowed}\n  @media (max-width: 900px){ .qa-body{grid-template-columns:1fr} }\n</style>\n\n<div id=\"qa_logisticavnp\" class=\"qa-card\">\n  <div class=\"qa-head\"><div class=\"qa-title\">📱 Nueva SIM Card</div></div>\n  <div class=\"qa-body\">\n    <div>\n      <label style=\"display:none;margin:0 0 6px 4px;color:#374151;font-weight:600;font-size:12px\"  >Fecha</label>\n      <input id=\"qa_fecha\" class=\"qa-input\" type=\"date\" style=\"display:none\">\n    </div>\n    <div>\n      <label style=\"display:block;margin:0 0 6px 4px;color:#374151;font-weight:600;font-size:12px\">Número de SIM Card</label>\n      <input id=\"qa_sim\" class=\"qa-input\" type=\"text\" placeholder=\"Ej: 1234567890\">\n    </div>\n    <button id=\"qa_add\" class=\"qa-btn\" type=\"button\">Agregar Nueva SIM Card</button>\n  </div>\n</div>\n\n<script>\n(function(){\n  // ===== Config =====\n  var DATE_FIELD  = 'fechaHora';     // DATETIME en logisticavnp\n  var SIM_FIELD   = 'SIMEntregado';\n  var IDSOL_FIELD = 'idsolicitud';\n  var AUTO_SAVE   = true;\n\n  // ===== Helpers =====\n  function $(s,root){ return (root||document).querySelector(s); }\n  function $all(s,root){ return Array.prototype.slice.call((root||document).querySelectorAll(s)); }\n  function todayISO(){ try{ var z=(new Date()).getTimezoneOffset()*60000; return new Date(Date.now()-z).toISOString().slice(0,10);}catch(_){return ''} }\n  function toast(msg, ok){\n    var id='qa_toast', el=document.getElementById(id);\n    if(!el){ el=document.createElement('div'); el.id=id; document.body.appendChild(el); }\n    el.textContent = msg || 'Listo';\n    el.style.cssText='position:fixed;top:16px;right:16px;padding:10px 14px;border-radius:10px;color:#fff;font-weight:700;z-index:99999;'\n                    +'box-shadow:0 10px 20px rgba(0,0,0,.18);background:'+(ok?'#10b981':'#ef4444');\n    setTimeout(function(){ el && el.remove(); }, 1600);\n  }\n  function waitFor(fn, ms, step){\n    var t0 = Date.now();\n    return new Promise(function(res,rej){\n      (function tick(){\n        try{ var v = fn(); if(v) return res(v); }catch(_){}\n        if(Date.now()-t0 >= (ms||6000)) return rej(new Error('timeout'));\n        setTimeout(tick, step||90);\n      })();\n    });\n  }\n  function findLogisticaPanel(){\n    var p = $all('.bs-details .panel.panel-info.details-grid').find(function(node){\n      var h = node.querySelector('.panel-heading .panel-title');\n      return h && /logisticavnp/i.test(h.textContent||'');\n    });\n    if (p) return p;\n    var any = document.querySelector('[data-table=\"logisticavnp\"]');\n    return any ? any.closest('.panel,.bs-details,.rnr-b-grid,.rnr-grid-block') : null;\n  }\n\n  // === Setear DATETIME robusto en fila inline ===\n  // isoDate: 'YYYY-MM-DD' | hhmm: 'HH:MM' o 'HH:MM:SS' (opcional)\n  async function setInlineDatePHR(rowEl, fieldName, isoDate, hhmm){\n    hhmm = hhmm || '00:00';\n    var hasSS = /^\\d{2}:\\d{2}:\\d{2}$/.test(hhmm);\n    var hh = (hhmm.split(':')[0]||'00'),\n        mm = (hhmm.split(':')[1]||'00'),\n        ss = hasSS ? hhmm.split(':')[2] : '00';\n    var isoDT = isoDate + ' ' + hh + ':' + mm + ':' + ss;\n\n    // 1) Runner control (espera hasta ~1.2s)\n    function getCtrl(){\n      try{\n        var pid = (document.querySelector('[data-pageid]')||{}).getAttribute?.('data-pageid')||'';\n        var rid = rowEl.getAttribute('data-rowid') || rowEl.getAttribute('data-record-id') || '';\n        return (window.Runner && Runner.getControl) ? Runner.getControl(pid, fieldName, rid) : null;\n      }catch(e){ return null; }\n    }\n    var ctrl=null, t0=Date.now();\n    while(!(ctrl=getCtrl()) && Date.now()-t0<1200){ await new Promise(r=>setTimeout(r,90)); }\n    if (ctrl && typeof ctrl.setValue==='function'){\n      ctrl.setValue(isoDT);\n      if (typeof ctrl.fireEvent==='function') ctrl.fireEvent('change');\n      return true;\n    }\n\n    // 2) Dentro del TD del campo, cubre tipos conocidos\n    var td = rowEl.querySelector('td[data-field=\"'+fieldName+'\"]') || rowEl;\n\n    var dtl = td.querySelector('input[type=\"datetime-local\"]');\n    if (dtl){ dtl.value = isoDate + 'T' + hh + ':' + mm; dtl.dispatchEvent(new Event('change',{bubbles:true})); return true; }\n\n    var di = td.querySelector('input[type=\"date\"]');\n    var ti = td.querySelector('input[type=\"time\"], input.timepicker');\n    if (di){\n      di.value = isoDate; di.dispatchEvent(new Event('change',{bubbles:true}));\n      if (ti){ ti.value = hh + ':' + mm + (hasSS? ':'+ss : ''); ti.dispatchEvent(new Event('change',{bubbles:true})); }\n      return true;\n    }\n\n    var sel = (s)=> td.querySelector(s);\n    var y=sel('[id$=\"_year\"],select[name$=\"_year\"]'),\n        m=sel('[id$=\"_month\"],select[name$=\"_month\"]'),\n        d=sel('[id$=\"_day\"],select[name$=\"_day\"]'),\n        H=sel('[id$=\"_hour\"],select[name$=\"_hour\"]'),\n        M=sel('[id$=\"_minute\"],select[name$=\"_minute\"]'),\n        S=sel('[id$=\"_second\"],select[name$=\"_second\"]');\n    if (y&&m&&d){\n      y.value = isoDate.slice(0,4); y.dispatchEvent(new Event('change',{bubbles:true}));\n      m.value = String(parseInt(isoDate.slice(5,7),10)); m.dispatchEvent(new Event('change',{bubbles:true}));\n      d.value = String(parseInt(isoDate.slice(8,10),10)); d.dispatchEvent(new Event('change',{bubbles:true}));\n      if (H){ H.value = hh; H.dispatchEvent(new Event('change',{bubbles:true})); }\n      if (M){ M.value = mm; M.dispatchEvent(new Event('change',{bubbles:true})); }\n      if (S){ S.value = ss; S.dispatchEvent(new Event('change',{bubbles:true})); }\n      return true;\n    }\n\n    var txt = td.querySelector('input[type=\"text\"], input:not([type])');\n    if (txt){ txt.value = isoDT; txt.dispatchEvent(new Event('change',{bubbles:true})); return true; }\n\n    return false;\n  }\n\n  // valor por defecto de la fecha del card\n  var inpFecha = $('#qa_fecha'); if (inpFecha) inpFecha.value = todayISO();\n\n  // === Click en botón \"Agregar Nueva SIM Card\" ===\n  document.addEventListener('click', async function(ev){\n    var btn = ev.target.closest('#qa_add'); if (!btn) return;\n\n    var fecha = ($('#qa_fecha')||{}).value || '';\n    var sim   = (($('#qa_sim')||{}).value||'').trim();\n    if (!fecha || !sim){ toast('Completa Fecha y SIM', false); return; }\n\n    var panel = findLogisticaPanel();\n    if (!panel){ toast('No encuentro el subform logisticavnp', false); return; }\n\n    btn.disabled = true;\n    try{\n      // 1) “Añadir nuevo”\n      var addBtn = panel.querySelector('[data-buttonevent=\"inlineadd\"], #inlineAdd2');\n      if (!addBtn) throw new Error('No encontré el botón \"Añadir nuevo\"');\n      addBtn.click();\n\n      // 2) Espera fila inline (nos apoyamos en SIM, que sí existe)\n      var row = await waitFor(function(){\n        var si = panel.querySelector('[id^=\"value_'+SIM_FIELD+'_\"]');\n        return si ? si.closest('tr') : null;\n      }, 8000, 100);\n\n      // 3) Llenar fechaHora (datetime) de forma robusta\n  //   var now = new Date();\n  //    var hh = String(now.getHours()).padStart(2,'0');\n  //    var mm = String(now.getMinutes()).padStart(2,'0');\n  //    var okFecha = await setInlineDatePHR(row, // DATE_FIELD, fecha, hh+':'+mm);\n  //    if (!okFecha) console.warn('No pude setear', //DATE_FIELD);\n\n      // 4) Llenar SIM\n      var siIn = row.querySelector('[id^=\"value_'+SIM_FIELD+'_\"]');\n      if (siIn){\n        siIn.value = sim;\n        siIn.dispatchEvent(new Event('input',{bubbles:true}));\n        siIn.dispatchEvent(new Event('change',{bubbles:true}));\n      }\n\n      // 5) (Opcional) Setear idsolicitud si el campo está visible\n      var idSol = (document.querySelector('[id^=\"value_idsolicitud_\"]')||{}).value\n               || (document.querySelector('[name=\"editid1\"]')||{}).value\n               || (new URLSearchParams(location.search).get('editid1'));\n      var idIn = row.querySelector('[id^=\"value_'+IDSOL_FIELD+'_\"]');\n      if (idIn && idSol){ idIn.value = idSol; idIn.dispatchEvent(new Event('change',{bubbles:true})); }\n\n      // 6) Guardar todo\n      if (AUTO_SAVE){\n        var saveBtn = panel.querySelector('[data-buttonevent=\"saveall\"]');\n        if (saveBtn) setTimeout(function(){ saveBtn.click(); }, 150);\n      }\n\n      // limpiar SIM para siguiente alta\n      var simInput = $('#qa_sim'); if (simInput) simInput.value = '';\n      toast('Registro agregado', true);\n    } catch(e){\n      console.error(e);\n      toast('No se pudo agregar', false);\n    } finally {\n      btn.disabled = false;\n    }\n  });\n})();\n</script>\n",
 						"type": 0
 					},
 					"editedByRte": false
-				},
-				"integrated_edit_field": {
-					"field": "renta",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field1": {
-					"field": "ine",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field2": {
-					"field": "polizaseguro",
-					"type": "integrated_edit_field",
-					"orientation": 0
 				}
 			},
 			"dbProps": {},
