@@ -69,7 +69,7 @@
 					"lookupLinkField": "idtipoventa",
 					"lookupDisplayField": "tipoventa",
 					"lookupOrderBy": "tipoventa",
-					"lookupWhere": "uso='VIGENTE' and g.idggtipoventa=:session.idggtipoventa"
+					"lookupWhere": "uso='VIGENTE' "
 				}
 			],
 			"label": {
@@ -1234,7 +1234,8 @@
 			],
 			"editFormats": [
 				{
-					"format": "Date"
+					"format": "Date",
+					"dateEditType": 11
 				}
 			],
 			"label": {
