@@ -425,6 +425,21 @@
 						}
 					},
 					{
+						"id": "20",
+						"data": {
+							"name": {
+								"text": "logistica",
+								"type": 0
+							},
+							"pageId": "edit1",
+							"itemType": 2,
+							"linkType": 0,
+							"openType": 1,
+							"table": 35049744,
+							"pageType": "edit"
+						}
+					},
+					{
 						"id": "18",
 						"data": {
 							"name": {
