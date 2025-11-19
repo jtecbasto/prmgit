@@ -7,7 +7,7 @@
 			"asc": false
 		}
 	],
-	"sql": "SELECT\n\tid,\n\tfecha,\n\tidtiendacita,\n\tdn,\n\tidcliente,\n\tidequipo,\n\tusuario,\n\tfolioagentevnp,\n\tobservaciones,\n\tfechacita,\n\tfechacaptura,\n\tidtienda,\n\tdocto\nFROM\n\tcitas\nORDER BY\n\tid DESC\n",
+	"sql": "SELECT\n\tid,\n\tfecha,\n\tidtiendacita,\n\tdn,\n\tidcliente,\n\tidequipo,\n\tusuario,\n\tfolioagentevnp,\n\tobservaciones,\n\tfechacita,\n\tfechacaptura,\n\tidtienda\nFROM\n\tcitas\nORDER BY\n\tid DESC\n",
 	"connId": "conn",
 	"originalTable": "citas",
 	"name": "citas",
@@ -301,25 +301,6 @@
 				"Spanish": "Tienda"
 			},
 			"tableName": "citas"
-		},
-		{
-			"name": "docto",
-			"sqlExpression": "docto",
-			"index": 13,
-			"strField": "docto",
-			"type": 201,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{
-					"format": "Document upload"
-				}
-			],
-			"label": {
-				"Spanish": "Docto"
-			},
-			"tableName": "citas"
 		}
 	],
 	"whereTabs": [
@@ -609,8 +590,7 @@
 						"c3": {
 							"model": "c3",
 							"items": [
-								"section",
-								"integrated_edit_field"
+								"section"
 							],
 							"align": "center"
 						}
@@ -719,11 +699,6 @@
 					"location": "section",
 					"bsStyle": "default",
 					"panelType": 3
-				},
-				"integrated_edit_field": {
-					"field": "docto",
-					"type": "integrated_edit_field",
-					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -814,8 +789,7 @@
 								"export_field7",
 								"export_field8",
 								"export_field9",
-								"export_field10",
-								"export_field1"
+								"export_field10"
 							]
 						}
 					},
@@ -902,10 +876,6 @@
 				},
 				"export_field10": {
 					"field": "fechacaptura",
-					"type": "export_field"
-				},
-				"export_field1": {
-					"field": "docto",
 					"type": "export_field"
 				}
 			},
@@ -1170,8 +1140,7 @@
 						"c3": {
 							"model": "c3",
 							"items": [
-								"section",
-								"integrated_edit_field"
+								"section"
 							],
 							"align": "center"
 						}
@@ -1281,12 +1250,6 @@
 				},
 				"integrated_edit_field7": {
 					"field": "observaciones",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field": {
-					"field": "docto",
 					"type": "integrated_edit_field",
 					"orientation": 0,
 					"updateOnEdit": false
@@ -1405,8 +1368,7 @@
 						"c3": {
 							"model": "c3",
 							"items": [
-								"section",
-								"integrated_edit_field"
+								"section"
 							],
 							"align": "center",
 							"customCSS": "/* Put  your custom CSS code here */\n\n/* Put  your custom CSS code here */\n\n\n\n/* ========================================================= */\n/* VARIABLES DE COLOR */\n/* ========================================================= */\n:root {\n    --color-elegante: #FFFFFF; /* Texto Blanco para contrastar con el fondo oscuro */\n    --naranja-degradado-inicio: #03478A; /* Naranja Suave (Light Salmon) */\n    --naranja-degradado-fin: #6D98C2; /* Naranja Medio (Coral) */\n    --color-borde-base: #FF7F50; /* Color simple para el borde base */\n}\n\n/* ========================================================= */\n/* 1. Fondo de la Página: Degradado Azul Cielo (Se mantiene) */\n/* ========================================================= */\n\nbody, .container-fluid {\nbackground: linear-gradient(180deg, #E0F7FA 0%, #B3E5FC 100%) !important;    min-height: 100vh;\n}\n/* ========================================================= */\n/* 2. Estilo de las Secciones: Efecto Tarjeta/Sombreado (Se mantiene) */\n/* ========================================================= */\n.panel, .rnr-c-body, .rnr-c-grid {\n    background-color: #FFFFFF !important; \n    border: none !important; \n    border-radius: 12px !important; \n    padding: 20px;\n    margin-bottom: 25px; \n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), \n                0 2px 6px rgba(0, 0, 0, 0.05) !important; \n                \n    /* 🔑 CAMBIO CLAVE: Agrega 'transform' a la transición */\n    transition: box-shadow 0.3s ease-in-out, \n                transform 0.3s ease-in-out; /* Transición para el movimiento y escala */            \n                \n}\n\n/* ========================================================= */\n/* 3. Estilo de Encabezados de Sección (EL CAMBIO PRINCIPAL) */\n/* ========================================================= */\n.panel-heading, .rnr-c-head {\n    /* Aplicamos el degradado al fondo completo del encabezado */\n    background: linear-gradient(to right, var(--naranja-degradado-inicio), var(--naranja-degradado-fin)) !important;\n    \n    /* El texto del título ahora es blanco para contrastar con el fondo naranja */\n    color: var(--color-elegante) !important; \n    \n    font-weight: 600;\n    \n    /* Mantenemos el centrado vertical */\n    display: flex;\n    align-items: center;\n    height: 40px; /* Aseguramos una altura suficiente */\n    \n    /* Eliminamos el borde degradado y aplicamos un borde simple y fino abajo */\n    border-bottom: 1px solid var(--color-borde-base) !important; \n    border-image-source: none !important; /* Desactivar la propiedad border-image anterior */\n    \n    /* Ajustes de relleno/bordes para que el degradado se vea bien */\n    padding: 0 15px !important; \n    border-top-left-radius: 12px !important; /* Mantenemos el radio del panel superior */\n    border-top-right-radius: 12px !important;\n}\n\n/* ========================================================= */\n/* 3. Estilo de HOVER: Efecto de Elevación/Intensificación    */\n/* ========================================================= */\n.panel:hover, .rnr-c-body:hover, .rnr-c-grid:hover {\n    /* Nueva sombra más intensa y \"elevada\" */\n    box-shadow: 0 15px 400px rgba(0, 0, 0, 0.3), \n                0 5px 15px rgba(0, 0, 0, 0.1) !important; \n    \n    /* Pequeño movimiento hacia arriba para dar más sensación de elevación (opcional) */\n    transform: translateY(-5px) scale(1.005); \n}\n\n\n\n/* 4. Estilo de los Inputs (Se mantiene) */\n.form-control {\n    border-radius: 8px !important; \n    border: 1px solid #e0e0e0 !important;\n}\n.form-control:focus {\n    border-color: #48C9B0 !important; \n    box-shadow: 0 0 0 0.2rem rgba(72, 201, 176, 0.25) !important;\n}\n\n/* Aplica solo a formularios con esas secciones */\n.panel.panel-default.form-section > .panel-body { display: none; }\n\n.panel.panel-default.form-section > .panel-heading:hover {\n  cursor: pointer;\n  filter: brightness(0.98);\n}\n\n.panel-collapse.no-bs-trans {\n  transition: none !important;\n}\n\n/* ========================================================= */\n/* ARREGLO DE COLOR DE TEXTO DE ENCABEZADO DURANTE MODAL     */\n/* ========================================================= */\n\n/* Apuntamos directamente al panel-title, que es el elemento que contiene \n   el texto del encabezado de la sección. \n*/\n.panel-heading .panel-title {\n    color: #FFFFFF !important; \n}\n\n/* Si dentro del panel-title hay un enlace (Ej. si el encabezado permite colapsar/expandir \n   y el título es un <a>), también debemos forzar el color del enlace.\n*/\n.panel-heading .panel-title a {\n    color: #FFFFFF !important;\n}\n\n/* Asegurar que el texto dentro del panel-title no se vea afectado por reglas generales\n   que usen el estado 'modal-open' en el cuerpo de la página.\n*/\n.modal-open .panel-heading .panel-title {\n    color: #FFFFFF !important;\n}\n\n\n/*******************************************************************/\n/* === Contenedores que enjaulan el ancho === */\n/* 1) Limitar el ancho de TODOS los bloques de la página add */\nbody.function-add #form_top_1,\nbody.function-add #form_above-grid_1,\nbody.function-add .panel.panel-default.form-section {\n  max-width: 720px;        /* ajusta a tu gusto: 720, 840, 920… */\n  margin-left: auto;\n  margin-right: auto;\n}\n\n/* 2) Evitar que col-md-12 fuerce 100% cuando queremos centrar */\nbody.function-add .r-form .row > .col-md-12 {\n  float: none;              /* elimina flote de Bootstrap */\n}\n\n/* 3) La mesa del formulario viene con width:100%; la hacemos fija y centrada */\nbody.function-add #form_section_1.r-edit-form {\n  width: 720px !important;  /* mismo valor que arriba */\n  margin-left: auto;\n  margin-right: auto;\n}\n\n/* 4) Hacer que los controles no queden “larguísimos” */\nbody.function-add #form_section_1 .form-control,\nbody.function-add #form_section_1 select.form-control {\n  max-width: 2660px;         /* o 360/380px según te guste */\n}\n\n/* 5) Un poco de respiro en pantallas chicas */\n@media (max-width: 770px) {\n  body.function-add #form_section_1.r-edit-form,\n  body.function-add #form_top_1,\n  body.function-add #form_above-grid_1,\n  body.function-add .panel.panel-default.form-section {\n    max-width: 100%;\n    width: auto !important;\n    padding-left: 12px;\n    padding-right: 12px;\n  }\n  body.function-add #form_section_1 .form-control,\n  body.function-add #form_section_1 select.form-control {\n    max-width: 100%;\n  }\n}\n\n/* === BELOW-GRID: mismo ancho que el form y alineado === */\nbody.function-add #form_below-grid_1 {\n  max-width: 720px;        /* el mismo valor que uses para el form */\n  margin: 8px auto 28px;   /* centra la franja bajo el formulario */\n  padding: 0 4px;\n  text-align: left;       /* o 'center' si lo prefieres centrado */\n}\n\n/* Espaciado y layout de botones */\nbody.function-add #form_below-grid_1 .btn-toolbar,\nbody.function-add #form_below-grid_1 .rnr-buttons-group {\n  display: inline-flex;    /* mantiene los botones en línea */\n  gap: 8px;  /* separación entre botones */\n  justify-content: flex-start;  \n  flex-wrap: wrap;         /* por si colapsan en pantallas chicas */\n}\n\n/* Por si algún tema pone floats o pull-right */\nbody.function-add #form_below-grid_1 .btn,\nbody.function-add #form_below-grid_1 .rnr-buttons-group {\n  float: none !important;\n}\n\n/* En móviles: céntralos */\n@media (max-width: 768px) {\n  body.function-add #form_below-grid_1 { text-align: center; }\n}\n"
@@ -1522,11 +1484,6 @@
 					"type": "integrated_edit_field",
 					"orientation": 0,
 					"updateOnEdit": false
-				},
-				"integrated_edit_field": {
-					"field": "docto",
-					"type": "integrated_edit_field",
-					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -1703,8 +1660,7 @@
 								"simple_grid_field7",
 								"simple_grid_field8",
 								"simple_grid_field9",
-								"simple_grid_field10",
-								"simple_grid_field"
+								"simple_grid_field10"
 							]
 						}
 					},
@@ -1809,8 +1765,7 @@
 				"search_panel": {
 					"type": "search_panel",
 					"items": [
-						"search_panel_field3",
-						"search_panel_field"
+						"search_panel_field3"
 					],
 					"_flexiblePanel": true
 				},
@@ -1895,16 +1850,6 @@
 				},
 				"export_selected": {
 					"type": "export_selected"
-				},
-				"simple_grid_field": {
-					"field": "docto",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"search_panel_field": {
-					"field": "docto",
-					"type": "search_panel_field"
 				}
 			},
 			"dbProps": {},

@@ -425,36 +425,6 @@
 						}
 					},
 					{
-						"id": "20",
-						"data": {
-							"name": {
-								"text": "logistica",
-								"type": 0
-							},
-							"pageId": "edit1",
-							"itemType": 2,
-							"linkType": 0,
-							"openType": 1,
-							"table": 35049744,
-							"pageType": "edit"
-						}
-					},
-					{
-						"id": "18",
-						"data": {
-							"name": {
-								"text": "Impresion Carta",
-								"type": 0
-							},
-							"params": "idsolicitud",
-							"pageId": "print",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 35049744,
-							"pageType": "print"
-						}
-					},
-					{
 						"id": "17",
 						"data": {
 							"name": {
