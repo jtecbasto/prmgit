@@ -475,17 +475,6 @@
 				"autoinc": false,
 				"defaultValueSQL": null,
 				"defaultValue": ""
-			},
-			{
-				"name": "docto",
-				"type": 201,
-				"size": 0,
-				"scale": 0,
-				"typeName": "mediumtext",
-				"nullable": true,
-				"autoinc": false,
-				"defaultValueSQL": null,
-				"defaultValue": ""
 			}
 		],
 		"primaryKeys": [

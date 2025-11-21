@@ -1,0 +1,5 @@
+{
+	"type": "EVENT_BUTTON",
+	"name": "btnDecision",
+	"beforeJsCode": "// this.recordData tiene los campos de la fila\r\nvar idsolicitud = this.recordData[\"idsolicitud\"];\r\n\r\nif(!idsolicitud){\r\n    alert(\"No se pudo determinar la solicitud.\");\r\n    return;\r\n}\r\n\r\n// abre el ADD de la otra tabla en una ventana\r\nvar url = \"solicitudes_decision_add.php?idsolicitud=\" + encodeURIComponent(idsolicitud);\r\nwindow.open(url, \"dec_\" + idsolicitud, \"width=900,height=600,scrollbars=1,resizable=1\");\r\n"
+}
