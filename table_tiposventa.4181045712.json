@@ -1,5 +1,5 @@
 {
-	"sql": "SELECT\r\n\tt.idtipoventa,\r\n\tt.tipoventa\r\n\r\nFROM\r\n\ttiposventa t inner join gtiposventa g\r\n\ton t.idgtipoventa=g.idgtipoventa ",
+	"sql": "SELECT\r\n\tt.idtipoventa,\r\n\tt.tipoventa\r\nFROM\r\n\ttiposventa t inner join gtiposventa gt\r\n\ton t.idgtipoventa=gt.idgtipoventa and gt.idggtipoventa=:session.idggtipoventa",
 	"connId": "conn",
 	"originalTable": "tiposventa",
 	"name": "tiposventa",
@@ -47,6 +47,12 @@
 		}
 	],
 	"afterEditAction": 0,
+	"whereTabs": [
+		{}
+	],
+	"queryContext": {
+		"session.idggtipoventa": "1"
+	},
 	"dbTableInfo": {
 		"type": 0,
 		"foreignKeys": [],

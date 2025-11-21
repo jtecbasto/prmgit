@@ -361,7 +361,7 @@
 			},
 			"threads": 4,
 			"serverDbConnections": {
-				"conn": "New connection"
+				"conn": "prm"
 			}
 		}
 	],
@@ -380,14 +380,18 @@
 				"customConnections": [
 					{
 						"name": "New connection",
-						"code": "$host = 'rocasamexico.com';\r\n$user = 'rocasamexico_admin';\r\n$pwd = 'Rocas@Mexico.2025**';\r\n$port = 3306;\r\n$sys_dbname = 'rocasamexico_intranet';"
+						"code": "$host = 'localhost';\r\n$user = 'rocasamexico_admin';\r\n$pwd = 'Rocas@Mexico.2025**';\r\n$port = 3306;\r\n$sys_dbname = 'rocasamexico_intranet';"
 					},
 					{
 						"name": "Local",
 						"code": "$host = 'localhost';\r\n$user = 'root';\r\n$pwd = 'jsusxt1510';\r\n$port = 3306;\r\n$sys_dbname = 'servicio_mov';"
+					},
+					{
+						"name": "prm",
+						"code": "$host = 'localhost';\r\n$user = 'rocasamexico_admin';\r\n$pwd = 'Rocas@Mexico.2025**';\r\n$port = 3306;\r\n$sys_dbname = 'rocasamexico_prm';"
 					}
 				],
-				"selectedCustomConn": "New connection"
+				"selectedCustomConn": "Local"
 			}
 		}
 	],

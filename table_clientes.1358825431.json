@@ -211,7 +211,9 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"required": true
+				}
 			],
 			"label": {
 				"English": "Rfc"
