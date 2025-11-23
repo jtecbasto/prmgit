@@ -47,6 +47,13 @@
 				"height": 376
 			},
 			{
+				"gid": 2027119892,
+				"y": 136,
+				"x": 674,
+				"width": 241.765625,
+				"height": 208
+			},
+			{
 				"gid": 720287906,
 				"y": 350,
 				"x": 810,
@@ -54,11 +61,18 @@
 				"height": 96
 			},
 			{
+				"gid": 2094060032,
+				"y": 825,
+				"x": 715,
+				"width": 254.984375,
+				"height": 124
+			},
+			{
 				"gid": 749770169,
-				"y": 345,
-				"x": 635,
-				"width": 146.0625,
-				"height": 292
+				"y": 379,
+				"x": 624,
+				"width": 157.0625,
+				"height": 258
 			},
 			{
 				"gid": 3847630651,
@@ -70,9 +84,9 @@
 			{
 				"gid": 4135059206,
 				"y": 10,
-				"x": 635,
-				"width": 110.265625,
-				"height": 236
+				"x": 624,
+				"width": 121.265625,
+				"height": 106
 			},
 			{
 				"gid": 1987350758,
@@ -146,15 +160,15 @@
 			},
 			{
 				"gid": 4181045712,
-				"y": 465,
-				"x": 810,
-				"width": 132.828125,
-				"height": 320
+				"y": 656,
+				"x": 799,
+				"width": 143.828125,
+				"height": 129
 			},
 			{
 				"gid": 1182658781,
-				"y": 180,
-				"x": 810,
+				"y": 175,
+				"x": 1013,
 				"width": 149.9375,
 				"height": 152
 			}
@@ -391,7 +405,7 @@
 						"code": "$host = 'localhost';\r\n$user = 'rocasamexico_admin';\r\n$pwd = 'Rocas@Mexico.2025**';\r\n$port = 3306;\r\n$sys_dbname = 'rocasamexico_prm';"
 					}
 				],
-				"selectedCustomConn": "New connection"
+				"selectedCustomConn": "Local"
 			}
 		}
 	],
@@ -471,6 +485,34 @@
 							"itemType": 2,
 							"linkType": 0,
 							"table": 3680839223,
+							"pageType": "list"
+						}
+					},
+					{
+						"id": "18",
+						"data": {
+							"name": {
+								"table": "decisionessolicitud_miembros",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 2094060032,
+							"pageType": "list"
+						}
+					},
+					{
+						"id": "19",
+						"data": {
+							"name": {
+								"table": "decisionessolicitud_historial",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 2027119892,
 							"pageType": "list"
 						}
 					}
@@ -564,7 +606,9 @@
 								"welcome_item4",
 								"welcome_item5",
 								"welcome_item6",
-								"welcome_item7"
+								"welcome_item7",
+								"welcome_item8",
+								"welcome_item9"
 							]
 						}
 					},
@@ -735,6 +779,30 @@
 						"type": 6
 					},
 					"background": "#bc8f8f",
+					"linkType": 0
+				},
+				"welcome_item8": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "decisionessolicitud_miembros",
+					"linkPage": "list",
+					"linkText": {
+						"table": "decisionessolicitud_miembros",
+						"type": 6
+					},
+					"background": "#d2af80",
+					"linkType": 0
+				},
+				"welcome_item9": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "decisionessolicitud_historial",
+					"linkPage": "list",
+					"linkText": {
+						"table": "decisionessolicitud_historial",
+						"type": 6
+					},
+					"background": "#cd853f",
 					"linkType": 0
 				}
 			},
