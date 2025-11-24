@@ -1,5 +1,5 @@
 {
-	"sql": "SELECT\r\n\tid,\r\n\tidsolicitud,\r\n\testatusentrega,\r\n\tcomentario,\r\n\tfechacaptura,\r\n\tusuario\r\nFROM\r\n\testatusentregas_historial",
+	"sql": "SELECT\r\n\tid,\r\n\tidsolicitud,\r\n\testatusentrega,\r\n\tcomentario,\r\n\tfechacaptura,\r\n\tusuario,\r\n\tfechahoraentrega\r\nFROM\r\n\testatusentregas_historial",
 	"connId": "conn",
 	"originalTable": "estatusentregas_historial",
 	"name": "estatusentregas_historial",
@@ -89,7 +89,10 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"format": "Text area",
+					"textboxMaxLenth": 100
+				}
 			],
 			"label": {
 				"Spanish": "Comentario"
@@ -104,7 +107,7 @@
 			"type": 135,
 			"viewFormats": [
 				{
-					"format": "Short Date"
+					"format": "Datetime"
 				}
 			],
 			"editFormats": [
@@ -134,18 +137,41 @@
 				"Spanish": "Usuario"
 			},
 			"tableName": "estatusentregas_historial"
+		},
+		{
+			"name": "fechahoraentrega",
+			"sqlExpression": "fechahoraentrega",
+			"index": 7,
+			"strField": "fechahoraentrega",
+			"type": 135,
+			"viewFormats": [
+				{
+					"format": "Short Date"
+				}
+			],
+			"editFormats": [
+				{
+					"format": "Date",
+					"dateEditType": 11,
+					"dateShowTime": true
+				}
+			],
+			"label": {
+				"Spanish": "Fecha/hora de entrega al cliente"
+			},
+			"tableName": "estatusentregas_historial"
 		}
 	],
 	"eventHandlers": [
 		{
 			"eventId": "EVENT_BEFOREADD",
 			"pageType": "add",
-			"code": "// Si no viene capturado, tomarlo de la URL\r\nif (empty($values[\"idsolicitud\"])) {\r\n    if (isset($_SESSION[\"idsolicitud_hist\"])) {\r\n        $values[\"idsolicitud\"] = (int)$_SESSION[\"idsolicitud_hist\"];\r\n    }\r\n}\r\n// campos automáticos opcionales\r\n$values[\"fechacaptura\"] = now();\r\n$values[\"usuario\"]  = $_SESSION[\"Label\"];\r\n\r\nreturn true;\r\n"
+			"code": "// Si no viene capturado, tomarlo de la URL\r\nif (empty($values[\"idsolicitud\"])) {\r\n    if (isset($_SESSION[\"idsolicitud_hist\"])) {\r\n        $values[\"idsolicitud\"] = (int)$_SESSION[\"idsolicitud_hist\"];\r\n    }\r\n}\r\n// campos automáticos opcionales\r\n$values[\"fechacaptura\"] = now();\r\n$values[\"usuario\"]  = $_SESSION[\"UserID\"];\r\n\r\nreturn true;\r\n"
 		},
 		{
 			"eventId": "EVENT_AFTERADD",
 			"pageType": "add",
-			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n\nglobal $conn;\n\n// Valores recién insertados\n$idsolicitud = (int)$values[\"idsolicitud\"];\n$decision  = $values[\"estatusentrega\"];\n\n// 1) Actualizar la decisión en la tabla principal\n$sql = \"UPDATE solicitudes \n        SET estatusentrega = '\".$decision.\"'\n        WHERE idsolicitud = \".$idsolicitud;\ndb_exec($sql, $conn);\n\n// 2) Refrescar el listado y cerrar la ventana\necho \"<script>\n  if (window.opener && !window.opener.closed) {\n      window.opener.location.reload();\n  }\n  window.close();\n</script>\";\nexit();\n"
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n\nglobal $conn;\n\n// Valores recién insertados\n$idsolicitud = (int)$values[\"idsolicitud\"];\n$decision  = $values[\"estatusentrega\"];\n\nif(trim($values[\"fechahoraentrega\"]==\"\")){\n    $values[\"fechahoraentrega\"]=NULL;\n}\n\n// 1) Actualizar la decisión en la tabla principal\n$sql = \"UPDATE solicitudes \n        SET estatusentrega = '\".$decision.\"', fechahoraentrega = '\".$values[\"fechahoraentrega\"].\"'\n        WHERE idsolicitud = \".$idsolicitud;\ndb_exec($sql, $conn);\n\n// 2) Refrescar el listado y cerrar la ventana\necho \"<script>\n  if (window.opener && !window.opener.closed) {\n      window.opener.location.reload();\n  }\n  window.close();\n</script>\";\nexit();\n"
 		},
 		{
 			"eventId": "EVENT_PROCESSVALUES_ADD",
@@ -156,6 +182,11 @@
 			"eventId": "EVENT_JS_ONLOAD",
 			"pageType": "add",
 			"code": "if (typeof pageObj !== \"undefined\" && pageObj) {\r\n\r\n    pageObj.on(\"afterSave\", function(result, formData){\r\n        // Aquí solo se entra si guardó bien\r\n        if (window.opener && !window.opener.closed) {\r\n            window.opener.location.reload();\r\n        }\r\n        window.close();\r\n    });\r\n\r\n}\r\n\r\n\r\n\r\n\r\n\r\n$(function(){\r\n\r\n  // Botón personalizado \"Regresar a la lista\"\r\n  $(\"#btnRegresarLista\").on(\"click\", function(e){\r\n      e.preventDefault();\r\n\r\n      // Si la página fue abierta desde la lista de solicitudes…\r\n      if (window.opener && !window.opener.closed) {\r\n          // Opcional: refrescar la lista\r\n          // window.opener.location.href = \"solicitudes_list.php\";\r\n          window.opener.location.reload();\r\n      }\r\n\r\n      // Cerrar esta ventana\r\n      window.close();\r\n  });\r\n\r\n});\r\n"
+		},
+		{
+			"eventId": "EVENT_BEFORESHOW_ADD",
+			"pageType": "add",
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\nif ($_SESSION[\"Label\"]!==\"VENDEDORES\" && $_SESSION[\"Label\"]!==\"GERENTES\") {\n   $pageObject->hideField(\"fechahoraentrega\"); \n}"
 		}
 	],
 	"dbTableInfo": {
@@ -223,6 +254,17 @@
 				"size": 20,
 				"scale": 0,
 				"typeName": "varchar(20)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "fechahoraentrega",
+				"type": 135,
+				"size": 0,
+				"scale": 0,
+				"typeName": "datetime",
 				"nullable": true,
 				"autoinc": false,
 				"defaultValueSQL": null,
@@ -310,7 +352,8 @@
 							"model": "c1",
 							"items": [
 								"add_header"
-							]
+							],
+							"customCSS": "/* Put  your custom CSS code here */\n\n:host {\n  display: none;\n}\n"
 						}
 					},
 					"deferredItems": [],
@@ -333,7 +376,8 @@
 							"model": "c3",
 							"items": [
 								"integrated_edit_field1",
-								"integrated_edit_field2"
+								"integrated_edit_field2",
+								"integrated_edit_field"
 							]
 						}
 					},
@@ -348,7 +392,9 @@
 					"type": "add_header"
 				},
 				"add_back_list": {
-					"type": "add_back_list"
+					"type": "add_back_list",
+					"icon": {},
+					"customCSS": "/* Put  your custom CSS code here */\n\n:host {\n  display: none;\n}\n"
 				},
 				"add_cancel": {
 					"type": "add_cancel"
@@ -384,6 +430,11 @@
 						"type": 0
 					},
 					"editedByRte": false
+				},
+				"integrated_edit_field": {
+					"field": "fechahoraentrega",
+					"type": "integrated_edit_field",
+					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -721,7 +772,8 @@
 							"items": [
 								"integrated_edit_field",
 								"integrated_edit_field1",
-								"integrated_edit_field2"
+								"integrated_edit_field2",
+								"integrated_edit_field3"
 							]
 						}
 					},
@@ -770,6 +822,12 @@
 				},
 				"integrated_edit_field2": {
 					"field": "comentario",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field3": {
+					"field": "fechahoraentrega",
 					"type": "integrated_edit_field",
 					"orientation": 0,
 					"updateOnEdit": false
@@ -1110,6 +1168,9 @@
 								},
 								{
 									"cell": "headcell_field3"
+								},
+								{
+									"cell": "headcell_field4"
 								}
 							]
 						},
@@ -1133,6 +1194,9 @@
 								},
 								{
 									"cell": "cell_field3"
+								},
+								{
+									"cell": "cell_field4"
 								}
 							]
 						},
@@ -1156,6 +1220,9 @@
 								},
 								{
 									"cell": "footcell_field3"
+								},
+								{
+									"cell": "footcell_field4"
 								}
 							]
 						}
@@ -1166,26 +1233,30 @@
 							"items": [
 								"simple_grid_field"
 							],
-							"field": "estatusentrega"
+							"field": "estatusentrega",
+							"columnName": "field"
 						},
 						"cell_field": {
 							"model": "cell_field",
 							"items": [
 								"simple_grid_field2"
 							],
-							"field": "estatusentrega"
+							"field": "estatusentrega",
+							"columnName": "field"
 						},
 						"footcell_field": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "estatusentrega"
+							"field": "estatusentrega",
+							"columnName": "field"
 						},
 						"headcell_field1": {
 							"model": "headcell_field",
 							"items": [
 								"simple_grid_field6"
 							],
-							"field": "comentario"
+							"field": "comentario",
+							"columnName": "field"
 						},
 						"cell_field1": {
 							"model": "cell_field",
@@ -1193,80 +1264,122 @@
 								"simple_grid_field3"
 							],
 							"field": "comentario",
-							"width": "50%"
+							"width": "50%",
+							"columnName": "field"
 						},
 						"footcell_field1": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "comentario"
+							"field": "comentario",
+							"columnName": "field"
 						},
 						"headcell_field2": {
 							"model": "headcell_field",
 							"items": [
 								"simple_grid_field7"
 							],
-							"field": "fechacaptura"
+							"field": "fechacaptura",
+							"columnName": "field"
 						},
 						"cell_field2": {
 							"model": "cell_field",
 							"items": [
 								"simple_grid_field4"
 							],
-							"field": "fechacaptura"
+							"field": "fechacaptura",
+							"columnName": "field"
 						},
 						"footcell_field2": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "fechacaptura"
+							"field": "fechacaptura",
+							"columnName": "field"
 						},
 						"headcell_field3": {
 							"model": "headcell_field",
 							"items": [
 								"simple_grid_field8"
 							],
-							"field": "usuario"
+							"field": "usuario",
+							"columnName": "field"
 						},
 						"cell_field3": {
 							"model": "cell_field",
 							"items": [
 								"simple_grid_field5"
 							],
-							"field": "usuario"
+							"field": "usuario",
+							"columnName": "field"
 						},
 						"footcell_field3": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "usuario"
+							"field": "usuario",
+							"columnName": "field"
 						},
 						"headcell_checkbox": {
 							"model": "headcell_checkbox",
 							"items": [
 								"grid_checkbox_head"
-							]
+							],
+							"columnName": "checkbox",
+							"field": ""
 						},
 						"cell_checkbox": {
 							"model": "cell_checkbox",
 							"items": [
 								"grid_checkbox"
-							]
+							],
+							"columnName": "checkbox",
+							"field": ""
 						},
 						"footcell_checkbox": {
 							"model": "footcell_checkbox",
-							"items": []
+							"items": [],
+							"columnName": "checkbox",
+							"field": ""
 						},
 						"headcell_icons": {
 							"model": "headcell_icons",
-							"items": []
+							"items": [],
+							"columnName": "edit",
+							"field": ""
 						},
 						"cell_icons": {
 							"model": "cell_icons",
 							"items": [
 								"grid_edit"
-							]
+							],
+							"columnName": "edit",
+							"field": ""
 						},
 						"footcell_icons": {
 							"model": "footcell_icons",
-							"items": []
+							"items": [],
+							"columnName": "edit",
+							"field": ""
+						},
+						"headcell_field4": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label"
+							],
+							"field": "fechahoraentrega",
+							"columnName": "field"
+						},
+						"cell_field4": {
+							"model": "cell_field",
+							"items": [
+								"grid_field"
+							],
+							"field": "fechahoraentrega",
+							"columnName": "field"
+						},
+						"footcell_field4": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "fechahoraentrega",
+							"columnName": "field"
 						}
 					},
 					"deferredItems": [],
@@ -1329,7 +1442,9 @@
 					"type": "collapse_button"
 				},
 				"add": {
-					"type": "add"
+					"type": "add",
+					"icon": {},
+					"customCSS": "/* Put  your custom CSS code here */\n\n:host {\n  display: none;\n}\n"
 				},
 				"-": {
 					"type": "-"
@@ -1341,7 +1456,9 @@
 					"type": "-"
 				},
 				"delete": {
-					"type": "delete"
+					"type": "delete",
+					"icon": {},
+					"customCSS": "/* Put  your custom CSS code here */\n\n:host {\n  display: none;\n}\n"
 				},
 				"delete_selected": {
 					"type": "delete_selected"
@@ -1400,6 +1517,19 @@
 					"tables": {
 						"35049744": "true"
 					}
+				},
+				"grid_field": {
+					"field": "fechahoraentrega",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label": {
+					"type": "grid_field_label",
+					"field": "fechahoraentrega"
+				},
+				"-3": {
+					"type": "-"
 				}
 			},
 			"dbProps": {},
@@ -1411,7 +1541,9 @@
 			"controlsBgColor": "white",
 			"imagePosition": "right",
 			"listTotals": 1,
-			"title": {}
+			"title": {
+				"Spanish": "Estatus entregas historial"
+			}
 		},
 		{
 			"id": "print",
