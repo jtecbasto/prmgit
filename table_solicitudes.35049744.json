@@ -7,7 +7,7 @@
 			"asc": false
 		}
 	],
-	"sql": "SELECT\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tsolicitudes.estatusentrega,\n\tcte.nombre,\n\tcte.paterno,\n\tcte.materno,\n\tcte.nombre_completo,\n\tev.estado,\n\tev.ciudad,\n\tev.cp,\n\tev.calle,\n\tev.numeroext,\n\tev.numeroint,\n\tev.colonia,\n\tp.descripcion,\n\tCONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(TRIM(CONCAT_WS(' ',\n             IFNULL(ev.numeroext,''),IFNULL(ev.calle,''),IFNULL(ev.numeroint,''),\n             IFNULL(ev.colonia,''),IFNULL(ev.cp,''),IFNULL(ev.ciudad,''),IFNULL(ev.estado,'')\n           )),' ','+')) AS maps_url,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      IF(IFNULL(ev.calle,'')='','', CONCAT('C.',ev.calle)),\n      IFNULL(CONCAT('No.',ev.numeroext),''),\n      IFNULL(CONCAT('Int.',ev.numeroint),''),\n      IFNULL(ev.colonia,''), IFNULL(CONCAT('C.P.',ev.cp),''),\n      IFNULL(ev.ciudad,''), IFNULL(ev.estado,'')\n    ))) AS direccion,\n\tsolicitudes.idsolicitud AS idsolicitud,\n\tsolicitudes.esnimei AS noserie,\n\tsolicitudes.simcard as simcard,\n\tev.lat,\n\tev.lng,\n\tsolicitudes.dn AS dn,\n\tsolicitudes.dnpreferido AS dnpreferido,\n\tsolicitudes.cuenta AS cuenta,\n\tsolicitudes.contrato AS contrato,\n\tsolicitudes.contratoportal AS contratoportal,\n\tsolicitudes.plazopendiente AS plazopendiente,\n\tsolicitudes.Factura AS factura,\n\tsolicitudes.fechavenci AS fechavenci,\n\tsolicitudes.ciclo AS ciclo,\n\tsolicitudes.renta AS renta,\n\tsolicitudes.ine,\n\tsolicitudes.cartaburocredito,\n\tsolicitudes.polizaseguro,\n\tsolicitudes.contratodocto,\n\tsolicitudes.contratolog,\n\tsolicitudes.anticipolog,\n\tsolicitudes.fechahoraentrega\nFROM\n\tsolicitudes AS solicitudes\n\tLEFT OUTER JOIN clientes AS cte ON cte.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp AS ev ON ev.idsolicitud = solicitudes.idsolicitud\n\tLEFT OUTER JOIN productos AS p ON p.idproducto = solicitudes.idproducto\n\tleft join tiposventa AS t on solicitudes.idtipoventa=t.idtipoventa\n\tleft join gtiposventa as g on t.idgtipoventa=g.idgtipoventa\n   left join serviciosmoviles_ugmembers m  on solicitudes.usuario=m.username\n    left join serviciosmoviles_uggroups u on m.GroupID=u.groupid\n\nwhere solicitudes.idtienda=146 and g.idggtipoventa=:session.idggtipoventa and if(solicitudes.usuario=':session.UserID' OR upper(solicitudes.usuario)='ADMIN',true,if(upper(':session.Label') in ('MESADECONTROL','VALIDADOR','GERENTES'),true,false))\nORDER BY\n\tsolicitudes.idsolicitud DESC\n",
+	"sql": "SELECT\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tsolicitudes.estatusentrega,\n\tcte.nombre,\n\tcte.paterno,\n\tcte.materno,\n\tcte.nombre_completo,\n\tev.estado,\n\tev.ciudad,\n\tev.cp,\n\tev.calle,\n\tev.numeroext,\n\tev.numeroint,\n\tev.colonia,\n\tp.descripcion,\n\tCONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(TRIM(CONCAT_WS(' ',\n             IFNULL(ev.numeroext,''),IFNULL(ev.calle,''),IFNULL(ev.numeroint,''),\n             IFNULL(ev.colonia,''),IFNULL(ev.cp,''),IFNULL(ev.ciudad,''),IFNULL(ev.estado,'')\n           )),' ','+')) AS maps_url,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      IF(IFNULL(ev.calle,'')='','', CONCAT('C.',ev.calle)),\n      IFNULL(CONCAT('No.',ev.numeroext),''),\n      IFNULL(CONCAT('Int.',ev.numeroint),''),\n      IFNULL(ev.colonia,''), IFNULL(CONCAT('C.P.',ev.cp),''),\n      IFNULL(ev.ciudad,''), IFNULL(ev.estado,'')\n    ))) AS direccion,\n\tsolicitudes.idsolicitud AS idsolicitud,\n\tsolicitudes.esnimei AS noserie,\n\tsolicitudes.simcard as simcard,\n\tev.lat,\n\tev.lng,\n\tsolicitudes.dn AS dn,\n\tsolicitudes.dnpreferido AS dnpreferido,\n\tsolicitudes.cuenta AS cuenta,\n\tsolicitudes.contrato AS contrato,\n\tsolicitudes.contratoportal AS contratoportal,\n\tsolicitudes.plazopendiente AS plazopendiente,\n\tsolicitudes.Factura AS factura,\n\tsolicitudes.fechavenci AS fechavenci,\n\tsolicitudes.ciclo AS ciclo,\n\tsolicitudes.renta AS renta,\n\tsolicitudes.ine,\n\tsolicitudes.cartaburocredito,\n\tsolicitudes.polizaseguro,\n\tsolicitudes.contratodocto,\n\tsolicitudes.contratolog,\n\tsolicitudes.anticipolog,\n\tsolicitudes.fechahoraentrega,\n\tsolicitudes.totalapagar\nFROM\n\tsolicitudes AS solicitudes\n\tLEFT OUTER JOIN clientes AS cte ON cte.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp AS ev ON ev.idsolicitud = solicitudes.idsolicitud\n\tLEFT OUTER JOIN productos AS p ON p.idproducto = solicitudes.idproducto\n\tleft join tiposventa AS t on solicitudes.idtipoventa=t.idtipoventa\n\tleft join gtiposventa as g on t.idgtipoventa=g.idgtipoventa\n   left join serviciosmoviles_ugmembers m  on solicitudes.usuario=m.username\n    left join serviciosmoviles_uggroups u on m.GroupID=u.groupid\n\nwhere solicitudes.idtienda=146 and g.idggtipoventa=:session.idggtipoventa and if(solicitudes.usuario=':session.UserID' OR upper(solicitudes.usuario)='ADMIN',true,if(upper(':session.Label') in ('MESADECONTROL','VALIDADOR','GERENTES'),true,false))\nORDER BY\n\tsolicitudes.idsolicitud DESC\n",
 	"connId": "conn",
 	"originalTable": "solicitudes",
 	"name": "solicitudes",
@@ -1474,6 +1474,27 @@
 				"Spanish": "Fecha/hora entrega"
 			},
 			"tableName": "solicitudes"
+		},
+		{
+			"name": "totalapagar",
+			"sqlExpression": "solicitudes.totalapagar",
+			"index": 66,
+			"strField": "totalapagar",
+			"type": 14,
+			"viewFormats": [
+				{
+					"format": "Number"
+				}
+			],
+			"editFormats": [
+				{
+					"validateAs": "Number"
+				}
+			],
+			"label": {
+				"Spanish": "Total a pagar"
+			},
+			"tableName": "solicitudes"
 		}
 	],
 	"whereTabs": [
@@ -1500,7 +1521,7 @@
 		{
 			"eventId": "EVENT_BEFORESHOW_LIST",
 			"pageType": "list",
-			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n// Detecta ADMIN y otras banderas servidor-side\n// Detecta ADMIN y otras banderas servidor-side\n// --- Reglas de acceso ---\n$userId      = isset($_SESSION['UserID']) ? strtoupper((string)$_SESSION['UserID']) : '';\n$isAdmin     = ($userId === 'ADMIN');\n$isValidador = (isset($_SESSION['Label'])  && $_SESSION['Label'] === 'VALIDADOR');\n$hasAcceso   = (isset($_SESSION['Acceso']) && intval($_SESSION['Acceso']) === 1);\n\n$role = $_SESSION['Label'];\n\n$pageObject->hideField(\"idsolicitud\");\n$pageObject->hideField(\"nombre_completo\");\n$pageObject->hideField(\"idtienda\");\n//$pageObject->hideField(\"ine\");\n$pageObject->hideField(\"cartaburocredito\");\n$pageObject->hideField(\"polizaseguro\");\n$pageObject->hideField(\"contratodocto\");\n\n\n\n\n\n\n$pageObject->setProxyValue(\"currentRole\", $role);\n$pageObject->setProxyValue(\"currentUser\", $userId);\n// Cambia la condición a tu gusto:\n$allowLogistic =  $isAdmin || ($isValidador && $hasAcceso);\n\n// IMPORTANTE: usa el *itemid* real del botón en el diseñador (Builder).\n// Te recomiendo renombrarlo a \"logistic_btn\". Si en tu HTML ves data-itemid=\"custom_button\",\n// entonces cambia \"logistic_btn\" por \"custom_button\".\nif (!$allowLogistic) {\n  //  $pageObject->hideItem(\"logistic_btn\");   // oculta la columna/botón para ese usuario\n} else {\n    // lo exponemos por si quieres usarlo del lado cliente (opcional)\n    $pageObject->setProxyValue(\"allowLogistic\", true);\n}\n\n\n\n"
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n// Detecta ADMIN y otras banderas servidor-side\n// Detecta ADMIN y otras banderas servidor-side\n// --- Reglas de acceso ---\n$userId      = isset($_SESSION['UserID']) ? strtoupper((string)$_SESSION['UserID']) : '';\n$isAdmin     = ($userId === 'ADMIN');\n$isValidador = (isset($_SESSION['Label'])  && $_SESSION['Label'] === 'VALIDADOR');\n$hasAcceso   = (isset($_SESSION['Acceso']) && intval($_SESSION['Acceso']) === 1);\n\n$role = $_SESSION['Label'];\n\n$pageObject->hideField(\"idsolicitud\");\n$pageObject->hideField(\"nombre_completo\");\n$pageObject->hideField(\"idtienda\");\n//$pageObject->hideField(\"ine\");\n$pageObject->hideField(\"cartaburocredito\");\n$pageObject->hideField(\"polizaseguro\");\n$pageObject->hideField(\"contratodocto\");\n$pageObject->hideField(\"direccion\");\n\n\n\n\n\n\n$pageObject->setProxyValue(\"currentRole\", $role);\n$pageObject->setProxyValue(\"currentUser\", $userId);\n// Cambia la condición a tu gusto:\n$allowLogistic =  $isAdmin || ($isValidador && $hasAcceso);\n\n// IMPORTANTE: usa el *itemid* real del botón en el diseñador (Builder).\n// Te recomiendo renombrarlo a \"logistic_btn\". Si en tu HTML ves data-itemid=\"custom_button\",\n// entonces cambia \"logistic_btn\" por \"custom_button\".\nif (!$allowLogistic) {\n  //  $pageObject->hideItem(\"logistic_btn\");   // oculta la columna/botón para ese usuario\n} else {\n    // lo exponemos por si quieres usarlo del lado cliente (opcional)\n    $pageObject->setProxyValue(\"allowLogistic\", true);\n}\n\n\n\n"
 		},
 		{
 			"eventId": "EVENT_BEFOREPROCESS_LIST",
@@ -2112,6 +2133,17 @@
 				"autoinc": false,
 				"defaultValueSQL": null,
 				"defaultValue": ""
+			},
+			{
+				"name": "totalapagar",
+				"type": 14,
+				"size": 10,
+				"scale": 2,
+				"typeName": "decimal(10,2)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
 			}
 		],
 		"primaryKeys": [
@@ -2518,7 +2550,9 @@
 						},
 						"c7": {
 							"model": "c1",
-							"items": []
+							"items": [
+								"integrated_edit_field32"
+							]
 						},
 						"c8": {
 							"model": "c1",
@@ -3064,6 +3098,11 @@
 					"field": "fechahoraentrega",
 					"type": "integrated_edit_field",
 					"orientation": 0
+				},
+				"integrated_edit_field32": {
+					"field": "totalapagar",
+					"type": "integrated_edit_field",
+					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -3164,7 +3203,8 @@
 								"export_field15",
 								"export_field16",
 								"export_field17",
-								"export_field18"
+								"export_field18",
+								"export_field"
 							]
 						}
 					},
@@ -3283,6 +3323,10 @@
 				},
 				"export_field18": {
 					"field": "fechahoraentrega",
+					"type": "export_field"
+				},
+				"export_field": {
+					"field": "totalapagar",
 					"type": "export_field"
 				}
 			},
@@ -3775,7 +3819,9 @@
 						},
 						"c7": {
 							"model": "c1",
-							"items": []
+							"items": [
+								"integrated_edit_field33"
+							]
 						},
 						"c8": {
 							"model": "c1",
@@ -4358,6 +4404,12 @@
 				},
 				"integrated_edit_field32": {
 					"field": "fechahoraentrega",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field33": {
+					"field": "totalapagar",
 					"type": "integrated_edit_field",
 					"orientation": 0,
 					"updateOnEdit": false
@@ -5189,6 +5241,9 @@
 									"cell": "headcell_field10"
 								},
 								{
+									"cell": "headcell_field32"
+								},
+								{
 									"cell": "headcell_field1"
 								},
 								{
@@ -5226,6 +5281,15 @@
 								},
 								{
 									"cell": "headcell_field23"
+								},
+								{
+									"cell": "headcell_field31"
+								},
+								{
+									"cell": "headcell_field34"
+								},
+								{
+									"cell": "headcell_field35"
 								}
 							]
 						},
@@ -5293,6 +5357,10 @@
 									"rowspan": 2
 								},
 								{
+									"cell": "headcell_field33",
+									"rowspan": 2
+								},
+								{
 									"cell": "cell_field1",
 									"rowspan": 2
 								},
@@ -5342,6 +5410,18 @@
 								},
 								{
 									"cell": "cell_field15",
+									"rowspan": 2
+								},
+								{
+									"cell": "cell_field3",
+									"rowspan": 2
+								},
+								{
+									"cell": "cell_field25",
+									"rowspan": 2
+								},
+								{
+									"cell": "cell_field26",
 									"rowspan": 2
 								}
 							]
@@ -5393,7 +5473,8 @@
 									"colspan": 2
 								},
 								{
-									"cell": "headcell_field14"
+									"cell": "headcell_field14",
+									"colspan": 2
 								},
 								{
 									"cell": "footcell_field1"
@@ -5425,6 +5506,15 @@
 								},
 								{
 									"cell": "footcell_field13"
+								},
+								{
+									"cell": "footcell_field5"
+								},
+								{
+									"cell": "footcell_field16"
+								},
+								{
+									"cell": "footcell_field17"
 								}
 							]
 						}
@@ -5608,24 +5698,24 @@
 						"headcell_field10": {
 							"model": "headcell_field",
 							"items": [
-								"grid_field_label3"
+								"grid_field_label17"
 							],
-							"columnName": "field",
-							"field": "noserie"
+							"columnName": "",
+							"field": ""
 						},
 						"headcell_field11": {
 							"model": "cell_field",
 							"items": [
-								"grid_field3"
+								"grid_field17"
 							],
-							"columnName": "field",
-							"field": "noserie"
+							"columnName": "",
+							"field": ""
 						},
 						"headcell_field14": {
 							"model": "footcell_field",
 							"items": [],
-							"columnName": "field",
-							"field": "noserie"
+							"columnName": "",
+							"field": ""
 						},
 						"headcell_field15": {
 							"model": "cell_field",
@@ -6053,6 +6143,81 @@
 							"align": "center",
 							"bold": true,
 							"underline": true
+						},
+						"headcell_field31": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "",
+							"columnName": ""
+						},
+						"cell_field3": {
+							"model": "cell_field",
+							"items": [],
+							"field": "",
+							"columnName": ""
+						},
+						"footcell_field5": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "",
+							"columnName": ""
+						},
+						"headcell_field32": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label3"
+							],
+							"columnName": "",
+							"field": ""
+						},
+						"headcell_field33": {
+							"model": "cell_field",
+							"items": [
+								"grid_field3"
+							],
+							"columnName": "",
+							"field": ""
+						},
+						"headcell_field34": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label18"
+							],
+							"field": "direccion",
+							"columnName": "field"
+						},
+						"cell_field25": {
+							"model": "cell_field",
+							"items": [
+								"grid_field18"
+							],
+							"field": "direccion",
+							"columnName": "field"
+						},
+						"footcell_field16": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "direccion",
+							"columnName": "field"
+						},
+						"headcell_field35": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label19"
+							],
+							"field": "totalapagar"
+						},
+						"cell_field26": {
+							"model": "cell_field",
+							"items": [
+								"grid_field19"
+							],
+							"field": "totalapagar"
+						},
+						"footcell_field17": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "totalapagar"
 						}
 					},
 					"deferredItems": [],
@@ -6625,6 +6790,36 @@
 					},
 					"buttonSize": "xtra-small",
 					"customCSS": "/* Put  your custom CSS code here */\n\n:host {\n  display: none;\n}\n"
+				},
+				"grid_field17": {
+					"field": "dn",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label17": {
+					"type": "grid_field_label",
+					"field": "dn"
+				},
+				"grid_field18": {
+					"field": "direccion",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label18": {
+					"type": "grid_field_label",
+					"field": "direccion"
+				},
+				"grid_field19": {
+					"field": "totalapagar",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label19": {
+					"type": "grid_field_label",
+					"field": "totalapagar"
 				}
 			},
 			"dbProps": {},
@@ -6930,7 +7125,8 @@
 								"integrated_search_field16",
 								"integrated_search_field17",
 								"integrated_search_field18",
-								"integrated_search_field19"
+								"integrated_search_field19",
+								"integrated_search_field20"
 							]
 						}
 					},
@@ -7051,6 +7247,11 @@
 				},
 				"integrated_search_field19": {
 					"field": "fechahoraentrega",
+					"type": "integrated_search_field",
+					"orientation": 0
+				},
+				"integrated_search_field20": {
+					"field": "totalapagar",
 					"type": "integrated_search_field",
 					"orientation": 0
 				}
@@ -7220,7 +7421,8 @@
 								"simple_grid_field62",
 								"simple_grid_field63",
 								"simple_grid_field64",
-								"simple_grid_field65"
+								"simple_grid_field65",
+								"simple_grid_field66"
 							]
 						}
 					},
@@ -7498,6 +7700,10 @@
 				"simple_grid_field65": {
 					"field": "fechahoraentrega",
 					"type": "simple_grid_field"
+				},
+				"simple_grid_field66": {
+					"field": "totalapagar",
+					"type": "simple_grid_field"
 				}
 			},
 			"dbProps": {},
@@ -7664,7 +7870,8 @@
 								"simple_grid_field62",
 								"simple_grid_field63",
 								"simple_grid_field64",
-								"simple_grid_field65"
+								"simple_grid_field65",
+								"simple_grid_field66"
 							]
 						}
 					},
@@ -7939,6 +8146,10 @@
 				"simple_grid_field65": {
 					"field": "fechahoraentrega",
 					"type": "simple_grid_field"
+				},
+				"simple_grid_field66": {
+					"field": "totalapagar",
+					"type": "simple_grid_field"
 				}
 			},
 			"dbProps": {},
@@ -8096,7 +8307,9 @@
 						},
 						"c": {
 							"model": "c3",
-							"items": [],
+							"items": [
+								"integrated_edit_field"
+							],
 							"customCSS": "/* Put  your custom CSS code here */\n/* ========================================================= */\n/* ESTILOS DE TU TEMPLATE */\n/* ========================================================= */\nbody {\n    box-sizing: border-box;\n    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;\n    /* Corrección de encogimiento por scroll */\n    overflow-y: scroll !important;\n}\n.gradient-bg {\n    /* Degradado de ejemplo, ajusta tus colores si es necesario */\n    background: linear-gradient(135deg, #03478A 0%, #6D98C2 100%);\n}\n.card-shadow {\n    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);\n}\n.check-animation {\n    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);\n}\n.check-animation:hover {\n    transform: scale(1.1);\n}\n\n/* ========================================================= */\n/* ESTILOS ESPECÍFICOS PARA PHP RUNNER */\n/* ========================================================= */\n\n/* Esconde el checkbox nativo de PHPRunner, ya que lo vamos a reemplazar visualmente */\n.custom-checkbox-phprunner input[type=\"checkbox\"] {\n    opacity: 0; \n    position: absolute; \n    width: 1px;\n    height: 1px;\n    padding: 0;\n    margin: -1px;\n    overflow: hidden;\n    clip: rect(0, 0, 0, 0);\n    border: 0;\n}\n\n/* Estilo del input de SIM Card (u otro campo de texto) */\n#control_simcard_1 input[type=\"text\"], \n#control_simcard_1 input[type=\"number\"] {\n    width: 100%;\n    padding: 0.75rem 1rem;\n    border: 1px solid #d1d5db; /* gray-300 */\n    border-radius: 0.5rem; /* rounded-lg */\n    transition: all 0.2s;\n}\n#control_simcard_1 input[type=\"text\"]:focus, \n#control_simcard_1 input[type=\"number\"]:focus {\n    border-color: #3b82f6; /* blue-500 */\n    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);\n}"
 						}
 					},
@@ -8146,6 +8359,11 @@
 						"type": 0
 					},
 					"editedByRte": false
+				},
+				"integrated_edit_field": {
+					"field": "totalapagar",
+					"type": "integrated_edit_field",
+					"orientation": 0
 				}
 			},
 			"dbProps": {},
