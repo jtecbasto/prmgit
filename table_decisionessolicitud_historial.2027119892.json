@@ -287,7 +287,6 @@
 							"items": [
 								"add_save",
 								"add_reset",
-								"add_back_list",
 								"add_cancel",
 								"text"
 							]
@@ -351,11 +350,6 @@
 				"add_header": {
 					"type": "add_header"
 				},
-				"add_back_list": {
-					"type": "add_back_list",
-					"icon": {},
-					"customCSS": "/* Put  your custom CSS code here */\n\n:host {\n  display: none;\n}\n"
-				},
 				"add_cancel": {
 					"type": "add_cancel"
 				},
@@ -367,7 +361,8 @@
 					"icon": {}
 				},
 				"add_reset": {
-					"type": "add_reset"
+					"type": "add_reset",
+					"icon": {}
 				},
 				"integrated_edit_field1": {
 					"field": "decisionessolicitud",

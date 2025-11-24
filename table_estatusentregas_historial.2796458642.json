@@ -146,7 +146,7 @@
 			"type": 135,
 			"viewFormats": [
 				{
-					"format": "Short Date"
+					"format": "Datetime"
 				}
 			],
 			"editFormats": [
@@ -171,7 +171,7 @@
 		{
 			"eventId": "EVENT_AFTERADD",
 			"pageType": "add",
-			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n\nglobal $conn;\n\n// Valores recién insertados\n$idsolicitud = (int)$values[\"idsolicitud\"];\n$decision  = $values[\"estatusentrega\"];\n\nif(trim($values[\"fechahoraentrega\"]==\"\")){\n    $values[\"fechahoraentrega\"]=NULL;\n}\n\n// 1) Actualizar la decisión en la tabla principal\n$sql = \"UPDATE solicitudes \n        SET estatusentrega = '\".$decision.\"', fechahoraentrega = '\".$values[\"fechahoraentrega\"].\"'\n        WHERE idsolicitud = \".$idsolicitud;\ndb_exec($sql, $conn);\n\n// 2) Refrescar el listado y cerrar la ventana\necho \"<script>\n  if (window.opener && !window.opener.closed) {\n      window.opener.location.reload();\n  }\n  window.close();\n</script>\";\nexit();\n"
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n\nglobal $conn;\n\n$fechaSql = \"NULL\";\n\n// Valores recién insertados\n$idsolicitud = (int)$values[\"idsolicitud\"];\n$decision  = $values[\"estatusentrega\"];\n\nif (isset($values[\"fechahoraentrega\"]) && $values[\"fechahoraentrega\"] !== \"\") {\n    $raw = $values[\"fechahoraentrega\"];\n    $ts  = strtotime($raw);\n    if ($ts !== false) {\n        $fechaSql = \"'\".date('Y-m-d H:i:s', $ts).\"'\";\n    }\n}\n// 1) Actualizar la decisión en la tabla principal\n$sql = \"UPDATE solicitudes \n        SET estatusentrega = '\".$decision.\"', fechahoraentrega = \".$fechaSql.\"\n        WHERE idsolicitud = \".$idsolicitud;\ndb_exec($sql, $conn);\n\n// 2) Refrescar el listado y cerrar la ventana\necho \"<script>\n  if (window.opener && !window.opener.closed) {\n      window.opener.location.reload();\n  }\n  window.close();\n</script>\";\nexit();\n"
 		},
 		{
 			"eventId": "EVENT_PROCESSVALUES_ADD",
@@ -326,7 +326,6 @@
 							"items": [
 								"add_save",
 								"add_reset",
-								"add_back_list",
 								"add_cancel",
 								"text"
 							]
@@ -391,11 +390,6 @@
 				"add_header": {
 					"type": "add_header"
 				},
-				"add_back_list": {
-					"type": "add_back_list",
-					"icon": {},
-					"customCSS": "/* Put  your custom CSS code here */\n\n:host {\n  display: none;\n}\n"
-				},
 				"add_cancel": {
 					"type": "add_cancel"
 				},
@@ -406,7 +400,8 @@
 					"type": "add_save"
 				},
 				"add_reset": {
-					"type": "add_reset"
+					"type": "add_reset",
+					"icon": {}
 				},
 				"integrated_edit_field1": {
 					"field": "estatusentrega",

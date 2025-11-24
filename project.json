@@ -501,48 +501,6 @@
 							"table": 3680839223,
 							"pageType": "list"
 						}
-					},
-					{
-						"id": "18",
-						"data": {
-							"name": {
-								"table": "decisionessolicitud_miembros",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 2094060032,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "19",
-						"data": {
-							"name": {
-								"table": "decisionessolicitud_historial",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 2027119892,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "20",
-						"data": {
-							"name": {
-								"table": "estatusentregas_historial",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 2796458642,
-							"pageType": "list"
-						}
 					}
 				]
 			}
