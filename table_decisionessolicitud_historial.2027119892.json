@@ -75,7 +75,7 @@
 				}
 			],
 			"label": {
-				"Spanish": "Decisionessolicitud"
+				"Spanish": "Estatus"
 			},
 			"tableName": "decisionessolicitud_historial"
 		},
@@ -140,17 +140,22 @@
 		{
 			"eventId": "EVENT_AFTERADD",
 			"pageType": "add",
-			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\nglobal $conn;\n\n// Valores recién insertados\n$idsolicitud = (int)$values[\"idsolicitud\"];\n$decision  = $values[\"decisionsolicitud\"];\n\n// 1) Actualizar la decisión en la tabla principal\n$sql = \"UPDATE solicitudes \n        SET estatus = \".$decision.\"\n        WHERE idsolicitud = \".$idsolicitud;\ndb_exec($sql, $conn);\n\n// 2) Refrescar el listado y cerrar la ventana\necho \"<script>\n  if (window.opener && !window.opener.closed) {\n      window.opener.location.reload();\n  }\n  window.close();\n</script>\";\nexit();\n"
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\nglobal $conn;\n\n// Valores recién insertados\n$idsolicitud = (int)$values[\"idsolicitud\"];\n$decision  = $values[\"decisionessolicitud\"];\n\n// 1) Actualizar la decisión en la tabla principal\n$sql = \"UPDATE solicitudes \n        SET estatus = '\".$decision.\"'\n        WHERE idsolicitud = \".$idsolicitud;\ndb_exec($sql, $conn);\n\n// 2) Refrescar el listado y cerrar la ventana\necho \"<script>\n  if (window.opener && !window.opener.closed) {\n      window.opener.location.reload();\n  }\n  window.close();\n</script>\";\nexit();\n"
 		},
 		{
 			"eventId": "EVENT_BEFOREADD",
 			"pageType": "add",
-			"code": "// Si no viene capturado, tomarlo de la URL\nif( !isset($values[\"idsolicitud\"]) || !$values[\"idsolicitud\"] ) {\n    if( isset($_GET[\"idsolicitud\"]) ) {\n        $values[\"idsolicitud\"] = (int)$_GET[\"idsolicitud\"];\n    }\n}\n\n// campos automáticos opcionales\n$values[\"fechacaptura\"] = now();\n$values[\"usuario\"]  = $_SESSION[\"Label\"];\n\nreturn true;\n\n\n"
+			"code": "// Si no viene capturado, tomarlo de la URL\nif (empty($values[\"idsolicitud\"])) {\n    if (isset($_SESSION[\"idsolicitud_hist\"])) {\n        $values[\"idsolicitud\"] = (int)$_SESSION[\"idsolicitud_hist\"];\n    }\n}\n// campos automáticos opcionales\n$values[\"fechacaptura\"] = now();\n$values[\"usuario\"]  = $_SESSION[\"Label\"];\n\nreturn true;\n\n\n"
 		},
 		{
 			"eventId": "EVENT_JS_ONLOAD",
 			"pageType": "add",
 			"code": "if (typeof pageObj !== \"undefined\" && pageObj) {\r\n\r\n    pageObj.on(\"afterSave\", function(result, formData){\r\n        // Aquí solo se entra si guardó bien\r\n        if (window.opener && !window.opener.closed) {\r\n            window.opener.location.reload();\r\n        }\r\n        window.close();\r\n    });\r\n\r\n}\r\n\r\n\r\n\r\n\r\n\r\n$(function(){\r\n\r\n  // Botón personalizado \"Regresar a la lista\"\r\n  $(\"#btnRegresarLista\").on(\"click\", function(e){\r\n      e.preventDefault();\r\n\r\n      // Si la página fue abierta desde la lista de solicitudes…\r\n      if (window.opener && !window.opener.closed) {\r\n          // Opcional: refrescar la lista\r\n          // window.opener.location.href = \"solicitudes_list.php\";\r\n          window.opener.location.reload();\r\n      }\r\n\r\n      // Cerrar esta ventana\r\n      window.close();\r\n  });\r\n\r\n});\r\n"
+		},
+		{
+			"eventId": "EVENT_PROCESSVALUES_ADD",
+			"pageType": "add",
+			"code": "// decisionessolicitud_historial_add -> Before display\n\nif (isset($_GET[\"idsolicitud\"]) && $_GET[\"idsolicitud\"] != \"\") {\n    // Prellenar el campo para el formulario\n    $values[\"idsolicitud\"] = (int)$_GET[\"idsolicitud\"];\n\n    // Y por si acaso, también lo guardamos en sesión\n    $_SESSION[\"idsolicitud_hist\"] = (int)$_GET[\"idsolicitud\"];\n\n    error_log(\"BeforeDisplay GET idsolicitud:\".$_GET[\"idsolicitud\"].PHP_EOL,3,\"debug_log.log\");\n}\n\n\n"
 		}
 	],
 	"dbTableInfo": {
@@ -1132,7 +1137,12 @@
 					"field": "decisionessolicitud",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": false,
+					"label": {
+						"field": "decisionessolicitud",
+						"table": "decisionessolicitud_historial",
+						"type": 3
+					}
 				},
 				"simple_grid_field3": {
 					"field": "comentario",
@@ -1210,7 +1220,9 @@
 			"controlsBgColor": "white",
 			"imagePosition": "right",
 			"listTotals": 1,
-			"title": {}
+			"title": {
+				"Spanish": "Estatus historial"
+			}
 		},
 		{
 			"id": "print",
