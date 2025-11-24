@@ -48,8 +48,8 @@
 			},
 			{
 				"gid": 2027119892,
-				"y": 136,
-				"x": 674,
+				"y": 80,
+				"x": 725,
 				"width": 241.765625,
 				"height": 208
 			},
@@ -73,6 +73,20 @@
 				"x": 624,
 				"width": 157.0625,
 				"height": 258
+			},
+			{
+				"gid": 2796458642,
+				"y": 232,
+				"x": 654,
+				"width": 224.65625,
+				"height": 208
+			},
+			{
+				"gid": 3531247660,
+				"y": 850,
+				"x": 1105,
+				"width": 286.90625,
+				"height": 124
 			},
 			{
 				"gid": 3847630651,
@@ -515,6 +529,20 @@
 							"table": 2027119892,
 							"pageType": "list"
 						}
+					},
+					{
+						"id": "20",
+						"data": {
+							"name": {
+								"table": "estatusentregas_historial",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 2796458642,
+							"pageType": "list"
+						}
 					}
 				]
 			}
@@ -608,7 +636,8 @@
 								"welcome_item6",
 								"welcome_item7",
 								"welcome_item8",
-								"welcome_item9"
+								"welcome_item9",
+								"welcome_item10"
 							]
 						}
 					},
@@ -803,6 +832,18 @@
 						"type": 6
 					},
 					"background": "#cd853f",
+					"linkType": 0
+				},
+				"welcome_item10": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "estatusentregas_historial",
+					"linkPage": "list",
+					"linkText": {
+						"table": "estatusentregas_historial",
+						"type": 6
+					},
+					"background": "#6da5c8",
 					"linkType": 0
 				}
 			},

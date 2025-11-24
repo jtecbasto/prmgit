@@ -1,0 +1,121 @@
+{
+	"sql": "SELECT\r\n\tid,\r\n\t`label`,\r\n\testatusentrega\r\nFROM\r\n\testatusentregas_miembros WHERE label = ':session.label'",
+	"type": 1,
+	"connId": "conn",
+	"originalTable": "estatusentregas_miembros",
+	"name": "estatusentregas_miembros_lookup",
+	"shortTableName": "estatusentregas_miembros_lookup",
+	"dbType": 0,
+	"keyFields": [
+		"id"
+	],
+	"detailsBadgeColor": "3cb371",
+	"fields": [
+		{
+			"name": "id",
+			"sqlExpression": "id",
+			"index": 1,
+			"strField": "id",
+			"type": 3,
+			"autoinc": true,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Id"
+			},
+			"tableName": "estatusentregas_miembros"
+		},
+		{
+			"name": "label",
+			"sqlExpression": "`label`",
+			"index": 2,
+			"strField": "label",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Label"
+			},
+			"tableName": "estatusentregas_miembros"
+		},
+		{
+			"name": "estatusentrega",
+			"sqlExpression": "estatusentrega",
+			"index": 3,
+			"strField": "estatusentrega",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Estatusentrega"
+			},
+			"tableName": "estatusentregas_miembros"
+		}
+	],
+	"dbTableInfo": {
+		"type": 0,
+		"foreignKeys": [],
+		"fields": [
+			{
+				"name": "id",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": false,
+				"autoinc": true,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "label",
+				"type": 200,
+				"size": 45,
+				"scale": 0,
+				"typeName": "varchar(45)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "estatusentrega",
+				"type": 200,
+				"size": 45,
+				"scale": 0,
+				"typeName": "varchar(45)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			}
+		],
+		"primaryKeys": [
+			"id"
+		],
+		"uniqueFields": [],
+		"name": "estatusentregas_miembros"
+	},
+	"pages": [],
+	"geoCoding": {
+		"enabled": false,
+		"latField": "",
+		"lonField": "",
+		"addressFields": []
+	},
+	"caption": {
+		"Spanish": "Estatusentregas Miembros Lookup"
+	}
+}

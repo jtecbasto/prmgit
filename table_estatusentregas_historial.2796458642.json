@@ -1,9 +1,9 @@
 {
-	"sql": "SELECT\r\n\tid,\r\n\tidsolicitud,\r\n\tdecisionessolicitud,\r\n\tcomentario,\r\n\tfechacaptura,\r\n\tusuario\r\nFROM\r\n\tdecisionessolicitud_historial",
+	"sql": "SELECT\r\n\tid,\r\n\tidsolicitud,\r\n\testatusentrega,\r\n\tcomentario,\r\n\tfechacaptura,\r\n\tusuario\r\nFROM\r\n\testatusentregas_historial",
 	"connId": "conn",
-	"originalTable": "decisionessolicitud_historial",
-	"name": "decisionessolicitud_historial",
-	"shortTableName": "decisionessolicitud_historial",
+	"originalTable": "estatusentregas_historial",
+	"name": "estatusentregas_historial",
+	"shortTableName": "estatusentregas_historial",
 	"dbType": 0,
 	"keyFields": [
 		"id"
@@ -19,7 +19,7 @@
 			]
 		}
 	],
-	"detailsBadgeColor": "cd853f",
+	"detailsBadgeColor": "6da5c8",
 	"fields": [
 		{
 			"name": "id",
@@ -37,7 +37,7 @@
 			"label": {
 				"Spanish": "Id"
 			},
-			"tableName": "decisionessolicitud_historial"
+			"tableName": "estatusentregas_historial"
 		},
 		{
 			"name": "idsolicitud",
@@ -54,13 +54,13 @@
 			"label": {
 				"Spanish": "Idsolicitud"
 			},
-			"tableName": "decisionessolicitud_historial"
+			"tableName": "estatusentregas_historial"
 		},
 		{
-			"name": "decisionessolicitud",
-			"sqlExpression": "decisionessolicitud",
+			"name": "estatusentrega",
+			"sqlExpression": "estatusentrega",
 			"index": 3,
-			"strField": "decisionessolicitud",
+			"strField": "estatusentrega",
 			"type": 200,
 			"viewFormats": [
 				{}
@@ -68,16 +68,16 @@
 			"editFormats": [
 				{
 					"format": "Lookup wizard",
-					"lookupTable": "decisionessolicitud_miembros",
+					"lookupTable": "estatusentregas_miembros_lookup",
 					"lookupTableConnection": "conn",
-					"lookupLinkField": "decisionsolicitud",
-					"lookupDisplayField": "decisionsolicitud"
+					"lookupLinkField": "estatusentrega",
+					"lookupDisplayField": "estatusentrega"
 				}
 			],
 			"label": {
-				"Spanish": "Estatus"
+				"Spanish": "Estatus entrega"
 			},
-			"tableName": "decisionessolicitud_historial"
+			"tableName": "estatusentregas_historial"
 		},
 		{
 			"name": "comentario",
@@ -94,7 +94,7 @@
 			"label": {
 				"Spanish": "Comentario"
 			},
-			"tableName": "decisionessolicitud_historial"
+			"tableName": "estatusentregas_historial"
 		},
 		{
 			"name": "fechacaptura",
@@ -116,7 +116,7 @@
 			"label": {
 				"Spanish": "Fecha de captura"
 			},
-			"tableName": "decisionessolicitud_historial"
+			"tableName": "estatusentregas_historial"
 		},
 		{
 			"name": "usuario",
@@ -133,29 +133,29 @@
 			"label": {
 				"Spanish": "Usuario"
 			},
-			"tableName": "decisionessolicitud_historial"
+			"tableName": "estatusentregas_historial"
 		}
 	],
 	"eventHandlers": [
 		{
-			"eventId": "EVENT_AFTERADD",
-			"pageType": "add",
-			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\nglobal $conn;\n\n// Valores recién insertados\n$idsolicitud = (int)$values[\"idsolicitud\"];\n$decision  = $values[\"decisionessolicitud\"];\n\n// 1) Actualizar la decisión en la tabla principal\n$sql = \"UPDATE solicitudes \n        SET estatus = '\".$decision.\"'\n        WHERE idsolicitud = \".$idsolicitud;\ndb_exec($sql, $conn);\n\n// 2) Refrescar el listado y cerrar la ventana\necho \"<script>\n  if (window.opener && !window.opener.closed) {\n      window.opener.location.reload();\n  }\n  window.close();\n</script>\";\nexit();\n"
-		},
-		{
 			"eventId": "EVENT_BEFOREADD",
 			"pageType": "add",
-			"code": "// Si no viene capturado, tomarlo de la URL\nif (empty($values[\"idsolicitud\"])) {\n    if (isset($_SESSION[\"idsolicitud_hist\"])) {\n        $values[\"idsolicitud\"] = (int)$_SESSION[\"idsolicitud_hist\"];\n    }\n}\n// campos automáticos opcionales\n$values[\"fechacaptura\"] = now();\n$values[\"usuario\"]  = $_SESSION[\"Label\"];\n\nreturn true;\n\n\n"
+			"code": "// Si no viene capturado, tomarlo de la URL\r\nif (empty($values[\"idsolicitud\"])) {\r\n    if (isset($_SESSION[\"idsolicitud_hist\"])) {\r\n        $values[\"idsolicitud\"] = (int)$_SESSION[\"idsolicitud_hist\"];\r\n    }\r\n}\r\n// campos automáticos opcionales\r\n$values[\"fechacaptura\"] = now();\r\n$values[\"usuario\"]  = $_SESSION[\"Label\"];\r\n\r\nreturn true;\r\n"
+		},
+		{
+			"eventId": "EVENT_AFTERADD",
+			"pageType": "add",
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n\nglobal $conn;\n\n// Valores recién insertados\n$idsolicitud = (int)$values[\"idsolicitud\"];\n$decision  = $values[\"estatusentrega\"];\n\n// 1) Actualizar la decisión en la tabla principal\n$sql = \"UPDATE solicitudes \n        SET estatusentrega = '\".$decision.\"'\n        WHERE idsolicitud = \".$idsolicitud;\ndb_exec($sql, $conn);\n\n// 2) Refrescar el listado y cerrar la ventana\necho \"<script>\n  if (window.opener && !window.opener.closed) {\n      window.opener.location.reload();\n  }\n  window.close();\n</script>\";\nexit();\n"
+		},
+		{
+			"eventId": "EVENT_PROCESSVALUES_ADD",
+			"pageType": "add",
+			"code": "if (isset($_GET[\"idsolicitud\"]) && $_GET[\"idsolicitud\"] != \"\") {\n    // Prellenar el campo para el formulario\n    $values[\"idsolicitud\"] = (int)$_GET[\"idsolicitud\"];\n\n    // Y por si acaso, también lo guardamos en sesión\n    $_SESSION[\"idsolicitud_hist\"] = (int)$_GET[\"idsolicitud\"];\n\n   // error_log(\"BeforeDisplay GET idsolicitud:\".$_GET[\"idsolicitud\"].PHP_EOL,3,\"debug_log.log\");\n}\n"
 		},
 		{
 			"eventId": "EVENT_JS_ONLOAD",
 			"pageType": "add",
 			"code": "if (typeof pageObj !== \"undefined\" && pageObj) {\r\n\r\n    pageObj.on(\"afterSave\", function(result, formData){\r\n        // Aquí solo se entra si guardó bien\r\n        if (window.opener && !window.opener.closed) {\r\n            window.opener.location.reload();\r\n        }\r\n        window.close();\r\n    });\r\n\r\n}\r\n\r\n\r\n\r\n\r\n\r\n$(function(){\r\n\r\n  // Botón personalizado \"Regresar a la lista\"\r\n  $(\"#btnRegresarLista\").on(\"click\", function(e){\r\n      e.preventDefault();\r\n\r\n      // Si la página fue abierta desde la lista de solicitudes…\r\n      if (window.opener && !window.opener.closed) {\r\n          // Opcional: refrescar la lista\r\n          // window.opener.location.href = \"solicitudes_list.php\";\r\n          window.opener.location.reload();\r\n      }\r\n\r\n      // Cerrar esta ventana\r\n      window.close();\r\n  });\r\n\r\n});\r\n"
-		},
-		{
-			"eventId": "EVENT_PROCESSVALUES_ADD",
-			"pageType": "add",
-			"code": "// decisionessolicitud_historial_add -> Before display\n\nif (isset($_GET[\"idsolicitud\"]) && $_GET[\"idsolicitud\"] != \"\") {\n    // Prellenar el campo para el formulario\n    $values[\"idsolicitud\"] = (int)$_GET[\"idsolicitud\"];\n\n    // Y por si acaso, también lo guardamos en sesión\n    $_SESSION[\"idsolicitud_hist\"] = (int)$_GET[\"idsolicitud\"];\n\n   // error_log(\"BeforeDisplay GET idsolicitud:\".$_GET[\"idsolicitud\"].PHP_EOL,3,\"debug_log.log\");\n}\n\n\n"
 		}
 	],
 	"dbTableInfo": {
@@ -179,13 +179,13 @@
 				"size": 11,
 				"scale": 0,
 				"typeName": "int(11)",
-				"nullable": true,
+				"nullable": false,
 				"autoinc": false,
 				"defaultValueSQL": null,
 				"defaultValue": ""
 			},
 			{
-				"name": "decisionessolicitud",
+				"name": "estatusentrega",
 				"type": 200,
 				"size": 45,
 				"scale": 0,
@@ -233,7 +233,7 @@
 			"id"
 		],
 		"uniqueFields": [],
-		"name": "decisionessolicitud_historial"
+		"name": "estatusentregas_historial"
 	},
 	"pages": [
 		{
@@ -357,16 +357,20 @@
 					"type": "add_message"
 				},
 				"add_save": {
-					"type": "add_save",
-					"icon": {}
+					"type": "add_save"
 				},
 				"add_reset": {
 					"type": "add_reset"
 				},
 				"integrated_edit_field1": {
-					"field": "decisionessolicitud",
+					"field": "estatusentrega",
 					"type": "integrated_edit_field",
-					"orientation": 0
+					"orientation": 0,
+					"label": {
+						"field": "estatusentrega",
+						"table": "estatusentregas_historial",
+						"type": 3
+					}
 				},
 				"integrated_edit_field2": {
 					"field": "comentario",
@@ -715,6 +719,7 @@
 						"c3": {
 							"model": "c3",
 							"items": [
+								"integrated_edit_field",
 								"integrated_edit_field1",
 								"integrated_edit_field2"
 							]
@@ -751,8 +756,14 @@
 				"edit_close": {
 					"type": "edit_close"
 				},
+				"integrated_edit_field": {
+					"field": "idsolicitud",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
 				"integrated_edit_field1": {
-					"field": "decisionessolicitud",
+					"field": "estatusentrega",
 					"type": "integrated_edit_field",
 					"orientation": 0,
 					"updateOnEdit": false
@@ -1153,26 +1164,26 @@
 						"headcell_field": {
 							"model": "headcell_field",
 							"items": [
-								"simple_grid_field4"
+								"simple_grid_field"
 							],
-							"field": "decisionessolicitud"
+							"field": "estatusentrega"
 						},
 						"cell_field": {
 							"model": "cell_field",
 							"items": [
 								"simple_grid_field2"
 							],
-							"field": "decisionessolicitud"
+							"field": "estatusentrega"
 						},
 						"footcell_field": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "decisionessolicitud"
+							"field": "estatusentrega"
 						},
 						"headcell_field1": {
 							"model": "headcell_field",
 							"items": [
-								"simple_grid_field5"
+								"simple_grid_field6"
 							],
 							"field": "comentario"
 						},
@@ -1192,14 +1203,14 @@
 						"headcell_field2": {
 							"model": "headcell_field",
 							"items": [
-								"simple_grid_field6"
+								"simple_grid_field7"
 							],
 							"field": "fechacaptura"
 						},
 						"cell_field2": {
 							"model": "cell_field",
 							"items": [
-								"simple_grid_field"
+								"simple_grid_field4"
 							],
 							"field": "fechacaptura"
 						},
@@ -1211,14 +1222,14 @@
 						"headcell_field3": {
 							"model": "headcell_field",
 							"items": [
-								"simple_grid_field7"
+								"simple_grid_field8"
 							],
 							"field": "usuario"
 						},
 						"cell_field3": {
 							"model": "cell_field",
 							"items": [
-								"simple_grid_field1"
+								"simple_grid_field5"
 							],
 							"field": "usuario"
 						},
@@ -1335,26 +1346,15 @@
 				"delete_selected": {
 					"type": "delete_selected"
 				},
-				"master_info": {
-					"type": "master_info",
-					"tables": {
-						"35049744": "true"
-					}
-				},
 				"simple_grid_field2": {
-					"field": "decisionessolicitud",
+					"field": "estatusentrega",
 					"type": "grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false,
-					"label": {
-						"field": "decisionessolicitud",
-						"table": "decisionessolicitud_historial",
-						"type": 3
-					}
+					"inlineEdit": false
 				},
-				"simple_grid_field4": {
+				"simple_grid_field": {
 					"type": "grid_field_label",
-					"field": "decisionessolicitud"
+					"field": "estatusentrega"
 				},
 				"simple_grid_field3": {
 					"field": "comentario",
@@ -1362,27 +1362,27 @@
 					"inlineAdd": false,
 					"inlineEdit": false
 				},
-				"simple_grid_field5": {
+				"simple_grid_field6": {
 					"type": "grid_field_label",
 					"field": "comentario"
 				},
-				"simple_grid_field": {
+				"simple_grid_field4": {
 					"field": "fechacaptura",
 					"type": "grid_field",
 					"inlineAdd": false,
 					"inlineEdit": false
 				},
-				"simple_grid_field6": {
+				"simple_grid_field7": {
 					"type": "grid_field_label",
 					"field": "fechacaptura"
 				},
-				"simple_grid_field1": {
+				"simple_grid_field5": {
 					"field": "usuario",
 					"type": "grid_field",
 					"inlineAdd": false,
 					"inlineEdit": false
 				},
-				"simple_grid_field7": {
+				"simple_grid_field8": {
 					"type": "grid_field_label",
 					"field": "usuario"
 				},
@@ -1394,6 +1394,12 @@
 				},
 				"grid_edit": {
 					"type": "grid_edit"
+				},
+				"master_info": {
+					"type": "master_info",
+					"tables": {
+						"35049744": "true"
+					}
 				}
 			},
 			"dbProps": {},
@@ -1405,9 +1411,7 @@
 			"controlsBgColor": "white",
 			"imagePosition": "right",
 			"listTotals": 1,
-			"title": {
-				"Spanish": "Estatus historial"
-			}
+			"title": {}
 		},
 		{
 			"id": "print",
@@ -1536,6 +1540,6 @@
 		"addressFields": []
 	},
 	"caption": {
-		"Spanish": "Decisionessolicitud Historial"
+		"Spanish": "Estatusentregas Historial"
 	}
 }
