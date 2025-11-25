@@ -5258,7 +5258,7 @@
 								},
 								{
 									"cell": "headcell_field7",
-									"colspan": 2
+									"colspan": 1
 								},
 								{
 									"cell": "headcell_field8"
@@ -5368,12 +5368,9 @@
 									"cell": "cell_field"
 								},
 								{
-									"cell": "cell_field24",
-									"rowspan": 2
-								},
-								{
 									"cell": "cell_field27",
-									"rowspan": 2
+									"rowspan": 2,
+									"colspan": 1
 								},
 								{
 									"cell": "cell_field5",
@@ -5493,7 +5490,7 @@
 								},
 								{
 									"cell": "footcell_field3",
-									"colspan": 3
+									"colspan": 2
 								},
 								{
 									"cell": "headcell_field14",
@@ -6152,18 +6149,6 @@
 							"nowrap": false,
 							"align": "center"
 						},
-						"cell_field24": {
-							"model": "cell_field",
-							"items": [
-								"btnEstatusEntrega"
-							],
-							"field": "",
-							"columnName": "",
-							"align": "center",
-							"bold": true,
-							"underline": true,
-							"customCSS": "/* Put  your custom CSS code here */\n\n:host {\n  display: none;\n}\n"
-						},
 						"headcell_field32": {
 							"model": "headcell_field",
 							"items": [
@@ -6788,19 +6773,6 @@
 						"type": 7
 					},
 					"hideEmptyPreview": true
-				},
-				"btnEstatusEntrega": {
-					"type": "custom_button",
-					"eventGid": 1860920411,
-					"label": {
-						"type": 0,
-						"text": ""
-					},
-					"icon": {
-						"glyph": "transfer"
-					},
-					"buttonSize": "xtra-small",
-					"customCSS": "/* Put  your custom CSS code here */\n\n:host {\n  display: none;\n}\n"
 				},
 				"grid_field17": {
 					"field": "dn",
