@@ -1,13 +1,13 @@
 {
 	"orderInfo": [
 		{
-			"index": 1,
-			"field": "id",
-			"expr": "id",
+			"index": 13,
+			"field": "soloservicio",
+			"expr": "citas.fechacaptura",
 			"asc": false
 		}
 	],
-	"sql": "SELECT\n\tid,\n\tfecha,\n\tidtiendacita,\n\tdn,\n\tidcliente,\n\tidequipo,\n\tusuario,\n\tfolioagentevnp,\n\tobservaciones,\n\tfechacita,\n\tfechacaptura,\n\tidtienda,\n\tidplan,\n\tsoloservicio\nFROM\n\tcitas WHERE if(usuario=':session.UserID',true,false) OR if(:session.acceso=1,idtienda=:session.Tienda,false) OR if(upper(':session.UserID')='ADMIN',true,false)\nORDER BY\n\tid DESC\n",
+	"sql": "SELECT\ncitas.id,\n\tcitas.fecha,\n\tcitas.idtiendacita,\n\tcitas.dn,\n\tcitas.idcliente,\n\tcl.nombre_completo,\n\tcitas.idequipo,\n\tp.descripcion,\n\tcitas.usuario,\n\tcitas.folioagentevnp,\n\tcitas.observaciones,\n\tcitas.fechacita,\n\tcitas.fechacaptura,\n\tcitas.idtienda,\n\tcitas.idplan,\n\tcitas.soloservicio\nFROM\n\tcitas AS citas\n\tLEFT OUTER JOIN productos AS p ON p.idproducto = citas.idequipo\n\tLEFT OUTER JOIN clientes AS cl ON cl.idcliente = citas.idcliente\nWHERE\ncitas.usuario =':session.UserID' OR if(:session.acceso=1, citas.idtienda=:session.Tienda, false) OR ':session.UserID' ='ADMIN' OR (':session.Label' ='VALIDADOR' OR ':session.Label' ='MESADECONTROL')\nORDER BY\n citas.fechacaptura DESC\n",
 	"connId": "conn",
 	"originalTable": "citas",
 	"name": "citas",
@@ -19,26 +19,8 @@
 	"detailsBadgeColor": "d2691e",
 	"fields": [
 		{
-			"name": "id",
-			"sqlExpression": "id",
-			"index": 1,
-			"strField": "id",
-			"type": 3,
-			"autoinc": true,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{}
-			],
-			"label": {
-				"Spanish": "Id"
-			},
-			"tableName": "citas"
-		},
-		{
 			"name": "fecha",
-			"sqlExpression": "fecha",
+			"sqlExpression": "citas.fecha",
 			"index": 2,
 			"strField": "fecha",
 			"type": 7,
@@ -60,7 +42,7 @@
 		},
 		{
 			"name": "idtiendacita",
-			"sqlExpression": "idtiendacita",
+			"sqlExpression": "citas.idtiendacita",
 			"index": 3,
 			"strField": "idtiendacita",
 			"type": 3,
@@ -91,7 +73,7 @@
 		},
 		{
 			"name": "dn",
-			"sqlExpression": "dn",
+			"sqlExpression": "citas.dn",
 			"index": 4,
 			"strField": "dn",
 			"type": 200,
@@ -115,7 +97,7 @@
 		},
 		{
 			"name": "idcliente",
-			"sqlExpression": "idcliente",
+			"sqlExpression": "citas.idcliente",
 			"index": 5,
 			"strField": "idcliente",
 			"type": 3,
@@ -145,8 +127,8 @@
 		},
 		{
 			"name": "idequipo",
-			"sqlExpression": "idequipo",
-			"index": 6,
+			"sqlExpression": "citas.idequipo",
+			"index": 7,
 			"strField": "idequipo",
 			"type": 3,
 			"viewFormats": [
@@ -182,8 +164,8 @@
 		},
 		{
 			"name": "usuario",
-			"sqlExpression": "usuario",
-			"index": 7,
+			"sqlExpression": "citas.usuario",
+			"index": 9,
 			"strField": "usuario",
 			"type": 200,
 			"viewFormats": [
@@ -199,8 +181,8 @@
 		},
 		{
 			"name": "folioagentevnp",
-			"sqlExpression": "folioagentevnp",
-			"index": 8,
+			"sqlExpression": "citas.folioagentevnp",
+			"index": 10,
 			"strField": "folioagentevnp",
 			"type": 200,
 			"viewFormats": [
@@ -216,8 +198,8 @@
 		},
 		{
 			"name": "observaciones",
-			"sqlExpression": "observaciones",
-			"index": 9,
+			"sqlExpression": "citas.observaciones",
+			"index": 11,
 			"strField": "observaciones",
 			"type": 200,
 			"viewFormats": [
@@ -238,8 +220,8 @@
 		},
 		{
 			"name": "fechacita",
-			"sqlExpression": "fechacita",
-			"index": 10,
+			"sqlExpression": "citas.fechacita",
+			"index": 12,
 			"strField": "fechacita",
 			"type": 135,
 			"viewFormats": [
@@ -265,8 +247,8 @@
 		},
 		{
 			"name": "fechacaptura",
-			"sqlExpression": "fechacaptura",
-			"index": 11,
+			"sqlExpression": "citas.fechacaptura",
+			"index": 13,
 			"strField": "fechacaptura",
 			"type": 135,
 			"viewFormats": [
@@ -287,8 +269,8 @@
 		},
 		{
 			"name": "idtienda",
-			"sqlExpression": "idtienda",
-			"index": 12,
+			"sqlExpression": "citas.idtienda",
+			"index": 14,
 			"strField": "idtienda",
 			"type": 3,
 			"viewFormats": [
@@ -304,8 +286,8 @@
 		},
 		{
 			"name": "idplan",
-			"sqlExpression": "idplan",
-			"index": 13,
+			"sqlExpression": "citas.idplan",
+			"index": 15,
 			"strField": "idplan",
 			"type": 3,
 			"viewFormats": [
@@ -329,12 +311,14 @@
 		},
 		{
 			"name": "soloservicio",
-			"sqlExpression": "soloservicio",
-			"index": 14,
+			"sqlExpression": "citas.soloservicio",
+			"index": 16,
 			"strField": "soloservicio",
 			"type": 2,
 			"viewFormats": [
-				{}
+				{
+					"format": "Checkbox"
+				}
 			],
 			"editFormats": [
 				{
@@ -345,16 +329,69 @@
 				"Spanish": "Solo servicio"
 			},
 			"tableName": "citas"
+		},
+		{
+			"name": "id",
+			"sqlExpression": "citas.id",
+			"index": 1,
+			"strField": "id",
+			"type": 3,
+			"autoinc": true,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Id"
+			},
+			"tableName": "citas"
+		},
+		{
+			"name": "nombre_completo",
+			"sqlExpression": "cl.nombre_completo",
+			"index": 6,
+			"strField": "nombre_completo",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Cliente"
+			},
+			"tableName": "clientes"
+		},
+		{
+			"name": "descripcion",
+			"sqlExpression": "p.descripcion",
+			"index": 8,
+			"strField": "descripcion",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Equipo"
+			},
+			"tableName": "productos"
 		}
 	],
 	"whereTabs": [
 		{}
 	],
 	"queryContext": {
-		"session.UserID": "ACASTROP",
-		"session.acceso": "1",
+		"session.UserID": "MCETZVNP",
+		"session.acceso": "3",
 		"session.Tienda": "146",
-		"session.Acceso": "0"
+		"session.Acceso": "0",
+		"session.Label": "0"
 	},
 	"eventHandlers": [
 		{
@@ -891,7 +928,6 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"export_field",
 								"export_field2",
 								"export_field3",
 								"export_field4",
@@ -902,7 +938,9 @@
 								"export_field9",
 								"export_field10",
 								"export_field1",
-								"export_field11"
+								"export_field11",
+								"export_field",
+								"export_field12"
 							]
 						}
 					},
@@ -951,10 +989,6 @@
 				"export_cancel": {
 					"type": "export_cancel"
 				},
-				"export_field": {
-					"field": "id",
-					"type": "export_field"
-				},
 				"export_field2": {
 					"field": "idtiendacita",
 					"type": "export_field"
@@ -997,6 +1031,14 @@
 				},
 				"export_field11": {
 					"field": "soloservicio",
+					"type": "export_field"
+				},
+				"export_field": {
+					"field": "nombre_completo",
+					"type": "export_field"
+				},
+				"export_field12": {
+					"field": "descripcion",
 					"type": "export_field"
 				}
 			},
@@ -1082,7 +1124,6 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"import_field",
 								"import_field1",
 								"import_field2",
 								"import_field3",
@@ -1103,10 +1144,6 @@
 			"items": {
 				"import_header": {
 					"type": "import_header"
-				},
-				"import_field": {
-					"field": "id",
-					"type": "import_field"
 				},
 				"import_field1": {
 					"field": "fecha",
@@ -1387,7 +1424,8 @@
 					"field": "soloservicio",
 					"type": "integrated_edit_field",
 					"orientation": 0,
-					"updateOnEdit": false
+					"updateOnEdit": false,
+					"customCSS": "/* Put  your custom CSS code here */\n\n:host {\ntransform: scale(1.7);          /* tamaño, ajusta a tu gusto */\n    transform-origin: left center;  /* crece hacia la derecha, no hacia afuera */\n    vertical-align: middle;         /* lo centra mejor con el texto */\n    margin-left: 4px;               /* empujón ligero hacia adentro */\n    margin-right: 6px;\n    cursor: pointer;\n}\n"
 				}
 			},
 			"dbProps": {},
@@ -1503,7 +1541,9 @@
 						"c3": {
 							"model": "c3",
 							"items": [
-								"section"
+								"section",
+								"integrated_edit_field6",
+								"integrated_edit_field9"
 							],
 							"align": "center",
 							"customCSS": "/* Put  your custom CSS code here */\n\n/* Put  your custom CSS code here */\n\n\n\n/* ========================================================= */\n/* VARIABLES DE COLOR */\n/* ========================================================= */\n:root {\n    --color-elegante: #FFFFFF; /* Texto Blanco para contrastar con el fondo oscuro */\n    --naranja-degradado-inicio: #03478A; /* Naranja Suave (Light Salmon) */\n    --naranja-degradado-fin: #6D98C2; /* Naranja Medio (Coral) */\n    --color-borde-base: #FF7F50; /* Color simple para el borde base */\n}\n\n/* ========================================================= */\n/* 1. Fondo de la Página: Degradado Azul Cielo (Se mantiene) */\n/* ========================================================= */\n\nbody, .container-fluid {\nbackground: linear-gradient(180deg, #E0F7FA 0%, #B3E5FC 100%) !important;    min-height: 100vh;\n}\n/* ========================================================= */\n/* 2. Estilo de las Secciones: Efecto Tarjeta/Sombreado (Se mantiene) */\n/* ========================================================= */\n.panel, .rnr-c-body, .rnr-c-grid {\n    background-color: #FFFFFF !important; \n    border: none !important; \n    border-radius: 12px !important; \n    padding: 20px;\n    margin-bottom: 25px; \n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), \n                0 2px 6px rgba(0, 0, 0, 0.05) !important; \n                \n    /* 🔑 CAMBIO CLAVE: Agrega 'transform' a la transición */\n    transition: box-shadow 0.3s ease-in-out, \n                transform 0.3s ease-in-out; /* Transición para el movimiento y escala */            \n                \n}\n\n/* ========================================================= */\n/* 3. Estilo de Encabezados de Sección (EL CAMBIO PRINCIPAL) */\n/* ========================================================= */\n.panel-heading, .rnr-c-head {\n    /* Aplicamos el degradado al fondo completo del encabezado */\n    background: linear-gradient(to right, var(--naranja-degradado-inicio), var(--naranja-degradado-fin)) !important;\n    \n    /* El texto del título ahora es blanco para contrastar con el fondo naranja */\n    color: var(--color-elegante) !important; \n    \n    font-weight: 600;\n    \n    /* Mantenemos el centrado vertical */\n    display: flex;\n    align-items: center;\n    height: 40px; /* Aseguramos una altura suficiente */\n    \n    /* Eliminamos el borde degradado y aplicamos un borde simple y fino abajo */\n    border-bottom: 1px solid var(--color-borde-base) !important; \n    border-image-source: none !important; /* Desactivar la propiedad border-image anterior */\n    \n    /* Ajustes de relleno/bordes para que el degradado se vea bien */\n    padding: 0 15px !important; \n    border-top-left-radius: 12px !important; /* Mantenemos el radio del panel superior */\n    border-top-right-radius: 12px !important;\n}\n\n/* ========================================================= */\n/* 3. Estilo de HOVER: Efecto de Elevación/Intensificación    */\n/* ========================================================= */\n.panel:hover, .rnr-c-body:hover, .rnr-c-grid:hover {\n    /* Nueva sombra más intensa y \"elevada\" */\n    box-shadow: 0 15px 400px rgba(0, 0, 0, 0.3), \n                0 5px 15px rgba(0, 0, 0, 0.1) !important; \n    \n    /* Pequeño movimiento hacia arriba para dar más sensación de elevación (opcional) */\n    transform: translateY(-5px) scale(1.005); \n}\n\n\n\n/* 4. Estilo de los Inputs (Se mantiene) */\n.form-control {\n    border-radius: 8px !important; \n    border: 1px solid #e0e0e0 !important;\n}\n.form-control:focus {\n    border-color: #48C9B0 !important; \n    box-shadow: 0 0 0 0.2rem rgba(72, 201, 176, 0.25) !important;\n}\n\n/* Aplica solo a formularios con esas secciones */\n.panel.panel-default.form-section > .panel-body { display: none; }\n\n.panel.panel-default.form-section > .panel-heading:hover {\n  cursor: pointer;\n  filter: brightness(0.98);\n}\n\n.panel-collapse.no-bs-trans {\n  transition: none !important;\n}\n\n/* ========================================================= */\n/* ARREGLO DE COLOR DE TEXTO DE ENCABEZADO DURANTE MODAL     */\n/* ========================================================= */\n\n/* Apuntamos directamente al panel-title, que es el elemento que contiene \n   el texto del encabezado de la sección. \n*/\n.panel-heading .panel-title {\n    color: #FFFFFF !important; \n}\n\n/* Si dentro del panel-title hay un enlace (Ej. si el encabezado permite colapsar/expandir \n   y el título es un <a>), también debemos forzar el color del enlace.\n*/\n.panel-heading .panel-title a {\n    color: #FFFFFF !important;\n}\n\n/* Asegurar que el texto dentro del panel-title no se vea afectado por reglas generales\n   que usen el estado 'modal-open' en el cuerpo de la página.\n*/\n.modal-open .panel-heading .panel-title {\n    color: #FFFFFF !important;\n}\n\n\n/*******************************************************************/\n/* === Contenedores que enjaulan el ancho === */\n/* 1) Limitar el ancho de TODOS los bloques de la página add */\nbody.function-add #form_top_1,\nbody.function-add #form_above-grid_1,\nbody.function-add .panel.panel-default.form-section {\n  max-width: 720px;        /* ajusta a tu gusto: 720, 840, 920… */\n  margin-left: auto;\n  margin-right: auto;\n}\n\n/* 2) Evitar que col-md-12 fuerce 100% cuando queremos centrar */\nbody.function-add .r-form .row > .col-md-12 {\n  float: none;              /* elimina flote de Bootstrap */\n}\n\n/* 3) La mesa del formulario viene con width:100%; la hacemos fija y centrada */\nbody.function-add #form_section_1.r-edit-form {\n  width: 720px !important;  /* mismo valor que arriba */\n  margin-left: auto;\n  margin-right: auto;\n}\n\n/* 4) Hacer que los controles no queden “larguísimos” */\nbody.function-add #form_section_1 .form-control,\nbody.function-add #form_section_1 select.form-control {\n  max-width: 2660px;         /* o 360/380px según te guste */\n}\n\n/* 5) Un poco de respiro en pantallas chicas */\n@media (max-width: 770px) {\n  body.function-add #form_section_1.r-edit-form,\n  body.function-add #form_top_1,\n  body.function-add #form_above-grid_1,\n  body.function-add .panel.panel-default.form-section {\n    max-width: 100%;\n    width: auto !important;\n    padding-left: 12px;\n    padding-right: 12px;\n  }\n  body.function-add #form_section_1 .form-control,\n  body.function-add #form_section_1 select.form-control {\n    max-width: 100%;\n  }\n}\n\n/* === BELOW-GRID: mismo ancho que el form y alineado === */\nbody.function-add #form_below-grid_1 {\n  max-width: 720px;        /* el mismo valor que uses para el form */\n  margin: 8px auto 28px;   /* centra la franja bajo el formulario */\n  padding: 0 4px;\n  text-align: left;       /* o 'center' si lo prefieres centrado */\n}\n\n/* Espaciado y layout de botones */\nbody.function-add #form_below-grid_1 .btn-toolbar,\nbody.function-add #form_below-grid_1 .rnr-buttons-group {\n  display: inline-flex;    /* mantiene los botones en línea */\n  gap: 8px;  /* separación entre botones */\n  justify-content: flex-start;  \n  flex-wrap: wrap;         /* por si colapsan en pantallas chicas */\n}\n\n/* Por si algún tema pone floats o pull-right */\nbody.function-add #form_below-grid_1 .btn,\nbody.function-add #form_below-grid_1 .rnr-buttons-group {\n  float: none !important;\n}\n\n/* En móviles: céntralos */\n@media (max-width: 768px) {\n  body.function-add #form_below-grid_1 { text-align: center; }\n}\n"
@@ -1629,6 +1669,16 @@
 				},
 				"integrated_edit_field5": {
 					"field": "soloservicio",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field6": {
+					"field": "nombre_completo",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field9": {
+					"field": "descripcion",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				}
@@ -1783,48 +1833,395 @@
 					"deferredItems": [],
 					"recsPerRow": 1
 				},
-				"grid": {
-					"modelId": "simple-grid",
-					"grid": [
-						{
-							"cells": [
-								{
-									"cell": "c1"
-								}
-							],
-							"section": ""
-						}
-					],
-					"cells": {
-						"c1": {
-							"model": "c1",
-							"items": [
-								"simple_grid_field2",
-								"simple_grid_field3",
-								"simple_grid_field4",
-								"simple_grid_field5",
-								"simple_grid_field",
-								"simple_grid_field6",
-								"simple_grid_field7",
-								"simple_grid_field8",
-								"simple_grid_field9",
-								"simple_grid_field10",
-								"simple_grid_field1"
-							]
-						}
-					},
-					"deferredItems": [
-						"grid_checkbox",
-						"grid_checkbox_head",
-						"grid_edit",
-						"grid_view"
-					],
-					"recsPerRow": 1
-				},
 				"top": {
 					"modelId": "list-sidebar-top",
 					"grid": [],
 					"cells": {},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "horizontal-grid",
+					"grid": [
+						{
+							"section": "head",
+							"cells": [
+								{
+									"cell": "headcell_icons"
+								},
+								{
+									"cell": "headcell_checkbox"
+								},
+								{
+									"cell": "headcell_field"
+								},
+								{
+									"cell": "headcell_field1",
+									"colspan": 1
+								},
+								{
+									"cell": "headcell_field2"
+								},
+								{
+									"cell": "headcell_field3"
+								},
+								{
+									"cell": "headcell_field10"
+								},
+								{
+									"cell": "headcell_field11"
+								},
+								{
+									"cell": "headcell_field6"
+								},
+								{
+									"cell": "headcell_field7",
+									"colspan": 1
+								},
+								{
+									"cell": "headcell_field8"
+								},
+								{
+									"cell": "headcell_field9"
+								}
+							]
+						},
+						{
+							"section": "body",
+							"cells": [
+								{
+									"cell": "cell_icons"
+								},
+								{
+									"cell": "cell_checkbox"
+								},
+								{
+									"cell": "cell_field"
+								},
+								{
+									"cell": "cell_field1",
+									"colspan": 1
+								},
+								{
+									"cell": "cell_field2"
+								},
+								{
+									"cell": "cell_field3"
+								},
+								{
+									"cell": "cell_field10"
+								},
+								{
+									"cell": "cell_field11"
+								},
+								{
+									"cell": "cell_field6"
+								},
+								{
+									"cell": "cell_field7",
+									"colspan": 1
+								},
+								{
+									"cell": "cell_field8"
+								},
+								{
+									"cell": "cell_field9"
+								}
+							]
+						},
+						{
+							"section": "foot",
+							"cells": [
+								{
+									"cell": "footcell_icons"
+								},
+								{
+									"cell": "footcell_checkbox"
+								},
+								{
+									"cell": "footcell_field"
+								},
+								{
+									"cell": "footcell_field1",
+									"colspan": 1
+								},
+								{
+									"cell": "footcell_field2"
+								},
+								{
+									"cell": "footcell_field3",
+									"colspan": 3
+								},
+								{
+									"cell": "footcell_field6"
+								},
+								{
+									"cell": "footcell_field7",
+									"colspan": 1
+								},
+								{
+									"cell": "footcell_field8"
+								},
+								{
+									"cell": "footcell_field9"
+								}
+							]
+						}
+					],
+					"cells": {
+						"headcell_field": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field"
+							],
+							"field": "idtiendacita",
+							"columnName": "field"
+						},
+						"cell_field": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field2"
+							],
+							"field": "idtiendacita",
+							"columnName": "field"
+						},
+						"footcell_field": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "idtiendacita",
+							"columnName": "field"
+						},
+						"headcell_field1": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field9"
+							],
+							"field": "fechacita",
+							"columnName": "field"
+						},
+						"cell_field1": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field6"
+							],
+							"field": "fechacita",
+							"columnName": "field"
+						},
+						"footcell_field1": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "fechacita",
+							"columnName": "field"
+						},
+						"headcell_field2": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field12"
+							],
+							"field": "soloservicio",
+							"columnName": "field"
+						},
+						"cell_field2": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field8"
+							],
+							"field": "soloservicio",
+							"align": "center",
+							"columnName": "field"
+						},
+						"footcell_field2": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "soloservicio",
+							"columnName": "field"
+						},
+						"headcell_field3": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field13"
+							],
+							"field": "dn",
+							"columnName": "field"
+						},
+						"cell_field3": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field3"
+							],
+							"field": "dn",
+							"columnName": "field"
+						},
+						"footcell_field3": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "dn",
+							"columnName": "field"
+						},
+						"headcell_field6": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field16"
+							],
+							"field": "idplan",
+							"columnName": "field"
+						},
+						"cell_field6": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field7"
+							],
+							"field": "idplan",
+							"columnName": "field"
+						},
+						"footcell_field6": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "idplan",
+							"columnName": "field"
+						},
+						"headcell_field7": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field17"
+							],
+							"field": "usuario",
+							"columnName": "field"
+						},
+						"cell_field7": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field1"
+							],
+							"field": "usuario",
+							"columnName": "field"
+						},
+						"footcell_field7": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "usuario",
+							"columnName": "field"
+						},
+						"headcell_field8": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field18"
+							],
+							"field": "folioagentevnp",
+							"columnName": "field"
+						},
+						"cell_field8": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field4"
+							],
+							"field": "folioagentevnp",
+							"columnName": "field"
+						},
+						"footcell_field8": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "folioagentevnp",
+							"columnName": "field"
+						},
+						"headcell_field9": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field19"
+							],
+							"field": "observaciones",
+							"columnName": "field"
+						},
+						"cell_field9": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field5"
+							],
+							"field": "observaciones",
+							"columnName": "field"
+						},
+						"footcell_field9": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "observaciones",
+							"columnName": "field"
+						},
+						"headcell_checkbox": {
+							"model": "headcell_checkbox",
+							"items": [
+								"grid_checkbox_head"
+							],
+							"columnName": "checkbox",
+							"field": ""
+						},
+						"cell_checkbox": {
+							"model": "cell_checkbox",
+							"items": [
+								"grid_checkbox"
+							],
+							"columnName": "checkbox",
+							"field": ""
+						},
+						"footcell_checkbox": {
+							"model": "footcell_checkbox",
+							"items": [],
+							"columnName": "checkbox",
+							"field": ""
+						},
+						"headcell_icons": {
+							"model": "headcell_icons",
+							"items": [],
+							"columnName": "list-icons",
+							"field": ""
+						},
+						"cell_icons": {
+							"model": "cell_icons",
+							"items": [
+								"grid_edit",
+								"grid_view"
+							],
+							"columnName": "list-icons",
+							"field": ""
+						},
+						"footcell_icons": {
+							"model": "footcell_icons",
+							"items": [],
+							"columnName": "list-icons",
+							"field": ""
+						},
+						"headcell_field10": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label"
+							],
+							"field": "dn",
+							"columnName": "field"
+						},
+						"cell_field10": {
+							"model": "cell_field",
+							"items": [
+								"grid_field"
+							],
+							"field": "dn",
+							"columnName": "field"
+						},
+						"headcell_field11": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label1"
+							],
+							"field": "dn",
+							"columnName": "field"
+						},
+						"cell_field11": {
+							"model": "cell_field",
+							"items": [
+								"grid_field1"
+							],
+							"field": "dn",
+							"columnName": "field"
+						}
+					},
 					"deferredItems": [],
 					"recsPerRow": 1
 				}
@@ -1848,73 +2245,15 @@
 				"pagination": {
 					"type": "pagination"
 				},
-				"grid_checkbox": {
-					"type": "grid_checkbox"
-				},
-				"grid_checkbox_head": {
-					"type": "grid_checkbox_head"
-				},
 				"details_found": {
 					"type": "details_found"
-				},
-				"simple_grid_field2": {
-					"field": "idtiendacita",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field3": {
-					"field": "dn",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field4": {
-					"field": "idcliente",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field5": {
-					"field": "idequipo",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field6": {
-					"field": "usuario",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field7": {
-					"field": "folioagentevnp",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field8": {
-					"field": "observaciones",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field9": {
-					"field": "fechacita",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field10": {
-					"field": "fechacaptura",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
 				},
 				"search_panel": {
 					"type": "search_panel",
 					"items": [
-						"search_panel_field3"
+						"search_panel_field3",
+						"search_panel_field1",
+						"search_panel_field"
 					],
 					"_flexiblePanel": true
 				},
@@ -1979,12 +2318,6 @@
 				"-2": {
 					"type": "-"
 				},
-				"grid_edit": {
-					"type": "grid_edit"
-				},
-				"grid_view": {
-					"type": "grid_view"
-				},
 				"delete": {
 					"type": "delete"
 				},
@@ -2000,17 +2333,126 @@
 				"export_selected": {
 					"type": "export_selected"
 				},
-				"simple_grid_field": {
-					"field": "idplan",
-					"type": "simple_grid_field",
+				"simple_grid_field2": {
+					"field": "idtiendacita",
+					"type": "grid_field",
 					"inlineAdd": false,
 					"inlineEdit": false
 				},
-				"simple_grid_field1": {
-					"field": "soloservicio",
-					"type": "simple_grid_field",
+				"simple_grid_field": {
+					"type": "grid_field_label",
+					"field": "idtiendacita"
+				},
+				"simple_grid_field6": {
+					"field": "fechacita",
+					"type": "grid_field",
 					"inlineAdd": false,
 					"inlineEdit": false
+				},
+				"simple_grid_field9": {
+					"type": "grid_field_label",
+					"field": "fechacita"
+				},
+				"simple_grid_field8": {
+					"field": "soloservicio",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false,
+					"customCSS": "/* Put  your custom CSS code here */\n\n"
+				},
+				"simple_grid_field12": {
+					"type": "grid_field_label",
+					"field": "soloservicio"
+				},
+				"simple_grid_field3": {
+					"field": "dn",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field13": {
+					"type": "grid_field_label",
+					"field": "dn"
+				},
+				"simple_grid_field7": {
+					"field": "idplan",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field16": {
+					"type": "grid_field_label",
+					"field": "idplan"
+				},
+				"simple_grid_field1": {
+					"field": "usuario",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field17": {
+					"type": "grid_field_label",
+					"field": "usuario"
+				},
+				"simple_grid_field4": {
+					"field": "folioagentevnp",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field18": {
+					"type": "grid_field_label",
+					"field": "folioagentevnp"
+				},
+				"simple_grid_field5": {
+					"field": "observaciones",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field19": {
+					"type": "grid_field_label",
+					"field": "observaciones"
+				},
+				"grid_checkbox": {
+					"type": "grid_checkbox"
+				},
+				"grid_checkbox_head": {
+					"type": "grid_checkbox_head"
+				},
+				"grid_edit": {
+					"type": "grid_edit"
+				},
+				"grid_view": {
+					"type": "grid_view"
+				},
+				"grid_field": {
+					"field": "nombre_completo",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label": {
+					"type": "grid_field_label",
+					"field": "nombre_completo"
+				},
+				"grid_field1": {
+					"field": "descripcion",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label1": {
+					"type": "grid_field_label",
+					"field": "descripcion"
+				},
+				"search_panel_field": {
+					"field": "nombre_completo",
+					"type": "search_panel_field"
+				},
+				"search_panel_field1": {
+					"field": "descripcion",
+					"type": "search_panel_field"
 				}
 			},
 			"dbProps": {},
@@ -2116,7 +2558,6 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"simple_grid_field",
 								"simple_grid_field1",
 								"simple_grid_field2",
 								"simple_grid_field3",
@@ -2143,10 +2584,6 @@
 				},
 				"print_pages": {
 					"type": "print_pages"
-				},
-				"simple_grid_field": {
-					"field": "id",
-					"type": "simple_grid_field"
 				},
 				"simple_grid_field1": {
 					"field": "fecha",

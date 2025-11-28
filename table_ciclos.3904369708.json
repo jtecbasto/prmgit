@@ -702,22 +702,26 @@
 				"integrated_edit_field": {
 					"field": "ciclo",
 					"type": "integrated_edit_field",
-					"orientation": 0
+					"orientation": 0,
+					"updateOnEdit": false
 				},
 				"integrated_edit_field1": {
 					"field": "corte",
 					"type": "integrated_edit_field",
-					"orientation": 0
+					"orientation": 0,
+					"updateOnEdit": false
 				},
 				"integrated_edit_field2": {
 					"field": "pago",
 					"type": "integrated_edit_field",
-					"orientation": 0
+					"orientation": 0,
+					"updateOnEdit": false
 				},
 				"integrated_edit_field3": {
 					"field": "clasif",
 					"type": "integrated_edit_field",
-					"orientation": 0
+					"orientation": 0,
+					"updateOnEdit": false
 				},
 				"edit_view": {
 					"type": "edit_view"
@@ -1108,19 +1112,27 @@
 				},
 				"simple_grid_field": {
 					"field": "ciclo",
-					"type": "simple_grid_field"
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
 				},
 				"simple_grid_field1": {
 					"field": "corte",
-					"type": "simple_grid_field"
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
 				},
 				"simple_grid_field2": {
 					"field": "pago",
-					"type": "simple_grid_field"
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
 				},
 				"simple_grid_field3": {
 					"field": "clasif",
-					"type": "simple_grid_field"
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
 				},
 				"search_panel": {
 					"type": "search_panel",
