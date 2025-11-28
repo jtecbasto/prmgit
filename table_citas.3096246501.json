@@ -7,7 +7,7 @@
 			"asc": false
 		}
 	],
-	"sql": "SELECT\ncitas.id,\n\tcitas.fecha,\n\tcitas.idtiendacita,\n\tcitas.dn,\n\tcitas.idcliente,\n\tcl.nombre_completo,\n\tcitas.idequipo,\n\tp.descripcion,\n\tcitas.usuario,\n\tcitas.folioagentevnp,\n\tcitas.observaciones,\n\tcitas.fechacita,\n\tcitas.fechacaptura,\n\tcitas.idtienda,\n\tcitas.idplan,\n\tcitas.soloservicio\nFROM\n\tcitas AS citas\n\tLEFT OUTER JOIN productos AS p ON p.idproducto = citas.idequipo\n\tLEFT OUTER JOIN clientes AS cl ON cl.idcliente = citas.idcliente\nWHERE\ncitas.usuario =':session.UserID' OR if(:session.acceso=1, citas.idtienda=:session.Tienda, false) OR ':session.UserID' ='ADMIN' OR (':session.Label' ='VALIDADOR' OR ':session.Label' ='MESADECONTROL')\nORDER BY\n citas.fechacaptura DESC\n",
+	"sql": "SELECT\n\tcitas.id,\n\tcitas.fecha,\n\tcitas.idtiendacita,\n\tcitas.dn,\n\tcitas.idcliente,\n\tcl.nombre_completo,\n\tcitas.idequipo,\n\tp.descripcion,\n\tcitas.usuario,\n\tcitas.folioagentevnp,\n\tcitas.observaciones,\n\tcitas.fechacita,\n\tcitas.fechacaptura,\n\tcitas.idtienda,\n\tcitas.idplan,\n\tcitas.soloservicio,\n\tcitas.usuarioconfirma,\n\tcitas.confirmado,\n\tcitas.fechahoraconfirma\nFROM\n\tcitas AS citas\n\tLEFT OUTER JOIN productos AS p ON p.idproducto = citas.idequipo\n\tLEFT OUTER JOIN clientes AS cl ON cl.idcliente = citas.idcliente\nWHERE\ncitas.usuario =':session.UserID' OR if(:session.acceso=1, citas.idtienda=:session.Tienda, false) OR ':session.UserID' ='ADMIN' OR (':session.Label' ='VALIDADOR' OR ':session.Label' ='MESADECONTROL')\nORDER BY\n\tcitas.fechacaptura DESC\n",
 	"connId": "conn",
 	"originalTable": "citas",
 	"name": "citas",
@@ -381,6 +381,64 @@
 				"Spanish": "Equipo"
 			},
 			"tableName": "productos"
+		},
+		{
+			"name": "usuarioconfirma",
+			"sqlExpression": "citas.usuarioconfirma",
+			"index": 17,
+			"strField": "usuarioconfirma",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Usuario confirma"
+			},
+			"tableName": "citas"
+		},
+		{
+			"name": "confirmado",
+			"sqlExpression": "citas.confirmado",
+			"index": 18,
+			"strField": "confirmado",
+			"type": 2,
+			"viewFormats": [
+				{
+					"format": "Checkbox"
+				}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Confirmación cita"
+			},
+			"tableName": "citas"
+		},
+		{
+			"name": "fechahoraconfirma",
+			"sqlExpression": "citas.fechahoraconfirma",
+			"index": 19,
+			"strField": "fechahoraconfirma",
+			"type": 135,
+			"viewFormats": [
+				{
+					"format": "Datetime"
+				}
+			],
+			"editFormats": [
+				{
+					"format": "Date",
+					"dateEditType": 11
+				}
+			],
+			"label": {
+				"Spanish": "Fecha/hora confirma"
+			},
+			"tableName": "citas"
 		}
 	],
 	"whereTabs": [
@@ -940,7 +998,10 @@
 								"export_field1",
 								"export_field11",
 								"export_field",
-								"export_field12"
+								"export_field12",
+								"export_field13",
+								"export_field14",
+								"export_field15"
 							]
 						}
 					},
@@ -1039,6 +1100,18 @@
 				},
 				"export_field12": {
 					"field": "descripcion",
+					"type": "export_field"
+				},
+				"export_field13": {
+					"field": "usuarioconfirma",
+					"type": "export_field"
+				},
+				"export_field14": {
+					"field": "confirmado",
+					"type": "export_field"
+				},
+				"export_field15": {
+					"field": "fechahoraconfirma",
 					"type": "export_field"
 				}
 			},
@@ -1883,6 +1956,15 @@
 								},
 								{
 									"cell": "headcell_field9"
+								},
+								{
+									"cell": "headcell_field4"
+								},
+								{
+									"cell": "headcell_field5"
+								},
+								{
+									"cell": "headcell_field12"
 								}
 							]
 						},
@@ -1926,6 +2008,15 @@
 								},
 								{
 									"cell": "cell_field9"
+								},
+								{
+									"cell": "cell_field4"
+								},
+								{
+									"cell": "cell_field5"
+								},
+								{
+									"cell": "cell_field12"
 								}
 							]
 						},
@@ -1964,6 +2055,15 @@
 								},
 								{
 									"cell": "footcell_field9"
+								},
+								{
+									"cell": "footcell_field4"
+								},
+								{
+									"cell": "footcell_field5"
+								},
+								{
+									"cell": "footcell_field10"
 								}
 							]
 						}
@@ -2041,22 +2141,22 @@
 							"items": [
 								"simple_grid_field13"
 							],
-							"field": "dn",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"cell_field3": {
 							"model": "cell_field",
 							"items": [
 								"simple_grid_field3"
 							],
-							"field": "dn",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"footcell_field3": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "dn",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field6": {
 							"model": "headcell_field",
@@ -2194,31 +2294,97 @@
 							"items": [
 								"grid_field_label"
 							],
-							"field": "dn",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"cell_field10": {
 							"model": "cell_field",
 							"items": [
 								"grid_field"
 							],
-							"field": "dn",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field11": {
 							"model": "headcell_field",
 							"items": [
 								"grid_field_label1"
 							],
-							"field": "dn",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"cell_field11": {
 							"model": "cell_field",
 							"items": [
 								"grid_field1"
 							],
-							"field": "dn",
+							"field": "",
+							"columnName": ""
+						},
+						"headcell_field4": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label2"
+							],
+							"field": "usuarioconfirma",
+							"columnName": "field"
+						},
+						"cell_field4": {
+							"model": "cell_field",
+							"items": [
+								"grid_field2"
+							],
+							"field": "usuarioconfirma",
+							"columnName": "field"
+						},
+						"footcell_field4": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "usuarioconfirma",
+							"columnName": "field"
+						},
+						"headcell_field5": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label3"
+							],
+							"field": "confirmado",
+							"columnName": "field"
+						},
+						"cell_field5": {
+							"model": "cell_field",
+							"items": [
+								"grid_field3"
+							],
+							"field": "confirmado",
+							"columnName": "field"
+						},
+						"footcell_field5": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "confirmado",
+							"columnName": "field"
+						},
+						"headcell_field12": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label4"
+							],
+							"field": "fechahoraconfirma",
+							"columnName": "field"
+						},
+						"cell_field12": {
+							"model": "cell_field",
+							"items": [
+								"grid_field4"
+							],
+							"field": "fechahoraconfirma",
+							"columnName": "field"
+						},
+						"footcell_field10": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "fechahoraconfirma",
 							"columnName": "field"
 						}
 					},
@@ -2453,6 +2619,36 @@
 				"search_panel_field1": {
 					"field": "descripcion",
 					"type": "search_panel_field"
+				},
+				"grid_field2": {
+					"field": "usuarioconfirma",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label2": {
+					"type": "grid_field_label",
+					"field": "usuarioconfirma"
+				},
+				"grid_field3": {
+					"field": "confirmado",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label3": {
+					"type": "grid_field_label",
+					"field": "confirmado"
+				},
+				"grid_field4": {
+					"field": "fechahoraconfirma",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label4": {
+					"type": "grid_field_label",
+					"field": "fechahoraconfirma"
 				}
 			},
 			"dbProps": {},
