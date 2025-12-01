@@ -68,6 +68,8 @@
 			"editFormats": [
 				{
 					"format": "Lookup wizard",
+					"required": true,
+					"lookupType": 2,
 					"lookupTable": "estatusentregas_miembros_lookup",
 					"lookupTableConnection": "conn",
 					"lookupLinkField": "estatusentrega",
