@@ -1,13 +1,13 @@
 {
 	"orderInfo": [
 		{
-			"index": 13,
-			"field": "soloservicio",
-			"expr": "citas.fechacaptura",
+			"index": 14,
+			"field": "nombre_completo",
+			"expr": "ci.fechacaptura",
 			"asc": false
 		}
 	],
-	"sql": "SELECT\n\tcitas.id,\n\tcitas.fecha,\n\tcitas.idtiendacita,\n\tcitas.dn,\n\tcitas.idcliente,\n\tcl.nombre_completo,\n\tcitas.idequipo,\n\tp.descripcion,\n\tcitas.usuario,\n\tcitas.folioagentevnp,\n\tcitas.observaciones,\n\tcitas.fechacita,\n\tcitas.fechacaptura,\n\tcitas.idtienda,\n\tcitas.idplan,\n\tcitas.soloservicio,\n\tcitas.usuarioconfirma,\n\tcitas.confirmado,\n\tcitas.fechahoraconfirma\nFROM\n\tcitas AS citas\n\tLEFT OUTER JOIN productos AS p ON p.idproducto = citas.idequipo\n\tLEFT OUTER JOIN clientes AS cl ON cl.idcliente = citas.idcliente\nWHERE\ncitas.usuario =':session.UserID' OR if(:session.acceso=1, citas.idtienda=:session.Tienda, false) OR ':session.UserID' ='ADMIN' OR (':session.Label' ='VALIDADOR' OR ':session.Label' ='MESADECONTROL')\nORDER BY\n\tcitas.fechacaptura DESC\n",
+	"sql": "SELECT \n\tci.id,\n\tci.fecha,\n\tci.idtiendacita,\n\tci.dn,\n\tci.idcliente,\n\tcl.nombre_completo,\n\tci.idequipo,\n    p1.descripcion equiposugerido,\n\tp.descripcion equipovendido,\n\tci.usuario,\n\tci.folioagentevnp,\n\tci.observaciones,\n\tci.fechacita,\n\tci.fechacaptura,\n\tci.idtienda,\n\tci.idplan,\n\tpl.plan plansugerido,\n    pl1.plan planvendido,\n\tci.soloservicio,\n    ci.confirmado,\n\tci.usuarioconfirma,\n\tci.fechahoraconfirma,\n    if(ifnull(v.idventa,0)=0,0,1) renovacionrealizada, \n    v.fecha fecharenovacion,\n    v.seguro,\n    v.control,\n    u.attuid,\n    fullname vendedor\nFROM citas ci left join (select v.idventa,v.fecha, v.plan, v.usuario, v.esnimei, v.tienda, v.dn, a.seguro,a.control from citas ci inner join ventas v on ci.dn=v.dn and ci.fechacita<=DATE_ADD(v.fecha, INTERVAL 15 DAY)\nleft join  (select a.idventa, sum(if(ca.idgaddon=8,a.precio,0)) seguro, sum(if(ca.idgaddon=10,a.precio,0)) control from addons a  inner join cataddons ca on a.idaddon=ca.idaddon where ca.idgaddon in (8,10) group by a.idventa) a on \nv.idventa=a.idventa\n JOIN (\n    SELECT \n        dn,\n        MAX(idventa) AS ultimo_id\n    FROM ventas\n    GROUP BY dn\n) x \n  ON x.dn = v.dn \n AND x.ultimo_id = v.idventa ) v on ci.dn=v.dn left join compras co on v.esnimei=co.noserie left join productos p on co.codigoproducto=p.codigoIUSA\n left join serviciosmoviles_users u on v.usuario=u.username \tLEFT OUTER JOIN clientes AS cl ON  ci.idcliente = cl.idcliente\n left join planes pl on ci.idplan = pl.idplan left join planes pl1 on v.plan=pl1.idplan left join productos p1 on ci.idequipo=p1.idproducto\nWHERE\nci.usuario =':session.UserID' OR if(:session.acceso=1, ci.idtienda=:session.Tienda, false) OR ':session.UserID' ='ADMIN' OR (':session.Label' ='VALIDADOR' OR ':session.Label' ='MESADECONTROL')\nORDER BY\n\tci.fechacaptura DESC\n",
 	"connId": "conn",
 	"originalTable": "citas",
 	"name": "citas",
@@ -20,7 +20,7 @@
 	"fields": [
 		{
 			"name": "fecha",
-			"sqlExpression": "citas.fecha",
+			"sqlExpression": "ci.fecha",
 			"index": 2,
 			"strField": "fecha",
 			"type": 7,
@@ -42,7 +42,7 @@
 		},
 		{
 			"name": "idtiendacita",
-			"sqlExpression": "citas.idtiendacita",
+			"sqlExpression": "ci.idtiendacita",
 			"index": 3,
 			"strField": "idtiendacita",
 			"type": 3,
@@ -73,7 +73,7 @@
 		},
 		{
 			"name": "dn",
-			"sqlExpression": "citas.dn",
+			"sqlExpression": "ci.dn",
 			"index": 4,
 			"strField": "dn",
 			"type": 200,
@@ -97,7 +97,7 @@
 		},
 		{
 			"name": "idcliente",
-			"sqlExpression": "citas.idcliente",
+			"sqlExpression": "ci.idcliente",
 			"index": 5,
 			"strField": "idcliente",
 			"type": 3,
@@ -127,7 +127,7 @@
 		},
 		{
 			"name": "idequipo",
-			"sqlExpression": "citas.idequipo",
+			"sqlExpression": "ci.idequipo",
 			"index": 7,
 			"strField": "idequipo",
 			"type": 3,
@@ -164,8 +164,8 @@
 		},
 		{
 			"name": "usuario",
-			"sqlExpression": "citas.usuario",
-			"index": 9,
+			"sqlExpression": "ci.usuario",
+			"index": 10,
 			"strField": "usuario",
 			"type": 200,
 			"viewFormats": [
@@ -181,8 +181,8 @@
 		},
 		{
 			"name": "folioagentevnp",
-			"sqlExpression": "citas.folioagentevnp",
-			"index": 10,
+			"sqlExpression": "ci.folioagentevnp",
+			"index": 11,
 			"strField": "folioagentevnp",
 			"type": 200,
 			"viewFormats": [
@@ -198,8 +198,8 @@
 		},
 		{
 			"name": "observaciones",
-			"sqlExpression": "citas.observaciones",
-			"index": 11,
+			"sqlExpression": "ci.observaciones",
+			"index": 12,
 			"strField": "observaciones",
 			"type": 200,
 			"viewFormats": [
@@ -220,8 +220,8 @@
 		},
 		{
 			"name": "fechacita",
-			"sqlExpression": "citas.fechacita",
-			"index": 12,
+			"sqlExpression": "ci.fechacita",
+			"index": 13,
 			"strField": "fechacita",
 			"type": 135,
 			"viewFormats": [
@@ -247,8 +247,8 @@
 		},
 		{
 			"name": "fechacaptura",
-			"sqlExpression": "citas.fechacaptura",
-			"index": 13,
+			"sqlExpression": "ci.fechacaptura",
+			"index": 14,
 			"strField": "fechacaptura",
 			"type": 135,
 			"viewFormats": [
@@ -269,8 +269,8 @@
 		},
 		{
 			"name": "idtienda",
-			"sqlExpression": "citas.idtienda",
-			"index": 14,
+			"sqlExpression": "ci.idtienda",
+			"index": 15,
 			"strField": "idtienda",
 			"type": 3,
 			"viewFormats": [
@@ -285,34 +285,9 @@
 			"tableName": "citas"
 		},
 		{
-			"name": "idplan",
-			"sqlExpression": "citas.idplan",
-			"index": 15,
-			"strField": "idplan",
-			"type": 3,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{
-					"format": "Lookup wizard",
-					"lookupType": 2,
-					"lookupTable": "planes",
-					"lookupTableConnection": "conn",
-					"lookupLinkField": "idplan",
-					"lookupDisplayField": "plan",
-					"lookupWhere": "uso = 'Vigente' and tipo='Masivo'"
-				}
-			],
-			"label": {
-				"Spanish": "Plan sugerido"
-			},
-			"tableName": "citas"
-		},
-		{
 			"name": "soloservicio",
-			"sqlExpression": "citas.soloservicio",
-			"index": 16,
+			"sqlExpression": "ci.soloservicio",
+			"index": 19,
 			"strField": "soloservicio",
 			"type": 2,
 			"viewFormats": [
@@ -332,7 +307,7 @@
 		},
 		{
 			"name": "id",
-			"sqlExpression": "citas.id",
+			"sqlExpression": "ci.id",
 			"index": 1,
 			"strField": "id",
 			"type": 3,
@@ -366,26 +341,9 @@
 			"tableName": "clientes"
 		},
 		{
-			"name": "descripcion",
-			"sqlExpression": "p.descripcion",
-			"index": 8,
-			"strField": "descripcion",
-			"type": 200,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{}
-			],
-			"label": {
-				"Spanish": "Equipo"
-			},
-			"tableName": "productos"
-		},
-		{
 			"name": "usuarioconfirma",
-			"sqlExpression": "citas.usuarioconfirma",
-			"index": 17,
+			"sqlExpression": "ci.usuarioconfirma",
+			"index": 21,
 			"strField": "usuarioconfirma",
 			"type": 200,
 			"viewFormats": [
@@ -401,8 +359,8 @@
 		},
 		{
 			"name": "confirmado",
-			"sqlExpression": "citas.confirmado",
-			"index": 18,
+			"sqlExpression": "ci.confirmado",
+			"index": 20,
 			"strField": "confirmado",
 			"type": 2,
 			"viewFormats": [
@@ -420,8 +378,8 @@
 		},
 		{
 			"name": "fechahoraconfirma",
-			"sqlExpression": "citas.fechahoraconfirma",
-			"index": 19,
+			"sqlExpression": "ci.fechahoraconfirma",
+			"index": 22,
 			"strField": "fechahoraconfirma",
 			"type": 135,
 			"viewFormats": [
@@ -437,6 +395,204 @@
 			],
 			"label": {
 				"Spanish": "Fecha/hora confirma"
+			},
+			"tableName": "citas"
+		},
+		{
+			"name": "equiposugerido",
+			"sqlExpression": "p1.descripcion",
+			"index": 8,
+			"strField": "descripcion",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Equipo sugerido"
+			},
+			"tableName": "productos"
+		},
+		{
+			"name": "equipovendido",
+			"sqlExpression": "p.descripcion",
+			"index": 9,
+			"strField": "descripcion",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Equipo vendido"
+			},
+			"tableName": "productos"
+		},
+		{
+			"name": "plansugerido",
+			"sqlExpression": "pl.plan",
+			"index": 17,
+			"strField": "plan",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Plan sugerido"
+			},
+			"tableName": "planes"
+		},
+		{
+			"name": "planvendido",
+			"sqlExpression": "pl1.plan",
+			"index": 18,
+			"strField": "plan",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Plan vendido"
+			},
+			"tableName": "planes"
+		},
+		{
+			"name": "renovacionrealizada",
+			"sqlExpression": "if(ifnull(v.idventa,0)=0,0,1)",
+			"index": 23,
+			"strField": "renovacionrealizada",
+			"type": 3,
+			"viewFormats": [
+				{
+					"format": "Checkbox"
+				}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Renovación realizada"
+			},
+			"tableName": ""
+		},
+		{
+			"name": "fecharenovacion",
+			"sqlExpression": "v.fecha",
+			"index": 24,
+			"strField": "fecha",
+			"type": 7,
+			"viewFormats": [
+				{
+					"format": "Short Date"
+				}
+			],
+			"editFormats": [
+				{
+					"format": "Date",
+					"dateEditType": 11
+				}
+			],
+			"label": {
+				"Spanish": "Fecha renovación"
+			},
+			"tableName": ""
+		},
+		{
+			"name": "seguro",
+			"sqlExpression": "v.seguro",
+			"index": 25,
+			"strField": "seguro",
+			"type": 5,
+			"viewFormats": [
+				{
+					"format": "Number"
+				}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Seguro"
+			},
+			"tableName": ""
+		},
+		{
+			"name": "control",
+			"sqlExpression": "v.control",
+			"index": 26,
+			"strField": "control",
+			"type": 5,
+			"viewFormats": [
+				{
+					"format": "Number"
+				}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Control"
+			},
+			"tableName": ""
+		},
+		{
+			"name": "attuid",
+			"sqlExpression": "u.attuid",
+			"index": 27,
+			"strField": "attuid",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Attuid"
+			},
+			"tableName": "serviciosmoviles_users"
+		},
+		{
+			"name": "vendedor",
+			"sqlExpression": "fullname",
+			"index": 28,
+			"strField": "vendedor",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Vendedor"
+			},
+			"tableName": ""
+		},
+		{
+			"name": "idplan",
+			"sqlExpression": "ci.idplan",
+			"index": 16,
+			"strField": "idplan",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Plan sugerido"
 			},
 			"tableName": "citas"
 		}
@@ -894,17 +1050,17 @@
 					"bsStyle": "default",
 					"panelType": 3
 				},
-				"integrated_edit_field": {
-					"field": "idplan",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
 				"integrated_edit_field5": {
 					"field": "soloservicio",
 					"type": "integrated_edit_field",
 					"orientation": 0,
 					"font-size": "16px",
 					"customCSS": "/* Put  your custom CSS code here */\n\n:host {\ntransform: scale(1.7);          /* tamaño, ajusta a tu gusto */\n    transform-origin: left center;  /* crece hacia la derecha, no hacia afuera */\n    vertical-align: middle;         /* lo centra mejor con el texto */\n    margin-left: 4px;               /* empujón ligero hacia adentro */\n    margin-right: 6px;\n    cursor: pointer;\n}\n"
+				},
+				"integrated_edit_field": {
+					"field": "idplan",
+					"type": "integrated_edit_field",
+					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -995,13 +1151,22 @@
 								"export_field8",
 								"export_field9",
 								"export_field10",
-								"export_field1",
 								"export_field11",
 								"export_field",
-								"export_field12",
 								"export_field13",
 								"export_field14",
-								"export_field15"
+								"export_field15",
+								"export_field1",
+								"export_field12",
+								"export_field16",
+								"export_field17",
+								"export_field18",
+								"export_field19",
+								"export_field20",
+								"export_field21",
+								"export_field22",
+								"export_field23",
+								"export_field24"
 							]
 						}
 					},
@@ -1086,20 +1251,12 @@
 					"field": "fechacaptura",
 					"type": "export_field"
 				},
-				"export_field1": {
-					"field": "idplan",
-					"type": "export_field"
-				},
 				"export_field11": {
 					"field": "soloservicio",
 					"type": "export_field"
 				},
 				"export_field": {
 					"field": "nombre_completo",
-					"type": "export_field"
-				},
-				"export_field12": {
-					"field": "descripcion",
 					"type": "export_field"
 				},
 				"export_field13": {
@@ -1112,6 +1269,50 @@
 				},
 				"export_field15": {
 					"field": "fechahoraconfirma",
+					"type": "export_field"
+				},
+				"export_field1": {
+					"field": "equiposugerido",
+					"type": "export_field"
+				},
+				"export_field12": {
+					"field": "equipovendido",
+					"type": "export_field"
+				},
+				"export_field16": {
+					"field": "plansugerido",
+					"type": "export_field"
+				},
+				"export_field17": {
+					"field": "planvendido",
+					"type": "export_field"
+				},
+				"export_field18": {
+					"field": "renovacionrealizada",
+					"type": "export_field"
+				},
+				"export_field19": {
+					"field": "fecharenovacion",
+					"type": "export_field"
+				},
+				"export_field20": {
+					"field": "seguro",
+					"type": "export_field"
+				},
+				"export_field21": {
+					"field": "control",
+					"type": "export_field"
+				},
+				"export_field22": {
+					"field": "attuid",
+					"type": "export_field"
+				},
+				"export_field23": {
+					"field": "vendedor",
+					"type": "export_field"
+				},
+				"export_field24": {
+					"field": "idplan",
 					"type": "export_field"
 				}
 			},
@@ -1487,18 +1688,18 @@
 					"orientation": 0,
 					"updateOnEdit": false
 				},
-				"integrated_edit_field": {
-					"field": "idplan",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
 				"integrated_edit_field5": {
 					"field": "soloservicio",
 					"type": "integrated_edit_field",
 					"orientation": 0,
 					"updateOnEdit": false,
 					"customCSS": "/* Put  your custom CSS code here */\n\n:host {\ntransform: scale(1.7);          /* tamaño, ajusta a tu gusto */\n    transform-origin: left center;  /* crece hacia la derecha, no hacia afuera */\n    vertical-align: middle;         /* lo centra mejor con el texto */\n    margin-left: 4px;               /* empujón ligero hacia adentro */\n    margin-right: 6px;\n    cursor: pointer;\n}\n"
+				},
+				"integrated_edit_field": {
+					"field": "idplan",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
 				}
 			},
 			"dbProps": {},
@@ -1616,7 +1817,7 @@
 							"items": [
 								"section",
 								"integrated_edit_field6",
-								"integrated_edit_field9"
+								"integrated_edit_field"
 							],
 							"align": "center",
 							"customCSS": "/* Put  your custom CSS code here */\n\n/* Put  your custom CSS code here */\n\n\n\n/* ========================================================= */\n/* VARIABLES DE COLOR */\n/* ========================================================= */\n:root {\n    --color-elegante: #FFFFFF; /* Texto Blanco para contrastar con el fondo oscuro */\n    --naranja-degradado-inicio: #03478A; /* Naranja Suave (Light Salmon) */\n    --naranja-degradado-fin: #6D98C2; /* Naranja Medio (Coral) */\n    --color-borde-base: #FF7F50; /* Color simple para el borde base */\n}\n\n/* ========================================================= */\n/* 1. Fondo de la Página: Degradado Azul Cielo (Se mantiene) */\n/* ========================================================= */\n\nbody, .container-fluid {\nbackground: linear-gradient(180deg, #E0F7FA 0%, #B3E5FC 100%) !important;    min-height: 100vh;\n}\n/* ========================================================= */\n/* 2. Estilo de las Secciones: Efecto Tarjeta/Sombreado (Se mantiene) */\n/* ========================================================= */\n.panel, .rnr-c-body, .rnr-c-grid {\n    background-color: #FFFFFF !important; \n    border: none !important; \n    border-radius: 12px !important; \n    padding: 20px;\n    margin-bottom: 25px; \n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), \n                0 2px 6px rgba(0, 0, 0, 0.05) !important; \n                \n    /* 🔑 CAMBIO CLAVE: Agrega 'transform' a la transición */\n    transition: box-shadow 0.3s ease-in-out, \n                transform 0.3s ease-in-out; /* Transición para el movimiento y escala */            \n                \n}\n\n/* ========================================================= */\n/* 3. Estilo de Encabezados de Sección (EL CAMBIO PRINCIPAL) */\n/* ========================================================= */\n.panel-heading, .rnr-c-head {\n    /* Aplicamos el degradado al fondo completo del encabezado */\n    background: linear-gradient(to right, var(--naranja-degradado-inicio), var(--naranja-degradado-fin)) !important;\n    \n    /* El texto del título ahora es blanco para contrastar con el fondo naranja */\n    color: var(--color-elegante) !important; \n    \n    font-weight: 600;\n    \n    /* Mantenemos el centrado vertical */\n    display: flex;\n    align-items: center;\n    height: 40px; /* Aseguramos una altura suficiente */\n    \n    /* Eliminamos el borde degradado y aplicamos un borde simple y fino abajo */\n    border-bottom: 1px solid var(--color-borde-base) !important; \n    border-image-source: none !important; /* Desactivar la propiedad border-image anterior */\n    \n    /* Ajustes de relleno/bordes para que el degradado se vea bien */\n    padding: 0 15px !important; \n    border-top-left-radius: 12px !important; /* Mantenemos el radio del panel superior */\n    border-top-right-radius: 12px !important;\n}\n\n/* ========================================================= */\n/* 3. Estilo de HOVER: Efecto de Elevación/Intensificación    */\n/* ========================================================= */\n.panel:hover, .rnr-c-body:hover, .rnr-c-grid:hover {\n    /* Nueva sombra más intensa y \"elevada\" */\n    box-shadow: 0 15px 400px rgba(0, 0, 0, 0.3), \n                0 5px 15px rgba(0, 0, 0, 0.1) !important; \n    \n    /* Pequeño movimiento hacia arriba para dar más sensación de elevación (opcional) */\n    transform: translateY(-5px) scale(1.005); \n}\n\n\n\n/* 4. Estilo de los Inputs (Se mantiene) */\n.form-control {\n    border-radius: 8px !important; \n    border: 1px solid #e0e0e0 !important;\n}\n.form-control:focus {\n    border-color: #48C9B0 !important; \n    box-shadow: 0 0 0 0.2rem rgba(72, 201, 176, 0.25) !important;\n}\n\n/* Aplica solo a formularios con esas secciones */\n.panel.panel-default.form-section > .panel-body { display: none; }\n\n.panel.panel-default.form-section > .panel-heading:hover {\n  cursor: pointer;\n  filter: brightness(0.98);\n}\n\n.panel-collapse.no-bs-trans {\n  transition: none !important;\n}\n\n/* ========================================================= */\n/* ARREGLO DE COLOR DE TEXTO DE ENCABEZADO DURANTE MODAL     */\n/* ========================================================= */\n\n/* Apuntamos directamente al panel-title, que es el elemento que contiene \n   el texto del encabezado de la sección. \n*/\n.panel-heading .panel-title {\n    color: #FFFFFF !important; \n}\n\n/* Si dentro del panel-title hay un enlace (Ej. si el encabezado permite colapsar/expandir \n   y el título es un <a>), también debemos forzar el color del enlace.\n*/\n.panel-heading .panel-title a {\n    color: #FFFFFF !important;\n}\n\n/* Asegurar que el texto dentro del panel-title no se vea afectado por reglas generales\n   que usen el estado 'modal-open' en el cuerpo de la página.\n*/\n.modal-open .panel-heading .panel-title {\n    color: #FFFFFF !important;\n}\n\n\n/*******************************************************************/\n/* === Contenedores que enjaulan el ancho === */\n/* 1) Limitar el ancho de TODOS los bloques de la página add */\nbody.function-add #form_top_1,\nbody.function-add #form_above-grid_1,\nbody.function-add .panel.panel-default.form-section {\n  max-width: 720px;        /* ajusta a tu gusto: 720, 840, 920… */\n  margin-left: auto;\n  margin-right: auto;\n}\n\n/* 2) Evitar que col-md-12 fuerce 100% cuando queremos centrar */\nbody.function-add .r-form .row > .col-md-12 {\n  float: none;              /* elimina flote de Bootstrap */\n}\n\n/* 3) La mesa del formulario viene con width:100%; la hacemos fija y centrada */\nbody.function-add #form_section_1.r-edit-form {\n  width: 720px !important;  /* mismo valor que arriba */\n  margin-left: auto;\n  margin-right: auto;\n}\n\n/* 4) Hacer que los controles no queden “larguísimos” */\nbody.function-add #form_section_1 .form-control,\nbody.function-add #form_section_1 select.form-control {\n  max-width: 2660px;         /* o 360/380px según te guste */\n}\n\n/* 5) Un poco de respiro en pantallas chicas */\n@media (max-width: 770px) {\n  body.function-add #form_section_1.r-edit-form,\n  body.function-add #form_top_1,\n  body.function-add #form_above-grid_1,\n  body.function-add .panel.panel-default.form-section {\n    max-width: 100%;\n    width: auto !important;\n    padding-left: 12px;\n    padding-right: 12px;\n  }\n  body.function-add #form_section_1 .form-control,\n  body.function-add #form_section_1 select.form-control {\n    max-width: 100%;\n  }\n}\n\n/* === BELOW-GRID: mismo ancho que el form y alineado === */\nbody.function-add #form_below-grid_1 {\n  max-width: 720px;        /* el mismo valor que uses para el form */\n  margin: 8px auto 28px;   /* centra la franja bajo el formulario */\n  padding: 0 4px;\n  text-align: left;       /* o 'center' si lo prefieres centrado */\n}\n\n/* Espaciado y layout de botones */\nbody.function-add #form_below-grid_1 .btn-toolbar,\nbody.function-add #form_below-grid_1 .rnr-buttons-group {\n  display: inline-flex;    /* mantiene los botones en línea */\n  gap: 8px;  /* separación entre botones */\n  justify-content: flex-start;  \n  flex-wrap: wrap;         /* por si colapsan en pantallas chicas */\n}\n\n/* Por si algún tema pone floats o pull-right */\nbody.function-add #form_below-grid_1 .btn,\nbody.function-add #form_below-grid_1 .rnr-buttons-group {\n  float: none !important;\n}\n\n/* En móviles: céntralos */\n@media (max-width: 768px) {\n  body.function-add #form_below-grid_1 { text-align: center; }\n}\n"
@@ -1657,7 +1858,6 @@
 							"items": [
 								"integrated_edit_field8",
 								"integrated_edit_field4",
-								"integrated_edit_field",
 								"integrated_edit_field7"
 							]
 						}
@@ -1735,11 +1935,6 @@
 					"orientation": 0,
 					"updateOnEdit": false
 				},
-				"integrated_edit_field": {
-					"field": "idplan",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
 				"integrated_edit_field5": {
 					"field": "soloservicio",
 					"type": "integrated_edit_field",
@@ -1750,8 +1945,8 @@
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
-				"integrated_edit_field9": {
-					"field": "descripcion",
+				"integrated_edit_field": {
+					"field": "idplan",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				}
@@ -1855,7 +2050,8 @@
 						"c0": {
 							"model": "c0",
 							"items": [
-								"logo"
+								"logo",
+								"expand_button"
 							]
 						},
 						"c1": {
@@ -1920,6 +2116,29 @@
 							"section": "head",
 							"cells": [
 								{
+									"cell": "headcell_icons1"
+								},
+								{
+									"cell": "headcell_icons2"
+								},
+								{
+									"cell": "headcell_icons3",
+									"colspan": 10
+								},
+								{
+									"cell": "headcell_icons13",
+									"colspan": 3
+								},
+								{
+									"cell": "headcell_icons16",
+									"colspan": 8
+								}
+							]
+						},
+						{
+							"section": "head",
+							"cells": [
+								{
 									"cell": "headcell_icons"
 								},
 								{
@@ -1929,8 +2148,7 @@
 									"cell": "headcell_field"
 								},
 								{
-									"cell": "headcell_field1",
-									"colspan": 1
+									"cell": "headcell_field1"
 								},
 								{
 									"cell": "headcell_field2"
@@ -1939,17 +2157,16 @@
 									"cell": "headcell_field3"
 								},
 								{
-									"cell": "headcell_field10"
+									"cell": "headcell_field4"
 								},
 								{
-									"cell": "headcell_field11"
+									"cell": "headcell_field5"
 								},
 								{
 									"cell": "headcell_field6"
 								},
 								{
-									"cell": "headcell_field7",
-									"colspan": 1
+									"cell": "headcell_field7"
 								},
 								{
 									"cell": "headcell_field8"
@@ -1958,13 +2175,37 @@
 									"cell": "headcell_field9"
 								},
 								{
-									"cell": "headcell_field4"
+									"cell": "headcell_field10"
 								},
 								{
-									"cell": "headcell_field5"
+									"cell": "headcell_field11"
 								},
 								{
 									"cell": "headcell_field12"
+								},
+								{
+									"cell": "headcell_field13"
+								},
+								{
+									"cell": "headcell_field14"
+								},
+								{
+									"cell": "headcell_field15"
+								},
+								{
+									"cell": "headcell_field16"
+								},
+								{
+									"cell": "headcell_field17"
+								},
+								{
+									"cell": "headcell_field18"
+								},
+								{
+									"cell": "headcell_field19"
+								},
+								{
+									"cell": "headcell_field20"
 								}
 							]
 						},
@@ -1981,8 +2222,7 @@
 									"cell": "cell_field"
 								},
 								{
-									"cell": "cell_field1",
-									"colspan": 1
+									"cell": "cell_field1"
 								},
 								{
 									"cell": "cell_field2"
@@ -1991,17 +2231,16 @@
 									"cell": "cell_field3"
 								},
 								{
-									"cell": "cell_field10"
+									"cell": "cell_field4"
 								},
 								{
-									"cell": "cell_field11"
+									"cell": "cell_field5"
 								},
 								{
 									"cell": "cell_field6"
 								},
 								{
-									"cell": "cell_field7",
-									"colspan": 1
+									"cell": "cell_field7"
 								},
 								{
 									"cell": "cell_field8"
@@ -2010,13 +2249,37 @@
 									"cell": "cell_field9"
 								},
 								{
-									"cell": "cell_field4"
+									"cell": "cell_field10"
 								},
 								{
-									"cell": "cell_field5"
+									"cell": "cell_field11"
 								},
 								{
 									"cell": "cell_field12"
+								},
+								{
+									"cell": "cell_field13"
+								},
+								{
+									"cell": "cell_field14"
+								},
+								{
+									"cell": "cell_field15"
+								},
+								{
+									"cell": "cell_field16"
+								},
+								{
+									"cell": "cell_field17"
+								},
+								{
+									"cell": "cell_field18"
+								},
+								{
+									"cell": "cell_field19"
+								},
+								{
+									"cell": "cell_field20"
 								}
 							]
 						},
@@ -2033,28 +2296,13 @@
 									"cell": "footcell_field"
 								},
 								{
-									"cell": "footcell_field1",
-									"colspan": 1
+									"cell": "footcell_field1"
 								},
 								{
 									"cell": "footcell_field2"
 								},
 								{
-									"cell": "footcell_field3",
-									"colspan": 3
-								},
-								{
-									"cell": "footcell_field6"
-								},
-								{
-									"cell": "footcell_field7",
-									"colspan": 1
-								},
-								{
-									"cell": "footcell_field8"
-								},
-								{
-									"cell": "footcell_field9"
+									"cell": "footcell_field3"
 								},
 								{
 									"cell": "footcell_field4"
@@ -2063,189 +2311,54 @@
 									"cell": "footcell_field5"
 								},
 								{
+									"cell": "footcell_field6"
+								},
+								{
+									"cell": "footcell_field7"
+								},
+								{
+									"cell": "footcell_field8"
+								},
+								{
+									"cell": "footcell_field9"
+								},
+								{
 									"cell": "footcell_field10"
+								},
+								{
+									"cell": "footcell_field11"
+								},
+								{
+									"cell": "footcell_field12"
+								},
+								{
+									"cell": "footcell_field13"
+								},
+								{
+									"cell": "footcell_field14"
+								},
+								{
+									"cell": "footcell_field15"
+								},
+								{
+									"cell": "footcell_field16"
+								},
+								{
+									"cell": "footcell_field17"
+								},
+								{
+									"cell": "footcell_field18"
+								},
+								{
+									"cell": "footcell_field19"
+								},
+								{
+									"cell": "footcell_field20"
 								}
 							]
 						}
 					],
 					"cells": {
-						"headcell_field": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field"
-							],
-							"field": "idtiendacita",
-							"columnName": "field"
-						},
-						"cell_field": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field2"
-							],
-							"field": "idtiendacita",
-							"columnName": "field"
-						},
-						"footcell_field": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "idtiendacita",
-							"columnName": "field"
-						},
-						"headcell_field1": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field9"
-							],
-							"field": "fechacita",
-							"columnName": "field"
-						},
-						"cell_field1": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field6"
-							],
-							"field": "fechacita",
-							"columnName": "field"
-						},
-						"footcell_field1": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "fechacita",
-							"columnName": "field"
-						},
-						"headcell_field2": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field12"
-							],
-							"field": "soloservicio",
-							"columnName": "field"
-						},
-						"cell_field2": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field8"
-							],
-							"field": "soloservicio",
-							"align": "center",
-							"columnName": "field"
-						},
-						"footcell_field2": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "soloservicio",
-							"columnName": "field"
-						},
-						"headcell_field3": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field13"
-							],
-							"field": "",
-							"columnName": ""
-						},
-						"cell_field3": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field3"
-							],
-							"field": "",
-							"columnName": ""
-						},
-						"footcell_field3": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "",
-							"columnName": ""
-						},
-						"headcell_field6": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field16"
-							],
-							"field": "idplan",
-							"columnName": "field"
-						},
-						"cell_field6": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field7"
-							],
-							"field": "idplan",
-							"columnName": "field"
-						},
-						"footcell_field6": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "idplan",
-							"columnName": "field"
-						},
-						"headcell_field7": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field17"
-							],
-							"field": "usuario",
-							"columnName": "field"
-						},
-						"cell_field7": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field1"
-							],
-							"field": "usuario",
-							"columnName": "field"
-						},
-						"footcell_field7": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "usuario",
-							"columnName": "field"
-						},
-						"headcell_field8": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field18"
-							],
-							"field": "folioagentevnp",
-							"columnName": "field"
-						},
-						"cell_field8": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field4"
-							],
-							"field": "folioagentevnp",
-							"columnName": "field"
-						},
-						"footcell_field8": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "folioagentevnp",
-							"columnName": "field"
-						},
-						"headcell_field9": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field19"
-							],
-							"field": "observaciones",
-							"columnName": "field"
-						},
-						"cell_field9": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field5"
-							],
-							"field": "observaciones",
-							"columnName": "field"
-						},
-						"footcell_field9": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "observaciones",
-							"columnName": "field"
-						},
 						"headcell_checkbox": {
 							"model": "headcell_checkbox",
 							"items": [
@@ -2289,61 +2402,248 @@
 							"columnName": "list-icons",
 							"field": ""
 						},
-						"headcell_field10": {
+						"headcell_field": {
 							"model": "headcell_field",
 							"items": [
-								"grid_field_label"
+								"simple_grid_field"
 							],
-							"field": "",
-							"columnName": ""
+							"field": "idtiendacita",
+							"columnName": "field",
+							"background": "#e9eff3"
 						},
-						"cell_field10": {
+						"cell_field": {
 							"model": "cell_field",
 							"items": [
-								"grid_field"
+								"simple_grid_field2"
 							],
-							"field": "",
-							"columnName": ""
+							"field": "idtiendacita",
+							"columnName": "field",
+							"background": "#f0f1f1"
 						},
-						"headcell_field11": {
+						"footcell_field": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "idtiendacita",
+							"columnName": "field"
+						},
+						"headcell_field1": {
 							"model": "headcell_field",
 							"items": [
-								"grid_field_label1"
+								"simple_grid_field9"
 							],
-							"field": "",
-							"columnName": ""
+							"field": "fechacita",
+							"columnName": "field",
+							"background": "#e9eff3"
 						},
-						"cell_field11": {
+						"cell_field1": {
 							"model": "cell_field",
 							"items": [
-								"grid_field1"
+								"simple_grid_field6"
 							],
-							"field": "",
-							"columnName": ""
+							"field": "fechacita",
+							"columnName": "field",
+							"background": "#f0f1f1"
+						},
+						"footcell_field1": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "fechacita",
+							"columnName": "field"
+						},
+						"headcell_field2": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field12"
+							],
+							"field": "soloservicio",
+							"columnName": "field",
+							"background": "#e9eff3"
+						},
+						"cell_field2": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field8"
+							],
+							"field": "soloservicio",
+							"columnName": "field",
+							"background": "#f0f1f1"
+						},
+						"footcell_field2": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "soloservicio",
+							"columnName": "field"
+						},
+						"headcell_field3": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field13"
+							],
+							"field": "dn",
+							"columnName": "field",
+							"background": "#e9eff3"
+						},
+						"cell_field3": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field3"
+							],
+							"field": "dn",
+							"columnName": "field",
+							"background": "#f0f1f1"
+						},
+						"footcell_field3": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "dn",
+							"columnName": "field"
 						},
 						"headcell_field4": {
 							"model": "headcell_field",
 							"items": [
-								"grid_field_label2"
+								"grid_field_label"
 							],
-							"field": "usuarioconfirma",
-							"columnName": "field"
+							"field": "nombre_completo",
+							"columnName": "field",
+							"background": "#e9eff3"
 						},
 						"cell_field4": {
 							"model": "cell_field",
 							"items": [
-								"grid_field2"
+								"grid_field"
 							],
-							"field": "usuarioconfirma",
-							"columnName": "field"
+							"field": "nombre_completo",
+							"columnName": "field",
+							"background": "#f0f1f1"
 						},
 						"footcell_field4": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "usuarioconfirma",
+							"field": "nombre_completo",
 							"columnName": "field"
 						},
 						"headcell_field5": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field17"
+							],
+							"field": "usuario",
+							"columnName": "field",
+							"background": "#e9eff3"
+						},
+						"cell_field5": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field1"
+							],
+							"field": "usuario",
+							"columnName": "field",
+							"background": "#f0f1f1"
+						},
+						"footcell_field5": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "usuario",
+							"columnName": "field"
+						},
+						"headcell_field6": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label1"
+							],
+							"field": "equiposugerido",
+							"columnName": "field",
+							"color": "#000000",
+							"background": "#e9eff3"
+						},
+						"cell_field6": {
+							"model": "cell_field",
+							"items": [
+								"grid_field1"
+							],
+							"field": "equiposugerido",
+							"columnName": "field",
+							"background": "#f0f1f1"
+						},
+						"footcell_field6": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "equiposugerido",
+							"columnName": "field"
+						},
+						"headcell_field7": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label6"
+							],
+							"field": "plansugerido",
+							"columnName": "field",
+							"background": "#e9eff3"
+						},
+						"cell_field7": {
+							"model": "cell_field",
+							"items": [
+								"grid_field6"
+							],
+							"field": "plansugerido",
+							"columnName": "field",
+							"background": "#f0f1f1"
+						},
+						"footcell_field7": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "plansugerido",
+							"columnName": "field"
+						},
+						"headcell_field8": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field18"
+							],
+							"field": "folioagentevnp",
+							"columnName": "field",
+							"background": "#e9eff3"
+						},
+						"cell_field8": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field4"
+							],
+							"field": "folioagentevnp",
+							"columnName": "field",
+							"background": "#f0f1f1"
+						},
+						"footcell_field8": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "folioagentevnp",
+							"columnName": "field"
+						},
+						"headcell_field9": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field19"
+							],
+							"field": "observaciones",
+							"columnName": "field",
+							"background": "#e9eff3"
+						},
+						"cell_field9": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field5"
+							],
+							"field": "observaciones",
+							"columnName": "field",
+							"background": "#f0f1f1"
+						},
+						"footcell_field9": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "observaciones",
+							"columnName": "field"
+						},
+						"headcell_field10": {
 							"model": "headcell_field",
 							"items": [
 								"grid_field_label3"
@@ -2351,7 +2651,7 @@
 							"field": "confirmado",
 							"columnName": "field"
 						},
-						"cell_field5": {
+						"cell_field10": {
 							"model": "cell_field",
 							"items": [
 								"grid_field3"
@@ -2359,10 +2659,32 @@
 							"field": "confirmado",
 							"columnName": "field"
 						},
-						"footcell_field5": {
+						"footcell_field10": {
 							"model": "footcell_field",
 							"items": [],
 							"field": "confirmado",
+							"columnName": "field"
+						},
+						"headcell_field11": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label2"
+							],
+							"field": "usuarioconfirma",
+							"columnName": "field"
+						},
+						"cell_field11": {
+							"model": "cell_field",
+							"items": [
+								"grid_field2"
+							],
+							"field": "usuarioconfirma",
+							"columnName": "field"
+						},
+						"footcell_field11": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "usuarioconfirma",
 							"columnName": "field"
 						},
 						"headcell_field12": {
@@ -2381,11 +2703,252 @@
 							"field": "fechahoraconfirma",
 							"columnName": "field"
 						},
-						"footcell_field10": {
+						"footcell_field12": {
 							"model": "footcell_field",
 							"items": [],
 							"field": "fechahoraconfirma",
 							"columnName": "field"
+						},
+						"headcell_field13": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label8"
+							],
+							"field": "renovacionrealizada",
+							"columnName": "field",
+							"background": "#ebfdf8"
+						},
+						"cell_field13": {
+							"model": "cell_field",
+							"items": [
+								"grid_field8"
+							],
+							"field": "renovacionrealizada",
+							"columnName": "field"
+						},
+						"footcell_field13": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "renovacionrealizada",
+							"columnName": "field"
+						},
+						"headcell_field14": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label9"
+							],
+							"field": "fecharenovacion",
+							"columnName": "field",
+							"background": "#ebfdf8"
+						},
+						"cell_field14": {
+							"model": "cell_field",
+							"items": [
+								"grid_field9"
+							],
+							"field": "fecharenovacion",
+							"columnName": "field"
+						},
+						"footcell_field14": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "fecharenovacion",
+							"columnName": "field"
+						},
+						"headcell_field15": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label5"
+							],
+							"field": "equipovendido",
+							"columnName": "field"
+						},
+						"cell_field15": {
+							"model": "cell_field",
+							"items": [
+								"grid_field5"
+							],
+							"field": "equipovendido",
+							"columnName": "field"
+						},
+						"footcell_field15": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "equipovendido",
+							"columnName": "field"
+						},
+						"headcell_field16": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label7"
+							],
+							"field": "planvendido",
+							"columnName": "field"
+						},
+						"cell_field16": {
+							"model": "cell_field",
+							"items": [
+								"grid_field7"
+							],
+							"field": "planvendido",
+							"columnName": "field"
+						},
+						"footcell_field16": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "planvendido",
+							"columnName": "field"
+						},
+						"headcell_field17": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label11"
+							],
+							"field": "seguro",
+							"columnName": "field"
+						},
+						"cell_field17": {
+							"model": "cell_field",
+							"items": [
+								"grid_field11"
+							],
+							"field": "seguro",
+							"columnName": "field"
+						},
+						"footcell_field17": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "seguro",
+							"columnName": "field"
+						},
+						"headcell_field18": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label12"
+							],
+							"field": "control",
+							"columnName": "field"
+						},
+						"cell_field18": {
+							"model": "cell_field",
+							"items": [
+								"grid_field12"
+							],
+							"field": "control",
+							"columnName": "field"
+						},
+						"footcell_field18": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "control",
+							"columnName": "field"
+						},
+						"headcell_field19": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label13"
+							],
+							"field": "attuid",
+							"columnName": "field"
+						},
+						"cell_field19": {
+							"model": "cell_field",
+							"items": [
+								"grid_field13"
+							],
+							"field": "attuid",
+							"columnName": "field"
+						},
+						"footcell_field19": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "attuid",
+							"columnName": "field"
+						},
+						"headcell_field20": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label14"
+							],
+							"field": "vendedor",
+							"columnName": "field"
+						},
+						"cell_field20": {
+							"model": "cell_field",
+							"items": [
+								"grid_field14"
+							],
+							"field": "vendedor",
+							"columnName": "field"
+						},
+						"footcell_field20": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "vendedor",
+							"columnName": "field"
+						},
+						"headcell_icons1": {
+							"model": "headcell_icons",
+							"items": [],
+							"columnName": "list-icons",
+							"field": ""
+						},
+						"headcell_icons2": {
+							"model": "headcell_checkbox",
+							"items": [],
+							"columnName": "checkbox",
+							"field": ""
+						},
+						"headcell_icons3": {
+							"model": "headcell_field",
+							"items": [
+								"text"
+							],
+							"field": "idtiendacita",
+							"columnName": "field",
+							"align": "center",
+							"border": [
+								{
+									"side": "",
+									"width": "1px",
+									"color": "#000000"
+								}
+							],
+							"background": "#d2d8dc"
+						},
+						"headcell_icons13": {
+							"model": "headcell_field",
+							"items": [
+								"text1"
+							],
+							"field": "confirmado",
+							"columnName": "field",
+							"align": "center",
+							"background": "#b1edf9",
+							"border": [
+								{
+									"side": "",
+									"width": "1px",
+									"color": "#000000"
+								}
+							]
+						},
+						"headcell_icons16": {
+							"model": "headcell_field",
+							"items": [
+								"text2"
+							],
+							"field": "renovacionrealizada",
+							"columnName": "field",
+							"align": "center",
+							"background": "#c5f5e0",
+							"border": [
+								{
+									"side": "",
+									"width": "1px",
+									"color": "#000000"
+								}
+							]
 						}
 					},
 					"deferredItems": [],
@@ -2418,7 +2981,6 @@
 					"type": "search_panel",
 					"items": [
 						"search_panel_field3",
-						"search_panel_field1",
 						"search_panel_field"
 					],
 					"_flexiblePanel": true
@@ -2499,18 +3061,28 @@
 				"export_selected": {
 					"type": "export_selected"
 				},
-				"simple_grid_field2": {
-					"field": "idtiendacita",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
+				"search_panel_field": {
+					"field": "nombre_completo",
+					"type": "search_panel_field"
+				},
+				"expand_button": {
+					"type": "expand_button"
+				},
+				"grid_checkbox": {
+					"type": "grid_checkbox"
+				},
+				"grid_edit": {
+					"type": "grid_edit"
+				},
+				"grid_view": {
+					"type": "grid_view"
 				},
 				"simple_grid_field": {
 					"type": "grid_field_label",
 					"field": "idtiendacita"
 				},
-				"simple_grid_field6": {
-					"field": "fechacita",
+				"simple_grid_field2": {
+					"field": "idtiendacita",
 					"type": "grid_field",
 					"inlineAdd": false,
 					"inlineEdit": false
@@ -2519,6 +3091,16 @@
 					"type": "grid_field_label",
 					"field": "fechacita"
 				},
+				"simple_grid_field6": {
+					"field": "fechacita",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field12": {
+					"type": "grid_field_label",
+					"field": "soloservicio"
+				},
 				"simple_grid_field8": {
 					"field": "soloservicio",
 					"type": "grid_field",
@@ -2526,74 +3108,12 @@
 					"inlineEdit": false,
 					"customCSS": "/* Put  your custom CSS code here */\n\n"
 				},
-				"simple_grid_field12": {
-					"type": "grid_field_label",
-					"field": "soloservicio"
-				},
-				"simple_grid_field3": {
-					"field": "dn",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
 				"simple_grid_field13": {
 					"type": "grid_field_label",
 					"field": "dn"
 				},
-				"simple_grid_field7": {
-					"field": "idplan",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field16": {
-					"type": "grid_field_label",
-					"field": "idplan"
-				},
-				"simple_grid_field1": {
-					"field": "usuario",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field17": {
-					"type": "grid_field_label",
-					"field": "usuario"
-				},
-				"simple_grid_field4": {
-					"field": "folioagentevnp",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field18": {
-					"type": "grid_field_label",
-					"field": "folioagentevnp"
-				},
-				"simple_grid_field5": {
-					"field": "observaciones",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field19": {
-					"type": "grid_field_label",
-					"field": "observaciones"
-				},
-				"grid_checkbox": {
-					"type": "grid_checkbox"
-				},
-				"grid_checkbox_head": {
-					"type": "grid_checkbox_head"
-				},
-				"grid_edit": {
-					"type": "grid_edit"
-				},
-				"grid_view": {
-					"type": "grid_view"
-				},
-				"grid_field": {
-					"field": "nombre_completo",
+				"simple_grid_field3": {
+					"field": "dn",
 					"type": "grid_field",
 					"inlineAdd": false,
 					"inlineEdit": false
@@ -2602,36 +3122,58 @@
 					"type": "grid_field_label",
 					"field": "nombre_completo"
 				},
-				"grid_field1": {
-					"field": "descripcion",
+				"grid_field": {
+					"field": "nombre_completo",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field17": {
+					"type": "grid_field_label",
+					"field": "usuario"
+				},
+				"simple_grid_field1": {
+					"field": "usuario",
 					"type": "grid_field",
 					"inlineAdd": false,
 					"inlineEdit": false
 				},
 				"grid_field_label1": {
 					"type": "grid_field_label",
-					"field": "descripcion"
+					"field": "equiposugerido"
 				},
-				"search_panel_field": {
-					"field": "nombre_completo",
-					"type": "search_panel_field"
-				},
-				"search_panel_field1": {
-					"field": "descripcion",
-					"type": "search_panel_field"
-				},
-				"grid_field2": {
-					"field": "usuarioconfirma",
+				"grid_field1": {
+					"field": "equiposugerido",
 					"type": "grid_field",
 					"inlineAdd": false,
 					"inlineEdit": false
 				},
-				"grid_field_label2": {
+				"grid_field_label6": {
 					"type": "grid_field_label",
-					"field": "usuarioconfirma"
+					"field": "plansugerido"
 				},
-				"grid_field3": {
-					"field": "confirmado",
+				"grid_field6": {
+					"field": "plansugerido",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field18": {
+					"type": "grid_field_label",
+					"field": "folioagentevnp"
+				},
+				"simple_grid_field4": {
+					"field": "folioagentevnp",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field19": {
+					"type": "grid_field_label",
+					"field": "observaciones"
+				},
+				"simple_grid_field5": {
+					"field": "observaciones",
 					"type": "grid_field",
 					"inlineAdd": false,
 					"inlineEdit": false
@@ -2640,8 +3182,18 @@
 					"type": "grid_field_label",
 					"field": "confirmado"
 				},
-				"grid_field4": {
-					"field": "fechahoraconfirma",
+				"grid_field3": {
+					"field": "confirmado",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label2": {
+					"type": "grid_field_label",
+					"field": "usuarioconfirma"
+				},
+				"grid_field2": {
+					"field": "usuarioconfirma",
 					"type": "grid_field",
 					"inlineAdd": false,
 					"inlineEdit": false
@@ -2649,6 +3201,119 @@
 				"grid_field_label4": {
 					"type": "grid_field_label",
 					"field": "fechahoraconfirma"
+				},
+				"grid_field4": {
+					"field": "fechahoraconfirma",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label8": {
+					"type": "grid_field_label",
+					"field": "renovacionrealizada"
+				},
+				"grid_field8": {
+					"field": "renovacionrealizada",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label9": {
+					"type": "grid_field_label",
+					"field": "fecharenovacion"
+				},
+				"grid_field9": {
+					"field": "fecharenovacion",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label5": {
+					"type": "grid_field_label",
+					"field": "equipovendido"
+				},
+				"grid_field5": {
+					"field": "equipovendido",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label7": {
+					"type": "grid_field_label",
+					"field": "planvendido"
+				},
+				"grid_field7": {
+					"field": "planvendido",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label11": {
+					"type": "grid_field_label",
+					"field": "seguro"
+				},
+				"grid_field11": {
+					"field": "seguro",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label12": {
+					"type": "grid_field_label",
+					"field": "control"
+				},
+				"grid_field12": {
+					"field": "control",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label13": {
+					"type": "grid_field_label",
+					"field": "attuid"
+				},
+				"grid_field13": {
+					"field": "attuid",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label14": {
+					"type": "grid_field_label",
+					"field": "vendedor"
+				},
+				"grid_field14": {
+					"field": "vendedor",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_checkbox_head": {
+					"type": "grid_checkbox_head"
+				},
+				"text": {
+					"type": "text",
+					"label": {
+						"text": "<h2><strong>Datos de la cita</strong></h2>",
+						"type": 0
+					},
+					"editedByRte": true
+				},
+				"text1": {
+					"type": "text",
+					"label": {
+						"text": "<h2>Confirmación<strong><span class=\"ql-cursor\">﻿</span></strong></h2>",
+						"type": 0
+					},
+					"editedByRte": true
+				},
+				"text2": {
+					"type": "text",
+					"label": {
+						"text": "<h2>Renovación / Venta<strong><span class=\"ql-cursor\">﻿</span></strong></h2>",
+						"type": 0
+					},
+					"editedByRte": true
 				}
 			},
 			"dbProps": {},
