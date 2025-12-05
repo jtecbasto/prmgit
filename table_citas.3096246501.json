@@ -620,7 +620,7 @@
 					"lookupTableConnection": "conn",
 					"lookupLinkField": "idplan",
 					"lookupDisplayField": "plan",
-					"lookupWhere": "\"uso = 'Vigente' and tipo='Masivo'\""
+					"lookupWhere": "uso = 'Vigente' and tipo='Masivo'"
 				}
 			],
 			"label": {
