@@ -224,14 +224,37 @@
 			"index": 13,
 			"strField": "fechacita",
 			"type": 135,
+			"separateEditViewFormats": true,
 			"viewFormats": [
 				{
 					"format": "Datetime"
+				},
+				{
+					"format": "Datetime",
+					"pageType": "list"
+				},
+				{
+					"format": "Datetime",
+					"pageType": "export"
 				}
 			],
 			"editFormats": [
 				{
+					"format": "Readonly",
+					"required": true,
+					"dateEditType": 11,
+					"dateShowTime": true
+				},
+				{
 					"format": "Date",
+					"pageType": "add",
+					"required": true,
+					"dateEditType": 11,
+					"dateShowTime": true
+				},
+				{
+					"format": "Date",
+					"pageType": "search",
 					"required": true,
 					"dateEditType": 11,
 					"dateShowTime": true
@@ -589,7 +612,16 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"format": "Lookup wizard",
+					"required": true,
+					"lookupType": 2,
+					"lookupTable": "planes",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "idplan",
+					"lookupDisplayField": "plan",
+					"lookupWhere": "\"uso = 'Vigente' and tipo='Masivo'\""
+				}
 			],
 			"label": {
 				"Spanish": "Plan sugerido"
@@ -2407,485 +2439,484 @@
 							"items": [
 								"simple_grid_field"
 							],
-							"field": "idtiendacita",
-							"columnName": "field",
-							"background": "#e9eff3"
+							"field": "",
+							"columnName": "",
+							"background": "#dee0e2"
 						},
 						"cell_field": {
 							"model": "cell_field",
 							"items": [
 								"simple_grid_field2"
 							],
-							"field": "idtiendacita",
-							"columnName": "field",
-							"background": "#f0f1f1"
+							"field": "",
+							"columnName": ""
 						},
 						"footcell_field": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "idtiendacita",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field1": {
 							"model": "headcell_field",
 							"items": [
 								"simple_grid_field9"
 							],
-							"field": "fechacita",
-							"columnName": "field",
-							"background": "#e9eff3"
+							"field": "",
+							"columnName": "",
+							"background": "#dee0e2"
 						},
 						"cell_field1": {
 							"model": "cell_field",
 							"items": [
 								"simple_grid_field6"
 							],
-							"field": "fechacita",
-							"columnName": "field",
-							"background": "#f0f1f1"
+							"field": "",
+							"columnName": ""
 						},
 						"footcell_field1": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "fechacita",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field2": {
 							"model": "headcell_field",
 							"items": [
 								"simple_grid_field12"
 							],
-							"field": "soloservicio",
-							"columnName": "field",
-							"background": "#e9eff3"
+							"field": "",
+							"columnName": "",
+							"background": "#dee0e2"
 						},
 						"cell_field2": {
 							"model": "cell_field",
 							"items": [
 								"simple_grid_field8"
 							],
-							"field": "soloservicio",
-							"columnName": "field",
-							"background": "#f0f1f1"
+							"field": "",
+							"columnName": "",
+							"align": "center"
 						},
 						"footcell_field2": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "soloservicio",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field3": {
 							"model": "headcell_field",
 							"items": [
 								"simple_grid_field13"
 							],
-							"field": "dn",
-							"columnName": "field",
-							"background": "#e9eff3"
+							"field": "",
+							"columnName": "",
+							"background": "#dee0e2"
 						},
 						"cell_field3": {
 							"model": "cell_field",
 							"items": [
 								"simple_grid_field3"
 							],
-							"field": "dn",
-							"columnName": "field",
-							"background": "#f0f1f1"
+							"field": "",
+							"columnName": ""
 						},
 						"footcell_field3": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "dn",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field4": {
 							"model": "headcell_field",
 							"items": [
 								"grid_field_label"
 							],
-							"field": "nombre_completo",
-							"columnName": "field",
-							"background": "#e9eff3"
+							"field": "",
+							"columnName": "",
+							"background": "#dee0e2"
 						},
 						"cell_field4": {
 							"model": "cell_field",
 							"items": [
 								"grid_field"
 							],
-							"field": "nombre_completo",
-							"columnName": "field",
-							"background": "#f0f1f1"
+							"field": "",
+							"columnName": ""
 						},
 						"footcell_field4": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "nombre_completo",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field5": {
 							"model": "headcell_field",
 							"items": [
 								"simple_grid_field17"
 							],
-							"field": "usuario",
-							"columnName": "field",
-							"background": "#e9eff3"
+							"field": "",
+							"columnName": "",
+							"background": "#dee0e2"
 						},
 						"cell_field5": {
 							"model": "cell_field",
 							"items": [
 								"simple_grid_field1"
 							],
-							"field": "usuario",
-							"columnName": "field",
-							"background": "#f0f1f1"
+							"field": "",
+							"columnName": ""
 						},
 						"footcell_field5": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "usuario",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field6": {
 							"model": "headcell_field",
 							"items": [
 								"grid_field_label1"
 							],
-							"field": "equiposugerido",
-							"columnName": "field",
+							"field": "",
+							"columnName": "",
 							"color": "#000000",
-							"background": "#e9eff3"
+							"background": "#dee0e2"
 						},
 						"cell_field6": {
 							"model": "cell_field",
 							"items": [
 								"grid_field1"
 							],
-							"field": "equiposugerido",
-							"columnName": "field",
-							"background": "#f0f1f1"
+							"field": "",
+							"columnName": ""
 						},
 						"footcell_field6": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "equiposugerido",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field7": {
 							"model": "headcell_field",
 							"items": [
 								"grid_field_label6"
 							],
-							"field": "plansugerido",
-							"columnName": "field",
-							"background": "#e9eff3"
+							"field": "",
+							"columnName": "",
+							"background": "#dee0e2"
 						},
 						"cell_field7": {
 							"model": "cell_field",
 							"items": [
 								"grid_field6"
 							],
-							"field": "plansugerido",
-							"columnName": "field",
-							"background": "#f0f1f1"
+							"field": "",
+							"columnName": ""
 						},
 						"footcell_field7": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "plansugerido",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field8": {
 							"model": "headcell_field",
 							"items": [
 								"simple_grid_field18"
 							],
-							"field": "folioagentevnp",
-							"columnName": "field",
-							"background": "#e9eff3"
+							"field": "",
+							"columnName": "",
+							"background": "#dee0e2"
 						},
 						"cell_field8": {
 							"model": "cell_field",
 							"items": [
 								"simple_grid_field4"
 							],
-							"field": "folioagentevnp",
-							"columnName": "field",
-							"background": "#f0f1f1"
+							"field": "",
+							"columnName": ""
 						},
 						"footcell_field8": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "folioagentevnp",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field9": {
 							"model": "headcell_field",
 							"items": [
 								"simple_grid_field19"
 							],
-							"field": "observaciones",
-							"columnName": "field",
-							"background": "#e9eff3"
+							"field": "",
+							"columnName": "",
+							"background": "#dee0e2"
 						},
 						"cell_field9": {
 							"model": "cell_field",
 							"items": [
 								"simple_grid_field5"
 							],
-							"field": "observaciones",
-							"columnName": "field",
-							"background": "#f0f1f1"
+							"field": "",
+							"columnName": ""
 						},
 						"footcell_field9": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "observaciones",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field10": {
 							"model": "headcell_field",
 							"items": [
 								"grid_field_label3"
 							],
-							"field": "confirmado",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"cell_field10": {
 							"model": "cell_field",
 							"items": [
 								"grid_field3"
 							],
-							"field": "confirmado",
-							"columnName": "field"
+							"field": "",
+							"columnName": "",
+							"align": "center"
 						},
 						"footcell_field10": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "confirmado",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field11": {
 							"model": "headcell_field",
 							"items": [
 								"grid_field_label2"
 							],
-							"field": "usuarioconfirma",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"cell_field11": {
 							"model": "cell_field",
 							"items": [
 								"grid_field2"
 							],
-							"field": "usuarioconfirma",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"footcell_field11": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "usuarioconfirma",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field12": {
 							"model": "headcell_field",
 							"items": [
 								"grid_field_label4"
 							],
-							"field": "fechahoraconfirma",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"cell_field12": {
 							"model": "cell_field",
 							"items": [
 								"grid_field4"
 							],
-							"field": "fechahoraconfirma",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"footcell_field12": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "fechahoraconfirma",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field13": {
 							"model": "headcell_field",
 							"items": [
 								"grid_field_label8"
 							],
-							"field": "renovacionrealizada",
-							"columnName": "field",
-							"background": "#ebfdf8"
+							"field": "",
+							"columnName": "",
+							"background": "#d6f7ee"
 						},
 						"cell_field13": {
 							"model": "cell_field",
 							"items": [
 								"grid_field8"
 							],
-							"field": "renovacionrealizada",
-							"columnName": "field"
+							"field": "",
+							"columnName": "",
+							"align": "center"
 						},
 						"footcell_field13": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "renovacionrealizada",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field14": {
 							"model": "headcell_field",
 							"items": [
 								"grid_field_label9"
 							],
-							"field": "fecharenovacion",
-							"columnName": "field",
-							"background": "#ebfdf8"
+							"field": "",
+							"columnName": "",
+							"background": "#d6f7ee"
 						},
 						"cell_field14": {
 							"model": "cell_field",
 							"items": [
 								"grid_field9"
 							],
-							"field": "fecharenovacion",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"footcell_field14": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "fecharenovacion",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field15": {
 							"model": "headcell_field",
 							"items": [
 								"grid_field_label5"
 							],
-							"field": "equipovendido",
-							"columnName": "field"
+							"field": "",
+							"columnName": "",
+							"background": "#d6f7ee"
 						},
 						"cell_field15": {
 							"model": "cell_field",
 							"items": [
 								"grid_field5"
 							],
-							"field": "equipovendido",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"footcell_field15": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "equipovendido",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field16": {
 							"model": "headcell_field",
 							"items": [
 								"grid_field_label7"
 							],
-							"field": "planvendido",
-							"columnName": "field"
+							"field": "",
+							"columnName": "",
+							"background": "#d6f7ee"
 						},
 						"cell_field16": {
 							"model": "cell_field",
 							"items": [
 								"grid_field7"
 							],
-							"field": "planvendido",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"footcell_field16": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "planvendido",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field17": {
 							"model": "headcell_field",
 							"items": [
 								"grid_field_label11"
 							],
-							"field": "seguro",
-							"columnName": "field"
+							"field": "",
+							"columnName": "",
+							"background": "#d6f7ee"
 						},
 						"cell_field17": {
 							"model": "cell_field",
 							"items": [
 								"grid_field11"
 							],
-							"field": "seguro",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"footcell_field17": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "seguro",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field18": {
 							"model": "headcell_field",
 							"items": [
 								"grid_field_label12"
 							],
-							"field": "control",
-							"columnName": "field"
+							"field": "",
+							"columnName": "",
+							"background": "#d6f7ee"
 						},
 						"cell_field18": {
 							"model": "cell_field",
 							"items": [
 								"grid_field12"
 							],
-							"field": "control",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"footcell_field18": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "control",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field19": {
 							"model": "headcell_field",
 							"items": [
 								"grid_field_label13"
 							],
-							"field": "attuid",
-							"columnName": "field"
+							"field": "",
+							"columnName": "",
+							"background": "#d6f7ee"
 						},
 						"cell_field19": {
 							"model": "cell_field",
 							"items": [
 								"grid_field13"
 							],
-							"field": "attuid",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"footcell_field19": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "attuid",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field20": {
 							"model": "headcell_field",
 							"items": [
 								"grid_field_label14"
 							],
-							"field": "vendedor",
-							"columnName": "field"
+							"field": "",
+							"columnName": "",
+							"background": "#d6f7ee"
 						},
 						"cell_field20": {
 							"model": "cell_field",
 							"items": [
 								"grid_field14"
 							],
-							"field": "vendedor",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"footcell_field20": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "vendedor",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_icons1": {
 							"model": "headcell_icons",
@@ -2904,8 +2935,8 @@
 							"items": [
 								"text"
 							],
-							"field": "idtiendacita",
-							"columnName": "field",
+							"field": "",
+							"columnName": "",
 							"align": "center",
 							"border": [
 								{
@@ -2921,8 +2952,8 @@
 							"items": [
 								"text1"
 							],
-							"field": "confirmado",
-							"columnName": "field",
+							"field": "",
+							"columnName": "",
 							"align": "center",
 							"background": "#b1edf9",
 							"border": [
@@ -2938,8 +2969,8 @@
 							"items": [
 								"text2"
 							],
-							"field": "renovacionrealizada",
-							"columnName": "field",
+							"field": "",
+							"columnName": "",
 							"align": "center",
 							"background": "#c5f5e0",
 							"border": [
