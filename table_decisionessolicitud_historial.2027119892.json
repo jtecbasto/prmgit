@@ -150,7 +150,7 @@
 		{
 			"eventId": "EVENT_BEFOREADD",
 			"pageType": "add",
-			"code": "\nif(empty($values[decisionsolicitud]) or !isset($values[decisionessolicitud])){\n    return false;\n}\n\n// Si no viene capturado, tomarlo de la URL\nif (empty($values[\"idsolicitud\"])) {\n    if (isset($_SESSION[\"idsolicitud_hist\"])) {\n        $values[\"idsolicitud\"] = (int)$_SESSION[\"idsolicitud_hist\"];\n    }\n}\n// campos automáticos opcionales\n$values[\"fechacaptura\"] = now();\n$values[\"usuario\"]  = $_SESSION[\"UserID\"];\n\nreturn true;\n\n\n"
+			"code": "\n\n\n// Si no viene capturado, tomarlo de la URL\nif (empty($values[\"idsolicitud\"])) {\n    if (isset($_SESSION[\"idsolicitud_hist\"])) {\n        $values[\"idsolicitud\"] = (int)$_SESSION[\"idsolicitud_hist\"];\n    }\n}\n// campos automáticos opcionales\n$values[\"fechacaptura\"] = now();\n$values[\"usuario\"]  = $_SESSION[\"UserID\"];\n\nreturn true;\n\n\n"
 		},
 		{
 			"eventId": "EVENT_JS_ONLOAD",
