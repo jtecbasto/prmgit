@@ -7,7 +7,7 @@
 			"asc": false
 		}
 	],
-	"sql": "SELECT\r\nidventaaddon,\r\nidventa,\r\nidaddon,\r\nprecio,\r\nfcanceladdon,\r\nfactivaaddon,\r\nfcapturaaddon,\r\nusuario,\r\ncontrato,\r\ntelefono,\r\nidtienda,\r\nidcliente,\r\ndn,\r\ncuenta\r\nFROM addons\r\nWHERE ((idventa is null) AND (contrato is not null))   order by idventaaddon desc",
+	"sql": "SELECT\r\nidventaaddon,\r\nidventa,\r\nidaddon,\r\nprecio,\r\nfcanceladdon,\r\nfactivaaddon,\r\nfcapturaaddon,\r\nusuario,\r\ncontrato,\r\ntelefono,\r\nidtienda,\r\nidcliente,\r\ndn,\r\ncuenta\r\nFROM addons\r\nWHERE  (contrato is not null)  and\r\n(\r\n  UPPER(':session.UserID') = 'ADMIN'\r\n  OR usuario = ':session.UserID'\r\n  OR :session.Acceso <= 1\r\n  OR (:session.Acceso = 2 AND idtienda = :session.Tienda)\r\n)\r\n\r\norder by idventaaddon desc",
 	"connId": "conn",
 	"originalTable": "addons",
 	"name": "addons",
@@ -314,10 +314,14 @@
 		}
 	],
 	"whereTabs": [
-		{
-			"where": "if(usuario=':session.UserID',true,if(:session.acceso=1,idtienda=:session.Tienda,if(:session.Acceso=0 or upper(':session.UserID')='ADMIN',true,false)))"
-		}
+		{}
 	],
+	"queryContext": {
+		"session.UserID": "MCETZVNP",
+		"session.acceso": "0",
+		"session.Tienda": "146",
+		"session.Acceso": "3"
+	},
 	"eventHandlers": [
 		{
 			"eventId": "EVENT_JS_ONLOAD",
@@ -327,7 +331,7 @@
 		{
 			"eventId": "EVENT_BEFOREADD",
 			"pageType": "add",
-			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\ndate_default_timezone_set('America/Mexico_City');\n$values['usuario']=$_SESSION[\"UserID\"];\n$values['idtienda']=$_SESSION[\"Tienda\"];\n\n$fecha_objeto = new DateTime();\n\n// 2. Asigna el formato que desees a una variable de cadena\n$fecha_actual = $fecha_objeto->format('Y-m-d H:i:s');\n$values['fcapturaaddon']=$fecha_actual;\nreturn true;"
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\ndate_default_timezone_set('America/Mexico_City');\n$values['usuario']=$_SESSION[\"UserID\"];\n$values['idtienda']=$_SESSION[\"Tienda\"];\n\n$fecha_objeto = new DateTime();\n\n// 2. Asigna el formato que desees a una variable de cadena\n$fecha_actual = $fecha_objeto->format('Y-m-d H:i:s');\n$values['fcapturaaddon']=$fecha_actual;\n\n$rs = DB::Query(\"select idventa from ventas where contratoportal='\".$values['contrato'].\"' and cuenta = '\".$values['cuenta'].\"' and dn = '\".$values['dn'].\"' and tienda = \" .$_SESSION[\"Tienda\"].\" and idtipoventa>0 order by idventa desc LIMIT 1\");\n \nwhile( $data = $rs->fetchAssoc() )\n{\n $values['idventa'] = $data[\"idventa\"];\n}\n\nreturn true;"
 		},
 		{
 			"eventId": "EVENT_JS_ONLOAD",
