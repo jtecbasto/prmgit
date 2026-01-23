@@ -1,5 +1,5 @@
 {
-	"sql": "SELECT\r\n\tIdTienda,\r\n\tTienda,\r\n\tTipo,\r\n\tResp1,\r\n\tResp2,\r\n\tidcuentabanc,\r\n\tidregion,\r\n\tactiva,\r\n\tpvrmc,\r\n\tpvsms,\r\n\tclavepv,\r\n\tsubinvrmc,\r\n\tsubinvsms,\r\n\ttiendarmc,\r\n\tclavepvsms,\r\n\tidsector,\r\n\tidtiendaesquema,\r\n\tfechaapertura,\r\n\tidorigenpdv,\r\n\tnombreATT,\r\n\tidcentrocosto,\r\n\tnopresencial\r\nFROM\r\n\ttiendas",
+	"sql": "SELECT\r\n\tIdTienda,\r\n\tTienda,\r\n\tTipo,\r\n\tResp1,\r\n\tResp2,\r\n\tidcuentabanc,\r\n\tidregion,\r\n\tactiva,\r\n\tpvrmc,\r\n\tpvsms,\r\n\tclavepv,\r\n\tsubinvrmc,\r\n\tsubinvsms,\r\n\ttiendarmc,\r\n\tclavepvsms,\r\n\tidsector,\r\n\tidtiendaesquema,\r\n\tfechaapertura,\r\n\tidorigenpdv,\r\n\tnombreATT,\r\n\tidcentrocosto,\r\n\tnopresencial,\r\n\tidsectorvalida\r\nFROM\r\n\ttiendas",
 	"connId": "conn",
 	"originalTable": "tiendas",
 	"name": "tiendas",
@@ -389,6 +389,23 @@
 				"Spanish": "Nopresencial"
 			},
 			"tableName": "tiendas"
+		},
+		{
+			"name": "idsectorvalida",
+			"sqlExpression": "idsectorvalida",
+			"index": 23,
+			"strField": "idsectorvalida",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Idsectorvalida"
+			},
+			"tableName": "tiendas"
 		}
 	],
 	"afterEditAction": 0,
@@ -399,9 +416,9 @@
 			{
 				"name": "IdTienda",
 				"type": 3,
-				"size": 3,
+				"size": 10,
 				"scale": 0,
-				"typeName": "int(3)",
+				"typeName": "int(10)",
 				"nullable": false,
 				"autoinc": true,
 				"defaultValueSQL": null,
@@ -633,6 +650,17 @@
 				"size": 4,
 				"scale": 0,
 				"typeName": "tinyint(4)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idsectorvalida",
+				"type": 3,
+				"size": 4,
+				"scale": 0,
+				"typeName": "int(4)",
 				"nullable": true,
 				"autoinc": false,
 				"defaultValueSQL": null,
@@ -2016,7 +2044,8 @@
 							"model": "c1",
 							"items": [
 								"simple_grid_field1",
-								"simple_grid_field"
+								"simple_grid_field",
+								"simple_grid_field2"
 							]
 						}
 					},
@@ -2072,6 +2101,7 @@
 					"type": "search_panel",
 					"items": [
 						"search_panel_field1",
+						"search_panel_field2",
 						"search_panel_field"
 					],
 					"_flexiblePanel": true
@@ -2135,6 +2165,14 @@
 				},
 				"search_panel_field": {
 					"field": "nopresencial",
+					"type": "search_panel_field"
+				},
+				"simple_grid_field2": {
+					"field": "idsectorvalida",
+					"type": "simple_grid_field"
+				},
+				"search_panel_field2": {
+					"field": "idsectorvalida",
 					"type": "search_panel_field"
 				}
 			},

@@ -1,0 +1,2149 @@
+{
+	"sql": "SELECT\r\n\tid,\r\n\tidsolicitud,\r\n\tidacccat,\r\n\tcantidad,\r\n\tprecio,\r\n\tdto,\r\n\timpto,\r\n\t((ifnull(cantidad,0)*ifnull(precio,0))*(1-ifnull(dto,0)/100))*(1+ifnull(impto,0)/100) AS importe,\r\n\tprecioasd,\r\n    ((ifnull(cantidad,0)*ifnull(precioasd,0))*(1-ifnull(dto,0)/100)) AS importeasd\r\nFROM\r\n\taccsol\r\n",
+	"connId": "conn",
+	"originalTable": "accsol",
+	"name": "accsol",
+	"shortTableName": "accsol",
+	"dbType": 0,
+	"keyFields": [
+		"id"
+	],
+	"masterTables": [
+		{
+			"table": 35049744,
+			"masterKeys": [
+				"idsolicitud"
+			],
+			"detailsKeys": [
+				"idsolicitud"
+			]
+		}
+	],
+	"detailsBadgeColor": "e8926f",
+	"fields": [
+		{
+			"name": "id",
+			"sqlExpression": "id",
+			"index": 1,
+			"strField": "id",
+			"type": 3,
+			"autoinc": true,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Id"
+			},
+			"tableName": "accsol"
+		},
+		{
+			"name": "idsolicitud",
+			"sqlExpression": "idsolicitud",
+			"index": 2,
+			"strField": "idsolicitud",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Idsolicitud"
+			},
+			"tableName": "accsol"
+		},
+		{
+			"name": "idacccat",
+			"sqlExpression": "idacccat",
+			"index": 3,
+			"strField": "idacccat",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Lookup wizard",
+					"required": true,
+					"lookupType": 2,
+					"lookupTable": "acccat",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "id",
+					"lookupDisplayField": "descripcion",
+					"lookupControlType": 2,
+					"lookupListPage": "list",
+					"lookupAutofillFields": [
+						{
+							"masterField": "precio",
+							"lookupField": "preciounit"
+						},
+						{
+							"masterField": "dto",
+							"lookupField": "dto"
+						}
+					]
+				}
+			],
+			"label": {
+				"Spanish": "Producto"
+			},
+			"tableName": "accsol"
+		},
+		{
+			"name": "cantidad",
+			"sqlExpression": "cantidad",
+			"index": 4,
+			"strField": "cantidad",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Cantidad"
+			},
+			"tableName": "accsol"
+		},
+		{
+			"name": "precio",
+			"sqlExpression": "precio",
+			"index": 5,
+			"strField": "precio",
+			"type": 14,
+			"viewFormats": [
+				{
+					"format": "Number"
+				}
+			],
+			"editFormats": [
+				{
+					"format": "Readonly"
+				}
+			],
+			"label": {
+				"Spanish": "Precio"
+			},
+			"tableName": "accsol"
+		},
+		{
+			"name": "dto",
+			"sqlExpression": "dto",
+			"index": 6,
+			"strField": "dto",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Descto %"
+			},
+			"tableName": "accsol"
+		},
+		{
+			"name": "impto",
+			"sqlExpression": "impto",
+			"index": 7,
+			"strField": "impto",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Impuesto %"
+			},
+			"tableName": "accsol"
+		},
+		{
+			"name": "precioasd",
+			"sqlExpression": "precioasd",
+			"index": 9,
+			"strField": "precioasd",
+			"type": 14,
+			"viewFormats": [
+				{
+					"format": "Number"
+				}
+			],
+			"editFormats": [
+				{
+					"required": true,
+					"validateAs": "Number"
+				}
+			],
+			"label": {
+				"Spanish": "Precio ASD c/IVA"
+			},
+			"tableName": "accsol"
+		},
+		{
+			"name": "importe",
+			"sqlExpression": "((ifnull(cantidad,0)*ifnull(precio,0))*(1-ifnull(dto,0)/100))*(1+ifnull(impto,0)/100)",
+			"index": 8,
+			"strField": "importe",
+			"type": 14,
+			"viewFormats": [
+				{
+					"format": "Number"
+				}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Importe"
+			},
+			"tableName": ""
+		},
+		{
+			"name": "importeasd",
+			"sqlExpression": "((ifnull(cantidad,0)*ifnull(precioasd,0))*(1-ifnull(dto,0)/100))",
+			"index": 10,
+			"strField": "importeasd",
+			"type": 14,
+			"viewFormats": [
+				{
+					"format": "Number"
+				}
+			],
+			"editFormats": [
+				{
+					"defaultValue": "0"
+				}
+			],
+			"label": {
+				"Spanish": "Importe ASD"
+			},
+			"tableName": ""
+		}
+	],
+	"eventHandlers": [
+		{
+			"eventId": "EVENT_BEFOREADD",
+			"pageType": "add",
+			"code": "if ($values['cantidad']==0)\r\n{\r\n\t$message=\"La cantidad no puede ser 0\";\r\n\treturn false;\r\n}\r\n\r\nif ($values['precioasd']==0)\r\n{\r\n\t$message=\"El precio ASD no puede ser 0\";\r\n\treturn false;\r\n}\r\n\r\n// Place event code here.\r\n// Use \"Add Action\" button to add code snippets.\r\n\r\nreturn true;"
+		},
+		{
+			"eventId": "EVENT_JS_ONLOAD",
+			"pageType": "add",
+			"code": "/*// ===== Controles (cacheados) =====\nvar ctrlCat        = Runner.getControl(pageid,'idacccat');   // antes ctrlPrice\nvar ctrlCantidad   = Runner.getControl(pageid,'cantidad');\nvar ctrlImporte    = Runner.getControl(pageid,'importe');\nvar ctrlDto        = Runner.getControl(pageid,'dto');\nvar ctrlImpto      = Runner.getControl(pageid,'impto');\nvar ctrlPrecioASD  = Runner.getControl(pageid,'precioasd');\nvar ctrlImporteASD = Runner.getControl(pageid,'importeasd');\nvar ctrlPrecio     = Runner.getControl(pageid,'precio');    // antes ctrlTotal\n\n// ===== UI =====\nctrlCat.getDispElem().css(\"width\", \"300px\");\nctrlImporte.getDispElem().css(\"width\", \"100px\");\nctrlDto.getDispElem().css(\"width\", \"50px\");\nctrlImpto.getDispElem().css(\"width\", \"50px\");\n\n// OJO: disabled a veces no se envía al guardar; si quieres que se guarde, mejor readonly\nctrlImporte.makeReadOnly();\nctrlImporteASD.makeReadOnly();\n\n// ===== Helpers =====\nfunction num(v){\n  // convierte null/\"\"/undefined a 0 y evita NaN\n  var n = parseFloat(v);\n  return isNaN(n) ? 0 : n;\n}\nfunction money2(n){\n  // DECIMAL(7,2)\n  return (Math.round(num(n) * 100) / 100).toFixed(2);\n}\n\n// ===== Recalcular =====\nfunction recalc(){\n  var precio    = num(ctrlPrecio.getValue());\n  var cantidad  = num(ctrlCantidad.getValue());\n  var dto       = num(ctrlDto.getValue()) / 100;\n  var impto     = num(ctrlImpto.getValue()) / 100;\n  var precioASD = num(ctrlPrecioASD.getValue());\nalert('here');\n  // Importe normal\n  if (precio > 0 && cantidad > 0){\n    var importe = (precio * cantidad) * (1 - dto) * (1 + impto);\n    ctrlImporte.setValue(money2(importe));\n  } else {\n    ctrlImporte.setValue(money2(0));\n  }\n\n  // Importe ASD (sin impuesto según tu fórmula)\n  if (precioASD > 0 && cantidad > 0){\n    var importeASD = (precioASD * cantidad) * (1 - dto);\n    ctrlImporteASD.setValue(money2(importeASD));\n  } else {\n    ctrlImporteASD.setValue(money2(0));\n  }\n}\n\n// ===== Eventos (mejor que keyup) =====\nctrlCat.on('change', recalc);       // por si cambias categoría y eso altera precio en otro lado\nctrlCantidad.on('keyup', recalc);\nctrlDto.on('keyup', recalc);\nctrlPrecioASD.on('keyup', recalc);\n\n// opcional: cálculo inicial\nrecalc();\n*/\nvar ctrlPrice = Runner.getControl(pageid,'idacccat');\nvar ctrlCantidad=Runner.getControl(pageid,'cantidad');\nvar ctrlImporte=Runner.getControl(pageid,'importe');\nvar ctrlDto=Runner.getControl(pageid,'dto');\nvar ctrlImpto=Runner.getControl(pageid,'impto');\nvar ctrlPrecioASD=Runner.getControl(pageid,'precioasd');\nvar ctrlImporteASD = Runner.getControl(pageid,'importeasd');\n//var ctrlUsuario = Runner.getControl(pageid, 'usuario');\n\n\nvar ctrlTotal = Runner.getControl(pageid,'precio');\n//var data=proxy.renta;\n//var valores=JSON.parse(data);\n\n\n//ctrlUsuario.hide();\n\n//if (proxy.username!='ADMIN')\n//{\n // ctrlUsuario.makeReadonly();\n//}\n\nctrlPrice.getDispElem().css(\"width\", \"300px\");\nctrlImporte.getDispElem().css(\"width\",\"100px\");\nctrlDto.getDispElem().css(\"width\",50);\nctrlImpto.getDispElem().css(\"width\",50);\nctrlImporte.setDisabled();\nctrlImporteASD.setDisabled();\n\n\n\n\n\nfunction func() {\n\n\n\n\n\t\tctrlImpto.setValue(16);\n\n\n\n\t\tif (!ctrlCantidad.getValue()) {\n\t\t\t\tctrlCantidad.setValue(1);\n\t\t}\n\t\tif (ctrlTotal.getValue()>0){\n\t\t\t\tctrlImporte.setValue(((ctrlTotal.getValue()*ctrlCantidad.getValue())*(1-ctrlDto.getValue()/100))*(1+ctrlImpto.getValue()/100));\n\t\t\t//\tctrlImporte.setValue(100);\n\t\t}\n\n\t\tif (ctrlPrecioASD.getValue()>0){\n\t\t\t\tctrlImporteASD.setValue(((ctrlPrecioASD.getValue()*ctrlCantidad.getValue())*(1-ctrlDto.getValue()/100)));\n\t\t\t//\tctrlImporte.setValue(100);\n\t\t}\n\n        return;\n \n\n}\n\n\nctrlPrice.on('change', func);\nctrlCantidad.on('keyup',func);\nctrlDto.on('keyup',func);\nctrlPrecioASD.on('keyup',func);\n\n"
+		},
+		{
+			"eventId": "EVENT_BEFORESHOW_ADD",
+			"pageType": "add",
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n$pageObject->setProxyValue(\"impto\", $_SESSION['impto']);"
+		}
+	],
+	"dbTableInfo": {
+		"type": 0,
+		"foreignKeys": [],
+		"fields": [
+			{
+				"name": "id",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": false,
+				"autoinc": true,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idsolicitud",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idacccat",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "cantidad",
+				"type": 3,
+				"size": 4,
+				"scale": 0,
+				"typeName": "int(4)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "precio",
+				"type": 14,
+				"size": 7,
+				"scale": 2,
+				"typeName": "decimal(7,2)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "dto",
+				"type": 3,
+				"size": 2,
+				"scale": 0,
+				"typeName": "int(2)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "impto",
+				"type": 3,
+				"size": 2,
+				"scale": 0,
+				"typeName": "int(2)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "precioasd",
+				"type": 14,
+				"size": 7,
+				"scale": 2,
+				"typeName": "decimal(7,2)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "importe",
+				"type": 14,
+				"size": 7,
+				"scale": 2,
+				"typeName": "decimal(7,2)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "importeasd",
+				"type": 14,
+				"size": 7,
+				"scale": 2,
+				"typeName": "decimal(7,2)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			}
+		],
+		"primaryKeys": [
+			"id"
+		],
+		"uniqueFields": [],
+		"name": "accsol"
+	},
+	"pages": [
+		{
+			"id": "add",
+			"type": "add",
+			"layoutId": "nomenu",
+			"disabled": true,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "add-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"add_message"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "add-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"add_save",
+								"add_reset",
+								"add_back_list",
+								"add_cancel"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "add-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"add_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c3"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c3": {
+							"model": "c3",
+							"items": [
+								"integrated_edit_field",
+								"integrated_edit_field1",
+								"integrated_edit_field2",
+								"integrated_edit_field3",
+								"integrated_edit_field4",
+								"integrated_edit_field5",
+								"integrated_edit_field6"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				}
+			},
+			"items": {
+				"add_header": {
+					"type": "add_header"
+				},
+				"add_back_list": {
+					"type": "add_back_list"
+				},
+				"add_cancel": {
+					"type": "add_cancel"
+				},
+				"add_message": {
+					"type": "add_message"
+				},
+				"add_save": {
+					"type": "add_save"
+				},
+				"add_reset": {
+					"type": "add_reset"
+				},
+				"integrated_edit_field": {
+					"field": "idsolicitud",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field1": {
+					"field": "idacccat",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field2": {
+					"field": "cantidad",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field3": {
+					"field": "precio",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field4": {
+					"field": "dto",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field5": {
+					"field": "impto",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field6": {
+					"field": "precioasd",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "export",
+			"type": "export",
+			"layoutId": "first",
+			"disabled": true,
+			"default": 0,
+			"forms": {
+				"supertop": {
+					"modelId": "panel-top",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "export-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"export_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "export-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"export_field",
+								"export_field1",
+								"export_field2",
+								"export_field3",
+								"export_field4",
+								"export_field5",
+								"export_field6",
+								"export_field7"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"footer": {
+					"modelId": "export-footer",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"export_export",
+								"export_cancel"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"export_header": {
+					"type": "export_header"
+				},
+				"export_export": {
+					"type": "export_export"
+				},
+				"export_cancel": {
+					"type": "export_cancel"
+				},
+				"export_field": {
+					"field": "id",
+					"type": "export_field"
+				},
+				"export_field1": {
+					"field": "idsolicitud",
+					"type": "export_field"
+				},
+				"export_field2": {
+					"field": "idacccat",
+					"type": "export_field"
+				},
+				"export_field3": {
+					"field": "cantidad",
+					"type": "export_field"
+				},
+				"export_field4": {
+					"field": "precio",
+					"type": "export_field"
+				},
+				"export_field5": {
+					"field": "dto",
+					"type": "export_field"
+				},
+				"export_field6": {
+					"field": "impto",
+					"type": "export_field"
+				},
+				"export_field7": {
+					"field": "precioasd",
+					"type": "export_field"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {},
+			"exportFormat": 2,
+			"exportDelimiter": ",",
+			"exportSelectDelimiter": false,
+			"exportSelectFields": false
+		},
+		{
+			"id": "import",
+			"type": "import",
+			"layoutId": "first",
+			"disabled": true,
+			"default": 0,
+			"forms": {
+				"supertop": {
+					"modelId": "panel-top",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "import-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"import_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "import-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"import_field",
+								"import_field1",
+								"import_field2",
+								"import_field3",
+								"import_field4",
+								"import_field5",
+								"import_field6",
+								"import_field7"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"import_header": {
+					"type": "import_header"
+				},
+				"import_field": {
+					"field": "id",
+					"type": "import_field"
+				},
+				"import_field1": {
+					"field": "idsolicitud",
+					"type": "import_field"
+				},
+				"import_field2": {
+					"field": "idacccat",
+					"type": "import_field"
+				},
+				"import_field3": {
+					"field": "cantidad",
+					"type": "import_field"
+				},
+				"import_field4": {
+					"field": "precio",
+					"type": "import_field"
+				},
+				"import_field5": {
+					"field": "dto",
+					"type": "import_field"
+				},
+				"import_field6": {
+					"field": "impto",
+					"type": "import_field"
+				},
+				"import_field7": {
+					"field": "precioasd",
+					"type": "import_field"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "edit",
+			"type": "edit",
+			"layoutId": "nomenu",
+			"disabled": true,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "edit-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"edit_message"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "edit-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"edit_save",
+								"edit_back_list",
+								"edit_close"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"hamburger"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "edit-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"edit_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c3"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c3": {
+							"model": "c3",
+							"items": [
+								"integrated_edit_field",
+								"integrated_edit_field1",
+								"integrated_edit_field2",
+								"integrated_edit_field3",
+								"integrated_edit_field4",
+								"integrated_edit_field5",
+								"integrated_edit_field6"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				}
+			},
+			"items": {
+				"edit_header": {
+					"type": "edit_header"
+				},
+				"hamburger": {
+					"type": "hamburger",
+					"items": [
+						"edit_reset"
+					]
+				},
+				"edit_reset": {
+					"type": "edit_reset"
+				},
+				"edit_message": {
+					"type": "edit_message"
+				},
+				"edit_save": {
+					"type": "edit_save"
+				},
+				"edit_back_list": {
+					"type": "edit_back_list"
+				},
+				"edit_close": {
+					"type": "edit_close"
+				},
+				"integrated_edit_field": {
+					"field": "idsolicitud",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field1": {
+					"field": "idacccat",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field2": {
+					"field": "cantidad",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field3": {
+					"field": "precio",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field4": {
+					"field": "dto",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field5": {
+					"field": "impto",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field6": {
+					"field": "precioasd",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "view",
+			"type": "view",
+			"layoutId": "nomenu",
+			"disabled": true,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "view-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1",
+									"colspan": 2
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "view-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"view_back_list",
+								"view_close"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"hamburger"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "view-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"view_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c3"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c3": {
+							"model": "c3",
+							"items": [
+								"integrated_edit_field",
+								"integrated_edit_field1",
+								"integrated_edit_field2",
+								"integrated_edit_field3",
+								"integrated_edit_field4",
+								"integrated_edit_field5",
+								"integrated_edit_field6",
+								"integrated_edit_field7"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				}
+			},
+			"items": {
+				"view_header": {
+					"type": "view_header"
+				},
+				"view_back_list": {
+					"type": "view_back_list"
+				},
+				"view_close": {
+					"type": "view_close"
+				},
+				"integrated_edit_field": {
+					"field": "id",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field1": {
+					"field": "idsolicitud",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field2": {
+					"field": "idacccat",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field3": {
+					"field": "cantidad",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field4": {
+					"field": "precio",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field5": {
+					"field": "dto",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field6": {
+					"field": "impto",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field7": {
+					"field": "precioasd",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"hamburger": {
+					"type": "hamburger",
+					"items": []
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "list",
+			"type": "list",
+			"layoutId": "leftbar",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "list-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"inline_add",
+								"inline_save_all",
+								"inline_cancel_all",
+								"delete"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"details_found",
+								"page_size"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "list-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"pagination"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"left": {
+					"modelId": "leftbar-menu",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c0"
+								}
+							],
+							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c0": {
+							"model": "c0",
+							"items": [
+								"logo"
+							]
+						},
+						"c1": {
+							"model": "c1",
+							"items": [
+								"menu"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"supertop": {
+					"modelId": "leftbar-top",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"expand_menu_button",
+								"collapse_button",
+								"breadcrumb"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"simple_search",
+								"list_options",
+								"loginform_login",
+								"username_button"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "list-sidebar-top",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c2": {
+							"model": "c2",
+							"items": [
+								"master_info"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "horizontal-grid",
+					"grid": [
+						{
+							"section": "head",
+							"cells": [
+								{
+									"cell": "headcell_icons"
+								},
+								{
+									"cell": "headcell_checkbox"
+								},
+								{
+									"cell": "headcell_field"
+								},
+								{
+									"cell": "headcell_field1"
+								},
+								{
+									"cell": "headcell_field2"
+								},
+								{
+									"cell": "headcell_field3"
+								},
+								{
+									"cell": "headcell_field4"
+								},
+								{
+									"cell": "headcell_field5"
+								},
+								{
+									"cell": "headcell_field6"
+								},
+								{
+									"cell": "headcell_field7"
+								}
+							]
+						},
+						{
+							"section": "body",
+							"cells": [
+								{
+									"cell": "cell_icons"
+								},
+								{
+									"cell": "cell_checkbox"
+								},
+								{
+									"cell": "cell_field"
+								},
+								{
+									"cell": "cell_field1"
+								},
+								{
+									"cell": "cell_field2"
+								},
+								{
+									"cell": "cell_field3"
+								},
+								{
+									"cell": "cell_field4"
+								},
+								{
+									"cell": "cell_field5"
+								},
+								{
+									"cell": "cell_field6"
+								},
+								{
+									"cell": "cell_field7"
+								}
+							]
+						},
+						{
+							"section": "foot",
+							"cells": [
+								{
+									"cell": "footcell_icons"
+								},
+								{
+									"cell": "footcell_checkbox"
+								},
+								{
+									"cell": "footcell_field"
+								},
+								{
+									"cell": "footcell_field1"
+								},
+								{
+									"cell": "footcell_field2"
+								},
+								{
+									"cell": "footcell_field3"
+								},
+								{
+									"cell": "footcell_field4"
+								},
+								{
+									"cell": "footcell_field5"
+								},
+								{
+									"cell": "footcell_field6"
+								},
+								{
+									"cell": "footcell_field7"
+								}
+							]
+						}
+					],
+					"cells": {
+						"headcell_field": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field8"
+							],
+							"field": "idacccat",
+							"columnName": "field"
+						},
+						"cell_field": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field2"
+							],
+							"field": "idacccat",
+							"columnName": "field"
+						},
+						"footcell_field": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "idacccat",
+							"columnName": "field"
+						},
+						"headcell_field1": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field9"
+							],
+							"field": "precio",
+							"columnName": "field"
+						},
+						"cell_field1": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field4"
+							],
+							"field": "precio",
+							"columnName": "field"
+						},
+						"footcell_field1": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "precio",
+							"columnName": "field"
+						},
+						"headcell_field2": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field10"
+							],
+							"field": "precioasd",
+							"columnName": "field"
+						},
+						"cell_field2": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field7"
+							],
+							"field": "precioasd",
+							"columnName": "field"
+						},
+						"footcell_field2": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "precioasd",
+							"columnName": "field"
+						},
+						"headcell_field3": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field11"
+							],
+							"field": "cantidad",
+							"columnName": "field"
+						},
+						"cell_field3": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field3"
+							],
+							"field": "cantidad",
+							"columnName": "field"
+						},
+						"footcell_field3": {
+							"model": "footcell_field",
+							"items": [
+								"grid_field_totals"
+							],
+							"field": "cantidad",
+							"columnName": "field"
+						},
+						"headcell_field4": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field12"
+							],
+							"field": "dto",
+							"columnName": "field"
+						},
+						"cell_field4": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field5"
+							],
+							"field": "dto",
+							"columnName": "field"
+						},
+						"footcell_field4": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "dto",
+							"columnName": "field"
+						},
+						"headcell_field5": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field13"
+							],
+							"field": "impto",
+							"columnName": "field"
+						},
+						"cell_field5": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field6"
+							],
+							"field": "impto",
+							"columnName": "field"
+						},
+						"footcell_field5": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "impto",
+							"columnName": "field"
+						},
+						"headcell_checkbox": {
+							"model": "headcell_checkbox",
+							"items": [
+								"grid_checkbox_head"
+							],
+							"columnName": "checkbox",
+							"field": ""
+						},
+						"cell_checkbox": {
+							"model": "cell_checkbox",
+							"items": [
+								"grid_checkbox"
+							],
+							"columnName": "checkbox",
+							"field": ""
+						},
+						"footcell_checkbox": {
+							"model": "footcell_checkbox",
+							"items": [],
+							"columnName": "checkbox",
+							"field": ""
+						},
+						"headcell_icons": {
+							"model": "headcell_icons",
+							"items": [],
+							"columnName": "inline-edit",
+							"field": ""
+						},
+						"cell_icons": {
+							"model": "cell_icons",
+							"items": [
+								"grid_inline_edit",
+								"grid_inline_save",
+								"grid_inline_cancel"
+							],
+							"columnName": "inline-edit",
+							"field": ""
+						},
+						"footcell_icons": {
+							"model": "footcell_icons",
+							"items": [],
+							"columnName": "inline-edit",
+							"field": ""
+						},
+						"headcell_field6": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label"
+							],
+							"field": "importe",
+							"columnName": "field"
+						},
+						"cell_field6": {
+							"model": "cell_field",
+							"items": [
+								"grid_field"
+							],
+							"field": "importe",
+							"columnName": "field"
+						},
+						"footcell_field6": {
+							"model": "footcell_field",
+							"items": [
+								"grid_field_totals1"
+							],
+							"field": "importe",
+							"columnName": "field"
+						},
+						"headcell_field7": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label1"
+							],
+							"field": "importeasd",
+							"columnName": "field"
+						},
+						"cell_field7": {
+							"model": "cell_field",
+							"items": [
+								"grid_field1"
+							],
+							"field": "importeasd",
+							"columnName": "field"
+						},
+						"footcell_field7": {
+							"model": "footcell_field",
+							"items": [
+								"grid_field_totals2"
+							],
+							"field": "importeasd",
+							"columnName": "field"
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"page_size": {
+					"type": "page_size"
+				},
+				"breadcrumb": {
+					"type": "breadcrumb"
+				},
+				"logo": {
+					"type": "logo"
+				},
+				"menu": {
+					"type": "menu"
+				},
+				"simple_search": {
+					"type": "simple_search"
+				},
+				"pagination": {
+					"type": "pagination"
+				},
+				"details_found": {
+					"type": "details_found"
+				},
+				"list_options": {
+					"type": "list_options",
+					"items": [
+						"edit_selected",
+						"delete_selected"
+					]
+				},
+				"username_button": {
+					"type": "username_button",
+					"items": [
+						"userinfo_link",
+						"logout_link",
+						"adminarea_link"
+					]
+				},
+				"loginform_login": {
+					"type": "loginform_login",
+					"popup": false
+				},
+				"userinfo_link": {
+					"type": "userinfo_link"
+				},
+				"logout_link": {
+					"type": "logout_link"
+				},
+				"adminarea_link": {
+					"type": "adminarea_link"
+				},
+				"expand_menu_button": {
+					"type": "expand_menu_button"
+				},
+				"collapse_button": {
+					"type": "collapse_button"
+				},
+				"-": {
+					"type": "-"
+				},
+				"-1": {
+					"type": "-"
+				},
+				"-2": {
+					"type": "-"
+				},
+				"delete": {
+					"type": "delete"
+				},
+				"delete_selected": {
+					"type": "delete_selected"
+				},
+				"master_info": {
+					"type": "master_info",
+					"tables": {
+						"35049744": "true"
+					}
+				},
+				"-3": {
+					"type": "-"
+				},
+				"simple_grid_field2": {
+					"field": "idacccat",
+					"type": "grid_field",
+					"inlineAdd": true,
+					"inlineEdit": true
+				},
+				"simple_grid_field8": {
+					"type": "grid_field_label",
+					"field": "idacccat"
+				},
+				"simple_grid_field4": {
+					"field": "precio",
+					"type": "grid_field",
+					"inlineAdd": true,
+					"inlineEdit": true
+				},
+				"simple_grid_field9": {
+					"type": "grid_field_label",
+					"field": "precio"
+				},
+				"simple_grid_field7": {
+					"field": "precioasd",
+					"type": "grid_field",
+					"inlineAdd": true,
+					"inlineEdit": true
+				},
+				"simple_grid_field10": {
+					"type": "grid_field_label",
+					"field": "precioasd"
+				},
+				"simple_grid_field3": {
+					"field": "cantidad",
+					"type": "grid_field",
+					"inlineAdd": true,
+					"inlineEdit": true
+				},
+				"simple_grid_field11": {
+					"type": "grid_field_label",
+					"field": "cantidad"
+				},
+				"simple_grid_field5": {
+					"field": "dto",
+					"type": "grid_field",
+					"inlineAdd": true,
+					"inlineEdit": true
+				},
+				"simple_grid_field12": {
+					"type": "grid_field_label",
+					"field": "dto"
+				},
+				"simple_grid_field6": {
+					"field": "impto",
+					"type": "grid_field",
+					"inlineAdd": true,
+					"inlineEdit": true
+				},
+				"simple_grid_field13": {
+					"type": "grid_field_label",
+					"field": "impto"
+				},
+				"grid_checkbox": {
+					"type": "grid_checkbox"
+				},
+				"grid_checkbox_head": {
+					"type": "grid_checkbox_head"
+				},
+				"grid_field_totals": {
+					"type": "grid_field_totals",
+					"field": "cantidad",
+					"totals": "TOTAL",
+					"font-size": "2em"
+				},
+				"edit_selected": {
+					"type": "edit_selected"
+				},
+				"grid_inline_edit": {
+					"type": "grid_inline_edit"
+				},
+				"grid_inline_save": {
+					"type": "grid_inline_save"
+				},
+				"grid_inline_cancel": {
+					"type": "grid_inline_cancel"
+				},
+				"inline_save_all": {
+					"type": "inline_save_all"
+				},
+				"inline_cancel_all": {
+					"type": "inline_cancel_all"
+				},
+				"inline_add": {
+					"type": "inline_add"
+				},
+				"grid_field": {
+					"field": "importe",
+					"type": "grid_field",
+					"inlineAdd": true,
+					"inlineEdit": true
+				},
+				"grid_field_label": {
+					"type": "grid_field_label",
+					"field": "importe"
+				},
+				"grid_field1": {
+					"field": "importeasd",
+					"type": "grid_field",
+					"inlineAdd": true,
+					"inlineEdit": true
+				},
+				"grid_field_label1": {
+					"type": "grid_field_label",
+					"field": "importeasd"
+				},
+				"grid_field_totals1": {
+					"type": "grid_field_totals",
+					"field": "importe",
+					"totals": "TOTAL",
+					"label": {
+						"type": 0,
+						"text": ""
+					},
+					"font-size": "2em"
+				},
+				"grid_field_totals2": {
+					"type": "grid_field_totals",
+					"field": "importeasd",
+					"totals": "TOTAL",
+					"label": {
+						"type": 0,
+						"text": ""
+					},
+					"font-size": "2em"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "print",
+			"type": "print",
+			"layoutId": "basic",
+			"disabled": true,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "print-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"print_pages"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "print-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "print-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c4"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c2": {
+							"model": "c2",
+							"items": [
+								"print_header",
+								"print_subheader"
+							]
+						},
+						"c4": {
+							"model": "c4",
+							"items": [
+								"master_info"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"simple_grid_field",
+								"simple_grid_field1",
+								"simple_grid_field2",
+								"simple_grid_field3",
+								"simple_grid_field4",
+								"simple_grid_field5",
+								"simple_grid_field6",
+								"simple_grid_field7"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"print_header": {
+					"type": "print_header"
+				},
+				"print_subheader": {
+					"type": "print_subheader"
+				},
+				"print_pages": {
+					"type": "print_pages"
+				},
+				"simple_grid_field": {
+					"field": "id",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field1": {
+					"field": "idsolicitud",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field2": {
+					"field": "idacccat",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field3": {
+					"field": "cantidad",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field4": {
+					"field": "precio",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field5": {
+					"field": "dto",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field6": {
+					"field": "impto",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field7": {
+					"field": "precioasd",
+					"type": "simple_grid_field"
+				},
+				"master_info": {
+					"type": "master_info",
+					"tables": {
+						"35049744": "true"
+					}
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		}
+	],
+	"geoCoding": {
+		"enabled": false,
+		"latField": "",
+		"lonField": "",
+		"addressFields": []
+	},
+	"caption": {
+		"Spanish": "Accsol"
+	}
+}

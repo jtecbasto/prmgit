@@ -31,7 +31,8 @@
 	"detailsTables": [
 		3847630651,
 		2027119892,
-		2796458642
+		2796458642,
+		1975362622
 	],
 	"fields": [
 		{
@@ -1578,7 +1579,7 @@
 		{
 			"eventId": "EVENT_AFTEREDIT",
 			"pageType": "edit",
-			"code": "\n\n\n\nfunction q($v){ // cadenas/fechas: 'valor' o NULL\n    return (isset($v) && $v !== '' ? db_prepare_string($v) : \"NULL\");\n}\nfunction qi($v){ // enteros: número o NULL\n    return (isset($v) && $v !== '' ? (int)$v : \"NULL\");\n}\nfunction qd($v, $scale = 2) { // decimales: número (formateado) o NULL\n    if (!isset($v) || $v === '') return \"NULL\";\n    $n = (float)$v;\n    return number_format($n, $scale, '.', ''); // sin comillas, SQL lo maneja como número\n}\n\n// =========================================================================\n// 1. PREPARACIÓN DE VARIABLES\n// =========================================================================\n\n// OJO: aquí manejo dos variables para idsolicitud:\n//  - $idsolicitud_raw: entero para comparaciones / logs\n//  - $idsolicitud: para poner directo en SQL (numérico, sin comillas)\n\n$idsolicitud_raw = (int)$values['idsolicitud'];\n$idsolicitud     = $idsolicitud_raw;\n$ahora = q(date('Y-m-d h:i:sa'));\n$esnimei   = q($values['noserie']);   // IMEI equipo (o NULL)\n$simcard   = q($values['simcard']);   // serie SIM (o NULL)\n\n$idtipoventa     = qi($values['idtipoventa']);\n$fecha           = q($values['fecha']);\n$idcliente       = qi($values['idcliente']);\n$estatus         = q($values['estatus']);\n$estatusentrega  = q($values['estatusentrega']);\n$dn              = q($values['dn']);\n$dnpreferido     = q($values['dnpreferido']);\n$plan            = qi($values['idplan']);\n$orden           = q($values['orden']);\n$factura         = q($values['factura']);\n$cuenta          = q($values['cuenta']);\n$contrato        = q($values['contrato']);\n$contratoportal  = q($values['contratoportal']);\n$renta           = qd($values['renta']);\n$plazo           = qi($values['plazo']);\n$plazopendiente  = qi($values['plazopendiente']);\n$ciclo           = qi($values['ciclo'] ?: 1);\n$usuario         = q($values['usuario']);\n// tienda: si no viene en values, tomamos la de sesión\n$tienda = isset($values['idtienda']) ? qi($values['idtienda']) : qi($_SESSION['tiendaNP']);\n\n$accion_upsert = '';\n\n// Ayudas booleanas\n$has_esnimei = ($esnimei !== 'NULL');\n$has_sim     = ($simcard !== 'NULL');\n\n// =========================================================================\n// 2. CONDICIÓN DE EJECUCIÓN: SOLO si es VENTA\n// =========================================================================\n// estatus debe ser 'ACEPTADA' y estatusentrega = 6\nif ($estatus === \"'ACEPTADA'\" && ($estatusentrega === \"'CERRADO'\" || $estatusentrega ===\"'CIERRE DE VENTA'\")) {\n     //   error_log(\"entrando a crear la venta  Solicitud: {$idsolicitud_raw}\". \"\\n\", 3, \"debug_log.log\");\n\n    // =========================================================================\n    // 3. LEER VENTAS EXISTENTES DE ESA SOLICITUD (equipo y chip)\n    // =========================================================================\n\n    $sql_ventas = \"\n        SELECT \n            v.idventa,\n            v.esnimei,\n            v.simcard,\n            p.clasif\n        FROM ventas v\n        LEFT JOIN compras c \n               ON v.esnimei = c.noserie\n        LEFT JOIN productos p\n               ON c.codigoproducto = p.codigoiusa\n        WHERE v.idsolicitud = \" . $idsolicitud . \"\n    \";\n\n    $rsVentas = DB::Query($sql_ventas);\n    if ($rsVentas === false || $rsVentas === null) {\n       // error_log(\"VENTA - ERROR AL LEER VENTAS EXISTENTES. Solicitud: {$idsolicitud_raw}. Error: \" . DB::LastError() . \"\\n\", 3, \"debug_log.log\");\n        return true; // no bloqueamos el guardado de la solicitud\n    }\n\n    $idVentaEquipo = 0;\n    $idVentaChip   = 0;\n\n    while ($rowV = $rsVentas->fetchAssoc()) {\n        $clasif = $rowV[\"clasif\"];\n        $idv    = (int)$rowV[\"idventa\"];\n\n        if ($clasif === 'Equipo') {\n            $idVentaEquipo = $idv;\n        } elseif ($clasif === 'Chip') {\n            $idVentaChip = $idv;\n        }\n    }\n\n    // =========================================================================\n    // 4. UPSERT VENTA DEL EQUIPO\n    //    - esnimei (IMEI del equipo) va en ventas.esnimei\n    //    - simcard (serie chip) va en ventas.simcard\n    // =========================================================================\n      //                     error_log(\"antes de checar si hay imei: {$idsolicitud_raw}, idventa={$idVentaEquipo}\\n\", 3, \"debug_log.log\");\n\n    if ($has_esnimei) {\n        //                   error_log(\"despues de checar si hay ime: {$idsolicitud_raw}, idventa={$idVentaEquipo}\\n\", 3, \"debug_log.log\");\n\n        if ($idVentaEquipo > 0) {\n            // Ya había venta de equipo → UPDATE\n           //                 error_log(\"Ya habia venta de equipo: {$idsolicitud_raw}, idventa={$idVentaEquipo}\\n\", 3, \"debug_log.log\");\n\n            $sql_upd_imei = \"\n                UPDATE ventas\n                   SET idtipoventa    = \" . $idtipoventa . \",\n                       fecha          = \" . $fecha . \",\n                       idcliente      = \" . $idcliente . \",\n                       esnimei        = \" . $esnimei . \",\n                       simcard        = \" . $simcard . \",\n                       tienda         = \" . $tienda . \",\n                       dn             = \" . $dn . \",\n                       dnpreferido    = \" . $dnpreferido . \",\n                       plan           = \" . $plan . \",\n                       orden          = \" . $orden . \",\n                       factura        = \" . $factura . \",\n                       cuenta         = \" . $cuenta . \",\n                       contrato       = \" . $contrato . \",\n                       contratoportal = \" . $contratoportal . \",\n                       renta          = \" . $renta . \",\n                       plazo          = \" . $plazo . \",\n                       plazopendiente = \" . $plazopendiente . \",\n                       ciclo          = \" . $ciclo . \"\n                 WHERE idventa        = \" . $idVentaEquipo;\n\n            if (DB::Exec($sql_upd_imei)) {\n                $accion_upsert .= \"UPDATE IMEI; \";\n                 $sql_delete_imei_solicitado = \"DELETE FROM seriessolicitadas WHERE esnimei = \".$esnimei.\";\";\n                 DB::Exec($sql_delete_imei_solicitado);\n\n              //  error_log(\"VENTA - UPDATE EQUIPO OK. Solicitud: {$idsolicitud_raw}, idventa={$idVentaEquipo}\\n\", 3, \"debug_log.log\");\n            } else {\n               // error_log(\"VENTA - ERROR UPDATE EQUIPO. SQL: {$sql_upd_imei} Error: \" . DB::LastError() . \"\\n\", 3, \"debug_log.log\");\n                // no hacemos return; decisión tuya si quieres bloquear\n            }\n\n        } else {\n            // No había venta de equipo → INSERT\n              //             error_log(\"No habia venta de equipo: {$idsolicitud_raw}, idventa={$idVentaEquipo}\\n\", 3, \"debug_log.log\");\n            \n            $sql_insert_imei = \"\n                INSERT INTO ventas (\n                    idtipoventa, fecha, fechacaptura, idcliente,\n                    esnimei, simcard,\n                    tienda, idsolicitud,\n                    dn, dnpreferido, plan,\n                    orden, factura, cuenta, contrato, contratoportal,\n                    renta, plazo, plazopendiente, ciclo,usuario\n                ) VALUES (\n                    \" . $idtipoventa . \",\n                    \" . $fecha . \",\n                    \" . $ahora . \",\n                    \" . $idcliente . \",\n                    \" . $esnimei . \",\n                    \" . $simcard . \",\n                    \" . $tienda . \",\n                    \" . $idsolicitud . \",\n                    \" . $dn . \",\n                    \" . $dnpreferido . \",\n                    \" . $plan . \",\n                    \" . $orden . \",\n                    \" . $factura . \",\n                    \" . $cuenta . \",\n                    \" . $contrato . \",\n                    \" . $contratoportal . \",\n                    \" . $renta . \",\n                    \" . $plazo . \",\n                    \" . $plazopendiente . \",\n                    \" . $ciclo . \",\n                     \" . $usuario . \"\n               )\n            \";\n\n            if (DB::Exec($sql_insert_imei)) {\n                $accion_upsert .= \"INSERT IMEI; \";\n              //  error_log(\"VENTA - INSERT EQUIPO OK. Solicitud: {$idsolicitud_raw}\\n\", 3, \"debug_log.log\");\n              \n              $sql_delete_imei_solicitado = \"DELETE FROM seriessolicitadas WHERE esnimei = \".$esnimei.\";\";\n                 DB::Exec($sql_delete_imei_solicitado);\n            } else {\n              //  error_log(\"VENTA - ERROR INSERT EQUIPO. SQL: {$sql_insert_imei} Error: \" . DB::LastError() . \"\\n\", 3, \"debug_log.log\");\n                // decisión si bloqueas o no\n            }\n        }\n    }\n\n    // =========================================================================\n    // 5. UPSERT VENTA DEL CHIP\n    //    Reglas que me diste:\n    //    - Fila de CHIP: su serie se guarda en ventas.esnimei\n    //                   y ventas.simcard permanece NULL\n    // =========================================================================\n\n    if ($has_sim) {\n\n        if ($idVentaChip > 0) {\n            // Ya había venta de chip → UPDATE\n            $sql_upd_chip = \"\n                UPDATE ventas\n                   SET idtipoventa    =  0 ,\n                       fecha          = \" . $fecha . \",\n                       idcliente      = \" . $idcliente . \",\n                       esnimei        = \" . $simcard . \",   -- serie del chip\n                       simcard        = NULL,\n                       tienda         = \" . $tienda . \",\n                       dn             = \" . $dn . \",\n                       dnpreferido    = \" . $dnpreferido . \",\n                       plan           = \" . $plan . \",\n                       orden          = \" . $orden . \",\n                       factura        = \" . $factura . \",\n                       cuenta         = \" . $cuenta . \",\n                       contrato       = \" . $contrato . \",\n                       contratoportal = \" . $contratoportal . \",\n                       renta          = \" . $renta . \",\n                       plazo          = \" . $plazo . \",\n                       plazopendiente = \" . $plazopendiente . \",\n                       ciclo          = \" . $ciclo . \"\n                 WHERE idventa        = \" . $idVentaChip;\n\n            if (DB::Exec($sql_upd_chip)) {\n                $accion_upsert .= \"UPDATE SIM; \";\n              //  error_log(\"VENTA - UPDATE CHIP OK. Solicitud: {$idsolicitud_raw}, idventa={$idVentaChip}\\n\", 3, \"debug_log.log\");\n                $sql_delete_chip_solicitado = \"DELETE FROM seriessolicitadas WHERE esnimei = \".$simcard.\";\";\n                 DB::Exec($sql_delete_chip_solicitado);\n\n            } else {\n              //  error_log(\"VENTA - ERROR UPDATE CHIP. SQL: {$sql_upd_chip} Error: \" . DB::LastError() . \"\\n\", 3, \"debug_log.log\");\n            }\n\n        } else {\n            // No había venta de chip → INSERT\n            $sql_insert_sim = \"\n                INSERT INTO ventas (\n                    idtipoventa, fecha, fechacaptura, idcliente,\n                    esnimei, simcard,\n                    tienda, idsolicitud,\n                    dn, dnpreferido, plan,\n                    orden, factura, cuenta, contrato, contratoportal,\n                    renta, plazo, plazopendiente, usuario, ciclo\n                ) VALUES (\n                    0,\n                    \" . $fecha . \",\n                    \" . $ahora . \",\n                    \" . $idcliente . \",\n                    \" . $simcard . \",   -- serie del chip\n                    NULL,               -- simcard vacío\n                    \" . $tienda . \",\n                    \" . $idsolicitud . \",\n                    \" . $dn . \",\n                    \" . $dnpreferido . \",\n                    \" . $plan . \",\n                    \" . $orden . \",\n                    \" . $factura . \",\n                    \" . $cuenta . \",\n                    \" . $contrato . \",\n                    \" . $contratoportal . \",\n                    \" . $renta . \",\n                    \" . $plazo . \",\n                    \" . $plazopendiente . \",\n                    \" . $usuario . \",\n                    \" . $ciclo . \"\n                )\n            \";\n\n            if (DB::Exec($sql_insert_sim)) {\n                $accion_upsert .= \"INSERT SIM; \";\n              //  error_log(\"VENTA - INSERT CHIP OK. Solicitud: {$idsolicitud_raw}\\n\", 3, \"debug_log.log\");\n                 $sql_delete_chip_solicitado = \"DELETE FROM seriessolicitadas WHERE esnimei = \".$simcard.\";\";\n                 DB::Exec($sql_delete_chip_solicitado);\n\n            } else {\n               //error_log(\"VENTA - ERROR INSERT CHIP. SQL: {$sql_insert_sim} Error: \" . DB::LastError() . \"\\n\", 3, \"debug_log.log\");\n            }\n        }\n    }\n\n} // fin if estatus/estatusentrega\n\n// =========================================================================\n// 6. LOG FINAL\n// =========================================================================\nif (!empty($accion_upsert)) {\n   // error_log(\"VENTA - Acciones: \" . $accion_upsert . \" Solicitud: {$idsolicitud_raw}\\n\", 3, \"debug_log.log\");\n}\n\nreturn true;\n"
+			"code": "\n\n\n\nfunction q($v){ // cadenas/fechas: 'valor' o NULL\n    return (isset($v) && $v !== '' ? db_prepare_string($v) : \"NULL\");\n}\nfunction qi($v){ // enteros: número o NULL\n    return (isset($v) && $v !== '' ? (int)$v : \"NULL\");\n}\nfunction qd($v, $scale = 2) { // decimales: número (formateado) o NULL\n    if (!isset($v) || $v === '') return \"NULL\";\n    $n = (float)$v;\n    return number_format($n, $scale, '.', ''); // sin comillas, SQL lo maneja como número\n}\n\n// =========================================================================\n// 1. PREPARACIÓN DE VARIABLES\n// =========================================================================\n\n// OJO: aquí manejo dos variables para idsolicitud:\n//  - $idsolicitud_raw: entero para comparaciones / logs\n//  - $idsolicitud: para poner directo en SQL (numérico, sin comillas)\n\n$idsolicitud_raw = (int)$values['idsolicitud'];\n$idsolicitud     = $idsolicitud_raw;\n$ahora = q(date('Y-m-d h:i:sa'));\n$esnimei   = q($values['noserie']);   // IMEI equipo (o NULL)\n$simcard   = q($values['simcard']);   // serie SIM (o NULL)\n\n$idtipoventa     = qi($values['idtipoventa']);\n$fecha           = q($values['fecha']);\n$idcliente       = qi($values['idcliente']);\n$estatus         = q($values['estatus']);\n$estatusentrega  = q($values['estatusentrega']);\n$dn              = q($values['dn']);\n$dnpreferido     = q($values['dnpreferido']);\n$plan            = qi($values['idplan']);\n$orden           = q($values['orden']);\n$factura         = q($values['factura']);\n$cuenta          = q($values['cuenta']);\n$contrato        = q($values['contrato']);\n$contratoportal  = q($values['contratoportal']);\n$renta           = qd($values['renta']);\n$plazo           = qi($values['plazo']);\n$plazopendiente  = qi($values['plazopendiente']);\n$ciclo           = qi($values['ciclo'] ?: 1);\n$usuario         = q($values['usuario']);\n$contratolog     = qi($values['contratolog']);\n$anticipolog     = qi($values['anticipolog']);\n// tienda: si no viene en values, tomamos la de sesión\n$tienda = isset($values['idtienda']) ? qi($values['idtienda']) : qi($_SESSION['tiendaNP']);\n\n$accion_upsert = '';\n\n// Ayudas booleanas\n$has_esnimei = ($esnimei !== 'NULL');\n$has_sim     = ($simcard !== 'NULL');\n\n// =========================================================================\n// 2. CONDICIÓN DE EJECUCIÓN: SOLO si es VENTA\n// =========================================================================\n// estatus debe ser 'ACEPTADA' y estatusentrega = 6\n        error_log(\"entrando a afterupdate\". \"\\n\", 3, \"debug_log.log\");\n\nif ($estatus === \"'ACEPTADA'\" && $contratolog === 1 && $anticipolog === 1 && ($estatusentrega === \"'CERRADO'\" || $estatusentrega ===\"'CIERRE DE VENTA'\")) {\n        error_log(\"entrando a crear la venta  Solicitud: {$idsolicitud_raw}\". \"\\n\", 3, \"debug_log.log\");\n\n    // =========================================================================\n    // 3. LEER VENTAS EXISTENTES DE ESA SOLICITUD (equipo y chip)\n    // =========================================================================\n\n    $sql_ventas = \"\n        SELECT \n            v.idventa,\n            v.esnimei,\n            v.simcard,\n            p.clasif\n        FROM ventas v\n        LEFT JOIN compras c \n               ON v.esnimei = c.noserie\n        LEFT JOIN productos p\n               ON c.codigoproducto = p.codigoiusa\n        WHERE v.idsolicitud = \" . $idsolicitud . \"\n    \";\n\n    $rsVentas = DB::Query($sql_ventas);\n    if ($rsVentas === false || $rsVentas === null) {\n       // error_log(\"VENTA - ERROR AL LEER VENTAS EXISTENTES. Solicitud: {$idsolicitud_raw}. Error: \" . DB::LastError() . \"\\n\", 3, \"debug_log.log\");\n        return true; // no bloqueamos el guardado de la solicitud\n    }\n\n    $idVentaEquipo = 0;\n    $idVentaChip   = 0;\n\n    while ($rowV = $rsVentas->fetchAssoc()) {\n        $clasif = $rowV[\"clasif\"];\n        $idv    = (int)$rowV[\"idventa\"];\n\n        if ($clasif === 'Equipo') {\n            $idVentaEquipo = $idv;\n        } elseif ($clasif === 'Chip') {\n            $idVentaChip = $idv;\n        }\n    }\n\n    // =========================================================================\n    // 4. UPSERT VENTA DEL EQUIPO\n    //    - esnimei (IMEI del equipo) va en ventas.esnimei\n    //    - simcard (serie chip) va en ventas.simcard\n    // =========================================================================\n      //                     error_log(\"antes de checar si hay imei: {$idsolicitud_raw}, idventa={$idVentaEquipo}\\n\", 3, \"debug_log.log\");\n\n    if ($has_esnimei) {\n        //                   error_log(\"despues de checar si hay ime: {$idsolicitud_raw}, idventa={$idVentaEquipo}\\n\", 3, \"debug_log.log\");\n\n        if ($idVentaEquipo > 0) {\n            // Ya había venta de equipo → UPDATE\n           //                 error_log(\"Ya habia venta de equipo: {$idsolicitud_raw}, idventa={$idVentaEquipo}\\n\", 3, \"debug_log.log\");\n\n            $sql_upd_imei = \"\n                UPDATE ventas\n                   SET idtipoventa    = \" . $idtipoventa . \",\n                       fecha          = \" . $fecha . \",\n                       idcliente      = \" . $idcliente . \",\n                       esnimei        = \" . $esnimei . \",\n                       simcard        = \" . $simcard . \",\n                       tienda         = \" . $tienda . \",\n                       dn             = \" . $dn . \",\n                       dnpreferido    = \" . $dnpreferido . \",\n                       plan           = \" . $plan . \",\n                       orden          = \" . $orden . \",\n                       factura        = \" . $factura . \",\n                       cuenta         = \" . $cuenta . \",\n                       contrato       = \" . $contrato . \",\n                       contratoportal = \" . $contratoportal . \",\n                       renta          = \" . $renta . \",\n                       plazo          = \" . $plazo . \",\n                       plazopendiente = \" . $plazopendiente . \",\n                       ciclo          = \" . $ciclo . \"\n                 WHERE idventa        = \" . $idVentaEquipo;\n\n            if (DB::Exec($sql_upd_imei)) {\n                $accion_upsert .= \"UPDATE IMEI; \";\n                 $sql_delete_imei_solicitado = \"DELETE FROM seriessolicitadas WHERE esnimei = \".$esnimei.\";\";\n                 DB::Exec($sql_delete_imei_solicitado);\n                 DB::Exec(\"CALL sp_sync_acc_por_solicitud(\". $idsolicitud .\"); \");\n              \n              //  error_log(\"VENTA - UPDATE EQUIPO OK. Solicitud: {$idsolicitud_raw}, idventa={$idVentaEquipo}\\n\", 3, \"debug_log.log\");\n            } else {\n               // error_log(\"VENTA - ERROR UPDATE EQUIPO. SQL: {$sql_upd_imei} Error: \" . DB::LastError() . \"\\n\", 3, \"debug_log.log\");\n                // no hacemos return; decisión tuya si quieres bloquear\n            }\n\n        } else {\n            // No había venta de equipo → INSERT\n              //             error_log(\"No habia venta de equipo: {$idsolicitud_raw}, idventa={$idVentaEquipo}\\n\", 3, \"debug_log.log\");\n            \n            $sql_insert_imei = \"\n                INSERT INTO ventas (\n                    idtipoventa, fecha, fechacaptura, idcliente,\n                    esnimei, simcard,\n                    tienda, idsolicitud,\n                    dn, dnpreferido, plan,\n                    orden, factura, cuenta, contrato, contratoportal,\n                    renta, plazo, plazopendiente, ciclo,usuario\n                ) VALUES (\n                    \" . $idtipoventa . \",\n                    \" . $fecha . \",\n                    \" . $ahora . \",\n                    \" . $idcliente . \",\n                    \" . $esnimei . \",\n                    \" . $simcard . \",\n                    \" . $tienda . \",\n                    \" . $idsolicitud . \",\n                    \" . $dn . \",\n                    \" . $dnpreferido . \",\n                    \" . $plan . \",\n                    \" . $orden . \",\n                    \" . $factura . \",\n                    \" . $cuenta . \",\n                    \" . $contrato . \",\n                    \" . $contratoportal . \",\n                    \" . $renta . \",\n                    \" . $plazo . \",\n                    \" . $plazopendiente . \",\n                    \" . $ciclo . \",\n                     \" . $usuario . \"\n               )\n            \";\n\n            if (DB::Exec($sql_insert_imei)) {\n                $accion_upsert .= \"INSERT IMEI; \";\n               error_log(\"VENTA - INSERT EQUIPO OK. Solicitud: {$idsolicitud_raw}\\n\", 3, \"debug_log.log\");\n                DB::Exec(\"CALL sp_sync_acc_por_solicitud(\". $idsolicitud .\"); \");\n\n              $sql_delete_imei_solicitado = \"DELETE FROM seriessolicitadas WHERE esnimei = \".$esnimei.\";\";\n                 DB::Exec($sql_delete_imei_solicitado);\n            } else {\n              //  error_log(\"VENTA - ERROR INSERT EQUIPO. SQL: {$sql_insert_imei} Error: \" . DB::LastError() . \"\\n\", 3, \"debug_log.log\");\n                // decisión si bloqueas o no\n            }\n        }\n    }\n\n    // =========================================================================\n    // 5. UPSERT VENTA DEL CHIP\n    //    Reglas que me diste:\n    //    - Fila de CHIP: su serie se guarda en ventas.esnimei\n    //                   y ventas.simcard permanece NULL\n    // =========================================================================\n\n    if ($has_sim) {\n\n        if ($idVentaChip > 0) {\n            // Ya había venta de chip → UPDATE\n            $sql_upd_chip = \"\n                UPDATE ventas\n                   SET idtipoventa    =  0 ,\n                       fecha          = \" . $fecha . \",\n                       idcliente      = \" . $idcliente . \",\n                       esnimei        = \" . $simcard . \",   -- serie del chip\n                       simcard        = NULL,\n                       tienda         = \" . $tienda . \",\n                       dn             = \" . $dn . \",\n                       dnpreferido    = \" . $dnpreferido . \",\n                       plan           = \" . $plan . \",\n                       orden          = \" . $orden . \",\n                       factura        = \" . $factura . \",\n                       cuenta         = \" . $cuenta . \",\n                       contrato       = \" . $contrato . \",\n                       contratoportal = \" . $contratoportal . \",\n                       renta          = \" . $renta . \",\n                       plazo          = \" . $plazo . \",\n                       plazopendiente = \" . $plazopendiente . \",\n                       ciclo          = \" . $ciclo . \"\n                 WHERE idventa        = \" . $idVentaChip;\n\n            if (DB::Exec($sql_upd_chip)) {\n                $accion_upsert .= \"UPDATE SIM; \";\n              //  error_log(\"VENTA - UPDATE CHIP OK. Solicitud: {$idsolicitud_raw}, idventa={$idVentaChip}\\n\", 3, \"debug_log.log\");\n                $sql_delete_chip_solicitado = \"DELETE FROM seriessolicitadas WHERE esnimei = \".$simcard.\";\";\n                 DB::Exec($sql_delete_chip_solicitado);\n\n            } else {\n              //  error_log(\"VENTA - ERROR UPDATE CHIP. SQL: {$sql_upd_chip} Error: \" . DB::LastError() . \"\\n\", 3, \"debug_log.log\");\n            }\n\n        } else {\n            // No había venta de chip → INSERT\n            $sql_insert_sim = \"\n                INSERT INTO ventas (\n                    idtipoventa, fecha, fechacaptura, idcliente,\n                    esnimei, simcard,\n                    tienda, idsolicitud,\n                    dn, dnpreferido, plan,\n                    orden, factura, cuenta, contrato, contratoportal,\n                    renta, plazo, plazopendiente, usuario, ciclo\n                ) VALUES (\n                    0,\n                    \" . $fecha . \",\n                    \" . $ahora . \",\n                    \" . $idcliente . \",\n                    \" . $simcard . \",   -- serie del chip\n                    NULL,               -- simcard vacío\n                    \" . $tienda . \",\n                    \" . $idsolicitud . \",\n                    \" . $dn . \",\n                    \" . $dnpreferido . \",\n                    \" . $plan . \",\n                    \" . $orden . \",\n                    \" . $factura . \",\n                    \" . $cuenta . \",\n                    \" . $contrato . \",\n                    \" . $contratoportal . \",\n                    \" . $renta . \",\n                    \" . $plazo . \",\n                    \" . $plazopendiente . \",\n                    \" . $usuario . \",\n                    \" . $ciclo . \"\n                )\n            \";\n\n            if (DB::Exec($sql_insert_sim)) {\n                $accion_upsert .= \"INSERT SIM; \";\n              //  error_log(\"VENTA - INSERT CHIP OK. Solicitud: {$idsolicitud_raw}\\n\", 3, \"debug_log.log\");\n                 $sql_delete_chip_solicitado = \"DELETE FROM seriessolicitadas WHERE esnimei = \".$simcard.\";\";\n                 DB::Exec($sql_delete_chip_solicitado);\n\n            } else {\n               //error_log(\"VENTA - ERROR INSERT CHIP. SQL: {$sql_insert_sim} Error: \" . DB::LastError() . \"\\n\", 3, \"debug_log.log\");\n            }\n        }\n    }\n\n} // fin if estatus/estatusentrega\n\n// =========================================================================\n// 6. LOG FINAL\n// =========================================================================\nif (!empty($accion_upsert)) {\n   // error_log(\"VENTA - Acciones: \" . $accion_upsert . \" Solicitud: {$idsolicitud_raw}\\n\", 3, \"debug_log.log\");\n}\n\nreturn true;\n"
 		},
 		{
 			"eventId": "EVENT_BEFOREPROCESS_ADD",
@@ -2166,6 +2167,28 @@
 				"autoinc": false,
 				"defaultValueSQL": null,
 				"defaultValue": ""
+			},
+			{
+				"name": "iddocto_identificacion",
+				"type": 3,
+				"size": 3,
+				"scale": 0,
+				"typeName": "int(3)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "dn_contacto",
+				"type": 200,
+				"size": 10,
+				"scale": 0,
+				"typeName": "varchar(10)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
 			}
 		],
 		"primaryKeys": [
@@ -2360,7 +2383,9 @@
 						},
 						"c3": {
 							"model": "c3",
-							"items": []
+							"items": [
+								"details_preview"
+							]
 						}
 					},
 					"deferredItems": [],
@@ -2637,6 +2662,7 @@
 						"c16": {
 							"model": "c1",
 							"items": [
+								"details_preview1",
 								"integrated_edit_field12"
 							]
 						},
@@ -3125,6 +3151,17 @@
 					"field": "totalapagar",
 					"type": "integrated_edit_field",
 					"orientation": 0
+				},
+				"details_preview": {
+					"type": "deleted",
+					"itemId": "details_preview"
+				},
+				"details_preview1": {
+					"type": "details_preview",
+					"table": 1975362622,
+					"items": [],
+					"popup": false,
+					"pageId": "list"
 				}
 			},
 			"dbProps": {},
@@ -3633,7 +3670,9 @@
 						},
 						"c3": {
 							"model": "c3",
-							"items": [],
+							"items": [
+								"details_preview"
+							],
 							"align": "center"
 						}
 					},
@@ -3666,6 +3705,17 @@
 								}
 							],
 							"section": ""
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c2"
+								},
+								{
+									"cell": "c5"
+								}
+							]
 						}
 					],
 					"cells": {
@@ -3694,6 +3744,16 @@
 							"items": [
 								"integrated_edit_field9"
 							]
+						},
+						"c2": {
+							"model": "c1",
+							"items": [
+								"text2"
+							]
+						},
+						"c5": {
+							"model": "c1",
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -3715,7 +3775,8 @@
 									"cell": "c10"
 								},
 								{
-									"cell": "c"
+									"cell": "c",
+									"colspan": 1
 								}
 							]
 						},
@@ -3730,7 +3791,8 @@
 									"cell": "c11"
 								},
 								{
-									"cell": "c3"
+									"cell": "c3",
+									"colspan": 1
 								}
 							]
 						},
@@ -3748,7 +3810,8 @@
 									"cell": "c13"
 								},
 								{
-									"cell": "c5"
+									"cell": "c5",
+									"colspan": 1
 								}
 							]
 						},
@@ -3766,7 +3829,8 @@
 									"cell": "c14"
 								},
 								{
-									"cell": "c7"
+									"cell": "c7",
+									"colspan": 1
 								}
 							]
 						},
@@ -3783,7 +3847,8 @@
 									"cell": "c15"
 								},
 								{
-									"cell": "c8"
+									"cell": "c8",
+									"colspan": 1
 								}
 							],
 							"section": ""
@@ -3796,7 +3861,17 @@
 									"colspan": 3
 								},
 								{
-									"cell": "c22"
+									"cell": "c22",
+									"colspan": 1
+								}
+							]
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c17",
+									"colspan": 4
 								}
 							]
 						}
@@ -3918,6 +3993,12 @@
 							"model": "c1",
 							"items": [
 								"integrated_edit_field31"
+							]
+						},
+						"c17": {
+							"model": "c1",
+							"items": [
+								"details_preview1"
 							]
 						}
 					},
@@ -4441,6 +4522,25 @@
 					"type": "integrated_edit_field",
 					"orientation": 0,
 					"updateOnEdit": false
+				},
+				"details_preview": {
+					"type": "deleted",
+					"itemId": "details_preview"
+				},
+				"details_preview1": {
+					"type": "details_preview",
+					"table": 1975362622,
+					"items": [],
+					"popup": false,
+					"pageId": "list"
+				},
+				"text2": {
+					"type": "text",
+					"label": {
+						"text": "Hola",
+						"type": 0
+					},
+					"editedByRte": false
 				}
 			},
 			"dbProps": {},
@@ -5460,6 +5560,15 @@
 							]
 						},
 						{
+							"cells": [
+								{
+									"cell": "cell_dpreview",
+									"colspan": 32
+								}
+							],
+							"section": "body"
+						},
+						{
 							"section": "foot",
 							"cells": [
 								{
@@ -6093,6 +6202,8 @@
 								"grid_alldetails_link",
 								"grid_details_link1",
 								"grid_details_link3",
+								"grid_details_link5",
+								"grid_details_link4",
 								"grid_details_link2"
 							],
 							"columnName": "details",
@@ -6207,6 +6318,15 @@
 									"width": "0"
 								}
 							]
+						},
+						"cell_dpreview": {
+							"model": "cell_dpreview",
+							"items": [
+								"details_preview3",
+								"details_preview4"
+							],
+							"columnName": "field",
+							"field": "direccion"
 						}
 					},
 					"deferredItems": [],
@@ -6461,6 +6581,7 @@
 				"print_details": {
 					"type": "print_details",
 					"tables": {
+						"1975362622": true,
 						"2796458642": true,
 						"3847630651": true
 					}
@@ -6811,6 +6932,30 @@
 				},
 				"-12": {
 					"type": "-"
+				},
+				"grid_details_link4": {
+					"type": "deleted",
+					"itemId": "grid_details_link4"
+				},
+				"details_preview3": {
+					"type": "deleted",
+					"itemId": "details_preview3"
+				},
+				"grid_details_link5": {
+					"type": "grid_details_link",
+					"table": 1975362622,
+					"badge": true,
+					"showCount": true,
+					"hideIfNone": false
+				},
+				"details_preview4": {
+					"type": "details_preview",
+					"table": 1975362622,
+					"items": [],
+					"proceedLink": true,
+					"popup": false,
+					"pageId": "list",
+					"hideEmptyPreview": false
 				}
 			},
 			"dbProps": {},
@@ -6948,7 +7093,9 @@
 							"items": [
 								"details_preview",
 								"details_preview2",
-								"details_preview3"
+								"details_preview3",
+								"details_preview1",
+								"details_preview4"
 							]
 						}
 					},
@@ -6988,6 +7135,16 @@
 				"details_preview3": {
 					"type": "details_preview",
 					"table": 2796458642,
+					"items": [],
+					"popup": false
+				},
+				"details_preview1": {
+					"type": "deleted",
+					"itemId": "details_preview1"
+				},
+				"details_preview4": {
+					"type": "details_preview",
+					"table": 1975362622,
 					"items": [],
 					"popup": false
 				}

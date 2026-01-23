@@ -5,6 +5,48 @@
 	"mainDiagram": {
 		"tables": [
 			{
+				"gid": 3832853142,
+				"y": 980,
+				"x": 495,
+				"width": 109.46875,
+				"height": 264
+			},
+			{
+				"gid": 481524575,
+				"y": 990,
+				"x": 1105,
+				"width": 135.921875,
+				"height": 96
+			},
+			{
+				"gid": 513554392,
+				"y": 990,
+				"x": 1270,
+				"width": 117.234375,
+				"height": 152
+			},
+			{
+				"gid": 1467946332,
+				"y": 1015,
+				"x": 20,
+				"width": 109.46875,
+				"height": 124
+			},
+			{
+				"gid": 1975362622,
+				"y": 443,
+				"x": 885,
+				"width": 108.6875,
+				"height": 264
+			},
+			{
+				"gid": 1348619043,
+				"y": 1105,
+				"x": 1105,
+				"width": 139.8125,
+				"height": 124
+			},
+			{
 				"gid": 3680839223,
 				"y": 685,
 				"x": 315,
@@ -178,6 +220,13 @@
 				"x": 799,
 				"width": 143.828125,
 				"height": 129
+			},
+			{
+				"gid": 1911098216,
+				"y": 965,
+				"x": 715,
+				"width": 205.984375,
+				"height": 400
 			},
 			{
 				"gid": 1182658781,
@@ -421,7 +470,7 @@
 						"code": "$host = 'localhost';\r\n$user = 'rocasamexico_admin';\r\n$pwd = 'Rocas@Mexico.2025**';\r\n$port = 3306;\r\n$sys_dbname = 'rocasamexico_prm';"
 					}
 				],
-				"selectedCustomConn": "New connection"
+				"selectedCustomConn": "Local"
 			}
 		}
 	],
@@ -501,6 +550,104 @@
 							"itemType": 2,
 							"linkType": 0,
 							"table": 3680839223,
+							"pageType": "list"
+						}
+					},
+					{
+						"id": "18",
+						"data": {
+							"name": {
+								"table": "ventasConsignaVCE1",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 1911098216,
+							"pageType": "list"
+						}
+					},
+					{
+						"id": "19",
+						"data": {
+							"name": {
+								"table": "acccat",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 3832853142,
+							"pageType": "list"
+						}
+					},
+					{
+						"id": "20",
+						"data": {
+							"name": {
+								"table": "acccatcom",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 481524575,
+							"pageType": "list"
+						}
+					},
+					{
+						"id": "21",
+						"data": {
+							"name": {
+								"table": "acccom",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 513554392,
+							"pageType": "list"
+						}
+					},
+					{
+						"id": "22",
+						"data": {
+							"name": {
+								"table": "accctg",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 1467946332,
+							"pageType": "list"
+						}
+					},
+					{
+						"id": "25",
+						"data": {
+							"name": {
+								"table": "acctipomov",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 1348619043,
+							"pageType": "list"
+						}
+					},
+					{
+						"id": "26",
+						"data": {
+							"name": {
+								"table": "accsol",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 1975362622,
 							"pageType": "list"
 						}
 					}
@@ -597,7 +744,14 @@
 								"welcome_item7",
 								"welcome_item8",
 								"welcome_item9",
-								"welcome_item10"
+								"welcome_item10",
+								"welcome_item11",
+								"welcome_item12",
+								"welcome_item13",
+								"welcome_item14",
+								"welcome_item15",
+								"welcome_item18",
+								"welcome_item16"
 							]
 						}
 					},
@@ -804,6 +958,90 @@
 						"type": 6
 					},
 					"background": "#6da5c8",
+					"linkType": 0
+				},
+				"welcome_item11": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "ventasConsignaVCE1",
+					"linkPage": "list",
+					"linkText": {
+						"table": "ventasConsignaVCE1",
+						"type": 6
+					},
+					"background": "#5f9ea0",
+					"linkType": 0
+				},
+				"welcome_item12": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "acccat",
+					"linkPage": "list",
+					"linkText": {
+						"table": "acccat",
+						"type": 6
+					},
+					"background": "#edca00",
+					"linkType": 0
+				},
+				"welcome_item13": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "acccatcom",
+					"linkPage": "list",
+					"linkText": {
+						"table": "acccatcom",
+						"type": 6
+					},
+					"background": "#00c2c5",
+					"linkType": 0
+				},
+				"welcome_item14": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "acccom",
+					"linkPage": "list",
+					"linkText": {
+						"table": "acccom",
+						"type": 6
+					},
+					"background": "#e67349",
+					"linkType": 0
+				},
+				"welcome_item15": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "accctg",
+					"linkPage": "list",
+					"linkText": {
+						"table": "accctg",
+						"type": 6
+					},
+					"background": "#5f9ea0",
+					"linkType": 0
+				},
+				"welcome_item18": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "acctipomov",
+					"linkPage": "list",
+					"linkText": {
+						"table": "acctipomov",
+						"type": 6
+					},
+					"background": "#5f9ea0",
+					"linkType": 0
+				},
+				"welcome_item16": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "accsol",
+					"linkPage": "list",
+					"linkText": {
+						"table": "accsol",
+						"type": 6
+					},
+					"background": "#e8926f",
 					"linkType": 0
 				}
 			},
@@ -2274,7 +2512,7 @@
 		{
 			"eventId": "EVENT_AFTERSUCCESSFULLLOGIN",
 			"pageType": "login",
-			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\ndate_default_timezone_set('America/Mexico_City');\nglobal $conn;\n\n\n\n$strSQLExists = \"SELECT\n    serviciosmoviles_ugmembers.UserName\n    , IFNULL(serviciosmoviles_uggroups.Acceso,11) Acceso\n    , IFNULL(serviciosmoviles_users.Tienda,0) Tienda\n\t\t, IFNULL(serviciosmoviles_uggroups.Label,'') Label,\n\tIFNULL(serviciosmoviles_users.folioagentevnp,'') FolioAgenteVNP\nFROM\n    serviciosmoviles_ugmembers\n    LEFT JOIN serviciosmoviles_uggroups \n        ON (serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID)\n LEFT JOIN serviciosmoviles_users\n        ON (serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName)\nWHERE serviciosmoviles_ugmembers.username='\".$username .\"'\" ;\n\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\nif($data)\n{\n\t$_SESSION[\"Acceso\"]=$data[\"Acceso\"];\n\t$_SESSION[\"Tienda\"]=$data[\"Tienda\"];\n\t$_SESSION[\"UserID\"]=strtoupper($username);\n\t$_SESSION[\"Label\"]=strtoupper($data[\"Label\"]);\n\t$_SESSION[\"FolioAgenteVNP\"]=strtoupper($data[\"FolioAgenteVNP\"]);\n\n\n}\n\n\n// Por ejemplo a la lista de \"solicitudes\"\n$menuItemId = 11;  // tu item del menú lateral\nheader(\"Location: \".GetTableLink(\"solicitudes\", \"list\", \"menuItemId=\".$menuItemId));\nexit();\n"
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\ndate_default_timezone_set('America/Mexico_City');\nglobal $conn;\n\n\n\n$strSQLExists = \"SELECT\n    serviciosmoviles_ugmembers.UserName\n    , IFNULL(serviciosmoviles_uggroups.Acceso,11) Acceso\n    , IFNULL(serviciosmoviles_users.Tienda,0) Tienda\n\t\t, IFNULL(serviciosmoviles_uggroups.Label,'') Label,\n\tIFNULL(serviciosmoviles_users.folioagentevnp,'') FolioAgenteVNP\nFROM\n    serviciosmoviles_ugmembers\n    LEFT JOIN serviciosmoviles_uggroups \n        ON (serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID)\n LEFT JOIN serviciosmoviles_users\n        ON (serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName)\nWHERE serviciosmoviles_ugmembers.username='\".$username .\"'\" ;\n\n$rsExists = db_query($strSQLExists,$conn);\n$data=db_fetch_array($rsExists);\nif($data)\n{\n\t$_SESSION[\"Acceso\"]=$data[\"Acceso\"];\n\t$_SESSION[\"Tienda\"]=$data[\"Tienda\"];\n\t$_SESSION[\"UserID\"]=strtoupper($username);\n\t$_SESSION[\"Label\"]=strtoupper($data[\"Label\"]);\n\t$_SESSION[\"FolioAgenteVNP\"]=strtoupper($data[\"FolioAgenteVNP\"]);\n\n\n}\n\n$_SESSION[\"impto\"]=0.16;\n\n\n\n// Por ejemplo a la lista de \"solicitudes\"\n$menuItemId = 11;  // tu item del menú lateral\nheader(\"Location: \".GetTableLink(\"solicitudes\", \"list\", \"menuItemId=\".$menuItemId));\nexit();\n"
 		},
 		{
 			"eventId": "EVENT_BEFORELOGIN",

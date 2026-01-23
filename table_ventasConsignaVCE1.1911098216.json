@@ -1,0 +1,5294 @@
+{
+	"sql": "SELECT\r\nsolicitudes.orden AS idsolicitud,\r\nventas.idventa,\r\nventas.idtipoventa,\r\nventas.idtipoventa AS idtv,\r\nventas.fecha,\r\nventas.fechacaptura,\r\nclientes.nombre_completo AS cliente,\r\nventas.segmento,\r\nventas.esnimei,\r\nventas.simcard,\r\nventas.dn,\r\nventas.dnpreferido,\r\nventas.ventadomicilio,\r\nventas.cuenta,\r\nventas.contrato,\r\nventas.contratoportal,\r\nventas.`plan` AS `plan`,\r\nventas.`plan` AS planes,\r\nventas.plazo,\r\nventas.plazopendiente,\r\nventas.usuario,\r\nserviciosmoviles_uggroups.Acceso,\r\nventas.renta,\r\nplanes.renta AS rentaplan,\r\nventas.tienda,\r\ntiendas.Tienda AS tiendanombre,\r\ncompras.descripcion,\r\nventas.Factura,\r\nventas.fechavenci,\r\nventas.ciclo,\r\n'' AS usuarioexporta,\r\nserviciosmoviles_users.fullname,\r\nventas.modifico,\r\nventas.fechamodif,\r\nventas.PagoTotal,\r\nventas.Efectivo,\r\nventas.NC,\r\nventas.TC,\r\nventas.rfc,\r\nventas.cargofaciva,\r\nventas.almacenatt,\r\ncompras.Clasif AS clasif,\r\nventas.modo,\r\nventas.addon,\r\nventas.sucursal,\r\nventas.vtasimg,\r\nventas.equipoincluido,\r\nventas.tiendamovil,\r\nventas.tiposegmento,\r\nventas.idpromocion,\r\nventas.orden,\r\nsolicitudes.idcli,\r\nsolicitudes.idcita,\r\n'' AS renov_btn,\r\nventas.comisionable,\r\nventas.consumos,\r\nventas.captura_contrato,\r\nventas.captura_cuenta,\r\nventas.captura_orden,\r\nventas.contrato_corregido,\r\nventas.cuenta_corregida,\r\nventas.orden_corregida,\r\nsectores_validacion.validador,\r\nventas.validador AS valida\r\nFROM ventas\r\nINNER JOIN serviciosmoviles_users ON ventas.usuario = serviciosmoviles_users.username\r\nINNER JOIN serviciosmoviles_ugmembers ON serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName\r\nINNER JOIN serviciosmoviles_uggroups ON serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID\r\nLEFT OUTER JOIN solicitudes ON ventas.idsolicitud = solicitudes.idsolicitud\r\nLEFT OUTER JOIN clientes ON ventas.idcliente = clientes.idcliente\r\nLEFT OUTER JOIN tiendas ON ventas.tienda = tiendas.IdTienda\r\nLEFT OUTER JOIN planes ON ventas.`plan` = planes.idplan\r\nLEFT OUTER JOIN sectores_validacion ON tiendas.idsectorvalida = sectores_validacion.id\r\nINNER JOIN compras ON ventas.esnimei = compras.noserie\r\nINNER JOIN tiposventa ON ventas.idtipoventa = tiposventa.idtipoventa\r\nWHERE (ventas.fecha between \r\n DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE()) AND (compras.Clasif =2) AND (tiposventa.idtipoventa in (22,23,1,5,10,11))\r\n",
+	"type": 1,
+	"connId": "conn",
+	"originalTable": "ventas",
+	"name": "ventasConsignaVCE1",
+	"shortTableName": "ventasConsignaVCE1",
+	"dbType": 0,
+	"keyFields": [
+		"idventa"
+	],
+	"detailsBadgeColor": "5f9ea0",
+	"fields": [
+		{
+			"name": "idventa",
+			"sqlExpression": "ventas.idventa",
+			"index": 2,
+			"strField": "idventa",
+			"type": 3,
+			"autoinc": true,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Idventa"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "idtipoventa",
+			"sqlExpression": "ventas.idtipoventa",
+			"index": 3,
+			"strField": "idtipoventa",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Idtipoventa"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "sucursal",
+			"sqlExpression": "ventas.sucursal",
+			"index": 45,
+			"strField": "sucursal",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Sucursal"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "fecha",
+			"sqlExpression": "ventas.fecha",
+			"index": 5,
+			"strField": "fecha",
+			"type": 7,
+			"viewFormats": [
+				{
+					"format": "Short Date"
+				}
+			],
+			"editFormats": [
+				{
+					"format": "Date"
+				}
+			],
+			"label": {
+				"Spanish": "Fecha"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "fechacaptura",
+			"sqlExpression": "ventas.fechacaptura",
+			"index": 6,
+			"strField": "fechacaptura",
+			"type": 135,
+			"viewFormats": [
+				{
+					"format": "Short Date"
+				}
+			],
+			"editFormats": [
+				{
+					"format": "Date"
+				}
+			],
+			"label": {
+				"Spanish": "Fechacaptura"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "segmento",
+			"sqlExpression": "ventas.segmento",
+			"index": 8,
+			"strField": "segmento",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Segmento"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "esnimei",
+			"sqlExpression": "ventas.esnimei",
+			"index": 9,
+			"strField": "esnimei",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Esnimei"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "simcard",
+			"sqlExpression": "ventas.simcard",
+			"index": 10,
+			"strField": "simcard",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Simcard"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "dn",
+			"sqlExpression": "ventas.dn",
+			"index": 11,
+			"strField": "dn",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"required": true,
+					"textboxMaxLenth": 10,
+					"textboxMask": "9999999999"
+				}
+			],
+			"label": {
+				"Spanish": "Dn"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "cuenta",
+			"sqlExpression": "ventas.cuenta",
+			"index": 14,
+			"strField": "cuenta",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"validateAs": "Number",
+					"textboxMaxLenth": 50
+				}
+			],
+			"label": {
+				"Spanish": "Cuenta"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "contrato",
+			"sqlExpression": "ventas.contrato",
+			"index": 15,
+			"strField": "contrato",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Contrato"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "contratoportal",
+			"sqlExpression": "ventas.contratoportal",
+			"index": 16,
+			"strField": "contratoportal",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Contratoportal"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "plan",
+			"sqlExpression": "ventas.`plan`",
+			"index": 17,
+			"strField": "plan",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Plan"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "renta",
+			"sqlExpression": "ventas.renta",
+			"index": 23,
+			"strField": "renta",
+			"type": 14,
+			"viewFormats": [
+				{
+					"format": "Number"
+				}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Renta"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "plazo",
+			"sqlExpression": "ventas.plazo",
+			"index": 19,
+			"strField": "plazo",
+			"type": 2,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Lookup wizard",
+					"required": true,
+					"lookupTable": "plazos",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "plazo",
+					"lookupDisplayField": "plazo"
+				}
+			],
+			"label": {
+				"Spanish": "Plazo"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "plazopendiente",
+			"sqlExpression": "ventas.plazopendiente",
+			"index": 20,
+			"strField": "plazopendiente",
+			"type": 2,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Plazopendiente"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "usuario",
+			"sqlExpression": "ventas.usuario",
+			"index": 21,
+			"strField": "usuario",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Usuario"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "tienda",
+			"sqlExpression": "ventas.tienda",
+			"index": 25,
+			"strField": "tienda",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Tienda"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "Factura",
+			"sqlExpression": "ventas.Factura",
+			"index": 28,
+			"strField": "Factura",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Factura"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "fechavenci",
+			"sqlExpression": "ventas.fechavenci",
+			"index": 29,
+			"strField": "fechavenci",
+			"type": 7,
+			"viewFormats": [
+				{
+					"format": "Short Date"
+				}
+			],
+			"editFormats": [
+				{
+					"format": "Date"
+				}
+			],
+			"label": {
+				"Spanish": "Fechavenci"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "ciclo",
+			"sqlExpression": "ventas.ciclo",
+			"index": 30,
+			"strField": "ciclo",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Lookup wizard",
+					"required": true,
+					"lookupTable": "ciclos",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "ciclo",
+					"lookupDisplayField": "corte",
+					"lookupWhere": "\"clasif = 2\""
+				}
+			],
+			"label": {
+				"Spanish": "Ciclo"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "modifico",
+			"sqlExpression": "ventas.modifico",
+			"index": 33,
+			"strField": "modifico",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Modifico"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "fechamodif",
+			"sqlExpression": "ventas.fechamodif",
+			"index": 34,
+			"strField": "fechamodif",
+			"type": 135,
+			"viewFormats": [
+				{
+					"format": "Short Date"
+				}
+			],
+			"editFormats": [
+				{
+					"format": "Date",
+					"dateEditType": 11
+				}
+			],
+			"label": {
+				"Spanish": "Fechamodif"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "PagoTotal",
+			"sqlExpression": "ventas.PagoTotal",
+			"index": 35,
+			"strField": "PagoTotal",
+			"type": 2,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Pago Total"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "Efectivo",
+			"sqlExpression": "ventas.Efectivo",
+			"index": 36,
+			"strField": "Efectivo",
+			"type": 14,
+			"viewFormats": [
+				{
+					"format": "Number"
+				}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Efectivo"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "NC",
+			"sqlExpression": "ventas.NC",
+			"index": 37,
+			"strField": "NC",
+			"type": 14,
+			"viewFormats": [
+				{
+					"format": "Number"
+				}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "NC"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "TC",
+			"sqlExpression": "ventas.TC",
+			"index": 38,
+			"strField": "TC",
+			"type": 14,
+			"viewFormats": [
+				{
+					"format": "Number"
+				}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "TC"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "rfc",
+			"sqlExpression": "ventas.rfc",
+			"index": 39,
+			"strField": "rfc",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Rfc"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "cargofaciva",
+			"sqlExpression": "ventas.cargofaciva",
+			"index": 40,
+			"strField": "cargofaciva",
+			"type": 14,
+			"viewFormats": [
+				{
+					"format": "Number"
+				}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Cargofaciva"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "almacenatt",
+			"sqlExpression": "ventas.almacenatt",
+			"index": 41,
+			"strField": "almacenatt",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Almacenatt"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "modo",
+			"sqlExpression": "ventas.modo",
+			"index": 43,
+			"strField": "modo",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Modo"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "addon",
+			"sqlExpression": "ventas.addon",
+			"index": 44,
+			"strField": "addon",
+			"type": 2,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Addon"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "dnpreferido",
+			"sqlExpression": "ventas.dnpreferido",
+			"index": 12,
+			"strField": "dnpreferido",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"required": true,
+					"textboxMaxLenth": 10,
+					"textboxMask": "9999999999"
+				}
+			],
+			"label": {
+				"Spanish": "Dnpreferido"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "ventadomicilio",
+			"sqlExpression": "ventas.ventadomicilio",
+			"index": 13,
+			"strField": "ventadomicilio",
+			"type": 2,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Ventadomicilio"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "idsolicitud",
+			"sqlExpression": "solicitudes.orden",
+			"index": 1,
+			"strField": "orden",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Idsolicitud"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "vtasimg",
+			"sqlExpression": "ventas.vtasimg",
+			"index": 46,
+			"strField": "vtasimg",
+			"type": 201,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Text area"
+				}
+			],
+			"label": {
+				"Spanish": "Vtasimg"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "equipoincluido",
+			"sqlExpression": "ventas.equipoincluido",
+			"index": 47,
+			"strField": "equipoincluido",
+			"type": 2,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Lookup wizard",
+					"lookupTable": "logicos",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "idlogico",
+					"lookupDisplayField": "logico"
+				}
+			],
+			"label": {
+				"Spanish": "Equipoincluido"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "tiendamovil",
+			"sqlExpression": "ventas.tiendamovil",
+			"index": 48,
+			"strField": "tiendamovil",
+			"type": 2,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Lookup wizard",
+					"lookupTable": "logicos",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "idlogico",
+					"lookupDisplayField": "logico"
+				}
+			],
+			"label": {
+				"Spanish": "Tiendamovil"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "tiposegmento",
+			"sqlExpression": "ventas.tiposegmento",
+			"index": 49,
+			"strField": "tiposegmento",
+			"type": 129,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Lookup wizard",
+					"lookupType": 0,
+					"lookupValues": [
+						"Corporativo",
+						"Masivo"
+					]
+				}
+			],
+			"label": {
+				"Spanish": "Tiposegmento"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "idpromocion",
+			"sqlExpression": "ventas.idpromocion",
+			"index": 50,
+			"strField": "idpromocion",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Lookup wizard",
+					"lookupTable": "promociones",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "id",
+					"lookupDisplayField": "promocion"
+				}
+			],
+			"label": {
+				"Spanish": "Idpromocion"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "orden",
+			"sqlExpression": "ventas.orden",
+			"index": 51,
+			"strField": "orden",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"required": true,
+					"validateAs": "Regular expression",
+					"validateRegex": "^[A-Z0-9]{11}$",
+					"validateRegexMessage": {
+						"text": "El valor no es válido",
+						"type": 0
+					},
+					"textboxMaxLenth": 11
+				}
+			],
+			"label": {
+				"Spanish": "Orden"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "comisionable",
+			"sqlExpression": "ventas.comisionable",
+			"index": 55,
+			"strField": "comisionable",
+			"type": 2,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Comisionable"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "consumos",
+			"sqlExpression": "ventas.consumos",
+			"index": 56,
+			"strField": "consumos",
+			"type": 2,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Lookup wizard",
+					"lookupTable": "logicos",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "idlogico",
+					"lookupDisplayField": "logico"
+				}
+			],
+			"label": {
+				"Spanish": "Consumos"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "captura_contrato",
+			"sqlExpression": "ventas.captura_contrato",
+			"index": 57,
+			"strField": "captura_contrato",
+			"type": 2,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Captura Contrato"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "captura_cuenta",
+			"sqlExpression": "ventas.captura_cuenta",
+			"index": 58,
+			"strField": "captura_cuenta",
+			"type": 2,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Captura Cuenta"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "captura_orden",
+			"sqlExpression": "ventas.captura_orden",
+			"index": 59,
+			"strField": "captura_orden",
+			"type": 2,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Captura Orden"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "validador",
+			"sqlExpression": "sectores_validacion.validador",
+			"index": 63,
+			"strField": "validador",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Validador"
+			},
+			"tableName": "sectores_validacion"
+		},
+		{
+			"name": "contrato_corregido",
+			"sqlExpression": "ventas.contrato_corregido",
+			"index": 60,
+			"strField": "contrato_corregido",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Contrato Corregido"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "cuenta_corregida",
+			"sqlExpression": "ventas.cuenta_corregida",
+			"index": 61,
+			"strField": "cuenta_corregida",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Cuenta Corregida"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "orden_corregida",
+			"sqlExpression": "ventas.orden_corregida",
+			"index": 62,
+			"strField": "orden_corregida",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Orden Corregida"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "idtv",
+			"sqlExpression": "ventas.idtipoventa",
+			"index": 4,
+			"strField": "idtipoventa",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Idtv"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "cliente",
+			"sqlExpression": "clientes.nombre_completo",
+			"index": 7,
+			"strField": "nombre_completo",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Cliente"
+			},
+			"tableName": "clientes"
+		},
+		{
+			"name": "planes",
+			"sqlExpression": "ventas.`plan`",
+			"index": 18,
+			"strField": "plan",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Planes"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "Acceso",
+			"sqlExpression": "serviciosmoviles_uggroups.Acceso",
+			"index": 22,
+			"strField": "Acceso",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Acceso"
+			},
+			"tableName": "serviciosmoviles_uggroups"
+		},
+		{
+			"name": "rentaplan",
+			"sqlExpression": "planes.renta",
+			"index": 24,
+			"strField": "renta",
+			"type": 14,
+			"viewFormats": [
+				{
+					"format": "Number"
+				}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Rentaplan"
+			},
+			"tableName": "planes"
+		},
+		{
+			"name": "tiendanombre",
+			"sqlExpression": "tiendas.Tienda",
+			"index": 26,
+			"strField": "Tienda",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Tiendanombre"
+			},
+			"tableName": "tiendas"
+		},
+		{
+			"name": "descripcion",
+			"sqlExpression": "compras.descripcion",
+			"index": 27,
+			"strField": "descripcion",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Descripcion"
+			},
+			"tableName": "compras"
+		},
+		{
+			"name": "usuarioexporta",
+			"sqlExpression": "''",
+			"index": 31,
+			"strField": "usuarioexporta",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Usuarioexporta"
+			},
+			"tableName": ""
+		},
+		{
+			"name": "fullname",
+			"sqlExpression": "serviciosmoviles_users.fullname",
+			"index": 32,
+			"strField": "fullname",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Fullname"
+			},
+			"tableName": "serviciosmoviles_users"
+		},
+		{
+			"name": "clasif",
+			"sqlExpression": "compras.Clasif",
+			"index": 42,
+			"strField": "Clasif",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Clasif"
+			},
+			"tableName": "compras"
+		},
+		{
+			"name": "idcli",
+			"sqlExpression": "solicitudes.idcli",
+			"index": 52,
+			"strField": "idcli",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Idcli"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "idcita",
+			"sqlExpression": "solicitudes.idcita",
+			"index": 53,
+			"strField": "idcita",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Idcita"
+			},
+			"tableName": "solicitudes"
+		},
+		{
+			"name": "renov_btn",
+			"sqlExpression": "''",
+			"index": 54,
+			"strField": "renov_btn",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Renov Btn"
+			},
+			"tableName": ""
+		},
+		{
+			"name": "valida",
+			"sqlExpression": "ventas.validador",
+			"index": 64,
+			"strField": "validador",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Valida"
+			},
+			"tableName": "ventas"
+		}
+	],
+	"dbTableInfo": {
+		"type": 0,
+		"foreignKeys": [],
+		"fields": [
+			{
+				"name": "idventa",
+				"type": 20,
+				"size": 20,
+				"scale": 0,
+				"typeName": "bigint(20)",
+				"nullable": false,
+				"autoinc": true,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "tipoventa",
+				"type": 200,
+				"size": 30,
+				"scale": 0,
+				"typeName": "varchar(30)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idtipoventa",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": false,
+				"autoinc": false,
+				"defaultValueSQL": "0",
+				"defaultValue": "0"
+			},
+			{
+				"name": "sucursal",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "fecha",
+				"type": 7,
+				"size": 0,
+				"scale": 0,
+				"typeName": "date",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "fechacaptura",
+				"type": 135,
+				"size": 0,
+				"scale": 0,
+				"typeName": "datetime",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idcliente",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "segmento",
+				"type": 200,
+				"size": 12,
+				"scale": 0,
+				"typeName": "varchar(12)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "esnimei",
+				"type": 200,
+				"size": 30,
+				"scale": 0,
+				"typeName": "varchar(30)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "simcard",
+				"type": 200,
+				"size": 30,
+				"scale": 0,
+				"typeName": "varchar(30)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "dn",
+				"type": 200,
+				"size": 10,
+				"scale": 0,
+				"typeName": "varchar(10)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "cuenta",
+				"type": 200,
+				"size": 50,
+				"scale": 0,
+				"typeName": "varchar(50)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "contrato",
+				"type": 200,
+				"size": 11,
+				"scale": 0,
+				"typeName": "varchar(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "contratoportal",
+				"type": 200,
+				"size": 11,
+				"scale": 0,
+				"typeName": "varchar(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "plan",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "renta",
+				"type": 14,
+				"size": 10,
+				"scale": 2,
+				"typeName": "decimal(10,2)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "plazo",
+				"type": 2,
+				"size": 6,
+				"scale": 0,
+				"typeName": "smallint(6)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "plazopendiente",
+				"type": 2,
+				"size": 6,
+				"scale": 0,
+				"typeName": "smallint(6)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "usuario",
+				"type": 200,
+				"size": 20,
+				"scale": 0,
+				"typeName": "varchar(20)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "tienda",
+				"type": 3,
+				"size": 3,
+				"scale": 0,
+				"typeName": "int(3)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "Factura",
+				"type": 200,
+				"size": 18,
+				"scale": 0,
+				"typeName": "varchar(18)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "fechavenci",
+				"type": 7,
+				"size": 0,
+				"scale": 0,
+				"typeName": "date",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "ciclo",
+				"type": 3,
+				"size": 2,
+				"scale": 0,
+				"typeName": "int(2)",
+				"nullable": false,
+				"autoinc": false,
+				"defaultValueSQL": "0",
+				"defaultValue": "0"
+			},
+			{
+				"name": "modifico",
+				"type": 200,
+				"size": 20,
+				"scale": 0,
+				"typeName": "varchar(20)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "fechamodif",
+				"type": 135,
+				"size": 0,
+				"scale": 0,
+				"typeName": "datetime",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "PagoTotal",
+				"type": 16,
+				"size": 1,
+				"scale": 0,
+				"typeName": "tinyint(1)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": "1",
+				"defaultValue": "1"
+			},
+			{
+				"name": "Efectivo",
+				"type": 14,
+				"size": 10,
+				"scale": 2,
+				"typeName": "decimal(10,2)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "NC",
+				"type": 14,
+				"size": 10,
+				"scale": 2,
+				"typeName": "decimal(10,2)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "TC",
+				"type": 14,
+				"size": 10,
+				"scale": 2,
+				"typeName": "decimal(10,2)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "rfc",
+				"type": 200,
+				"size": 20,
+				"scale": 0,
+				"typeName": "varchar(20)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "cargofaciva",
+				"type": 14,
+				"size": 10,
+				"scale": 2,
+				"typeName": "decimal(10,2)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "almacenatt",
+				"type": 3,
+				"size": 3,
+				"scale": 0,
+				"typeName": "int(3)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idcorte",
+				"type": 20,
+				"size": 20,
+				"scale": 0,
+				"typeName": "bigint(20)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "modo",
+				"type": 200,
+				"size": 20,
+				"scale": 0,
+				"typeName": "varchar(20)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "addon",
+				"type": 16,
+				"size": 1,
+				"scale": 0,
+				"typeName": "tinyint(1)",
+				"nullable": false,
+				"autoinc": false,
+				"defaultValueSQL": "0",
+				"defaultValue": "0"
+			},
+			{
+				"name": "dnpreferido",
+				"type": 200,
+				"size": 10,
+				"scale": 0,
+				"typeName": "varchar(10)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "ventadomicilio",
+				"type": 16,
+				"size": 1,
+				"scale": 0,
+				"typeName": "tinyint(1)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": "0",
+				"defaultValue": "0"
+			},
+			{
+				"name": "abonota",
+				"type": 3,
+				"size": 4,
+				"scale": 0,
+				"typeName": "int(4)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": "0",
+				"defaultValue": "0"
+			},
+			{
+				"name": "idsolicitud",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "vtasimg",
+				"type": 201,
+				"size": 0,
+				"scale": 0,
+				"typeName": "mediumtext",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "equipoincluido",
+				"type": 16,
+				"size": 1,
+				"scale": 0,
+				"typeName": "tinyint(1)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "tiendamovil",
+				"type": 16,
+				"size": 1,
+				"scale": 0,
+				"typeName": "tinyint(1)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "descmr",
+				"type": 3,
+				"size": 3,
+				"scale": 0,
+				"typeName": "int(3)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "descad",
+				"type": 3,
+				"size": 3,
+				"scale": 0,
+				"typeName": "int(3)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "tiposegmento",
+				"type": 129,
+				"size": 0,
+				"scale": 0,
+				"typeName": "enum('Corporativo','Masivo')",
+				"enumValues": [
+					"Corporativo",
+					"Masivo"
+				],
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "centinela",
+				"type": 200,
+				"size": 1,
+				"scale": 0,
+				"typeName": "char(1)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idtratamiento",
+				"type": 3,
+				"size": 2,
+				"scale": 0,
+				"typeName": "int(2)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idpromocion",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": "1",
+				"defaultValue": "1"
+			},
+			{
+				"name": "idestatus",
+				"type": 16,
+				"size": 4,
+				"scale": 0,
+				"typeName": "tinyint(4)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "orden",
+				"type": 200,
+				"size": 11,
+				"scale": 0,
+				"typeName": "varchar(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idcentrocosto",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idregion",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "mes",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "anio",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idsector",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "usrgte",
+				"type": 200,
+				"size": 20,
+				"scale": 0,
+				"typeName": "varchar(20)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "usrreg",
+				"type": 200,
+				"size": 20,
+				"scale": 0,
+				"typeName": "varchar(20)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idventa_origen",
+				"type": 20,
+				"size": 20,
+				"scale": 0,
+				"typeName": "bigint(20)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "iddocto_identificacion",
+				"type": 3,
+				"size": 3,
+				"scale": 0,
+				"typeName": "int(3)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "carta_buro",
+				"type": 16,
+				"size": 4,
+				"scale": 0,
+				"typeName": "tinyint(4)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "comp_dom",
+				"type": 16,
+				"size": 4,
+				"scale": 0,
+				"typeName": "tinyint(4)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "poliza_seguro",
+				"type": 16,
+				"size": 4,
+				"scale": 0,
+				"typeName": "tinyint(4)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "consentimiento_biometrico",
+				"type": 16,
+				"size": 4,
+				"scale": 0,
+				"typeName": "tinyint(4)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "usuario_validador",
+				"type": 200,
+				"size": 20,
+				"scale": 0,
+				"typeName": "varchar(20)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "comisionable",
+				"type": 16,
+				"size": 4,
+				"scale": 0,
+				"typeName": "tinyint(4)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "consumos",
+				"type": 16,
+				"size": 4,
+				"scale": 0,
+				"typeName": "tinyint(4)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "captura_contrato",
+				"type": 16,
+				"size": 4,
+				"scale": 0,
+				"typeName": "tinyint(4)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "captura_cuenta",
+				"type": 16,
+				"size": 4,
+				"scale": 0,
+				"typeName": "tinyint(4)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "captura_orden",
+				"type": 16,
+				"size": 4,
+				"scale": 0,
+				"typeName": "tinyint(4)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "captura_orden2",
+				"type": 16,
+				"size": 4,
+				"scale": 0,
+				"typeName": "tinyint(4)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idllamada_validacion",
+				"type": 3,
+				"size": 3,
+				"scale": 0,
+				"typeName": "int(3)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "dn_contacto",
+				"type": 200,
+				"size": 10,
+				"scale": 0,
+				"typeName": "varchar(10)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "switcheo",
+				"type": 16,
+				"size": 4,
+				"scale": 0,
+				"typeName": "tinyint(4)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "expediente",
+				"type": 16,
+				"size": 4,
+				"scale": 0,
+				"typeName": "tinyint(4)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "estatus",
+				"type": 16,
+				"size": 4,
+				"scale": 0,
+				"typeName": "tinyint(4)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "contrato_id_doc",
+				"type": 16,
+				"size": 4,
+				"scale": 0,
+				"typeName": "tinyint(4)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "validador",
+				"type": 200,
+				"size": 20,
+				"scale": 0,
+				"typeName": "varchar(20)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "contrato_corregido",
+				"type": 200,
+				"size": 11,
+				"scale": 0,
+				"typeName": "varchar(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "cuenta_corregida",
+				"type": 200,
+				"size": 50,
+				"scale": 0,
+				"typeName": "varchar(50)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "orden_corregida",
+				"type": 200,
+				"size": 11,
+				"scale": 0,
+				"typeName": "varchar(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			}
+		],
+		"primaryKeys": [
+			"idventa"
+		],
+		"uniqueFields": [],
+		"name": "ventas"
+	},
+	"pages": [
+		{
+			"id": "add",
+			"type": "add",
+			"layoutId": "nomenu",
+			"disabled": true,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "add-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"add_message"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "add-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"add_save",
+								"add_reset",
+								"add_back_list",
+								"add_cancel"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "add-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"add_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c3"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c3": {
+							"model": "c3",
+							"items": [
+								"integrated_edit_field1",
+								"integrated_edit_field2",
+								"integrated_edit_field3",
+								"integrated_edit_field4",
+								"integrated_edit_field6",
+								"integrated_edit_field7",
+								"integrated_edit_field8",
+								"integrated_edit_field9",
+								"integrated_edit_field10",
+								"integrated_edit_field11",
+								"integrated_edit_field12",
+								"integrated_edit_field13",
+								"integrated_edit_field14",
+								"integrated_edit_field15",
+								"integrated_edit_field16",
+								"integrated_edit_field17",
+								"integrated_edit_field18",
+								"integrated_edit_field19",
+								"integrated_edit_field20",
+								"integrated_edit_field21",
+								"integrated_edit_field22",
+								"integrated_edit_field23",
+								"integrated_edit_field24",
+								"integrated_edit_field25",
+								"integrated_edit_field26",
+								"integrated_edit_field27",
+								"integrated_edit_field28",
+								"integrated_edit_field29",
+								"integrated_edit_field30",
+								"integrated_edit_field32",
+								"integrated_edit_field33",
+								"integrated_edit_field34",
+								"integrated_edit_field35",
+								"integrated_edit_field37",
+								"integrated_edit_field38",
+								"integrated_edit_field39",
+								"integrated_edit_field40",
+								"integrated_edit_field43",
+								"integrated_edit_field46",
+								"integrated_edit_field48",
+								"integrated_edit_field63",
+								"integrated_edit_field64",
+								"integrated_edit_field65",
+								"integrated_edit_field66",
+								"integrated_edit_field67",
+								"integrated_edit_field75",
+								"integrated_edit_field76",
+								"integrated_edit_field77",
+								"integrated_edit_field78",
+								"integrated_edit_field",
+								"integrated_edit_field5",
+								"integrated_edit_field31"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				}
+			},
+			"items": {
+				"add_header": {
+					"type": "add_header"
+				},
+				"add_back_list": {
+					"type": "add_back_list"
+				},
+				"add_cancel": {
+					"type": "add_cancel"
+				},
+				"add_message": {
+					"type": "add_message"
+				},
+				"add_save": {
+					"type": "add_save"
+				},
+				"add_reset": {
+					"type": "add_reset"
+				},
+				"integrated_edit_field1": {
+					"field": "idtipoventa",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field2": {
+					"field": "sucursal",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field3": {
+					"field": "fecha",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field4": {
+					"field": "fechacaptura",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field6": {
+					"field": "segmento",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field7": {
+					"field": "esnimei",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field8": {
+					"field": "simcard",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field9": {
+					"field": "dn",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field10": {
+					"field": "cuenta",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field11": {
+					"field": "contrato",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field12": {
+					"field": "contratoportal",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field13": {
+					"field": "plan",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field14": {
+					"field": "renta",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field15": {
+					"field": "plazo",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field16": {
+					"field": "plazopendiente",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field17": {
+					"field": "usuario",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field18": {
+					"field": "tienda",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field19": {
+					"field": "Factura",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field20": {
+					"field": "fechavenci",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field21": {
+					"field": "ciclo",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field22": {
+					"field": "modifico",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field23": {
+					"field": "fechamodif",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field24": {
+					"field": "PagoTotal",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field25": {
+					"field": "Efectivo",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field26": {
+					"field": "NC",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field27": {
+					"field": "TC",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field28": {
+					"field": "rfc",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field29": {
+					"field": "cargofaciva",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field30": {
+					"field": "almacenatt",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field32": {
+					"field": "modo",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field33": {
+					"field": "addon",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field34": {
+					"field": "dnpreferido",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field35": {
+					"field": "ventadomicilio",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field37": {
+					"field": "idsolicitud",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field38": {
+					"field": "vtasimg",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field39": {
+					"field": "equipoincluido",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field40": {
+					"field": "tiendamovil",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field43": {
+					"field": "tiposegmento",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field46": {
+					"field": "idpromocion",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field48": {
+					"field": "orden",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field63": {
+					"field": "comisionable",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field64": {
+					"field": "consumos",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field65": {
+					"field": "captura_contrato",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field66": {
+					"field": "captura_cuenta",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field67": {
+					"field": "captura_orden",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field75": {
+					"field": "validador",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field76": {
+					"field": "contrato_corregido",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field77": {
+					"field": "cuenta_corregida",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field78": {
+					"field": "orden_corregida",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field": {
+					"field": "idtv",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field5": {
+					"field": "planes",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field31": {
+					"field": "valida",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "export",
+			"type": "export",
+			"layoutId": "first",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"supertop": {
+					"modelId": "panel-top",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "export-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"export_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "export-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"export_field",
+								"export_field2",
+								"export_field3",
+								"export_field4",
+								"export_field5",
+								"export_field7",
+								"export_field8",
+								"export_field9",
+								"export_field10",
+								"export_field11",
+								"export_field12",
+								"export_field13",
+								"export_field14",
+								"export_field15",
+								"export_field16",
+								"export_field17",
+								"export_field18",
+								"export_field19",
+								"export_field20",
+								"export_field21",
+								"export_field22",
+								"export_field23",
+								"export_field24",
+								"export_field25",
+								"export_field26",
+								"export_field27",
+								"export_field28",
+								"export_field29",
+								"export_field30",
+								"export_field31",
+								"export_field33",
+								"export_field34",
+								"export_field35",
+								"export_field36",
+								"export_field38",
+								"export_field39",
+								"export_field40",
+								"export_field41",
+								"export_field44",
+								"export_field47",
+								"export_field49",
+								"export_field64",
+								"export_field65",
+								"export_field66",
+								"export_field67",
+								"export_field68",
+								"export_field76",
+								"export_field77",
+								"export_field78",
+								"export_field79",
+								"export_field1",
+								"export_field6",
+								"export_field32",
+								"export_field37",
+								"export_field42",
+								"export_field43",
+								"export_field45",
+								"export_field46",
+								"export_field48",
+								"export_field50",
+								"export_field51",
+								"export_field52",
+								"export_field53",
+								"export_field54"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"footer": {
+					"modelId": "export-footer",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"export_export",
+								"export_cancel"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"export_header": {
+					"type": "export_header"
+				},
+				"export_export": {
+					"type": "export_export"
+				},
+				"export_cancel": {
+					"type": "export_cancel"
+				},
+				"export_field": {
+					"field": "idventa",
+					"type": "export_field"
+				},
+				"export_field2": {
+					"field": "idtipoventa",
+					"type": "export_field"
+				},
+				"export_field3": {
+					"field": "sucursal",
+					"type": "export_field"
+				},
+				"export_field4": {
+					"field": "fecha",
+					"type": "export_field"
+				},
+				"export_field5": {
+					"field": "fechacaptura",
+					"type": "export_field"
+				},
+				"export_field7": {
+					"field": "segmento",
+					"type": "export_field"
+				},
+				"export_field8": {
+					"field": "esnimei",
+					"type": "export_field"
+				},
+				"export_field9": {
+					"field": "simcard",
+					"type": "export_field"
+				},
+				"export_field10": {
+					"field": "dn",
+					"type": "export_field"
+				},
+				"export_field11": {
+					"field": "cuenta",
+					"type": "export_field"
+				},
+				"export_field12": {
+					"field": "contrato",
+					"type": "export_field"
+				},
+				"export_field13": {
+					"field": "contratoportal",
+					"type": "export_field"
+				},
+				"export_field14": {
+					"field": "plan",
+					"type": "export_field"
+				},
+				"export_field15": {
+					"field": "renta",
+					"type": "export_field"
+				},
+				"export_field16": {
+					"field": "plazo",
+					"type": "export_field"
+				},
+				"export_field17": {
+					"field": "plazopendiente",
+					"type": "export_field"
+				},
+				"export_field18": {
+					"field": "usuario",
+					"type": "export_field"
+				},
+				"export_field19": {
+					"field": "tienda",
+					"type": "export_field"
+				},
+				"export_field20": {
+					"field": "Factura",
+					"type": "export_field"
+				},
+				"export_field21": {
+					"field": "fechavenci",
+					"type": "export_field"
+				},
+				"export_field22": {
+					"field": "ciclo",
+					"type": "export_field"
+				},
+				"export_field23": {
+					"field": "modifico",
+					"type": "export_field"
+				},
+				"export_field24": {
+					"field": "fechamodif",
+					"type": "export_field"
+				},
+				"export_field25": {
+					"field": "PagoTotal",
+					"type": "export_field"
+				},
+				"export_field26": {
+					"field": "Efectivo",
+					"type": "export_field"
+				},
+				"export_field27": {
+					"field": "NC",
+					"type": "export_field"
+				},
+				"export_field28": {
+					"field": "TC",
+					"type": "export_field"
+				},
+				"export_field29": {
+					"field": "rfc",
+					"type": "export_field"
+				},
+				"export_field30": {
+					"field": "cargofaciva",
+					"type": "export_field"
+				},
+				"export_field31": {
+					"field": "almacenatt",
+					"type": "export_field"
+				},
+				"export_field33": {
+					"field": "modo",
+					"type": "export_field"
+				},
+				"export_field34": {
+					"field": "addon",
+					"type": "export_field"
+				},
+				"export_field35": {
+					"field": "dnpreferido",
+					"type": "export_field"
+				},
+				"export_field36": {
+					"field": "ventadomicilio",
+					"type": "export_field"
+				},
+				"export_field38": {
+					"field": "idsolicitud",
+					"type": "export_field"
+				},
+				"export_field39": {
+					"field": "vtasimg",
+					"type": "export_field"
+				},
+				"export_field40": {
+					"field": "equipoincluido",
+					"type": "export_field"
+				},
+				"export_field41": {
+					"field": "tiendamovil",
+					"type": "export_field"
+				},
+				"export_field44": {
+					"field": "tiposegmento",
+					"type": "export_field"
+				},
+				"export_field47": {
+					"field": "idpromocion",
+					"type": "export_field"
+				},
+				"export_field49": {
+					"field": "orden",
+					"type": "export_field"
+				},
+				"export_field64": {
+					"field": "comisionable",
+					"type": "export_field"
+				},
+				"export_field65": {
+					"field": "consumos",
+					"type": "export_field"
+				},
+				"export_field66": {
+					"field": "captura_contrato",
+					"type": "export_field"
+				},
+				"export_field67": {
+					"field": "captura_cuenta",
+					"type": "export_field"
+				},
+				"export_field68": {
+					"field": "captura_orden",
+					"type": "export_field"
+				},
+				"export_field76": {
+					"field": "validador",
+					"type": "export_field"
+				},
+				"export_field77": {
+					"field": "contrato_corregido",
+					"type": "export_field"
+				},
+				"export_field78": {
+					"field": "cuenta_corregida",
+					"type": "export_field"
+				},
+				"export_field79": {
+					"field": "orden_corregida",
+					"type": "export_field"
+				},
+				"export_field1": {
+					"field": "idtv",
+					"type": "export_field"
+				},
+				"export_field6": {
+					"field": "cliente",
+					"type": "export_field"
+				},
+				"export_field32": {
+					"field": "planes",
+					"type": "export_field"
+				},
+				"export_field37": {
+					"field": "Acceso",
+					"type": "export_field"
+				},
+				"export_field42": {
+					"field": "rentaplan",
+					"type": "export_field"
+				},
+				"export_field43": {
+					"field": "tiendanombre",
+					"type": "export_field"
+				},
+				"export_field45": {
+					"field": "descripcion",
+					"type": "export_field"
+				},
+				"export_field46": {
+					"field": "usuarioexporta",
+					"type": "export_field"
+				},
+				"export_field48": {
+					"field": "fullname",
+					"type": "export_field"
+				},
+				"export_field50": {
+					"field": "clasif",
+					"type": "export_field"
+				},
+				"export_field51": {
+					"field": "idcli",
+					"type": "export_field"
+				},
+				"export_field52": {
+					"field": "idcita",
+					"type": "export_field"
+				},
+				"export_field53": {
+					"field": "renov_btn",
+					"type": "export_field"
+				},
+				"export_field54": {
+					"field": "valida",
+					"type": "export_field"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {},
+			"exportFormat": 2,
+			"exportDelimiter": ",",
+			"exportSelectDelimiter": false,
+			"exportSelectFields": false
+		},
+		{
+			"id": "import",
+			"type": "import",
+			"layoutId": "first",
+			"disabled": true,
+			"default": 0,
+			"forms": {
+				"supertop": {
+					"modelId": "panel-top",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "import-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"import_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "import-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"import_field",
+								"import_field2",
+								"import_field3",
+								"import_field4",
+								"import_field5",
+								"import_field7",
+								"import_field8",
+								"import_field9",
+								"import_field10",
+								"import_field11",
+								"import_field12",
+								"import_field13",
+								"import_field14",
+								"import_field15",
+								"import_field16",
+								"import_field17",
+								"import_field18",
+								"import_field19",
+								"import_field20",
+								"import_field21",
+								"import_field22",
+								"import_field23",
+								"import_field24",
+								"import_field25",
+								"import_field26",
+								"import_field27",
+								"import_field28",
+								"import_field29",
+								"import_field30",
+								"import_field31",
+								"import_field33",
+								"import_field34",
+								"import_field35",
+								"import_field36",
+								"import_field38",
+								"import_field39",
+								"import_field40",
+								"import_field41",
+								"import_field44",
+								"import_field47",
+								"import_field49",
+								"import_field64",
+								"import_field65",
+								"import_field66",
+								"import_field67",
+								"import_field68",
+								"import_field76",
+								"import_field77",
+								"import_field78",
+								"import_field79",
+								"import_field1",
+								"import_field6",
+								"import_field32"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"import_header": {
+					"type": "import_header"
+				},
+				"import_field": {
+					"field": "idventa",
+					"type": "import_field"
+				},
+				"import_field2": {
+					"field": "idtipoventa",
+					"type": "import_field"
+				},
+				"import_field3": {
+					"field": "sucursal",
+					"type": "import_field"
+				},
+				"import_field4": {
+					"field": "fecha",
+					"type": "import_field"
+				},
+				"import_field5": {
+					"field": "fechacaptura",
+					"type": "import_field"
+				},
+				"import_field7": {
+					"field": "segmento",
+					"type": "import_field"
+				},
+				"import_field8": {
+					"field": "esnimei",
+					"type": "import_field"
+				},
+				"import_field9": {
+					"field": "simcard",
+					"type": "import_field"
+				},
+				"import_field10": {
+					"field": "dn",
+					"type": "import_field"
+				},
+				"import_field11": {
+					"field": "cuenta",
+					"type": "import_field"
+				},
+				"import_field12": {
+					"field": "contrato",
+					"type": "import_field"
+				},
+				"import_field13": {
+					"field": "contratoportal",
+					"type": "import_field"
+				},
+				"import_field14": {
+					"field": "plan",
+					"type": "import_field"
+				},
+				"import_field15": {
+					"field": "renta",
+					"type": "import_field"
+				},
+				"import_field16": {
+					"field": "plazo",
+					"type": "import_field"
+				},
+				"import_field17": {
+					"field": "plazopendiente",
+					"type": "import_field"
+				},
+				"import_field18": {
+					"field": "usuario",
+					"type": "import_field"
+				},
+				"import_field19": {
+					"field": "tienda",
+					"type": "import_field"
+				},
+				"import_field20": {
+					"field": "Factura",
+					"type": "import_field"
+				},
+				"import_field21": {
+					"field": "fechavenci",
+					"type": "import_field"
+				},
+				"import_field22": {
+					"field": "ciclo",
+					"type": "import_field"
+				},
+				"import_field23": {
+					"field": "modifico",
+					"type": "import_field"
+				},
+				"import_field24": {
+					"field": "fechamodif",
+					"type": "import_field"
+				},
+				"import_field25": {
+					"field": "PagoTotal",
+					"type": "import_field"
+				},
+				"import_field26": {
+					"field": "Efectivo",
+					"type": "import_field"
+				},
+				"import_field27": {
+					"field": "NC",
+					"type": "import_field"
+				},
+				"import_field28": {
+					"field": "TC",
+					"type": "import_field"
+				},
+				"import_field29": {
+					"field": "rfc",
+					"type": "import_field"
+				},
+				"import_field30": {
+					"field": "cargofaciva",
+					"type": "import_field"
+				},
+				"import_field31": {
+					"field": "almacenatt",
+					"type": "import_field"
+				},
+				"import_field33": {
+					"field": "modo",
+					"type": "import_field"
+				},
+				"import_field34": {
+					"field": "addon",
+					"type": "import_field"
+				},
+				"import_field35": {
+					"field": "dnpreferido",
+					"type": "import_field"
+				},
+				"import_field36": {
+					"field": "ventadomicilio",
+					"type": "import_field"
+				},
+				"import_field38": {
+					"field": "idsolicitud",
+					"type": "import_field"
+				},
+				"import_field39": {
+					"field": "vtasimg",
+					"type": "import_field"
+				},
+				"import_field40": {
+					"field": "equipoincluido",
+					"type": "import_field"
+				},
+				"import_field41": {
+					"field": "tiendamovil",
+					"type": "import_field"
+				},
+				"import_field44": {
+					"field": "tiposegmento",
+					"type": "import_field"
+				},
+				"import_field47": {
+					"field": "idpromocion",
+					"type": "import_field"
+				},
+				"import_field49": {
+					"field": "orden",
+					"type": "import_field"
+				},
+				"import_field64": {
+					"field": "comisionable",
+					"type": "import_field"
+				},
+				"import_field65": {
+					"field": "consumos",
+					"type": "import_field"
+				},
+				"import_field66": {
+					"field": "captura_contrato",
+					"type": "import_field"
+				},
+				"import_field67": {
+					"field": "captura_cuenta",
+					"type": "import_field"
+				},
+				"import_field68": {
+					"field": "captura_orden",
+					"type": "import_field"
+				},
+				"import_field76": {
+					"field": "validador",
+					"type": "import_field"
+				},
+				"import_field77": {
+					"field": "contrato_corregido",
+					"type": "import_field"
+				},
+				"import_field78": {
+					"field": "cuenta_corregida",
+					"type": "import_field"
+				},
+				"import_field79": {
+					"field": "orden_corregida",
+					"type": "import_field"
+				},
+				"import_field1": {
+					"field": "idtv",
+					"type": "import_field"
+				},
+				"import_field6": {
+					"field": "planes",
+					"type": "import_field"
+				},
+				"import_field32": {
+					"field": "valida",
+					"type": "import_field"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "edit",
+			"type": "edit",
+			"layoutId": "nomenu",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "edit-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"edit_message"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "edit-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"edit_save",
+								"edit_back_list",
+								"edit_close"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"hamburger"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "edit-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"edit_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c4",
+									"colspan": 1
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c4": {
+							"model": "c3",
+							"items": [
+								"tabs"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				},
+				"section": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c3",
+									"rowspan": 1
+								},
+								{
+									"cell": "c17",
+									"rowspan": 1
+								},
+								{
+									"cell": "c2"
+								}
+							]
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c5"
+								},
+								{
+									"cell": "c16"
+								},
+								{
+									"cell": "c"
+								}
+							]
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c4"
+								},
+								{
+									"cell": "c18"
+								},
+								{
+									"cell": "c1"
+								}
+							]
+						}
+					],
+					"cells": {
+						"c3": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field7",
+								"integrated_edit_field8",
+								"integrated_edit_field1",
+								"integrated_edit_field39",
+								"integrated_edit_field",
+								"integrated_edit_field40",
+								"integrated_edit_field3",
+								"integrated_edit_field4",
+								"integrated_edit_field9",
+								"integrated_edit_field5"
+							]
+						},
+						"c4": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field13",
+								"integrated_edit_field14",
+								"integrated_edit_field15",
+								"integrated_edit_field16",
+								"integrated_edit_field20",
+								"integrated_edit_field21",
+								"integrated_edit_field19",
+								"integrated_edit_field6",
+								"integrated_edit_field17",
+								"integrated_edit_field64",
+								"integrated_edit_field63"
+							]
+						},
+						"c5": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field10",
+								"integrated_edit_field48",
+								"integrated_edit_field11"
+							]
+						},
+						"c16": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field66",
+								"integrated_edit_field67",
+								"integrated_edit_field65"
+							]
+						},
+						"c17": {
+							"model": "c1",
+							"items": []
+						},
+						"c18": {
+							"model": "c1",
+							"items": []
+						},
+						"c2": {
+							"model": "c1",
+							"items": []
+						},
+						"c": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field77",
+								"integrated_edit_field78",
+								"integrated_edit_field76"
+							]
+						},
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				},
+				"section1": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field33"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				}
+			},
+			"items": {
+				"edit_header": {
+					"type": "edit_header"
+				},
+				"hamburger": {
+					"type": "hamburger",
+					"items": [
+						"edit_reset"
+					]
+				},
+				"edit_reset": {
+					"type": "edit_reset"
+				},
+				"edit_message": {
+					"type": "edit_message"
+				},
+				"edit_save": {
+					"type": "edit_save"
+				},
+				"edit_back_list": {
+					"type": "edit_back_list"
+				},
+				"edit_close": {
+					"type": "edit_close"
+				},
+				"integrated_edit_field1": {
+					"field": "idtipoventa",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field3": {
+					"field": "fecha",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field4": {
+					"field": "fechacaptura",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field7": {
+					"field": "esnimei",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field8": {
+					"field": "simcard",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field9": {
+					"field": "dn",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field10": {
+					"field": "cuenta",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field11": {
+					"field": "contrato",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field13": {
+					"field": "plan",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field14": {
+					"field": "renta",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field15": {
+					"field": "plazo",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field16": {
+					"field": "plazopendiente",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field17": {
+					"field": "usuario",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field19": {
+					"field": "Factura",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field20": {
+					"field": "fechavenci",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field21": {
+					"field": "ciclo",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field33": {
+					"field": "addon",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field39": {
+					"field": "equipoincluido",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field40": {
+					"field": "tiendamovil",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field48": {
+					"field": "orden",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field63": {
+					"field": "comisionable",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field64": {
+					"field": "consumos",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field65": {
+					"field": "captura_contrato",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field66": {
+					"field": "captura_cuenta",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field67": {
+					"field": "captura_orden",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field76": {
+					"field": "contrato_corregido",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field77": {
+					"field": "cuenta_corregida",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field78": {
+					"field": "orden_corregida",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"tabs": {
+					"type": "tabs",
+					"titles": [
+						{
+							"text": "Ventas",
+							"type": 0
+						},
+						{
+							"text": "AddOn",
+							"type": 0
+						}
+					],
+					"locations": [
+						"section",
+						"section1"
+					],
+					"bsStyle": "default",
+					"panelType": 2
+				},
+				"integrated_edit_field5": {
+					"field": "dnpreferido",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field6": {
+					"field": "ventadomicilio",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field": {
+					"field": "idpromocion",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "view",
+			"type": "view",
+			"layoutId": "nomenu",
+			"disabled": true,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "view-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1",
+									"colspan": 2
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "view-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"view_back_list",
+								"view_close"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"hamburger"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "view-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"view_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c3"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c3": {
+							"model": "c3",
+							"items": [
+								"integrated_edit_field",
+								"integrated_edit_field2",
+								"integrated_edit_field3",
+								"integrated_edit_field4",
+								"integrated_edit_field5",
+								"integrated_edit_field7",
+								"integrated_edit_field8",
+								"integrated_edit_field9",
+								"integrated_edit_field10",
+								"integrated_edit_field11",
+								"integrated_edit_field12",
+								"integrated_edit_field13",
+								"integrated_edit_field14",
+								"integrated_edit_field15",
+								"integrated_edit_field16",
+								"integrated_edit_field17",
+								"integrated_edit_field18",
+								"integrated_edit_field19",
+								"integrated_edit_field20",
+								"integrated_edit_field21",
+								"integrated_edit_field22",
+								"integrated_edit_field23",
+								"integrated_edit_field24",
+								"integrated_edit_field25",
+								"integrated_edit_field26",
+								"integrated_edit_field27",
+								"integrated_edit_field28",
+								"integrated_edit_field29",
+								"integrated_edit_field30",
+								"integrated_edit_field31",
+								"integrated_edit_field33",
+								"integrated_edit_field34",
+								"integrated_edit_field35",
+								"integrated_edit_field36",
+								"integrated_edit_field38",
+								"integrated_edit_field39",
+								"integrated_edit_field40",
+								"integrated_edit_field41",
+								"integrated_edit_field44",
+								"integrated_edit_field47",
+								"integrated_edit_field49",
+								"integrated_edit_field64",
+								"integrated_edit_field65",
+								"integrated_edit_field66",
+								"integrated_edit_field67",
+								"integrated_edit_field68",
+								"integrated_edit_field76",
+								"integrated_edit_field77",
+								"integrated_edit_field78",
+								"integrated_edit_field79",
+								"integrated_edit_field1",
+								"integrated_edit_field6",
+								"integrated_edit_field32",
+								"integrated_edit_field37",
+								"integrated_edit_field42",
+								"integrated_edit_field43",
+								"integrated_edit_field45",
+								"integrated_edit_field46",
+								"integrated_edit_field48",
+								"integrated_edit_field50",
+								"integrated_edit_field51",
+								"integrated_edit_field52",
+								"integrated_edit_field53",
+								"integrated_edit_field54"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				}
+			},
+			"items": {
+				"view_header": {
+					"type": "view_header"
+				},
+				"view_back_list": {
+					"type": "view_back_list"
+				},
+				"view_close": {
+					"type": "view_close"
+				},
+				"integrated_edit_field": {
+					"field": "idventa",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field2": {
+					"field": "idtipoventa",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field3": {
+					"field": "sucursal",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field4": {
+					"field": "fecha",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field5": {
+					"field": "fechacaptura",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field7": {
+					"field": "segmento",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field8": {
+					"field": "esnimei",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field9": {
+					"field": "simcard",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field10": {
+					"field": "dn",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field11": {
+					"field": "cuenta",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field12": {
+					"field": "contrato",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field13": {
+					"field": "contratoportal",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field14": {
+					"field": "plan",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field15": {
+					"field": "renta",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field16": {
+					"field": "plazo",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field17": {
+					"field": "plazopendiente",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field18": {
+					"field": "usuario",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field19": {
+					"field": "tienda",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field20": {
+					"field": "Factura",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field21": {
+					"field": "fechavenci",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field22": {
+					"field": "ciclo",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field23": {
+					"field": "modifico",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field24": {
+					"field": "fechamodif",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field25": {
+					"field": "PagoTotal",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field26": {
+					"field": "Efectivo",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field27": {
+					"field": "NC",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field28": {
+					"field": "TC",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field29": {
+					"field": "rfc",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field30": {
+					"field": "cargofaciva",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field31": {
+					"field": "almacenatt",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field33": {
+					"field": "modo",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field34": {
+					"field": "addon",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field35": {
+					"field": "dnpreferido",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field36": {
+					"field": "ventadomicilio",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field38": {
+					"field": "idsolicitud",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field39": {
+					"field": "vtasimg",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field40": {
+					"field": "equipoincluido",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field41": {
+					"field": "tiendamovil",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field44": {
+					"field": "tiposegmento",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field47": {
+					"field": "idpromocion",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field49": {
+					"field": "orden",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field64": {
+					"field": "comisionable",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field65": {
+					"field": "consumos",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field66": {
+					"field": "captura_contrato",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field67": {
+					"field": "captura_cuenta",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field68": {
+					"field": "captura_orden",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field76": {
+					"field": "validador",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field77": {
+					"field": "contrato_corregido",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field78": {
+					"field": "cuenta_corregida",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field79": {
+					"field": "orden_corregida",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"hamburger": {
+					"type": "hamburger",
+					"items": [
+						"view_edit"
+					]
+				},
+				"view_edit": {
+					"type": "view_edit"
+				},
+				"integrated_edit_field1": {
+					"field": "idtv",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field6": {
+					"field": "cliente",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field32": {
+					"field": "planes",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field37": {
+					"field": "Acceso",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field42": {
+					"field": "rentaplan",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field43": {
+					"field": "tiendanombre",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field45": {
+					"field": "descripcion",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field46": {
+					"field": "usuarioexporta",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field48": {
+					"field": "fullname",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field50": {
+					"field": "clasif",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field51": {
+					"field": "idcli",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field52": {
+					"field": "idcita",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field53": {
+					"field": "renov_btn",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field54": {
+					"field": "valida",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "list",
+			"type": "list",
+			"layoutId": "leftbar",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "list-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"delete"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"details_found",
+								"page_size"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "list-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"pagination"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"left": {
+					"modelId": "leftbar-menu",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c0"
+								}
+							],
+							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c0": {
+							"model": "c0",
+							"items": [
+								"logo"
+							]
+						},
+						"c1": {
+							"model": "c1",
+							"items": [
+								"menu",
+								"search_panel"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"supertop": {
+					"modelId": "leftbar-top",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"expand_menu_button",
+								"collapse_button",
+								"breadcrumb"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"simple_search",
+								"list_options",
+								"loginform_login",
+								"username_button"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"simple_grid_field4",
+								"simple_grid_field5",
+								"simple_grid_field8",
+								"simple_grid_field9",
+								"simple_grid_field10",
+								"simple_grid_field11",
+								"simple_grid_field12",
+								"simple_grid_field34",
+								"simple_grid_field35",
+								"simple_grid_field49",
+								"simple_grid_field64",
+								"simple_grid_field65",
+								"simple_grid_field66",
+								"simple_grid_field67",
+								"simple_grid_field68",
+								"simple_grid_field77",
+								"simple_grid_field78",
+								"simple_grid_field79",
+								"simple_grid_field1",
+								"simple_grid_field48",
+								"simple_grid_field54"
+							]
+						}
+					},
+					"deferredItems": [
+						"grid_checkbox",
+						"grid_checkbox_head",
+						"grid_edit"
+					],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "list-sidebar-top",
+					"grid": [],
+					"cells": {},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"page_size": {
+					"type": "page_size"
+				},
+				"breadcrumb": {
+					"type": "breadcrumb"
+				},
+				"logo": {
+					"type": "logo"
+				},
+				"menu": {
+					"type": "menu"
+				},
+				"simple_search": {
+					"type": "simple_search"
+				},
+				"pagination": {
+					"type": "pagination"
+				},
+				"grid_checkbox": {
+					"type": "grid_checkbox"
+				},
+				"grid_checkbox_head": {
+					"type": "grid_checkbox_head"
+				},
+				"details_found": {
+					"type": "details_found"
+				},
+				"simple_grid_field4": {
+					"field": "fecha",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field5": {
+					"field": "fechacaptura",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field8": {
+					"field": "esnimei",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field9": {
+					"field": "simcard",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field10": {
+					"field": "dn",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field11": {
+					"field": "cuenta",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field12": {
+					"field": "contrato",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field34": {
+					"field": "addon",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field35": {
+					"field": "dnpreferido",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field49": {
+					"field": "orden",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field64": {
+					"field": "comisionable",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field65": {
+					"field": "consumos",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field66": {
+					"field": "captura_contrato",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field67": {
+					"field": "captura_cuenta",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field68": {
+					"field": "captura_orden",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field77": {
+					"field": "contrato_corregido",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field78": {
+					"field": "cuenta_corregida",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field79": {
+					"field": "orden_corregida",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"search_panel": {
+					"type": "search_panel",
+					"items": [
+						"search_panel_field49",
+						"search_panel_field12",
+						"search_panel_field11",
+						"search_panel_field10",
+						"search_panel_field4"
+					],
+					"_flexiblePanel": true
+				},
+				"list_options": {
+					"type": "list_options",
+					"items": [
+						"export_selected",
+						"delete_selected",
+						"-1",
+						"show_search_panel",
+						"hide_search_panel",
+						"-3",
+						"export"
+					]
+				},
+				"show_search_panel": {
+					"type": "show_search_panel"
+				},
+				"hide_search_panel": {
+					"type": "hide_search_panel"
+				},
+				"search_panel_field4": {
+					"field": "fecha",
+					"type": "search_panel_field"
+				},
+				"search_panel_field10": {
+					"field": "dn",
+					"type": "search_panel_field"
+				},
+				"search_panel_field11": {
+					"field": "cuenta",
+					"type": "search_panel_field"
+				},
+				"search_panel_field12": {
+					"field": "contrato",
+					"type": "search_panel_field"
+				},
+				"search_panel_field49": {
+					"field": "orden",
+					"type": "search_panel_field"
+				},
+				"username_button": {
+					"type": "username_button",
+					"items": [
+						"userinfo_link",
+						"logout_link",
+						"adminarea_link"
+					]
+				},
+				"loginform_login": {
+					"type": "loginform_login",
+					"popup": false
+				},
+				"userinfo_link": {
+					"type": "userinfo_link"
+				},
+				"logout_link": {
+					"type": "logout_link"
+				},
+				"adminarea_link": {
+					"type": "adminarea_link"
+				},
+				"expand_menu_button": {
+					"type": "expand_menu_button"
+				},
+				"collapse_button": {
+					"type": "collapse_button"
+				},
+				"-": {
+					"type": "-"
+				},
+				"-1": {
+					"type": "-"
+				},
+				"-2": {
+					"type": "-"
+				},
+				"grid_edit": {
+					"type": "grid_edit"
+				},
+				"delete": {
+					"type": "delete"
+				},
+				"delete_selected": {
+					"type": "delete_selected"
+				},
+				"simple_grid_field1": {
+					"field": "idtv",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field48": {
+					"field": "fullname",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field54": {
+					"field": "valida",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"export": {
+					"type": "export"
+				},
+				"-3": {
+					"type": "-"
+				},
+				"export_selected": {
+					"type": "export_selected"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "print",
+			"type": "print",
+			"layoutId": "basic",
+			"disabled": true,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "print-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"print_pages"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "print-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "print-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c2": {
+							"model": "c2",
+							"items": [
+								"print_header",
+								"print_subheader"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"simple_grid_field",
+								"simple_grid_field2",
+								"simple_grid_field3",
+								"simple_grid_field4",
+								"simple_grid_field5",
+								"simple_grid_field7",
+								"simple_grid_field8",
+								"simple_grid_field9",
+								"simple_grid_field10",
+								"simple_grid_field11",
+								"simple_grid_field12",
+								"simple_grid_field13",
+								"simple_grid_field14",
+								"simple_grid_field15",
+								"simple_grid_field16",
+								"simple_grid_field17",
+								"simple_grid_field18",
+								"simple_grid_field19",
+								"simple_grid_field20",
+								"simple_grid_field21",
+								"simple_grid_field22",
+								"simple_grid_field23",
+								"simple_grid_field24",
+								"simple_grid_field25",
+								"simple_grid_field26",
+								"simple_grid_field27",
+								"simple_grid_field28",
+								"simple_grid_field29",
+								"simple_grid_field30",
+								"simple_grid_field31",
+								"simple_grid_field33",
+								"simple_grid_field34",
+								"simple_grid_field35",
+								"simple_grid_field36",
+								"simple_grid_field38",
+								"simple_grid_field39",
+								"simple_grid_field40",
+								"simple_grid_field41",
+								"simple_grid_field44",
+								"simple_grid_field47",
+								"simple_grid_field49",
+								"simple_grid_field64",
+								"simple_grid_field65",
+								"simple_grid_field66",
+								"simple_grid_field67",
+								"simple_grid_field68",
+								"simple_grid_field76",
+								"simple_grid_field77",
+								"simple_grid_field78",
+								"simple_grid_field79",
+								"simple_grid_field1",
+								"simple_grid_field6",
+								"simple_grid_field32",
+								"simple_grid_field37",
+								"simple_grid_field42",
+								"simple_grid_field43",
+								"simple_grid_field45",
+								"simple_grid_field46",
+								"simple_grid_field48",
+								"simple_grid_field50",
+								"simple_grid_field51",
+								"simple_grid_field52",
+								"simple_grid_field53",
+								"simple_grid_field54"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"print_header": {
+					"type": "print_header"
+				},
+				"print_subheader": {
+					"type": "print_subheader"
+				},
+				"print_pages": {
+					"type": "print_pages"
+				},
+				"simple_grid_field": {
+					"field": "idventa",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field2": {
+					"field": "idtipoventa",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field3": {
+					"field": "sucursal",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field4": {
+					"field": "fecha",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field5": {
+					"field": "fechacaptura",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field7": {
+					"field": "segmento",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field8": {
+					"field": "esnimei",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field9": {
+					"field": "simcard",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field10": {
+					"field": "dn",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field11": {
+					"field": "cuenta",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field12": {
+					"field": "contrato",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field13": {
+					"field": "contratoportal",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field14": {
+					"field": "plan",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field15": {
+					"field": "renta",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field16": {
+					"field": "plazo",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field17": {
+					"field": "plazopendiente",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field18": {
+					"field": "usuario",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field19": {
+					"field": "tienda",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field20": {
+					"field": "Factura",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field21": {
+					"field": "fechavenci",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field22": {
+					"field": "ciclo",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field23": {
+					"field": "modifico",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field24": {
+					"field": "fechamodif",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field25": {
+					"field": "PagoTotal",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field26": {
+					"field": "Efectivo",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field27": {
+					"field": "NC",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field28": {
+					"field": "TC",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field29": {
+					"field": "rfc",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field30": {
+					"field": "cargofaciva",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field31": {
+					"field": "almacenatt",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field33": {
+					"field": "modo",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field34": {
+					"field": "addon",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field35": {
+					"field": "dnpreferido",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field36": {
+					"field": "ventadomicilio",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field38": {
+					"field": "idsolicitud",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field39": {
+					"field": "vtasimg",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field40": {
+					"field": "equipoincluido",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field41": {
+					"field": "tiendamovil",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field44": {
+					"field": "tiposegmento",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field47": {
+					"field": "idpromocion",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field49": {
+					"field": "orden",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field64": {
+					"field": "comisionable",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field65": {
+					"field": "consumos",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field66": {
+					"field": "captura_contrato",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field67": {
+					"field": "captura_cuenta",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field68": {
+					"field": "captura_orden",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field76": {
+					"field": "validador",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field77": {
+					"field": "contrato_corregido",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field78": {
+					"field": "cuenta_corregida",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field79": {
+					"field": "orden_corregida",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field1": {
+					"field": "idtv",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field6": {
+					"field": "cliente",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field32": {
+					"field": "planes",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field37": {
+					"field": "Acceso",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field42": {
+					"field": "rentaplan",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field43": {
+					"field": "tiendanombre",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field45": {
+					"field": "descripcion",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field46": {
+					"field": "usuarioexporta",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field48": {
+					"field": "fullname",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field50": {
+					"field": "clasif",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field51": {
+					"field": "idcli",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field52": {
+					"field": "idcita",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field53": {
+					"field": "renov_btn",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field54": {
+					"field": "valida",
+					"type": "simple_grid_field"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		}
+	],
+	"geoCoding": {
+		"enabled": false,
+		"latField": "",
+		"lonField": "",
+		"addressFields": []
+	},
+	"caption": {
+		"Spanish": "Ventas Consigna VC E1"
+	}
+}
