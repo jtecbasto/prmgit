@@ -6040,9 +6040,7 @@
 						},
 						"cell_field18": {
 							"model": "cell_field",
-							"items": [
-								"grid_details_link"
-							],
+							"items": [],
 							"field": "",
 							"columnName": "",
 							"align": "center",
@@ -6199,12 +6197,12 @@
 						"cell_details": {
 							"model": "cell_details",
 							"items": [
-								"grid_alldetails_link",
-								"grid_details_link1",
-								"grid_details_link3",
-								"grid_details_link5",
 								"grid_details_link4",
-								"grid_details_link2"
+								"grid_details_link2",
+								"grid_alldetails_link",
+								"grid_details_link",
+								"grid_details_link1",
+								"grid_details_link5"
 							],
 							"columnName": "details",
 							"field": ""
@@ -6303,9 +6301,7 @@
 						"cell_field23": {
 							"model": "cell_field",
 							"items": [
-								"details_preview",
-								"details_preview1",
-								"details_preview2"
+								"details_preview1"
 							],
 							"field": "",
 							"columnName": "",
@@ -6323,7 +6319,8 @@
 							"model": "cell_dpreview",
 							"items": [
 								"details_preview3",
-								"details_preview4"
+								"details_preview",
+								"details_preview2"
 							],
 							"columnName": "field",
 							"field": "direccion"
@@ -6569,14 +6566,6 @@
 						"text": "Rango de fechas: "
 					},
 					"editedByRte": false
-				},
-				"grid_details_link": {
-					"type": "grid_details_link",
-					"table": 3847630651,
-					"badge": true,
-					"hideIfNone": true,
-					"showCount": true,
-					"icon": {}
 				},
 				"print_details": {
 					"type": "print_details",
@@ -6837,33 +6826,6 @@
 					"background": "#dcdbdb",
 					"buttonSize": "xtra-small"
 				},
-				"grid_alldetails_link": {
-					"type": "grid_alldetails_link"
-				},
-				"grid_details_link1": {
-					"type": "grid_details_link",
-					"table": 2027119892,
-					"badge": true,
-					"hideIfNone": true,
-					"icon": {}
-				},
-				"details_preview": {
-					"type": "details_preview",
-					"table": 2027119892,
-					"items": [
-						"-11",
-						"-12"
-					],
-					"hideEmptyPreview": true,
-					"proceedLink": false,
-					"popup": false,
-					"pageId": "list",
-					"caption": {
-						"page": "list",
-						"table": "decisionessolicitud_historial",
-						"type": 7
-					}
-				},
 				"details_preview1": {
 					"type": "deleted",
 					"itemId": "details_preview1"
@@ -6871,25 +6833,6 @@
 				"grid_details_link2": {
 					"type": "deleted",
 					"itemId": "grid_details_link2"
-				},
-				"grid_details_link3": {
-					"type": "grid_details_link",
-					"table": 2796458642,
-					"badge": true,
-					"hideIfNone": true
-				},
-				"details_preview2": {
-					"type": "details_preview",
-					"table": 2796458642,
-					"items": [],
-					"popup": false,
-					"pageId": "list",
-					"caption": {
-						"page": "list",
-						"table": "estatusentregas_historial",
-						"type": 7
-					},
-					"hideEmptyPreview": true
 				},
 				"grid_field17": {
 					"field": "dn",
@@ -6927,12 +6870,6 @@
 					"inlineEdit": false,
 					"inlineAdd": false
 				},
-				"-11": {
-					"type": "-"
-				},
-				"-12": {
-					"type": "-"
-				},
 				"grid_details_link4": {
 					"type": "deleted",
 					"itemId": "grid_details_link4"
@@ -6941,21 +6878,47 @@
 					"type": "deleted",
 					"itemId": "details_preview3"
 				},
-				"grid_details_link5": {
+				"grid_details_link": {
+					"type": "grid_details_link",
+					"table": 3847630651,
+					"badge": true,
+					"hideIfNone": false,
+					"showCount": true
+				},
+				"grid_details_link1": {
 					"type": "grid_details_link",
 					"table": 1975362622,
 					"badge": true,
 					"showCount": true,
-					"hideIfNone": false
+					"hideIfNone": true
 				},
-				"details_preview4": {
+				"details_preview": {
 					"type": "details_preview",
 					"table": 1975362622,
 					"items": [],
+					"hideEmptyPreview": true,
 					"proceedLink": true,
 					"popup": false,
-					"pageId": "list",
-					"hideEmptyPreview": false
+					"pageId": "list"
+				},
+				"grid_details_link5": {
+					"type": "grid_details_link",
+					"table": 2796458642,
+					"showCount": true,
+					"hideIfNone": true,
+					"badge": true
+				},
+				"details_preview2": {
+					"type": "details_preview",
+					"table": 2796458642,
+					"items": [],
+					"hideEmptyPreview": true,
+					"proceedLink": true,
+					"popup": false,
+					"pageId": "list"
+				},
+				"grid_alldetails_link": {
+					"type": "grid_alldetails_link"
 				}
 			},
 			"dbProps": {},
@@ -7093,8 +7056,8 @@
 							"items": [
 								"details_preview",
 								"details_preview2",
-								"details_preview3",
 								"details_preview1",
+								"details_preview3",
 								"details_preview4"
 							]
 						}
@@ -7132,15 +7095,15 @@
 					"type": "deleted",
 					"itemId": "details_preview2"
 				},
+				"details_preview1": {
+					"type": "deleted",
+					"itemId": "details_preview1"
+				},
 				"details_preview3": {
 					"type": "details_preview",
 					"table": 2796458642,
 					"items": [],
 					"popup": false
-				},
-				"details_preview1": {
-					"type": "deleted",
-					"itemId": "details_preview1"
 				},
 				"details_preview4": {
 					"type": "details_preview",

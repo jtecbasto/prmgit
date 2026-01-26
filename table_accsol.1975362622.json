@@ -1802,12 +1802,6 @@
 				"delete_selected": {
 					"type": "delete_selected"
 				},
-				"master_info": {
-					"type": "master_info",
-					"tables": {
-						"35049744": "true"
-					}
-				},
 				"-3": {
 					"type": "-"
 				},
@@ -1943,6 +1937,12 @@
 						"text": ""
 					},
 					"font-size": "2em"
+				},
+				"master_info": {
+					"type": "master_info",
+					"tables": {
+						"35049744": "true"
+					}
 				}
 			},
 			"dbProps": {},

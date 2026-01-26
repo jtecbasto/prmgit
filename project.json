@@ -209,8 +209,8 @@
 			},
 			{
 				"gid": 3668907077,
-				"y": 10,
-				"x": 470,
+				"y": 105,
+				"x": 467,
 				"width": 139.734375,
 				"height": 400
 			},
@@ -470,7 +470,7 @@
 						"code": "$host = 'localhost';\r\n$user = 'rocasamexico_admin';\r\n$pwd = 'Rocas@Mexico.2025**';\r\n$port = 3306;\r\n$sys_dbname = 'rocasamexico_prm';"
 					}
 				],
-				"selectedCustomConn": "Local"
+				"selectedCustomConn": "New connection"
 			}
 		}
 	],
@@ -550,104 +550,6 @@
 							"itemType": 2,
 							"linkType": 0,
 							"table": 3680839223,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "18",
-						"data": {
-							"name": {
-								"table": "ventasConsignaVCE1",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 1911098216,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "19",
-						"data": {
-							"name": {
-								"table": "acccat",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 3832853142,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "20",
-						"data": {
-							"name": {
-								"table": "acccatcom",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 481524575,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "21",
-						"data": {
-							"name": {
-								"table": "acccom",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 513554392,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "22",
-						"data": {
-							"name": {
-								"table": "accctg",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 1467946332,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "25",
-						"data": {
-							"name": {
-								"table": "acctipomov",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 1348619043,
-							"pageType": "list"
-						}
-					},
-					{
-						"id": "26",
-						"data": {
-							"name": {
-								"table": "accsol",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 1975362622,
 							"pageType": "list"
 						}
 					}
