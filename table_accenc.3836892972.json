@@ -1,0 +1,2379 @@
+{
+	"orderInfo": [
+		{
+			"index": 1,
+			"field": "id",
+			"expr": "accenc.id",
+			"asc": false
+		}
+	],
+	"sql": "SELECT\r\naccenc.id,\r\naccenc.idtipomov,\r\naccenc.referencia,\r\naccenc.fecha,\r\naccenc.idtienda,\r\naccenc.idtienda2,\r\naccenc.idcliente,\r\nc.nombre_completo cliente,\r\nt.tienda,\r\naccenc.usuario,\r\naccenc.fechaingreso,\r\nserviciosmoviles_uggroups.Acceso,\r\naccenc.venta\r\nFROM accenc\r\nINNER JOIN serviciosmoviles_users ON accenc.usuario = serviciosmoviles_users.username\r\nINNER JOIN serviciosmoviles_ugmembers ON serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName\r\nINNER JOIN serviciosmoviles_uggroups ON serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID\r\ninner join clientes c on accenc.idcliente=c.idcliente\r\ninner join tiendas t on accenc.idtienda=t.idtienda\r\nWHERE (accenc.idtipomov =2) and accenc.idtienda=:session.Tienda and\r\n (accenc.usuario =':session.UserID' OR if(:session.acceso=1, accenc.idtienda=:session.Tienda, false) OR ':session.UserID' ='ADMIN') \r\n\r\nORDER BY accenc.id DESC\r\n",
+	"connId": "conn",
+	"originalTable": "accenc",
+	"name": "accenc",
+	"shortTableName": "accenc",
+	"dbType": 0,
+	"keyFields": [
+		"id"
+	],
+	"detailsBadgeColor": "e8926f",
+	"detailsTables": [
+		2657604414
+	],
+	"fields": [
+		{
+			"name": "id",
+			"sqlExpression": "accenc.id",
+			"index": 1,
+			"strField": "id",
+			"type": 3,
+			"autoinc": true,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Id"
+			},
+			"tableName": "accenc"
+		},
+		{
+			"name": "idtipomov",
+			"sqlExpression": "accenc.idtipomov",
+			"index": 2,
+			"strField": "idtipomov",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Idtipomov"
+			},
+			"tableName": "accenc"
+		},
+		{
+			"name": "referencia",
+			"sqlExpression": "accenc.referencia",
+			"index": 3,
+			"strField": "referencia",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Referencia"
+			},
+			"tableName": "accenc"
+		},
+		{
+			"name": "fecha",
+			"sqlExpression": "accenc.fecha",
+			"index": 4,
+			"strField": "fecha",
+			"type": 135,
+			"viewFormats": [
+				{
+					"format": "Short Date"
+				}
+			],
+			"editFormats": [
+				{
+					"format": "Date",
+					"dateEditType": 11
+				}
+			],
+			"label": {
+				"Spanish": "Fecha"
+			},
+			"tableName": "accenc"
+		},
+		{
+			"name": "idtienda",
+			"sqlExpression": "accenc.idtienda",
+			"index": 5,
+			"strField": "idtienda",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Tienda"
+			},
+			"tableName": "accenc"
+		},
+		{
+			"name": "idtienda2",
+			"sqlExpression": "accenc.idtienda2",
+			"index": 6,
+			"strField": "idtienda2",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Idtienda2"
+			},
+			"tableName": "accenc"
+		},
+		{
+			"name": "idcliente",
+			"sqlExpression": "accenc.idcliente",
+			"index": 7,
+			"strField": "idcliente",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Lookup wizard",
+					"required": true,
+					"lookupType": 2,
+					"lookupTable": "clientes",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "idcliente",
+					"lookupDisplayField": "nombre_completo",
+					"lookupOrderBy": "nombre_completo",
+					"lookupControlType": 2,
+					"lookupListPage": "list"
+				}
+			],
+			"label": {
+				"Spanish": "Cliente"
+			},
+			"tableName": "accenc"
+		},
+		{
+			"name": "usuario",
+			"sqlExpression": "accenc.usuario",
+			"index": 10,
+			"strField": "usuario",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Usuario"
+			},
+			"tableName": "accenc"
+		},
+		{
+			"name": "fechaingreso",
+			"sqlExpression": "accenc.fechaingreso",
+			"index": 11,
+			"strField": "fechaingreso",
+			"type": 135,
+			"viewFormats": [
+				{
+					"format": "Short Date"
+				}
+			],
+			"editFormats": [
+				{
+					"format": "Date",
+					"dateEditType": 11
+				}
+			],
+			"label": {
+				"Spanish": "Fecha ingreso"
+			},
+			"tableName": "accenc"
+		},
+		{
+			"name": "venta",
+			"sqlExpression": "accenc.venta",
+			"index": 13,
+			"strField": "venta",
+			"type": 129,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Lookup wizard",
+					"required": true,
+					"lookupType": 0,
+					"lookupValues": [
+						"CONTADO",
+						"FINANCIADA"
+					]
+				}
+			],
+			"label": {
+				"Spanish": "Venta"
+			},
+			"tableName": "accenc"
+		},
+		{
+			"name": "Acceso",
+			"sqlExpression": "serviciosmoviles_uggroups.Acceso",
+			"index": 12,
+			"strField": "Acceso",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Acceso"
+			},
+			"tableName": "serviciosmoviles_uggroups"
+		},
+		{
+			"name": "tienda",
+			"sqlExpression": "t.tienda",
+			"index": 9,
+			"strField": "Tienda",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Tienda"
+			},
+			"tableName": "tiendas"
+		},
+		{
+			"name": "cliente",
+			"sqlExpression": "c.nombre_completo",
+			"index": 8,
+			"strField": "nombre_completo",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Cliente"
+			},
+			"tableName": "clientes"
+		}
+	],
+	"queryContext": {
+		"session.UserID": "15",
+		"session.acceso": "1",
+		"session.Tienda": "146"
+	},
+	"eventHandlers": [
+		{
+			"eventId": "EVENT_BEFOREADD",
+			"pageType": "add",
+			"code": "$values['idtienda']=$_SESSION[\"Tienda\"];\n$values['usuario']=$_SESSION[\"UserID\"];\n$values['fechaingreso']=date('Y-m-d H:i:s');\n$values['idtipomov']=2;   //Venta\n\nreturn true;"
+		}
+	],
+	"dbTableInfo": {
+		"type": 0,
+		"foreignKeys": [],
+		"fields": [
+			{
+				"name": "id",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": false,
+				"autoinc": true,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idtipomov",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": false,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "referencia",
+				"type": 200,
+				"size": 11,
+				"scale": 0,
+				"typeName": "varchar(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "fecha",
+				"type": 135,
+				"size": 0,
+				"scale": 0,
+				"typeName": "datetime",
+				"nullable": false,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idtienda",
+				"type": 3,
+				"size": 3,
+				"scale": 0,
+				"typeName": "int(3)",
+				"nullable": false,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idtienda2",
+				"type": 3,
+				"size": 3,
+				"scale": 0,
+				"typeName": "int(3)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idcliente",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "usuario",
+				"type": 200,
+				"size": 20,
+				"scale": 0,
+				"typeName": "varchar(20)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "fechaingreso",
+				"type": 135,
+				"size": 0,
+				"scale": 0,
+				"typeName": "datetime",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "usuariodestino",
+				"type": 200,
+				"size": 20,
+				"scale": 0,
+				"typeName": "varchar(20)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "fecharecepcion",
+				"type": 200,
+				"size": 20,
+				"scale": 0,
+				"typeName": "varchar(20)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "venta",
+				"type": 129,
+				"size": 0,
+				"scale": 0,
+				"typeName": "enum('CONTADO','FINANCIADA')",
+				"enumValues": [
+					"CONTADO",
+					"FINANCIADA"
+				],
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": "CONTADO",
+				"defaultValue": ""
+			},
+			{
+				"name": "idsolicitud",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			}
+		],
+		"primaryKeys": [
+			"id"
+		],
+		"uniqueFields": [],
+		"name": "accenc"
+	},
+	"pages": [
+		{
+			"id": "add",
+			"type": "add",
+			"layoutId": "nomenu",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "add-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"add_message"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "add-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"add_save",
+								"add_reset",
+								"add_back_list",
+								"add_cancel"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "add-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"add_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c6"
+								}
+							],
+							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c2",
+									"rowspan": 1
+								},
+								{
+									"cell": "c"
+								}
+							],
+							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c4",
+									"rowspan": 1,
+									"colspan": 2
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field4",
+								"integrated_edit_field1",
+								"integrated_edit_field5"
+							],
+							"field": "referencia"
+						},
+						"c2": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field8",
+								"integrated_edit_field2",
+								"integrated_edit_field9"
+							],
+							"field": "idcliente"
+						},
+						"c4": {
+							"model": "c1",
+							"items": [
+								"details_preview",
+								"details_preview1"
+							],
+							"field": null,
+							"align": "center"
+						},
+						"c6": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field6",
+								"integrated_edit_field",
+								"integrated_edit_field7"
+							],
+							"field": "referencia"
+						},
+						"c": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field10",
+								"integrated_edit_field3",
+								"integrated_edit_field11"
+							],
+							"field": "idcliente"
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": true
+				}
+			},
+			"items": {
+				"add_header": {
+					"type": "add_header",
+					"title": {
+						"page": "add",
+						"table": "accenc",
+						"type": 7
+					}
+				},
+				"add_back_list": {
+					"type": "add_back_list"
+				},
+				"add_cancel": {
+					"type": "add_cancel"
+				},
+				"add_message": {
+					"type": "add_message"
+				},
+				"add_save": {
+					"type": "add_save"
+				},
+				"add_reset": {
+					"type": "add_reset"
+				},
+				"integrated_edit_field1": {
+					"field": "referencia",
+					"type": "edit_field"
+				},
+				"integrated_edit_field4": {
+					"type": "edit_field_label",
+					"field": "referencia"
+				},
+				"integrated_edit_field5": {
+					"type": "edit_field_tooltip",
+					"field": "referencia"
+				},
+				"details_preview": {
+					"type": "deleted",
+					"itemId": "details_preview"
+				},
+				"integrated_edit_field": {
+					"field": "fecha",
+					"type": "edit_field"
+				},
+				"integrated_edit_field6": {
+					"type": "edit_field_label",
+					"field": "fecha"
+				},
+				"integrated_edit_field7": {
+					"type": "edit_field_tooltip",
+					"field": "fecha"
+				},
+				"integrated_edit_field2": {
+					"field": "idcliente",
+					"type": "edit_field"
+				},
+				"integrated_edit_field8": {
+					"type": "edit_field_label",
+					"field": "idcliente"
+				},
+				"integrated_edit_field9": {
+					"type": "edit_field_tooltip",
+					"field": "idcliente"
+				},
+				"integrated_edit_field3": {
+					"field": "venta",
+					"type": "edit_field"
+				},
+				"integrated_edit_field10": {
+					"type": "edit_field_label",
+					"field": "venta"
+				},
+				"integrated_edit_field11": {
+					"type": "edit_field_tooltip",
+					"field": "venta"
+				},
+				"details_preview1": {
+					"type": "details_preview",
+					"table": 2657604414,
+					"items": [],
+					"popup": false,
+					"pageId": "list"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"pageCSS": "/* Put  your custom CSS code here */\n\n\n\n/* ========================================================= */\n/* VARIABLES DE COLOR */\n/* ========================================================= */\n:root {\n    --color-elegante: #FFFFFF; /* Texto Blanco para contrastar con el fondo oscuro */\n    --naranja-degradado-inicio: #03478A; /* Naranja Suave (Light Salmon) */\n    --naranja-degradado-fin: #6D98C2; /* Naranja Medio (Coral) */\n    --color-borde-base: #FF7F50; /* Color simple para el borde base */\n}\n\n/* ========================================================= */\n/* 1. Fondo de la Página: Degradado Azul Cielo (Se mantiene) */\n/* ========================================================= */\n\nbody, .container-fluid {\nbackground: linear-gradient(180deg, #E0F7FA 0%, #B3E5FC 100%) !important;    min-height: 100vh;\n}\n/* ========================================================= */\n/* 2. Estilo de las Secciones: Efecto Tarjeta/Sombreado (Se mantiene) */\n/* ========================================================= */\n.panel, .rnr-c-body, .rnr-c-grid {\n    background-color: #FFFFFF !important; \n    border: none !important; \n    border-radius: 12px !important; \n    padding: 20px;\n    margin-bottom: 25px; \n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), \n                0 2px 6px rgba(0, 0, 0, 0.05) !important; \n                \n    /* 🔑 CAMBIO CLAVE: Agrega 'transform' a la transición */\n    transition: box-shadow 0.3s ease-in-out, \n                transform 0.3s ease-in-out; /* Transición para el movimiento y escala */            \n                \n}\n\n/* ========================================================= */\n/* 3. Estilo de Encabezados de Sección (EL CAMBIO PRINCIPAL) */\n/* ========================================================= */\n.panel-heading, .rnr-c-head {\n    /* Aplicamos el degradado al fondo completo del encabezado */\n    background: linear-gradient(to right, var(--naranja-degradado-inicio), var(--naranja-degradado-fin)) !important;\n    \n    /* El texto del título ahora es blanco para contrastar con el fondo naranja */\n    color: var(--color-elegante) !important; \n    \n    font-weight: 600;\n    \n    /* Mantenemos el centrado vertical */\n    display: flex;\n    align-items: center;\n    height: 40px; /* Aseguramos una altura suficiente */\n    \n    /* Eliminamos el borde degradado y aplicamos un borde simple y fino abajo */\n    border-bottom: 1px solid var(--color-borde-base) !important; \n    border-image-source: none !important; /* Desactivar la propiedad border-image anterior */\n    \n    /* Ajustes de relleno/bordes para que el degradado se vea bien */\n    padding: 0 15px !important; \n    border-top-left-radius: 12px !important; /* Mantenemos el radio del panel superior */\n    border-top-right-radius: 12px !important;\n}\n\n/* ========================================================= */\n/* 3. Estilo de HOVER: Efecto de Elevación/Intensificación    */\n/* ========================================================= */\n.panel:hover, .rnr-c-body:hover, .rnr-c-grid:hover {\n    /* Nueva sombra más intensa y \"elevada\" */\n    box-shadow: 0 15px 400px rgba(0, 0, 0, 0.3), \n                0 5px 15px rgba(0, 0, 0, 0.1) !important; \n    \n    /* Pequeño movimiento hacia arriba para dar más sensación de elevación (opcional) */\n    transform: translateY(-5px) scale(1.005); \n}\n\n\n\n/* 4. Estilo de los Inputs (Se mantiene) */\n.form-control {\n    border-radius: 8px !important; \n    border: 1px solid #e0e0e0 !important;\n}\n.form-control:focus {\n    border-color: #48C9B0 !important; \n    box-shadow: 0 0 0 0.2rem rgba(72, 201, 176, 0.25) !important;\n}\n\n/* Aplica solo a formularios con esas secciones */\n.panel.panel-default.form-section > .panel-body { display: none; }\n\n.panel.panel-default.form-section > .panel-heading:hover {\n  cursor: pointer;\n  filter: brightness(0.98);\n}\n\n.panel-collapse.no-bs-trans {\n  transition: none !important;\n}\n\n/* ========================================================= */\n/* ARREGLO DE COLOR DE TEXTO DE ENCABEZADO DURANTE MODAL     */\n/* ========================================================= */\n\n/* Apuntamos directamente al panel-title, que es el elemento que contiene \n   el texto del encabezado de la sección. \n*/\n.panel-heading .panel-title {\n    color: #FFFFFF !important; \n}\n\n/* Si dentro del panel-title hay un enlace (Ej. si el encabezado permite colapsar/expandir \n   y el título es un <a>), también debemos forzar el color del enlace.\n*/\n.panel-heading .panel-title a {\n    color: #FFFFFF !important;\n}\n\n/* Asegurar que el texto dentro del panel-title no se vea afectado por reglas generales\n   que usen el estado 'modal-open' en el cuerpo de la página.\n*/\n.modal-open .panel-heading .panel-title {\n    color: #FFFFFF !important;\n}\n\n\n/*******************************************************************/\n/* === Contenedores que enjaulan el ancho === */\n/* 1) Limitar el ancho de TODOS los bloques de la página add */\nbody.function-add #form_top_1,\nbody.function-add #form_above-grid_1,\nbody.function-add .panel.panel-default.form-section {\n  max-width: 720px;        /* ajusta a tu gusto: 720, 840, 920… */\n  margin-left: auto;\n  margin-right: auto;\n}\n\n/* 2) Evitar que col-md-12 fuerce 100% cuando queremos centrar */\nbody.function-add .r-form .row > .col-md-12 {\n  float: none;              /* elimina flote de Bootstrap */\n}\n\n/* 3) La mesa del formulario viene con width:100%; la hacemos fija y centrada */\nbody.function-add #form_section_1.r-edit-form {\n  width: 720px !important;  /* mismo valor que arriba */\n  margin-left: auto;\n  margin-right: auto;\n}\n\n/* 4) Hacer que los controles no queden “larguísimos” */\nbody.function-add #form_section_1 .form-control,\nbody.function-add #form_section_1 select.form-control {\n  max-width: 2660px;         /* o 360/380px según te guste */\n}\n\n/* 5) Un poco de respiro en pantallas chicas */\n@media (max-width: 770px) {\n  body.function-add #form_section_1.r-edit-form,\n  body.function-add #form_top_1,\n  body.function-add #form_above-grid_1,\n  body.function-add .panel.panel-default.form-section {\n    max-width: 100%;\n    width: auto !important;\n    padding-left: 12px;\n    padding-right: 12px;\n  }\n  body.function-add #form_section_1 .form-control,\n  body.function-add #form_section_1 select.form-control {\n    max-width: 100%;\n  }\n}\n\n/* === BELOW-GRID: mismo ancho que el form y alineado === */\nbody.function-add #form_below-grid_1 {\n  max-width: 720px;        /* el mismo valor que uses para el form */\n  margin: 8px auto 28px;   /* centra la franja bajo el formulario */\n  padding: 0 4px;\n  text-align: left;       /* o 'center' si lo prefieres centrado */\n}\n\n/* Espaciado y layout de botones */\nbody.function-add #form_below-grid_1 .btn-toolbar,\nbody.function-add #form_below-grid_1 .rnr-buttons-group {\n  display: inline-flex;    /* mantiene los botones en línea */\n  gap: 8px;  /* separación entre botones */\n  justify-content: flex-start;  \n  flex-wrap: wrap;         /* por si colapsan en pantallas chicas */\n}\n\n/* Por si algún tema pone floats o pull-right */\nbody.function-add #form_below-grid_1 .btn,\nbody.function-add #form_below-grid_1 .rnr-buttons-group {\n  float: none !important;\n}\n\n/* En móviles: céntralos */\n@media (max-width: 768px) {\n  body.function-add #form_below-grid_1 { text-align: center; }\n}\n",
+			"listTotals": 1,
+			"title": {
+				"Spanish": "Accesorios, Añadir nuevo"
+			}
+		},
+		{
+			"id": "export",
+			"type": "export",
+			"layoutId": "first",
+			"disabled": true,
+			"default": 0,
+			"forms": {
+				"supertop": {
+					"modelId": "panel-top",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "export-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"export_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "export-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"export_field",
+								"export_field1",
+								"export_field2",
+								"export_field3",
+								"export_field4",
+								"export_field5",
+								"export_field6",
+								"export_field7",
+								"export_field8",
+								"export_field11",
+								"export_field9"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"footer": {
+					"modelId": "export-footer",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"export_export",
+								"export_cancel"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"export_header": {
+					"type": "export_header"
+				},
+				"export_export": {
+					"type": "export_export"
+				},
+				"export_cancel": {
+					"type": "export_cancel"
+				},
+				"export_field": {
+					"field": "id",
+					"type": "export_field"
+				},
+				"export_field1": {
+					"field": "idtipomov",
+					"type": "export_field"
+				},
+				"export_field2": {
+					"field": "referencia",
+					"type": "export_field"
+				},
+				"export_field3": {
+					"field": "fecha",
+					"type": "export_field"
+				},
+				"export_field4": {
+					"field": "idtienda",
+					"type": "export_field"
+				},
+				"export_field5": {
+					"field": "idtienda2",
+					"type": "export_field"
+				},
+				"export_field6": {
+					"field": "idcliente",
+					"type": "export_field"
+				},
+				"export_field7": {
+					"field": "usuario",
+					"type": "export_field"
+				},
+				"export_field8": {
+					"field": "fechaingreso",
+					"type": "export_field"
+				},
+				"export_field11": {
+					"field": "venta",
+					"type": "export_field"
+				},
+				"export_field9": {
+					"field": "Acceso",
+					"type": "export_field"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {},
+			"exportFormat": 2,
+			"exportDelimiter": ",",
+			"exportSelectDelimiter": false,
+			"exportSelectFields": false
+		},
+		{
+			"id": "import",
+			"type": "import",
+			"layoutId": "first",
+			"disabled": true,
+			"default": 0,
+			"forms": {
+				"supertop": {
+					"modelId": "panel-top",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "import-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"import_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "import-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"import_field",
+								"import_field1",
+								"import_field2",
+								"import_field3",
+								"import_field4",
+								"import_field5",
+								"import_field6",
+								"import_field7",
+								"import_field8",
+								"import_field11"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"import_header": {
+					"type": "import_header"
+				},
+				"import_field": {
+					"field": "id",
+					"type": "import_field"
+				},
+				"import_field1": {
+					"field": "idtipomov",
+					"type": "import_field"
+				},
+				"import_field2": {
+					"field": "referencia",
+					"type": "import_field"
+				},
+				"import_field3": {
+					"field": "fecha",
+					"type": "import_field"
+				},
+				"import_field4": {
+					"field": "idtienda",
+					"type": "import_field"
+				},
+				"import_field5": {
+					"field": "idtienda2",
+					"type": "import_field"
+				},
+				"import_field6": {
+					"field": "idcliente",
+					"type": "import_field"
+				},
+				"import_field7": {
+					"field": "usuario",
+					"type": "import_field"
+				},
+				"import_field8": {
+					"field": "fechaingreso",
+					"type": "import_field"
+				},
+				"import_field11": {
+					"field": "venta",
+					"type": "import_field"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "edit",
+			"type": "edit",
+			"layoutId": "nomenu",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "edit-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"edit_message"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "edit-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"edit_save",
+								"edit_back_list",
+								"edit_close"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"hamburger"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "edit-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"edit_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c6"
+								}
+							],
+							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c2"
+								},
+								{
+									"cell": "c"
+								}
+							],
+							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c4",
+									"colspan": 2,
+									"rowspan": 1
+								}
+							],
+							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c5",
+									"colspan": 2
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field4",
+								"integrated_edit_field1",
+								"integrated_edit_field5"
+							],
+							"field": "referencia"
+						},
+						"c2": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field8",
+								"integrated_edit_field",
+								"integrated_edit_field9"
+							],
+							"field": "idcliente"
+						},
+						"c4": {
+							"model": "c1",
+							"items": [
+								"details_preview"
+							],
+							"field": null,
+							"align": "center"
+						},
+						"c5": {
+							"model": "c1",
+							"items": [
+								"details_preview1"
+							],
+							"field": null,
+							"align": "center"
+						},
+						"c6": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field6",
+								"integrated_edit_field2",
+								"integrated_edit_field7"
+							],
+							"field": "referencia"
+						},
+						"c": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field10",
+								"integrated_edit_field3",
+								"integrated_edit_field11"
+							],
+							"field": "idcliente"
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": true
+				}
+			},
+			"items": {
+				"edit_header": {
+					"type": "edit_header",
+					"title": {
+						"page": "edit",
+						"table": "accenc",
+						"type": 7
+					}
+				},
+				"hamburger": {
+					"type": "hamburger",
+					"items": [
+						"edit_reset"
+					]
+				},
+				"edit_reset": {
+					"type": "edit_reset"
+				},
+				"edit_message": {
+					"type": "edit_message"
+				},
+				"edit_save": {
+					"type": "edit_save"
+				},
+				"edit_back_list": {
+					"type": "edit_back_list"
+				},
+				"edit_close": {
+					"type": "edit_close"
+				},
+				"integrated_edit_field1": {
+					"field": "referencia",
+					"type": "edit_field",
+					"updateOnEdit": false
+				},
+				"integrated_edit_field4": {
+					"type": "edit_field_label",
+					"field": "referencia"
+				},
+				"integrated_edit_field5": {
+					"type": "edit_field_tooltip",
+					"field": "referencia"
+				},
+				"integrated_edit_field2": {
+					"field": "fecha",
+					"type": "edit_field",
+					"updateOnEdit": false
+				},
+				"integrated_edit_field6": {
+					"type": "edit_field_label",
+					"field": "fecha"
+				},
+				"integrated_edit_field7": {
+					"type": "edit_field_tooltip",
+					"field": "fecha"
+				},
+				"integrated_edit_field": {
+					"field": "idcliente",
+					"type": "edit_field",
+					"updateOnEdit": false
+				},
+				"integrated_edit_field8": {
+					"type": "edit_field_label",
+					"field": "idcliente"
+				},
+				"integrated_edit_field9": {
+					"type": "edit_field_tooltip",
+					"field": "idcliente"
+				},
+				"integrated_edit_field3": {
+					"field": "venta",
+					"type": "edit_field",
+					"updateOnEdit": false
+				},
+				"integrated_edit_field10": {
+					"type": "edit_field_label",
+					"field": "venta"
+				},
+				"integrated_edit_field11": {
+					"type": "edit_field_tooltip",
+					"field": "venta"
+				},
+				"details_preview": {
+					"type": "deleted",
+					"itemId": "details_preview"
+				},
+				"details_preview1": {
+					"type": "details_preview",
+					"table": 2657604414,
+					"items": [],
+					"popup": false,
+					"pageId": "list"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {
+				"Spanish": "Accesorios, Editar [{%id}]"
+			}
+		},
+		{
+			"id": "view",
+			"type": "view",
+			"layoutId": "nomenu",
+			"disabled": true,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "view-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1",
+									"colspan": 2
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "view-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"view_back_list",
+								"view_close"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"hamburger"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "view-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"view_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c3"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c3": {
+							"model": "c3",
+							"items": [
+								"integrated_edit_field",
+								"integrated_edit_field1",
+								"integrated_edit_field2",
+								"integrated_edit_field3",
+								"integrated_edit_field4",
+								"integrated_edit_field5",
+								"integrated_edit_field6",
+								"integrated_edit_field7",
+								"integrated_edit_field8",
+								"integrated_edit_field11",
+								"integrated_edit_field9"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				}
+			},
+			"items": {
+				"view_header": {
+					"type": "view_header"
+				},
+				"view_back_list": {
+					"type": "view_back_list"
+				},
+				"view_close": {
+					"type": "view_close"
+				},
+				"integrated_edit_field": {
+					"field": "id",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field1": {
+					"field": "idtipomov",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field2": {
+					"field": "referencia",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field3": {
+					"field": "fecha",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field4": {
+					"field": "idtienda",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field5": {
+					"field": "idtienda2",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field6": {
+					"field": "idcliente",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field7": {
+					"field": "usuario",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field8": {
+					"field": "fechaingreso",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field11": {
+					"field": "venta",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"hamburger": {
+					"type": "hamburger",
+					"items": [
+						"view_edit"
+					]
+				},
+				"view_edit": {
+					"type": "view_edit"
+				},
+				"integrated_edit_field9": {
+					"field": "Acceso",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "list",
+			"type": "list",
+			"layoutId": "leftbar",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "list-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"add",
+								"delete"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"details_found",
+								"page_size",
+								"print_details"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "list-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"pagination"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"left": {
+					"modelId": "leftbar-menu",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c0"
+								}
+							],
+							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c0": {
+							"model": "c0",
+							"items": [
+								"logo"
+							]
+						},
+						"c1": {
+							"model": "c1",
+							"items": [
+								"menu",
+								"search_panel"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"supertop": {
+					"modelId": "leftbar-top",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"expand_menu_button",
+								"collapse_button",
+								"breadcrumb"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"simple_search",
+								"list_options",
+								"loginform_login",
+								"username_button"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"simple_grid_field2",
+								"simple_grid_field3",
+								"simple_grid_field1",
+								"simple_grid_field",
+								"simple_grid_field7",
+								"simple_grid_field8",
+								"simple_grid_field11"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"details_preview",
+								"details_preview1"
+							]
+						}
+					},
+					"deferredItems": [
+						"grid_checkbox",
+						"grid_checkbox_head",
+						"grid_edit",
+						"grid_alldetails_link",
+						"grid_details_link"
+					],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "list-sidebar-top",
+					"grid": [],
+					"cells": {},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"page_size": {
+					"type": "page_size"
+				},
+				"breadcrumb": {
+					"type": "breadcrumb"
+				},
+				"logo": {
+					"type": "logo"
+				},
+				"menu": {
+					"type": "menu"
+				},
+				"simple_search": {
+					"type": "simple_search"
+				},
+				"pagination": {
+					"type": "pagination"
+				},
+				"grid_checkbox": {
+					"type": "grid_checkbox"
+				},
+				"grid_checkbox_head": {
+					"type": "grid_checkbox_head"
+				},
+				"details_found": {
+					"type": "details_found"
+				},
+				"simple_grid_field2": {
+					"field": "referencia",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field3": {
+					"field": "fecha",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field7": {
+					"field": "usuario",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field8": {
+					"field": "fechaingreso",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field11": {
+					"field": "venta",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"search_panel": {
+					"type": "search_panel",
+					"items": [
+						"search_panel_field3",
+						"search_panel_field",
+						"search_panel_field1",
+						"search_panel_field2"
+					],
+					"_flexiblePanel": true
+				},
+				"list_options": {
+					"type": "list_options",
+					"items": [
+						"delete_selected",
+						"-1",
+						"show_search_panel",
+						"hide_search_panel"
+					]
+				},
+				"show_search_panel": {
+					"type": "show_search_panel"
+				},
+				"hide_search_panel": {
+					"type": "hide_search_panel"
+				},
+				"search_panel_field2": {
+					"field": "referencia",
+					"type": "search_panel_field"
+				},
+				"search_panel_field3": {
+					"field": "fecha",
+					"type": "search_panel_field"
+				},
+				"username_button": {
+					"type": "username_button",
+					"items": [
+						"userinfo_link",
+						"logout_link",
+						"adminarea_link"
+					]
+				},
+				"loginform_login": {
+					"type": "loginform_login",
+					"popup": false
+				},
+				"userinfo_link": {
+					"type": "userinfo_link"
+				},
+				"logout_link": {
+					"type": "logout_link"
+				},
+				"adminarea_link": {
+					"type": "adminarea_link"
+				},
+				"expand_menu_button": {
+					"type": "expand_menu_button"
+				},
+				"collapse_button": {
+					"type": "collapse_button"
+				},
+				"add": {
+					"type": "add"
+				},
+				"-": {
+					"type": "-"
+				},
+				"-1": {
+					"type": "-"
+				},
+				"-2": {
+					"type": "-"
+				},
+				"grid_edit": {
+					"type": "grid_edit"
+				},
+				"delete": {
+					"type": "delete"
+				},
+				"delete_selected": {
+					"type": "delete_selected"
+				},
+				"details_preview": {
+					"type": "deleted",
+					"itemId": "details_preview"
+				},
+				"grid_alldetails_link": {
+					"type": "grid_alldetails_link"
+				},
+				"grid_details_link": {
+					"type": "grid_details_link",
+					"table": 2657604414,
+					"badge": true,
+					"hideIfNone": true,
+					"showCount": true
+				},
+				"details_preview1": {
+					"type": "details_preview",
+					"table": 2657604414,
+					"items": [],
+					"hideEmptyPreview": true,
+					"proceedLink": true,
+					"popup": false,
+					"pageId": "list"
+				},
+				"print_details": {
+					"type": "print_details",
+					"tables": {
+						"2657604414": true
+					}
+				},
+				"simple_grid_field1": {
+					"field": "tienda",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"search_panel_field1": {
+					"field": "tienda",
+					"type": "search_panel_field"
+				},
+				"simple_grid_field": {
+					"field": "cliente",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"search_panel_field": {
+					"field": "cliente",
+					"type": "search_panel_field"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"pageCSS": "/* Put  your custom CSS code here */\n\n/* Put  your custom CSS code here */\n\n/* Put  your custom CSS code here */\n/*\n.table {\n    font-family: 'Arial', sans-serif !important;\n    font-size: 12px !important;\n    border-collapse: collapse !important;\n}*/\n\n\n/* ========================================================= */\n/* VARIABLES DE COLOR */\n/* ========================================================= */\n:root {\n    /* Color de acento para botones, foco y texto */\n    --color-acento: #48C9B0; /* Turquesa/Menta */ \n    --color-elegante: #1C334A; /* Azul Marino Oscuro */\n}\n\n/* ========================================================= */\n/* 1. Fondo de la Página: Degradado Azul Cielo Intenso       */\n/* ========================================================= */\nbody, .container-fluid {\n    /* Mismo fondo azul que usamos en el formulario de agregar */\n    background: linear-gradient(180deg, #E0F7FA 0%, #B3E5FC 100%) !important; \n    min-height: 100vh;\n}\n\n/* ========================================================= */\n/* 2. Contenedor de la Lista (El \"Body\" principal de la tabla) */\n/* Aplicamos el efecto de Tarjeta y Sombra a este contenedor */\n/* El selector depende del tema, pero '.rnr-b-grid' suele ser el contenedor de la tabla */\n.rnr-body .rnr-c-body, \n.rnr-b-grid, \n.rnr-c-grid,\n.panel-default {\n    background-color: #FFFFFF !important; \n    border: none !important; \n    border-radius: 12px !important; \n    \n    /* Sombreado elegante de la tarjeta */\n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), \n                0 2px 6px rgba(0, 0, 0, 0.05) !important; \n}\n\n/* 3. Encabezados y Barras de Herramientas (Parte superior e inferior) */\n/* Limpiamos el diseño de los paneles que rodean la tabla */\n.rnr-c-hsucc, .rnr-c-message, .rnr-c-hcell {\n    background-color: transparent !important;\n    border: none !important;\n}\n\n/* 4. Estilo de las Filas de Datos (Efecto Hover de Elevación) */\n/* Le da interactividad a la tabla */\n.rnr-body tr {\n    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;\n}\n\n.rnr-body tr:hover {\n    background-color: #fcfcfc !important; /* Ligeramente más claro al pasar el mouse */\n    \n    /* Sombra y elevación sutil para destacar la fila */\n    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1), \n                0 1px 3px rgba(0, 0, 0, 0.05) !important;\n    transform: translateY(-1px);\n}\n\n/* 5. Asegurar que las celdas del encabezado de la tabla se vean bien */\n.rnr-c-grid th {\n    background-color: #f7f7f7 !important; /* Fondo sutil para el header de la tabla */\n    color: var(--color-elegante) !important;\n    font-weight: 600;\n    border-bottom: 2px solid var(--color-acento) !important;\n}\n\n/* 6. Barras de Paginación y Búsqueda */\n.rnr-bottom .panel, .rnr-c-search, .rnr-c-top, .rnr-bottom-nav {\n    background-color: transparent !important;\n    border: none !important;\n    box-shadow: none !important; /* Quitamos la sombra a estos elementos */\n}\n\n\n\n/* ========================================================= */\n/* ESTILOS PARA CELDAS DE ESTADO (FORMATO CONDICIONAL)       */\n/* ========================================================= */\n\n/* Clase base para el estilo de \"badge\" o \"tag\" */\n.status-badge {\n    display: inline-block; /* Para que tome el tamaño del contenido */\n    padding: 5px 10px; /* Relleno interno */\n    border-radius: 20px; /* MUY REDONDEADO para el efecto de píldora */\n    font-weight: bold;\n    font-size: 0.85em;\n    text-align: center;\n    min-width: 80px; /* Ancho mínimo para que no se vea muy pequeño */\n    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Sombra sutil */\n}\n\n/* Estado: Entregado (Verde) */\n.status-entregado {\n    background-color: #D4EDDA; /* Verde pastel claro */\n    color: #155724; /* Texto verde oscuro */\n    border: 1px solid #C3E6CB; /* Borde sutil */\n}\n\n/* Estado: Pendiente (Amarillo) */\n.status-pendiente {\n    background-color: #FFF3CD; /* Amarillo pastel claro */\n    color: #856404; /* Texto amarillo oscuro */\n    border: 1px solid #FFEEBA;\n}\n\n/* Estado: Cancelado (Rojo) */\n.status-cancelado {\n    background-color: #F8D7DA; /* Rojo pastel claro */\n    color: #721C24; /* Texto rojo oscuro */\n    border: 1px solid #F5C6CB;\n}\n\n/* Agrega más estados según sea necesario */\n/* Estado: En Proceso (Azul) */\n.status-en-proceso {\n    background-color: #D1ECF1; /* Azul pastel claro */\n    color: #0C5460; /* Texto azul oscuro */\n    border: 1px solid #BEE5EB;\n}\n\n\n/* ========================================================= */\n/* ELIMINAR SEPARADORES DE COLUMNA (LÍNEAS VERTICALES)        */\n/* ========================================================= */\n/* Mantén líneas horizontales ligeras, borra las verticales */\n.rnr-gridtable td,\n.rnr-gridtable th {\n  border-left: none !important;\n  border-right: none !important;\n  box-shadow: none !important; /* algunos temas usan sombras como divisores */\n}\n\n/* Si quieres una línea horizontal sutil */\n.rnr-gridtable td {\n  border-top: 1px solid #eee !important;\n}\n.rnr-gridtable thead th {\n  border-bottom: 1px solid #e6e6e6 !important;\n}\n",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "print",
+			"type": "print",
+			"layoutId": "basic",
+			"disabled": true,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "print-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"print_pages"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "print-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "print-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c2": {
+							"model": "c2",
+							"items": [
+								"print_header",
+								"print_subheader"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"simple_grid_field",
+								"simple_grid_field1",
+								"simple_grid_field2",
+								"simple_grid_field3",
+								"simple_grid_field4",
+								"simple_grid_field5",
+								"simple_grid_field6",
+								"simple_grid_field7",
+								"simple_grid_field8",
+								"simple_grid_field11",
+								"simple_grid_field9"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"details_preview",
+								"details_preview1"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"print_header": {
+					"type": "print_header"
+				},
+				"print_subheader": {
+					"type": "print_subheader"
+				},
+				"print_pages": {
+					"type": "print_pages"
+				},
+				"simple_grid_field": {
+					"field": "id",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field1": {
+					"field": "idtipomov",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field2": {
+					"field": "referencia",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field3": {
+					"field": "fecha",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field4": {
+					"field": "idtienda",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field5": {
+					"field": "idtienda2",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field6": {
+					"field": "idcliente",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field7": {
+					"field": "usuario",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field8": {
+					"field": "fechaingreso",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field11": {
+					"field": "venta",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field9": {
+					"field": "Acceso",
+					"type": "simple_grid_field"
+				},
+				"details_preview": {
+					"type": "deleted",
+					"itemId": "details_preview"
+				},
+				"details_preview1": {
+					"type": "details_preview",
+					"table": 2657604414,
+					"items": [],
+					"popup": false
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "masterlist",
+			"type": "masterlist",
+			"layoutId": "masterlist",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "empty-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "empty-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "masterlist-top",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"back_master",
+								"masterlist_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"masterlist_header": {
+					"type": "masterlist_header"
+				},
+				"back_master": {
+					"type": "back_master"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "masterprint",
+			"type": "masterprint",
+			"layoutId": "masterprint",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "empty-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "empty-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "masterlist-top",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"masterprint_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"masterprint_header": {
+					"type": "masterprint_header"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		}
+	],
+	"geoCoding": {
+		"enabled": false,
+		"latField": "",
+		"lonField": "",
+		"addressFields": []
+	},
+	"caption": {
+		"Spanish": "Accenc"
+	}
+}

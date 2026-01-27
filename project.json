@@ -33,6 +33,20 @@
 				"height": 124
 			},
 			{
+				"gid": 3836892972,
+				"y": 1015,
+				"x": 155,
+				"width": 129.734375,
+				"height": 400
+			},
+			{
+				"gid": 2657604414,
+				"y": 1100,
+				"x": 310,
+				"width": 117.234375,
+				"height": 292
+			},
+			{
 				"gid": 1975362622,
 				"y": 443,
 				"x": 885,
@@ -470,7 +484,7 @@
 						"code": "$host = 'localhost';\r\n$user = 'rocasamexico_admin';\r\n$pwd = 'Rocas@Mexico.2025**';\r\n$port = 3306;\r\n$sys_dbname = 'rocasamexico_prm';"
 					}
 				],
-				"selectedCustomConn": "New connection"
+				"selectedCustomConn": "Local"
 			}
 		}
 	],
@@ -550,6 +564,20 @@
 							"itemType": 2,
 							"linkType": 0,
 							"table": 3680839223,
+							"pageType": "list"
+						}
+					},
+					{
+						"id": "18",
+						"data": {
+							"name": {
+								"text": "Venta de Accesorios",
+								"type": 0
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 3836892972,
 							"pageType": "list"
 						}
 					}
@@ -653,7 +681,9 @@
 								"welcome_item14",
 								"welcome_item15",
 								"welcome_item18",
-								"welcome_item16"
+								"welcome_item16",
+								"welcome_item17",
+								"welcome_item19"
 							]
 						}
 					},
@@ -944,6 +974,30 @@
 						"type": 6
 					},
 					"background": "#e8926f",
+					"linkType": 0
+				},
+				"welcome_item17": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "accenc",
+					"linkPage": "list",
+					"linkText": {
+						"table": "accenc",
+						"type": 6
+					},
+					"background": "#e8926f",
+					"linkType": 0
+				},
+				"welcome_item19": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "accmov",
+					"linkPage": "list",
+					"linkText": {
+						"table": "accmov",
+						"type": 6
+					},
+					"background": "#cfae83",
 					"linkType": 0
 				}
 			},
