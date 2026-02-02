@@ -1736,7 +1736,7 @@
 				"typeName": "varchar(20)",
 				"nullable": true,
 				"autoinc": false,
-				"defaultValueSQL": null,
+				"defaultValueSQL": "ACEPTADA",
 				"defaultValue": ""
 			},
 			{
@@ -2163,28 +2163,6 @@
 				"size": 10,
 				"scale": 2,
 				"typeName": "decimal(10,2)",
-				"nullable": true,
-				"autoinc": false,
-				"defaultValueSQL": null,
-				"defaultValue": ""
-			},
-			{
-				"name": "iddocto_identificacion",
-				"type": 3,
-				"size": 3,
-				"scale": 0,
-				"typeName": "int(3)",
-				"nullable": true,
-				"autoinc": false,
-				"defaultValueSQL": null,
-				"defaultValue": ""
-			},
-			{
-				"name": "dn_contacto",
-				"type": 200,
-				"size": 10,
-				"scale": 0,
-				"typeName": "varchar(10)",
 				"nullable": true,
 				"autoinc": false,
 				"defaultValueSQL": null,

@@ -7,7 +7,7 @@
 			"asc": false
 		}
 	],
-	"sql": "SELECT\r\naccenc.id,\r\naccenc.idtipomov,\r\naccenc.referencia,\r\naccenc.fecha,\r\naccenc.idtienda,\r\naccenc.idtienda2,\r\naccenc.idcliente,\r\nc.nombre_completo cliente,\r\nt.tienda,\r\naccenc.usuario,\r\naccenc.fechaingreso,\r\nserviciosmoviles_uggroups.Acceso,\r\naccenc.venta\r\nFROM accenc\r\nINNER JOIN serviciosmoviles_users ON accenc.usuario = serviciosmoviles_users.username\r\nINNER JOIN serviciosmoviles_ugmembers ON serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName\r\nINNER JOIN serviciosmoviles_uggroups ON serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID\r\ninner join clientes c on accenc.idcliente=c.idcliente\r\ninner join tiendas t on accenc.idtienda=t.idtienda\r\nWHERE (accenc.idtipomov =2) and accenc.idtienda=:session.Tienda and\r\n (accenc.usuario =':session.UserID' OR if(:session.acceso=1, accenc.idtienda=:session.Tienda, false) OR ':session.UserID' ='ADMIN') \r\n\r\nORDER BY accenc.id DESC\r\n",
+	"sql": "SELECT\r\naccenc.id,\r\naccenc.idtipomov,\r\naccenc.referencia,\r\naccenc.fecha,\r\naccenc.idtienda,\r\naccenc.idtienda2,\r\naccenc.idcliente,\r\nc.nombre_completo cliente,\r\nt.tienda,\r\naccenc.usuario,\r\naccenc.fechaingreso,\r\nserviciosmoviles_uggroups.Acceso,\r\naccenc.venta,\r\nea.estado,\r\nea.ciudad,\r\nea.cp\r\nFROM accenc\r\nINNER JOIN serviciosmoviles_users ON accenc.usuario = serviciosmoviles_users.username\r\nINNER JOIN serviciosmoviles_ugmembers ON serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName\r\nINNER JOIN serviciosmoviles_uggroups ON serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID\r\ninner join clientes c on accenc.idcliente=c.idcliente\r\ninner join tiendas t on accenc.idtienda=t.idtienda\r\nleft join entregasacc ea on accenc.id=ea.idaccenc\r\nWHERE (accenc.idtipomov =2) and accenc.idtienda=:session.Tienda and\r\n (accenc.usuario =':session.UserID' OR if(:session.acceso=1, accenc.idtienda=:session.Tienda, false) OR ':session.UserID' ='ADMIN') \r\n\r\nORDER BY accenc.id DESC\r\n",
 	"connId": "conn",
 	"originalTable": "accenc",
 	"name": "accenc",
@@ -66,7 +66,9 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"required": true
+				}
 			],
 			"label": {
 				"Spanish": "Referencia"
@@ -87,6 +89,7 @@
 			"editFormats": [
 				{
 					"format": "Date",
+					"required": true,
 					"dateEditType": 11
 				}
 			],
@@ -271,6 +274,57 @@
 				"Spanish": "Cliente"
 			},
 			"tableName": "clientes"
+		},
+		{
+			"name": "estado",
+			"sqlExpression": "ea.estado",
+			"index": 14,
+			"strField": "estado",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Estado"
+			},
+			"tableName": "entregasacc"
+		},
+		{
+			"name": "ciudad",
+			"sqlExpression": "ea.ciudad",
+			"index": 15,
+			"strField": "ciudad",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Ciudad"
+			},
+			"tableName": "entregasacc"
+		},
+		{
+			"name": "cp",
+			"sqlExpression": "ea.cp",
+			"index": 16,
+			"strField": "cp",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Cp"
+			},
+			"tableName": "entregasacc"
 		}
 	],
 	"queryContext": {
@@ -283,6 +337,11 @@
 			"eventId": "EVENT_BEFOREADD",
 			"pageType": "add",
 			"code": "$values['idtienda']=$_SESSION[\"Tienda\"];\n$values['usuario']=$_SESSION[\"UserID\"];\n$values['fechaingreso']=date('Y-m-d H:i:s');\n$values['idtipomov']=2;   //Venta\n\nreturn true;"
+		},
+		{
+			"eventId": "EVENT_AFTERADD",
+			"pageType": "add",
+			"code": "//**********  Display a message on the Web page  ************\n$id=$values['id'];\n\n\n\n\n//**********  Redirect to another page  ************\n\n\nheader(\"Location:accenc_edit.php?editid1=\".$id);\nexit();\n\n\n"
 		}
 	],
 	"dbTableInfo": {
@@ -523,7 +582,7 @@
 					"deferredItems": [],
 					"recsPerRow": 1
 				},
-				"grid": {
+				"section": {
 					"modelId": "simple-edit",
 					"grid": [
 						{
@@ -532,28 +591,26 @@
 									"cell": "c1"
 								},
 								{
-									"cell": "c6"
-								}
-							],
-							"section": ""
-						},
-						{
-							"cells": [
-								{
-									"cell": "c2",
-									"rowspan": 1
-								},
-								{
 									"cell": "c"
 								}
 							],
 							"section": ""
 						},
 						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c2"
+								},
+								{
+									"cell": "c3"
+								}
+							]
+						},
+						{
 							"cells": [
 								{
 									"cell": "c4",
-									"rowspan": 1,
 									"colspan": 2
 								}
 							],
@@ -564,53 +621,94 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"integrated_edit_field4",
 								"integrated_edit_field1",
 								"integrated_edit_field5"
-							],
-							"field": "referencia"
-						},
-						"c2": {
-							"model": "c1",
-							"items": [
-								"integrated_edit_field8",
-								"integrated_edit_field2",
-								"integrated_edit_field9"
-							],
-							"field": "idcliente"
-						},
-						"c4": {
-							"model": "c1",
-							"items": [
-								"details_preview",
-								"details_preview1"
-							],
-							"field": null,
-							"align": "center"
-						},
-						"c6": {
-							"model": "c1",
-							"items": [
-								"integrated_edit_field6",
-								"integrated_edit_field",
-								"integrated_edit_field7"
-							],
-							"field": "referencia"
+							]
 						},
 						"c": {
 							"model": "c1",
 							"items": [
-								"integrated_edit_field10",
+								"integrated_edit_field",
+								"integrated_edit_field7"
+							]
+						},
+						"c2": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field2",
+								"integrated_edit_field9"
+							]
+						},
+						"c3": {
+							"model": "c1",
+							"items": [
 								"integrated_edit_field3",
 								"integrated_edit_field11"
-							],
-							"field": "idcliente"
+							]
+						},
+						"c4": {
+							"model": "c3",
+							"items": []
 						}
 					},
 					"deferredItems": [],
 					"columnCount": 1,
 					"inlineLabels": false,
-					"separateLabels": true
+					"separateLabels": false
+				},
+				"grid": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c3"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c3": {
+							"model": "c3",
+							"items": [
+								"section",
+								"section1"
+							],
+							"align": "center"
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				},
+				"section1": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field4",
+								"integrated_edit_field6",
+								"integrated_edit_field8"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
 				}
 			},
 			"items": {
@@ -639,27 +737,19 @@
 				},
 				"integrated_edit_field1": {
 					"field": "referencia",
-					"type": "edit_field"
-				},
-				"integrated_edit_field4": {
-					"type": "edit_field_label",
-					"field": "referencia"
+					"type": "integrated_edit_field",
+					"width": "200px",
+					"orientation": 0
 				},
 				"integrated_edit_field5": {
 					"type": "edit_field_tooltip",
 					"field": "referencia"
 				},
-				"details_preview": {
-					"type": "deleted",
-					"itemId": "details_preview"
-				},
 				"integrated_edit_field": {
 					"field": "fecha",
-					"type": "edit_field"
-				},
-				"integrated_edit_field6": {
-					"type": "edit_field_label",
-					"field": "fecha"
+					"type": "integrated_edit_field",
+					"width": "300px",
+					"orientation": 0
 				},
 				"integrated_edit_field7": {
 					"type": "edit_field_tooltip",
@@ -667,11 +757,8 @@
 				},
 				"integrated_edit_field2": {
 					"field": "idcliente",
-					"type": "edit_field"
-				},
-				"integrated_edit_field8": {
-					"type": "edit_field_label",
-					"field": "idcliente"
+					"type": "integrated_edit_field",
+					"orientation": 0
 				},
 				"integrated_edit_field9": {
 					"type": "edit_field_tooltip",
@@ -679,22 +766,48 @@
 				},
 				"integrated_edit_field3": {
 					"field": "venta",
-					"type": "edit_field"
-				},
-				"integrated_edit_field10": {
-					"type": "edit_field_label",
-					"field": "venta"
+					"type": "integrated_edit_field",
+					"width": "300px",
+					"orientation": 0
 				},
 				"integrated_edit_field11": {
 					"type": "edit_field_tooltip",
 					"field": "venta"
 				},
-				"details_preview1": {
-					"type": "details_preview",
-					"table": 2657604414,
-					"items": [],
-					"popup": false,
-					"pageId": "list"
+				"section": {
+					"type": "section",
+					"title": {
+						"type": 0,
+						"text": "Datos de la venta"
+					},
+					"location": "section",
+					"bsStyle": "default",
+					"panelType": 3
+				},
+				"integrated_edit_field4": {
+					"field": "estado",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field6": {
+					"field": "ciudad",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field8": {
+					"field": "cp",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"section1": {
+					"type": "section",
+					"title": {
+						"text": "New Section7",
+						"type": 0
+					},
+					"location": "section1",
+					"bsStyle": "default",
+					"panelType": 3
 				}
 			},
 			"dbProps": {},
@@ -1130,10 +1243,9 @@
 						{
 							"cells": [
 								{
-									"cell": "c1"
-								},
-								{
-									"cell": "c6"
+									"cell": "c3",
+									"colspan": 1,
+									"rowspan": 1
 								}
 							],
 							"section": ""
@@ -1141,8 +1253,13 @@
 						{
 							"cells": [
 								{
-									"cell": "c2"
-								},
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						},
+						{
+							"cells": [
 								{
 									"cell": "c"
 								}
@@ -1152,9 +1269,7 @@
 						{
 							"cells": [
 								{
-									"cell": "c4",
-									"colspan": 2,
-									"rowspan": 1
+									"cell": "c2"
 								}
 							],
 							"section": ""
@@ -1162,8 +1277,138 @@
 						{
 							"cells": [
 								{
-									"cell": "c5",
+									"cell": "c4"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c3": {
+							"model": "c1",
+							"items": [
+								"section1"
+							],
+							"field": null,
+							"align": "center"
+						},
+						"c1": {
+							"model": "c1",
+							"items": [
+								"section"
+							],
+							"field": null,
+							"align": "center"
+						},
+						"c": {
+							"model": "c1",
+							"items": [],
+							"field": "estado"
+						},
+						"c2": {
+							"model": "c1",
+							"items": [],
+							"field": "ciudad"
+						},
+						"c4": {
+							"model": "c1",
+							"items": [],
+							"field": "cp"
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": true
+				},
+				"section1": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1",
+									"colspan": 1
+								},
+								{
+									"cell": "c"
+								}
+							],
+							"section": ""
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c2",
+									"colspan": 1
+								},
+								{
+									"cell": "c3"
+								}
+							]
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c6",
 									"colspan": 2
+								}
+							]
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field1",
+								"integrated_edit_field5"
+							]
+						},
+						"c": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field2",
+								"integrated_edit_field7"
+							]
+						},
+						"c2": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field",
+								"integrated_edit_field9"
+							]
+						},
+						"c3": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field3",
+								"integrated_edit_field11"
+							]
+						},
+						"c6": {
+							"model": "c1",
+							"items": [
+								"details_preview",
+								"details_preview1",
+								"details_preview2"
+							],
+							"align": "center"
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				},
+				"section": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
 								}
 							],
 							"section": ""
@@ -1173,60 +1418,19 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"integrated_edit_field4",
-								"integrated_edit_field1",
-								"integrated_edit_field5"
-							],
-							"field": "referencia"
-						},
-						"c2": {
-							"model": "c1",
-							"items": [
-								"integrated_edit_field8",
-								"integrated_edit_field",
-								"integrated_edit_field9"
-							],
-							"field": "idcliente"
-						},
-						"c4": {
-							"model": "c1",
-							"items": [
-								"details_preview"
-							],
-							"field": null,
-							"align": "center"
-						},
-						"c5": {
-							"model": "c1",
-							"items": [
-								"details_preview1"
-							],
-							"field": null,
-							"align": "center"
-						},
-						"c6": {
-							"model": "c1",
-							"items": [
-								"integrated_edit_field6",
-								"integrated_edit_field2",
-								"integrated_edit_field7"
-							],
-							"field": "referencia"
-						},
-						"c": {
-							"model": "c1",
-							"items": [
-								"integrated_edit_field10",
-								"integrated_edit_field3",
-								"integrated_edit_field11"
-							],
-							"field": "idcliente"
+								"edit_field",
+								"edit_field_tooltip",
+								"edit_field1",
+								"edit_field_tooltip1",
+								"edit_field2",
+								"edit_field_tooltip2"
+							]
 						}
 					},
 					"deferredItems": [],
 					"columnCount": 1,
 					"inlineLabels": false,
-					"separateLabels": true
+					"separateLabels": false
 				}
 			},
 			"items": {
@@ -1261,12 +1465,9 @@
 				},
 				"integrated_edit_field1": {
 					"field": "referencia",
-					"type": "edit_field",
-					"updateOnEdit": false
-				},
-				"integrated_edit_field4": {
-					"type": "edit_field_label",
-					"field": "referencia"
+					"type": "integrated_edit_field",
+					"updateOnEdit": false,
+					"orientation": 0
 				},
 				"integrated_edit_field5": {
 					"type": "edit_field_tooltip",
@@ -1274,12 +1475,9 @@
 				},
 				"integrated_edit_field2": {
 					"field": "fecha",
-					"type": "edit_field",
-					"updateOnEdit": false
-				},
-				"integrated_edit_field6": {
-					"type": "edit_field_label",
-					"field": "fecha"
+					"type": "integrated_edit_field",
+					"updateOnEdit": false,
+					"orientation": 0
 				},
 				"integrated_edit_field7": {
 					"type": "edit_field_tooltip",
@@ -1287,12 +1485,9 @@
 				},
 				"integrated_edit_field": {
 					"field": "idcliente",
-					"type": "edit_field",
-					"updateOnEdit": false
-				},
-				"integrated_edit_field8": {
-					"type": "edit_field_label",
-					"field": "idcliente"
+					"type": "integrated_edit_field",
+					"updateOnEdit": false,
+					"orientation": 0
 				},
 				"integrated_edit_field9": {
 					"type": "edit_field_tooltip",
@@ -1300,12 +1495,9 @@
 				},
 				"integrated_edit_field3": {
 					"field": "venta",
-					"type": "edit_field",
-					"updateOnEdit": false
-				},
-				"integrated_edit_field10": {
-					"type": "edit_field_label",
-					"field": "venta"
+					"type": "integrated_edit_field",
+					"updateOnEdit": false,
+					"orientation": 0
 				},
 				"integrated_edit_field11": {
 					"type": "edit_field_tooltip",
@@ -1321,6 +1513,60 @@
 					"items": [],
 					"popup": false,
 					"pageId": "list"
+				},
+				"section1": {
+					"type": "section",
+					"title": {
+						"type": 0,
+						"text": "Datos de la venta"
+					},
+					"location": "section1",
+					"bsStyle": "default",
+					"panelType": 3
+				},
+				"details_preview2": {
+					"type": "deleted",
+					"itemId": "details_preview2"
+				},
+				"section": {
+					"type": "section",
+					"title": {
+						"text": "New Section6",
+						"type": 0
+					},
+					"location": "section",
+					"bsStyle": "default",
+					"panelType": 3
+				},
+				"edit_field": {
+					"field": "estado",
+					"type": "integrated_edit_field",
+					"updateOnEdit": false,
+					"orientation": 0
+				},
+				"edit_field_tooltip": {
+					"type": "edit_field_tooltip",
+					"field": "estado"
+				},
+				"edit_field1": {
+					"field": "ciudad",
+					"type": "integrated_edit_field",
+					"updateOnEdit": false,
+					"orientation": 0
+				},
+				"edit_field_tooltip1": {
+					"type": "edit_field_tooltip",
+					"field": "ciudad"
+				},
+				"edit_field2": {
+					"field": "cp",
+					"type": "integrated_edit_field",
+					"updateOnEdit": false,
+					"orientation": 0
+				},
+				"edit_field_tooltip2": {
+					"type": "edit_field_tooltip",
+					"field": "cp"
 				}
 			},
 			"dbProps": {},
@@ -1331,6 +1577,7 @@
 			"imageBgColor": "#f2f2f2",
 			"controlsBgColor": "white",
 			"imagePosition": "right",
+			"pageCSS": "/* Put  your custom CSS code here */\n\n\n/* Put  your custom CSS code here */\n\n\n\n/* ========================================================= */\n/* VARIABLES DE COLOR */\n/* ========================================================= */\n:root {\n    --color-elegante: #FFFFFF; /* Texto Blanco para contrastar con el fondo oscuro */\n    --naranja-degradado-inicio: #03478A; /* Naranja Suave (Light Salmon) */\n    --naranja-degradado-fin: #6D98C2; /* Naranja Medio (Coral) */\n    --color-borde-base: #FF7F50; /* Color simple para el borde base */\n}\n\n/* ========================================================= */\n/* 1. Fondo de la Página: Degradado Azul Cielo (Se mantiene) */\n/* ========================================================= */\nbody, .container-fluid {\nbackground: linear-gradient(180deg, #FAFAF7 0%, #D6D6D4 100%) !important;    min-height: 100vh;\n}\n\n/* ========================================================= */\n/* 2. Estilo de las Secciones: Efecto Tarjeta/Sombreado (Se mantiene) */\n/* ========================================================= */\n.panel, .rnr-c-body, .rnr-c-grid {\n    background-color: #FFFFFF !important; \n    border: none !important; \n    border-radius: 12px !important; \n    padding: 20px;\n    margin-bottom: 25px; \n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), \n                0 2px 6px rgba(0, 0, 0, 0.05) !important; \n                \n    /* 🔑 CAMBIO CLAVE: Agrega 'transform' a la transición */\n    transition: box-shadow 0.3s ease-in-out, \n                transform 0.3s ease-in-out; /* Transición para el movimiento y escala */            \n                \n}\n\n/* ========================================================= */\n/* 3. Estilo de Encabezados de Sección (EL CAMBIO PRINCIPAL) */\n/* ========================================================= */\n.panel-heading, .rnr-c-head {\n    /* Aplicamos el degradado al fondo completo del encabezado */\n    background: linear-gradient(to right, var(--naranja-degradado-inicio), var(--naranja-degradado-fin)) !important;\n    \n    /* El texto del título ahora es blanco para contrastar con el fondo naranja */\n    color: var(--color-elegante) !important; \n    \n    font-weight: 600;\n    \n    /* Mantenemos el centrado vertical */\n    display: flex;\n    align-items: center;\n    height: 40px; /* Aseguramos una altura suficiente */\n    \n    /* Eliminamos el borde degradado y aplicamos un borde simple y fino abajo */\n    border-bottom: 1px solid var(--color-borde-base) !important; \n    border-image-source: none !important; /* Desactivar la propiedad border-image anterior */\n    \n    /* Ajustes de relleno/bordes para que el degradado se vea bien */\n    padding: 0 15px !important; \n    border-top-left-radius: 12px !important; /* Mantenemos el radio del panel superior */\n    border-top-right-radius: 12px !important;\n}\n\n/* ========================================================= */\n/* 3. Estilo de HOVER: Efecto de Elevación/Intensificación    */\n/* ========================================================= */\n.panel:hover, .rnr-c-body:hover, .rnr-c-grid:hover {\n    /* Nueva sombra más intensa y \"elevada\" */\n    box-shadow: 0 15px 400px rgba(0, 0, 0, 0.3), \n                0 5px 15px rgba(0, 0, 0, 0.1) !important; \n    \n    /* Pequeño movimiento hacia arriba para dar más sensación de elevación (opcional) */\n    transform: translateY(-5px) scale(1.005); \n}\n\n\n\n/* 4. Estilo de los Inputs (Se mantiene) */\n.form-control {\n    border-radius: 8px !important; \n    border: 1px solid #e0e0e0 !important;\n}\n.form-control:focus {\n    border-color: #48C9B0 !important; \n    box-shadow: 0 0 0 0.2rem rgba(72, 201, 176, 0.25) !important;\n}\n\n/* Aplica solo a formularios con esas secciones */\n.panel.panel-default.form-section > .panel-body { display: none; }\n\n.panel.panel-default.form-section > .panel-heading:hover {\n  cursor: pointer;\n  filter: brightness(0.98);\n}\n\n.panel-collapse.no-bs-trans {\n  transition: none !important;\n}\n\n/* ========================================================= */\n/* ARREGLO DE COLOR DE TEXTO DE ENCABEZADO DURANTE MODAL     */\n/* ========================================================= */\n\n/* Apuntamos directamente al panel-title, que es el elemento que contiene \n   el texto del encabezado de la sección. \n*/\n.panel-heading .panel-title {\n    color: #FFFFFF !important; \n}\n\n/* Si dentro del panel-title hay un enlace (Ej. si el encabezado permite colapsar/expandir \n   y el título es un <a>), también debemos forzar el color del enlace.\n*/\n.panel-heading .panel-title a {\n    color: #FFFFFF !important;\n}\n\n/* Asegurar que el texto dentro del panel-title no se vea afectado por reglas generales\n   que usen el estado 'modal-open' en el cuerpo de la página.\n*/\n.modal-open .panel-heading .panel-title {\n    color: #FFFFFF !important;\n}\n\n/* Fuerza el tamaño correcto en todo el formulario */\n.r-edit-form {\n    font-size: 14px !important;\n}\n\n.r-edit-form label,\n.r-edit-form input,\n.r-edit-form select {\n    font-size: 14px !important;\n}",
 			"listTotals": 1,
 			"title": {
 				"Spanish": "Accesorios, Editar [{%id}]"
@@ -1713,14 +1960,18 @@
 								"simple_grid_field",
 								"simple_grid_field7",
 								"simple_grid_field8",
-								"simple_grid_field11"
+								"simple_grid_field11",
+								"simple_grid_field4",
+								"simple_grid_field5",
+								"simple_grid_field6"
 							]
 						},
 						"c2": {
 							"model": "c2",
 							"items": [
 								"details_preview",
-								"details_preview1"
+								"details_preview1",
+								"details_preview2"
 							]
 						}
 					},
@@ -1803,6 +2054,9 @@
 					"type": "search_panel",
 					"items": [
 						"search_panel_field3",
+						"search_panel_field6",
+						"search_panel_field5",
+						"search_panel_field4",
 						"search_panel_field",
 						"search_panel_field1",
 						"search_panel_field2"
@@ -1906,6 +2160,7 @@
 				"print_details": {
 					"type": "print_details",
 					"tables": {
+						"80289759": true,
 						"2657604414": true
 					}
 				},
@@ -1927,6 +2182,40 @@
 				},
 				"search_panel_field": {
 					"field": "cliente",
+					"type": "search_panel_field"
+				},
+				"details_preview2": {
+					"type": "deleted",
+					"itemId": "details_preview2"
+				},
+				"simple_grid_field4": {
+					"field": "estado",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field5": {
+					"field": "ciudad",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field6": {
+					"field": "cp",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"search_panel_field4": {
+					"field": "estado",
+					"type": "search_panel_field"
+				},
+				"search_panel_field5": {
+					"field": "ciudad",
+					"type": "search_panel_field"
+				},
+				"search_panel_field6": {
+					"field": "cp",
 					"type": "search_panel_field"
 				}
 			},
@@ -2058,7 +2347,8 @@
 							"model": "c2",
 							"items": [
 								"details_preview",
-								"details_preview1"
+								"details_preview1",
+								"details_preview2"
 							]
 						}
 					},
@@ -2129,6 +2419,10 @@
 					"table": 2657604414,
 					"items": [],
 					"popup": false
+				},
+				"details_preview2": {
+					"type": "deleted",
+					"itemId": "details_preview2"
 				}
 			},
 			"dbProps": {},
@@ -2230,7 +2524,37 @@
 					"cells": {
 						"c1": {
 							"model": "c1",
-							"items": []
+							"items": [
+								"simple_grid_field",
+								"simple_grid_field1",
+								"simple_grid_field2",
+								"simple_grid_field3",
+								"simple_grid_field4",
+								"simple_grid_field5",
+								"simple_grid_field6",
+								"simple_grid_field7",
+								"simple_grid_field8",
+								"simple_grid_field9",
+								"simple_grid_field10",
+								"simple_grid_field11",
+								"simple_grid_field12",
+								"simple_grid_field13",
+								"simple_grid_field14",
+								"simple_grid_field15",
+								"simple_grid_field16",
+								"simple_grid_field17",
+								"simple_grid_field18",
+								"simple_grid_field19",
+								"simple_grid_field20",
+								"simple_grid_field21",
+								"simple_grid_field22",
+								"simple_grid_field23",
+								"simple_grid_field24",
+								"simple_grid_field25",
+								"simple_grid_field26",
+								"simple_grid_field27",
+								"simple_grid_field28"
+							]
 						}
 					},
 					"deferredItems": [],
@@ -2243,6 +2567,122 @@
 				},
 				"back_master": {
 					"type": "back_master"
+				},
+				"simple_grid_field": {
+					"type": "deleted",
+					"itemId": "simple_grid_field"
+				},
+				"simple_grid_field1": {
+					"type": "deleted",
+					"itemId": "simple_grid_field1"
+				},
+				"simple_grid_field2": {
+					"type": "deleted",
+					"itemId": "simple_grid_field2"
+				},
+				"simple_grid_field3": {
+					"type": "deleted",
+					"itemId": "simple_grid_field3"
+				},
+				"simple_grid_field4": {
+					"type": "deleted",
+					"itemId": "simple_grid_field4"
+				},
+				"simple_grid_field5": {
+					"type": "deleted",
+					"itemId": "simple_grid_field5"
+				},
+				"simple_grid_field6": {
+					"type": "deleted",
+					"itemId": "simple_grid_field6"
+				},
+				"simple_grid_field7": {
+					"type": "deleted",
+					"itemId": "simple_grid_field7"
+				},
+				"simple_grid_field8": {
+					"type": "deleted",
+					"itemId": "simple_grid_field8"
+				},
+				"simple_grid_field9": {
+					"type": "deleted",
+					"itemId": "simple_grid_field9"
+				},
+				"simple_grid_field10": {
+					"type": "deleted",
+					"itemId": "simple_grid_field10"
+				},
+				"simple_grid_field11": {
+					"type": "deleted",
+					"itemId": "simple_grid_field11"
+				},
+				"simple_grid_field12": {
+					"type": "deleted",
+					"itemId": "simple_grid_field12"
+				},
+				"simple_grid_field13": {
+					"field": "id",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field14": {
+					"field": "idtipomov",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field15": {
+					"field": "referencia",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field16": {
+					"field": "fecha",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field17": {
+					"field": "idtienda",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field18": {
+					"field": "idtienda2",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field19": {
+					"field": "idcliente",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field20": {
+					"field": "usuario",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field21": {
+					"field": "fechaingreso",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field22": {
+					"field": "venta",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field23": {
+					"field": "Acceso",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field24": {
+					"field": "tienda",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field25": {
+					"field": "cliente",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field26": {
+					"field": "estado",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field27": {
+					"field": "ciudad",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field28": {
+					"field": "cp",
+					"type": "simple_grid_field"
 				}
 			},
 			"dbProps": {},
@@ -2343,7 +2783,37 @@
 					"cells": {
 						"c1": {
 							"model": "c1",
-							"items": []
+							"items": [
+								"simple_grid_field",
+								"simple_grid_field1",
+								"simple_grid_field2",
+								"simple_grid_field3",
+								"simple_grid_field4",
+								"simple_grid_field5",
+								"simple_grid_field6",
+								"simple_grid_field7",
+								"simple_grid_field8",
+								"simple_grid_field9",
+								"simple_grid_field10",
+								"simple_grid_field11",
+								"simple_grid_field12",
+								"simple_grid_field13",
+								"simple_grid_field14",
+								"simple_grid_field15",
+								"simple_grid_field16",
+								"simple_grid_field17",
+								"simple_grid_field18",
+								"simple_grid_field19",
+								"simple_grid_field20",
+								"simple_grid_field21",
+								"simple_grid_field22",
+								"simple_grid_field23",
+								"simple_grid_field24",
+								"simple_grid_field25",
+								"simple_grid_field26",
+								"simple_grid_field27",
+								"simple_grid_field28"
+							]
 						}
 					},
 					"deferredItems": [],
@@ -2353,6 +2823,122 @@
 			"items": {
 				"masterprint_header": {
 					"type": "masterprint_header"
+				},
+				"simple_grid_field": {
+					"type": "deleted",
+					"itemId": "simple_grid_field"
+				},
+				"simple_grid_field1": {
+					"type": "deleted",
+					"itemId": "simple_grid_field1"
+				},
+				"simple_grid_field2": {
+					"type": "deleted",
+					"itemId": "simple_grid_field2"
+				},
+				"simple_grid_field3": {
+					"type": "deleted",
+					"itemId": "simple_grid_field3"
+				},
+				"simple_grid_field4": {
+					"type": "deleted",
+					"itemId": "simple_grid_field4"
+				},
+				"simple_grid_field5": {
+					"type": "deleted",
+					"itemId": "simple_grid_field5"
+				},
+				"simple_grid_field6": {
+					"type": "deleted",
+					"itemId": "simple_grid_field6"
+				},
+				"simple_grid_field7": {
+					"type": "deleted",
+					"itemId": "simple_grid_field7"
+				},
+				"simple_grid_field8": {
+					"type": "deleted",
+					"itemId": "simple_grid_field8"
+				},
+				"simple_grid_field9": {
+					"type": "deleted",
+					"itemId": "simple_grid_field9"
+				},
+				"simple_grid_field10": {
+					"type": "deleted",
+					"itemId": "simple_grid_field10"
+				},
+				"simple_grid_field11": {
+					"type": "deleted",
+					"itemId": "simple_grid_field11"
+				},
+				"simple_grid_field12": {
+					"type": "deleted",
+					"itemId": "simple_grid_field12"
+				},
+				"simple_grid_field13": {
+					"field": "id",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field14": {
+					"field": "idtipomov",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field15": {
+					"field": "referencia",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field16": {
+					"field": "fecha",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field17": {
+					"field": "idtienda",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field18": {
+					"field": "idtienda2",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field19": {
+					"field": "idcliente",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field20": {
+					"field": "usuario",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field21": {
+					"field": "fechaingreso",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field22": {
+					"field": "venta",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field23": {
+					"field": "Acceso",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field24": {
+					"field": "tienda",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field25": {
+					"field": "cliente",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field26": {
+					"field": "estado",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field27": {
+					"field": "ciudad",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field28": {
+					"field": "cp",
+					"type": "simple_grid_field"
 				}
 			},
 			"dbProps": {},

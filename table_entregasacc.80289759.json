@@ -1,25 +1,14 @@
 {
-	"sql": "SELECT\r\nid,\r\nidaccenc,\r\nidacccat,\r\ncantidad,\r\nprecio,\r\ndto,\r\nimpto,\r\nround(((ifnull(cantidad,0)*ifnull(precio,0))*(1-ifnull(dto,0)/100))*(1+ifnull(impto,0)/100),2) AS importe,\r\nprecioasd,\r\nround(((ifnull(cantidad,0)*ifnull(precioasd,0))*(1-ifnull(dto,0)/100)),2) AS importeasd\r\nFROM accmov\r\n",
+	"sql": "SELECT\r\n\tid,\r\n\testado,\r\n\tciudad,\r\n\tcp,\r\n\tcalle,\r\n\tnumeroext,\r\n\tnumeroint,\r\n\tcolonia,\r\n\tidaccenc,\r\n\tlat,\r\n\tlng\r\nFROM\r\n\tentregasacc",
 	"connId": "conn",
-	"originalTable": "accmov",
-	"name": "accmov",
-	"shortTableName": "accmov",
+	"originalTable": "entregasacc",
+	"name": "entregasacc",
+	"shortTableName": "entregasacc",
 	"dbType": 0,
 	"keyFields": [
 		"id"
 	],
-	"masterTables": [
-		{
-			"table": 3836892972,
-			"masterKeys": [
-				"id"
-			],
-			"detailsKeys": [
-				"idaccenc"
-			]
-		}
-	],
-	"detailsBadgeColor": "cfae83",
+	"detailsBadgeColor": "5f9ea0",
 	"fields": [
 		{
 			"name": "id",
@@ -37,12 +26,131 @@
 			"label": {
 				"Spanish": "Id"
 			},
-			"tableName": "accmov"
+			"tableName": "entregasacc"
+		},
+		{
+			"name": "estado",
+			"sqlExpression": "estado",
+			"index": 2,
+			"strField": "estado",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Estado"
+			},
+			"tableName": "entregasacc"
+		},
+		{
+			"name": "ciudad",
+			"sqlExpression": "ciudad",
+			"index": 3,
+			"strField": "ciudad",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Ciudad"
+			},
+			"tableName": "entregasacc"
+		},
+		{
+			"name": "cp",
+			"sqlExpression": "cp",
+			"index": 4,
+			"strField": "cp",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Cp"
+			},
+			"tableName": "entregasacc"
+		},
+		{
+			"name": "calle",
+			"sqlExpression": "calle",
+			"index": 5,
+			"strField": "calle",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Calle"
+			},
+			"tableName": "entregasacc"
+		},
+		{
+			"name": "numeroext",
+			"sqlExpression": "numeroext",
+			"index": 6,
+			"strField": "numeroext",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Numeroext"
+			},
+			"tableName": "entregasacc"
+		},
+		{
+			"name": "numeroint",
+			"sqlExpression": "numeroint",
+			"index": 7,
+			"strField": "numeroint",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Numeroint"
+			},
+			"tableName": "entregasacc"
+		},
+		{
+			"name": "colonia",
+			"sqlExpression": "colonia",
+			"index": 8,
+			"strField": "colonia",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Colonia"
+			},
+			"tableName": "entregasacc"
 		},
 		{
 			"name": "idaccenc",
 			"sqlExpression": "idaccenc",
-			"index": 2,
+			"index": 9,
 			"strField": "idaccenc",
 			"type": 3,
 			"viewFormats": [
@@ -54,158 +162,13 @@
 			"label": {
 				"Spanish": "Idaccenc"
 			},
-			"tableName": "accmov"
+			"tableName": "entregasacc"
 		},
 		{
-			"name": "idacccat",
-			"sqlExpression": "idacccat",
-			"index": 3,
-			"strField": "idacccat",
-			"type": 3,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{
-					"format": "Lookup wizard",
-					"required": true,
-					"lookupTable": "acccat",
-					"lookupTableConnection": "conn",
-					"lookupLinkField": "id",
-					"lookupDisplayField": "descripcion",
-					"lookupOrderBy": "descripcion",
-					"lookupAutofillFields": [
-						{
-							"masterField": "precio",
-							"lookupField": "preciounit"
-						},
-						{
-							"masterField": "dto",
-							"lookupField": "dto"
-						}
-					]
-				}
-			],
-			"label": {
-				"Spanish": "Producto"
-			},
-			"tableName": "accmov"
-		},
-		{
-			"name": "cantidad",
-			"sqlExpression": "cantidad",
-			"index": 4,
-			"strField": "cantidad",
-			"type": 3,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{}
-			],
-			"label": {
-				"Spanish": "Cantidad"
-			},
-			"tableName": "accmov"
-		},
-		{
-			"name": "precio",
-			"sqlExpression": "precio",
-			"index": 5,
-			"strField": "precio",
-			"type": 14,
-			"viewFormats": [
-				{
-					"format": "Number"
-				}
-			],
-			"editFormats": [
-				{
-					"format": "Readonly"
-				}
-			],
-			"label": {
-				"Spanish": "Precio"
-			},
-			"tableName": "accmov"
-		},
-		{
-			"name": "dto",
-			"sqlExpression": "dto",
-			"index": 6,
-			"strField": "dto",
-			"type": 3,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{}
-			],
-			"label": {
-				"Spanish": "Dcto %"
-			},
-			"tableName": "accmov"
-		},
-		{
-			"name": "impto",
-			"sqlExpression": "impto",
-			"index": 7,
-			"strField": "impto",
-			"type": 3,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{}
-			],
-			"label": {
-				"Spanish": "Impuesto %"
-			},
-			"tableName": "accmov"
-		},
-		{
-			"name": "precioasd",
-			"sqlExpression": "precioasd",
-			"index": 9,
-			"strField": "precioasd",
-			"type": 14,
-			"viewFormats": [
-				{
-					"format": "Number"
-				}
-			],
-			"editFormats": [
-				{}
-			],
-			"label": {
-				"Spanish": "Precio ASD c/IVA"
-			},
-			"tableName": "accmov"
-		},
-		{
-			"name": "importe",
-			"sqlExpression": "round(((ifnull(cantidad,0)*ifnull(precio,0))*(1-ifnull(dto,0)/100))*(1+ifnull(impto,0)/100),2)",
-			"index": 8,
-			"strField": "importe",
-			"type": 14,
-			"viewFormats": [
-				{
-					"format": "Number"
-				}
-			],
-			"editFormats": [
-				{}
-			],
-			"label": {
-				"Spanish": "Importe"
-			},
-			"tableName": ""
-		},
-		{
-			"name": "importeasd",
-			"sqlExpression": "round(((ifnull(cantidad,0)*ifnull(precioasd,0))*(1-ifnull(dto,0)/100)),2)",
+			"name": "lat",
+			"sqlExpression": "lat",
 			"index": 10,
-			"strField": "importeasd",
+			"strField": "lat",
 			"type": 14,
 			"viewFormats": [
 				{
@@ -216,36 +179,28 @@
 				{}
 			],
 			"label": {
-				"Spanish": "Importe ASD"
+				"Spanish": "Lat"
 			},
-			"tableName": ""
-		}
-	],
-	"eventHandlers": [
-		{
-			"eventId": "EVENT_BEFOREADD",
-			"pageType": "add",
-			"code": "\n\nif ($values['cantidad']==0)\n{\n\t$message=\"La cantidad no puede ser 0\";\n\treturn false;\n}\n\nif ($values['precioasd']==0)\n{\n\t$message=\"El precio ASD no puede ser 0\";\n\treturn false;\n}\nreturn true;"
+			"tableName": "entregasacc"
 		},
 		{
-			"eventId": "EVENT_BEFORESHOW_ADD",
-			"pageType": "add",
-			"code": "$pageObject->setProxyValue(\"impto\", $_SESSION['impto']);\n\n"
-		},
-		{
-			"eventId": "EVENT_BEFORESHOW_EDIT",
-			"pageType": "edit",
-			"code": "$pageObject->setProxyValue(\"impto\", $_SESSION['impto']);"
-		},
-		{
-			"eventId": "EVENT_JS_ONLOAD",
-			"pageType": "add",
-			"code": "var ctrlPrice = Runner.getControl(pageid,'idacccat');\nvar ctrlCantidad=Runner.getControl(pageid,'cantidad');\nvar ctrlImporte=Runner.getControl(pageid,'importe');\nvar ctrlDto=Runner.getControl(pageid,'dto');\nvar ctrlImpto=Runner.getControl(pageid,'impto');\nvar ctrlPrecioASD=Runner.getControl(pageid,'precioasd');\nvar ctrlImporteASD = Runner.getControl(pageid,'importeasd');\n//var ctrlUsuario = Runner.getControl(pageid, 'usuario');\n\n\nvar ctrlTotal = Runner.getControl(pageid,'precio');\n//var data=proxy.renta;\n//var valores=JSON.parse(data);\n\n\n//ctrlUsuario.hide();\n\n//if (proxy.username!='ADMIN')\n//{\n // ctrlUsuario.makeReadonly();\n//}\n\n/*ctrlPrice.getDispElem().css(\"width\", \"300px\");\nctrlImporte.getDispElem().css(\"width\",\"100px\");\nctrlDto.getDispElem().css(\"width\",50);\nctrlImpto.getDispElem().css(\"width\",50);*/\nctrlImporte.setDisabled();\nctrlImporteASD.setDisabled();\n\n\n\n\n\nfunction func() {\n\n\n\n\n\t\tctrlImpto.setValue(16);\n\n\n\n\t\tif (!ctrlCantidad.getValue()) {\n\t\t\t\tctrlCantidad.setValue(1);\n\t\t}\n\t\tif (ctrlTotal.getValue()>0){\n\t\t\t\tctrlImporte.setValue(((ctrlTotal.getValue()*ctrlCantidad.getValue())*(1-ctrlDto.getValue()/100))*(1+ctrlImpto.getValue()/100));\n\t\t\t//\tctrlImporte.setValue(100);\n\t\t}\n\n\t\tif (ctrlPrecioASD.getValue()>0){\n\t\t\t\tctrlImporteASD.setValue(((ctrlPrecioASD.getValue()*ctrlCantidad.getValue())*(1-ctrlDto.getValue()/100)));\n\t\t\t//\tctrlImporte.setValue(100);\n\t\t}\n\n        return;\n \n\n}\n\n\nctrlPrice.on('change', func);\nctrlCantidad.on('keyup',func);\nctrlDto.on('keyup',func);\nctrlPrecioASD.on('keyup',func);\n"
-		},
-		{
-			"eventId": "EVENT_JS_ONLOAD",
-			"pageType": "edit",
-			"code": "var ctrlPrice = Runner.getControl(pageid,'idacccat');\nvar ctrlCantidad=Runner.getControl(pageid,'cantidad');\nvar ctrlImporte=Runner.getControl(pageid,'importe');\nvar ctrlDto=Runner.getControl(pageid,'dto');\nvar ctrlImpto=Runner.getControl(pageid,'impto');\nvar ctrlPrecioASD=Runner.getControl(pageid,'precioasd');\nvar ctrlImporteASD = Runner.getControl(pageid,'importeasd');\n//var ctrlUsuario = Runner.getControl(pageid, 'usuario');\n\n\nvar ctrlTotal = Runner.getControl(pageid,'precio');\n//var data=proxy.renta;\n//var valores=JSON.parse(data);\n\n\n//ctrlUsuario.hide();\n\n//if (proxy.username!='ADMIN')\n//{\n // ctrlUsuario.makeReadonly();\n//}\n/*\nctrlPrice.getDispElem().css(\"width\", \"300px\");\nctrlImporte.getDispElem().css(\"width\",\"100px\");\nctrlDto.getDispElem().css(\"width\",50);\nctrlImpto.getDispElem().css(\"width\",50);*/\nctrlImporte.setDisabled();\nctrlImporteASD.setDisabled();\n\n\n\n\n\nfunction func() {\n\n\n\n\n\t\tctrlImpto.setValue(16);\n\n\n\n\t\tif (!ctrlCantidad.getValue()) {\n\t\t\t\tctrlCantidad.setValue(1);\n\t\t}\n\t\tif (ctrlTotal.getValue()>0){\n\t\t\t\tctrlImporte.setValue(((ctrlTotal.getValue()*ctrlCantidad.getValue())*(1-ctrlDto.getValue()/100))*(1+ctrlImpto.getValue()/100));\n\t\t\t//\tctrlImporte.setValue(100);\n\t\t}\n\n\t\tif (ctrlPrecioASD.getValue()>0){\n\t\t\t\tctrlImporteASD.setValue(((ctrlPrecioASD.getValue()*ctrlCantidad.getValue())*(1-ctrlDto.getValue()/100)));\n\t\t\t//\tctrlImporte.setValue(100);\n\t\t}\n\n        return;\n \n\n}\n\n\nctrlPrice.on('change', func);\nctrlCantidad.on('keyup',func);\nctrlDto.on('keyup',func);\nctrlPrecioASD.on('keyup',func);\n\n"
+			"name": "lng",
+			"sqlExpression": "lng",
+			"index": 11,
+			"strField": "lng",
+			"type": 14,
+			"viewFormats": [
+				{
+					"format": "Number"
+				}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Lng"
+			},
+			"tableName": "entregasacc"
 		}
 	],
 	"dbTableInfo": {
@@ -264,88 +219,110 @@
 				"defaultValue": ""
 			},
 			{
+				"name": "estado",
+				"type": 200,
+				"size": 45,
+				"scale": 0,
+				"typeName": "varchar(45)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "ciudad",
+				"type": 200,
+				"size": 45,
+				"scale": 0,
+				"typeName": "varchar(45)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "cp",
+				"type": 200,
+				"size": 45,
+				"scale": 0,
+				"typeName": "varchar(45)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "calle",
+				"type": 200,
+				"size": 45,
+				"scale": 0,
+				"typeName": "varchar(45)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "numeroext",
+				"type": 200,
+				"size": 45,
+				"scale": 0,
+				"typeName": "varchar(45)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "numeroint",
+				"type": 200,
+				"size": 45,
+				"scale": 0,
+				"typeName": "varchar(45)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "colonia",
+				"type": 200,
+				"size": 45,
+				"scale": 0,
+				"typeName": "varchar(45)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
 				"name": "idaccenc",
 				"type": 3,
 				"size": 11,
 				"scale": 0,
 				"typeName": "int(11)",
-				"nullable": false,
+				"nullable": true,
 				"autoinc": false,
 				"defaultValueSQL": null,
 				"defaultValue": ""
 			},
 			{
-				"name": "idacccat",
-				"type": 3,
-				"size": 11,
-				"scale": 0,
-				"typeName": "int(11)",
-				"nullable": false,
-				"autoinc": false,
-				"defaultValueSQL": null,
-				"defaultValue": ""
-			},
-			{
-				"name": "cantidad",
-				"type": 3,
-				"size": 11,
-				"scale": 0,
-				"typeName": "int(11)",
-				"nullable": false,
-				"autoinc": false,
-				"defaultValueSQL": null,
-				"defaultValue": ""
-			},
-			{
-				"name": "precio",
+				"name": "lat",
 				"type": 14,
-				"size": 7,
-				"scale": 2,
-				"typeName": "decimal(7,2)",
+				"size": 15,
+				"scale": 8,
+				"typeName": "decimal(15,8)",
 				"nullable": true,
 				"autoinc": false,
 				"defaultValueSQL": null,
 				"defaultValue": ""
 			},
 			{
-				"name": "dto",
-				"type": 3,
-				"size": 2,
-				"scale": 0,
-				"typeName": "int(2)",
-				"nullable": true,
-				"autoinc": false,
-				"defaultValueSQL": null,
-				"defaultValue": ""
-			},
-			{
-				"name": "impto",
-				"type": 3,
-				"size": 2,
-				"scale": 0,
-				"typeName": "int(2)",
-				"nullable": true,
-				"autoinc": false,
-				"defaultValueSQL": null,
-				"defaultValue": ""
-			},
-			{
-				"name": "precioasd",
+				"name": "lng",
 				"type": 14,
-				"size": 7,
-				"scale": 2,
-				"typeName": "decimal(7,2)",
-				"nullable": true,
-				"autoinc": false,
-				"defaultValueSQL": null,
-				"defaultValue": ""
-			},
-			{
-				"name": "idaccsol",
-				"type": 3,
-				"size": 11,
-				"scale": 0,
-				"typeName": "int(11)",
+				"size": 15,
+				"scale": 8,
+				"typeName": "decimal(15,8)",
 				"nullable": true,
 				"autoinc": false,
 				"defaultValueSQL": null,
@@ -356,14 +333,14 @@
 			"id"
 		],
 		"uniqueFields": [],
-		"name": "accmov"
+		"name": "entregasacc"
 	},
 	"pages": [
 		{
 			"id": "add",
 			"type": "add",
 			"layoutId": "nomenu",
-			"disabled": true,
+			"disabled": false,
 			"default": 0,
 			"forms": {
 				"above-grid": {
@@ -460,7 +437,10 @@
 								"integrated_edit_field3",
 								"integrated_edit_field4",
 								"integrated_edit_field5",
-								"integrated_edit_field6"
+								"integrated_edit_field6",
+								"integrated_edit_field7",
+								"integrated_edit_field8",
+								"integrated_edit_field9"
 							]
 						}
 					},
@@ -490,37 +470,52 @@
 					"type": "add_reset"
 				},
 				"integrated_edit_field": {
-					"field": "idaccenc",
+					"field": "estado",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
 				"integrated_edit_field1": {
-					"field": "idacccat",
+					"field": "ciudad",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
 				"integrated_edit_field2": {
-					"field": "cantidad",
+					"field": "cp",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
 				"integrated_edit_field3": {
-					"field": "precio",
+					"field": "calle",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
 				"integrated_edit_field4": {
-					"field": "dto",
+					"field": "numeroext",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
 				"integrated_edit_field5": {
-					"field": "impto",
+					"field": "numeroint",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
 				"integrated_edit_field6": {
-					"field": "precioasd",
+					"field": "colonia",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field7": {
+					"field": "idaccenc",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field8": {
+					"field": "lat",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field9": {
+					"field": "lng",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				}
@@ -612,7 +607,8 @@
 								"export_field6",
 								"export_field7",
 								"export_field8",
-								"export_field9"
+								"export_field9",
+								"export_field10"
 							]
 						}
 					},
@@ -666,39 +662,43 @@
 					"type": "export_field"
 				},
 				"export_field1": {
-					"field": "idaccenc",
+					"field": "estado",
 					"type": "export_field"
 				},
 				"export_field2": {
-					"field": "idacccat",
+					"field": "ciudad",
 					"type": "export_field"
 				},
 				"export_field3": {
-					"field": "cantidad",
+					"field": "cp",
 					"type": "export_field"
 				},
 				"export_field4": {
-					"field": "precio",
+					"field": "calle",
 					"type": "export_field"
 				},
 				"export_field5": {
-					"field": "dto",
+					"field": "numeroext",
 					"type": "export_field"
 				},
 				"export_field6": {
-					"field": "impto",
+					"field": "numeroint",
 					"type": "export_field"
 				},
 				"export_field7": {
-					"field": "precioasd",
+					"field": "colonia",
 					"type": "export_field"
 				},
 				"export_field8": {
-					"field": "importe",
+					"field": "idaccenc",
 					"type": "export_field"
 				},
 				"export_field9": {
-					"field": "importeasd",
+					"field": "lat",
+					"type": "export_field"
+				},
+				"export_field10": {
+					"field": "lng",
 					"type": "export_field"
 				}
 			},
@@ -791,7 +791,10 @@
 								"import_field4",
 								"import_field5",
 								"import_field6",
-								"import_field7"
+								"import_field7",
+								"import_field8",
+								"import_field9",
+								"import_field10"
 							]
 						}
 					},
@@ -808,31 +811,43 @@
 					"type": "import_field"
 				},
 				"import_field1": {
-					"field": "idaccenc",
+					"field": "estado",
 					"type": "import_field"
 				},
 				"import_field2": {
-					"field": "idacccat",
+					"field": "ciudad",
 					"type": "import_field"
 				},
 				"import_field3": {
-					"field": "cantidad",
+					"field": "cp",
 					"type": "import_field"
 				},
 				"import_field4": {
-					"field": "precio",
+					"field": "calle",
 					"type": "import_field"
 				},
 				"import_field5": {
-					"field": "dto",
+					"field": "numeroext",
 					"type": "import_field"
 				},
 				"import_field6": {
-					"field": "impto",
+					"field": "numeroint",
 					"type": "import_field"
 				},
 				"import_field7": {
-					"field": "precioasd",
+					"field": "colonia",
+					"type": "import_field"
+				},
+				"import_field8": {
+					"field": "idaccenc",
+					"type": "import_field"
+				},
+				"import_field9": {
+					"field": "lat",
+					"type": "import_field"
+				},
+				"import_field10": {
+					"field": "lng",
 					"type": "import_field"
 				}
 			},
@@ -851,7 +866,7 @@
 			"id": "edit",
 			"type": "edit",
 			"layoutId": "nomenu",
-			"disabled": true,
+			"disabled": false,
 			"default": 0,
 			"forms": {
 				"above-grid": {
@@ -956,7 +971,10 @@
 								"integrated_edit_field3",
 								"integrated_edit_field4",
 								"integrated_edit_field5",
-								"integrated_edit_field6"
+								"integrated_edit_field6",
+								"integrated_edit_field7",
+								"integrated_edit_field8",
+								"integrated_edit_field9"
 							]
 						}
 					},
@@ -992,39 +1010,64 @@
 					"type": "edit_close"
 				},
 				"integrated_edit_field": {
-					"field": "idaccenc",
+					"field": "estado",
 					"type": "integrated_edit_field",
-					"orientation": 0
+					"orientation": 0,
+					"updateOnEdit": false
 				},
 				"integrated_edit_field1": {
-					"field": "idacccat",
+					"field": "ciudad",
 					"type": "integrated_edit_field",
-					"orientation": 0
+					"orientation": 0,
+					"updateOnEdit": false
 				},
 				"integrated_edit_field2": {
-					"field": "cantidad",
+					"field": "cp",
 					"type": "integrated_edit_field",
-					"orientation": 0
+					"orientation": 0,
+					"updateOnEdit": false
 				},
 				"integrated_edit_field3": {
-					"field": "precio",
+					"field": "calle",
 					"type": "integrated_edit_field",
-					"orientation": 0
+					"orientation": 0,
+					"updateOnEdit": false
 				},
 				"integrated_edit_field4": {
-					"field": "dto",
+					"field": "numeroext",
 					"type": "integrated_edit_field",
-					"orientation": 0
+					"orientation": 0,
+					"updateOnEdit": false
 				},
 				"integrated_edit_field5": {
-					"field": "impto",
+					"field": "numeroint",
 					"type": "integrated_edit_field",
-					"orientation": 0
+					"orientation": 0,
+					"updateOnEdit": false
 				},
 				"integrated_edit_field6": {
-					"field": "precioasd",
+					"field": "colonia",
 					"type": "integrated_edit_field",
-					"orientation": 0
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field7": {
+					"field": "idaccenc",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field8": {
+					"field": "lat",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field9": {
+					"field": "lng",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
 				}
 			},
 			"dbProps": {},
@@ -1148,7 +1191,8 @@
 								"integrated_edit_field6",
 								"integrated_edit_field7",
 								"integrated_edit_field8",
-								"integrated_edit_field9"
+								"integrated_edit_field9",
+								"integrated_edit_field10"
 							]
 						}
 					},
@@ -1174,53 +1218,63 @@
 					"orientation": 0
 				},
 				"integrated_edit_field1": {
-					"field": "idaccenc",
+					"field": "estado",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
 				"integrated_edit_field2": {
-					"field": "idacccat",
+					"field": "ciudad",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
 				"integrated_edit_field3": {
-					"field": "cantidad",
+					"field": "cp",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
 				"integrated_edit_field4": {
-					"field": "precio",
+					"field": "calle",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
 				"integrated_edit_field5": {
-					"field": "dto",
+					"field": "numeroext",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
 				"integrated_edit_field6": {
-					"field": "impto",
+					"field": "numeroint",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
 				"integrated_edit_field7": {
-					"field": "precioasd",
+					"field": "colonia",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field8": {
+					"field": "idaccenc",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field9": {
+					"field": "lat",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field10": {
+					"field": "lng",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
 				"hamburger": {
 					"type": "hamburger",
-					"items": []
+					"items": [
+						"view_edit"
+					]
 				},
-				"integrated_edit_field8": {
-					"field": "importe",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field9": {
-					"field": "importeasd",
-					"type": "integrated_edit_field",
-					"orientation": 0
+				"view_edit": {
+					"type": "view_edit"
 				}
 			},
 			"dbProps": {},
@@ -1260,9 +1314,7 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"inline_add",
-								"inline_save_all",
-								"inline_cancel_all",
+								"add",
 								"delete"
 							]
 						},
@@ -1330,7 +1382,8 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"menu"
+								"menu",
+								"search_panel"
 							]
 						}
 					},
@@ -1389,350 +1442,325 @@
 					"cells": {
 						"c2": {
 							"model": "c2",
-							"items": [
-								"master_info"
-							]
+							"items": []
 						}
 					},
 					"deferredItems": [],
 					"recsPerRow": 1
 				},
 				"grid": {
-					"modelId": "horizontal-grid",
+					"modelId": "vertical-grid",
 					"grid": [
 						{
-							"section": "head",
 							"cells": [
 								{
-									"cell": "headcell_icons"
-								},
-								{
-									"cell": "headcell_checkbox"
-								},
-								{
-									"cell": "headcell_field"
-								},
-								{
-									"cell": "headcell_field1"
-								},
-								{
-									"cell": "headcell_field2"
-								},
-								{
-									"cell": "headcell_field3"
-								},
-								{
-									"cell": "headcell_field4"
-								},
-								{
-									"cell": "headcell_field5"
-								},
-								{
-									"cell": "headcell_field6"
-								},
-								{
-									"cell": "headcell_field7"
+									"cell": "cell_top",
+									"colspan": 2
 								}
-							]
+							],
+							"section": "head"
 						},
 						{
-							"section": "body",
 							"cells": [
 								{
-									"cell": "cell_icons"
-								},
-								{
-									"cell": "cell_checkbox"
+									"cell": "cell_label"
 								},
 								{
 									"cell": "cell_field"
+								}
+							],
+							"section": "body"
+						},
+						{
+							"cells": [
+								{
+									"cell": "cell_label1"
 								},
 								{
 									"cell": "cell_field1"
+								}
+							],
+							"section": "body"
+						},
+						{
+							"cells": [
+								{
+									"cell": "cell_label2"
 								},
 								{
 									"cell": "cell_field2"
+								}
+							],
+							"section": "body"
+						},
+						{
+							"cells": [
+								{
+									"cell": "cell_label3"
 								},
 								{
 									"cell": "cell_field3"
+								}
+							],
+							"section": "body"
+						},
+						{
+							"cells": [
+								{
+									"cell": "cell_label4"
 								},
 								{
 									"cell": "cell_field4"
+								}
+							],
+							"section": "body"
+						},
+						{
+							"cells": [
+								{
+									"cell": "cell_label5"
 								},
 								{
 									"cell": "cell_field5"
+								}
+							],
+							"section": "body"
+						},
+						{
+							"cells": [
+								{
+									"cell": "cell_label6"
 								},
 								{
 									"cell": "cell_field6"
+								}
+							],
+							"section": "body"
+						},
+						{
+							"cells": [
+								{
+									"cell": "cell_label7"
 								},
 								{
 									"cell": "cell_field7"
 								}
-							]
+							],
+							"section": "body"
 						},
 						{
-							"section": "foot",
 							"cells": [
 								{
-									"cell": "footcell_icons"
+									"cell": "cell_label8"
 								},
 								{
-									"cell": "footcell_checkbox"
-								},
-								{
-									"cell": "footcell_field"
-								},
-								{
-									"cell": "footcell_field1"
-								},
-								{
-									"cell": "footcell_field2"
-								},
-								{
-									"cell": "footcell_field3"
-								},
-								{
-									"cell": "footcell_field4"
-								},
-								{
-									"cell": "footcell_field5"
-								},
-								{
-									"cell": "footcell_field6"
-								},
-								{
-									"cell": "footcell_field7"
+									"cell": "cell_field8"
 								}
-							]
+							],
+							"section": "body"
+						},
+						{
+							"cells": [
+								{
+									"cell": "cell_label9"
+								},
+								{
+									"cell": "cell_field9"
+								}
+							],
+							"section": "body"
+						},
+						{
+							"cells": [
+								{
+									"cell": "cell_label10"
+								},
+								{
+									"cell": "cell_field10"
+								}
+							],
+							"section": "body"
+						},
+						{
+							"cells": [
+								{
+									"cell": "cell_dpreview",
+									"colspan": 2
+								}
+							],
+							"section": "foot"
 						}
 					],
 					"cells": {
-						"headcell_field": {
-							"model": "headcell_field",
+						"cell_top": {
+							"model": "cell_top",
 							"items": [
-								"simple_grid_field"
+								"grid_checkbox",
+								"grid_edit"
+							]
+						},
+						"cell_dpreview": {
+							"model": "cell_dpreview",
+							"items": []
+						},
+						"cell_label": {
+							"model": "cell_label",
+							"items": [
+								"simple_grid_field11"
 							],
-							"field": "idacccat",
-							"columnName": "field"
+							"field": "id"
 						},
 						"cell_field": {
 							"model": "cell_field",
 							"items": [
-								"simple_grid_field2"
+								"simple_grid_field"
 							],
-							"field": "idacccat",
-							"columnName": "field"
+							"field": "id"
 						},
-						"footcell_field": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "idacccat",
-							"columnName": "field"
-						},
-						"headcell_field1": {
-							"model": "headcell_field",
+						"cell_label1": {
+							"model": "cell_label",
 							"items": [
-								"simple_grid_field10"
+								"simple_grid_field12"
 							],
-							"field": "cantidad",
-							"columnName": "field"
+							"field": "estado"
 						},
 						"cell_field1": {
 							"model": "cell_field",
 							"items": [
-								"simple_grid_field3"
+								"simple_grid_field1"
 							],
-							"field": "cantidad",
-							"columnName": "field"
+							"field": "estado"
 						},
-						"footcell_field1": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "cantidad",
-							"columnName": "field"
-						},
-						"headcell_field2": {
-							"model": "headcell_field",
+						"cell_label2": {
+							"model": "cell_label",
 							"items": [
-								"simple_grid_field11"
+								"simple_grid_field13"
 							],
-							"field": "precio",
-							"columnName": "field"
+							"field": "ciudad"
 						},
 						"cell_field2": {
 							"model": "cell_field",
 							"items": [
-								"simple_grid_field4"
+								"simple_grid_field2"
 							],
-							"field": "precio",
-							"columnName": "field",
-							"align": "center"
+							"field": "ciudad"
 						},
-						"footcell_field2": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "precio",
-							"columnName": "field"
-						},
-						"headcell_field3": {
-							"model": "headcell_field",
+						"cell_label3": {
+							"model": "cell_label",
 							"items": [
-								"simple_grid_field12"
+								"simple_grid_field14"
 							],
-							"field": "precioasd",
-							"columnName": "field"
+							"field": "cp"
 						},
 						"cell_field3": {
 							"model": "cell_field",
 							"items": [
-								"simple_grid_field7"
+								"simple_grid_field3"
 							],
-							"field": "precioasd",
-							"columnName": "field",
-							"align": "center"
+							"field": "cp"
 						},
-						"footcell_field3": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "precioasd",
-							"columnName": "field"
-						},
-						"headcell_field4": {
-							"model": "headcell_field",
+						"cell_label4": {
+							"model": "cell_label",
 							"items": [
-								"simple_grid_field13"
+								"simple_grid_field15"
 							],
-							"field": "dto",
-							"columnName": "field"
+							"field": "calle"
 						},
 						"cell_field4": {
 							"model": "cell_field",
 							"items": [
-								"simple_grid_field5"
+								"simple_grid_field4"
 							],
-							"field": "dto",
-							"columnName": "field",
-							"align": "center"
+							"field": "calle"
 						},
-						"footcell_field4": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "dto",
-							"columnName": "field"
-						},
-						"headcell_field5": {
-							"model": "headcell_field",
+						"cell_label5": {
+							"model": "cell_label",
 							"items": [
-								"simple_grid_field14"
+								"simple_grid_field16"
 							],
-							"field": "impto",
-							"columnName": "field"
+							"field": "numeroext"
 						},
 						"cell_field5": {
 							"model": "cell_field",
 							"items": [
-								"simple_grid_field6"
+								"simple_grid_field5"
 							],
-							"field": "impto",
-							"columnName": "field",
-							"align": "center"
+							"field": "numeroext"
 						},
-						"footcell_field5": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "impto",
-							"columnName": "field"
-						},
-						"headcell_field6": {
-							"model": "headcell_field",
+						"cell_label6": {
+							"model": "cell_label",
 							"items": [
-								"simple_grid_field15"
+								"simple_grid_field17"
 							],
-							"field": "importe",
-							"columnName": "field"
+							"field": "numeroint"
 						},
 						"cell_field6": {
 							"model": "cell_field",
 							"items": [
-								"simple_grid_field8"
+								"simple_grid_field6"
 							],
-							"field": "importe",
-							"columnName": "field"
+							"field": "numeroint"
 						},
-						"footcell_field6": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "importe",
-							"columnName": "field"
-						},
-						"headcell_field7": {
-							"model": "headcell_field",
+						"cell_label7": {
+							"model": "cell_label",
 							"items": [
-								"simple_grid_field16"
+								"simple_grid_field18"
 							],
-							"field": "importeasd",
-							"columnName": "field"
+							"field": "colonia"
 						},
 						"cell_field7": {
 							"model": "cell_field",
 							"items": [
+								"simple_grid_field7"
+							],
+							"field": "colonia"
+						},
+						"cell_label8": {
+							"model": "cell_label",
+							"items": [
+								"simple_grid_field19"
+							],
+							"field": "idaccenc"
+						},
+						"cell_field8": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field8"
+							],
+							"field": "idaccenc"
+						},
+						"cell_label9": {
+							"model": "cell_label",
+							"items": [
+								"simple_grid_field20"
+							],
+							"field": "lat"
+						},
+						"cell_field9": {
+							"model": "cell_field",
+							"items": [
 								"simple_grid_field9"
 							],
-							"field": "importeasd",
-							"columnName": "field"
+							"field": "lat"
 						},
-						"footcell_field7": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "importeasd",
-							"columnName": "field"
-						},
-						"headcell_checkbox": {
-							"model": "headcell_checkbox",
+						"cell_label10": {
+							"model": "cell_label",
 							"items": [
-								"grid_checkbox_head"
+								"simple_grid_field21"
 							],
-							"columnName": "checkbox",
-							"field": ""
+							"field": "lng"
 						},
-						"cell_checkbox": {
-							"model": "cell_checkbox",
+						"cell_field10": {
+							"model": "cell_field",
 							"items": [
-								"grid_checkbox"
+								"simple_grid_field10"
 							],
-							"columnName": "checkbox",
-							"field": ""
-						},
-						"footcell_checkbox": {
-							"model": "footcell_checkbox",
-							"items": [],
-							"columnName": "checkbox",
-							"field": ""
-						},
-						"headcell_icons": {
-							"model": "headcell_icons",
-							"items": [],
-							"columnName": "inline-edit",
-							"field": ""
-						},
-						"cell_icons": {
-							"model": "cell_icons",
-							"items": [
-								"grid_inline_edit",
-								"grid_inline_save",
-								"grid_inline_cancel"
-							],
-							"columnName": "inline-edit",
-							"field": ""
-						},
-						"footcell_icons": {
-							"model": "footcell_icons",
-							"items": [],
-							"columnName": "inline-edit",
-							"field": ""
+							"field": "lng"
 						}
 					},
-					"deferredItems": [],
+					"deferredItems": [
+						"grid_checkbox_head"
+					],
 					"recsPerRow": 1
 				}
 			},
@@ -1758,12 +1786,81 @@
 				"details_found": {
 					"type": "details_found"
 				},
+				"search_panel": {
+					"type": "search_panel",
+					"items": [
+						"search_panel_field",
+						"search_panel_field10",
+						"search_panel_field9",
+						"search_panel_field8",
+						"search_panel_field7",
+						"search_panel_field6",
+						"search_panel_field5",
+						"search_panel_field4",
+						"search_panel_field3",
+						"search_panel_field2",
+						"search_panel_field1"
+					],
+					"_flexiblePanel": true
+				},
 				"list_options": {
 					"type": "list_options",
 					"items": [
-						"edit_selected",
-						"delete_selected"
+						"delete_selected",
+						"-1",
+						"show_search_panel",
+						"hide_search_panel"
 					]
+				},
+				"show_search_panel": {
+					"type": "show_search_panel"
+				},
+				"hide_search_panel": {
+					"type": "hide_search_panel"
+				},
+				"search_panel_field": {
+					"field": "id",
+					"type": "search_panel_field"
+				},
+				"search_panel_field1": {
+					"field": "estado",
+					"type": "search_panel_field"
+				},
+				"search_panel_field2": {
+					"field": "ciudad",
+					"type": "search_panel_field"
+				},
+				"search_panel_field3": {
+					"field": "cp",
+					"type": "search_panel_field"
+				},
+				"search_panel_field4": {
+					"field": "calle",
+					"type": "search_panel_field"
+				},
+				"search_panel_field5": {
+					"field": "numeroext",
+					"type": "search_panel_field"
+				},
+				"search_panel_field6": {
+					"field": "numeroint",
+					"type": "search_panel_field"
+				},
+				"search_panel_field7": {
+					"field": "colonia",
+					"type": "search_panel_field"
+				},
+				"search_panel_field8": {
+					"field": "idaccenc",
+					"type": "search_panel_field"
+				},
+				"search_panel_field9": {
+					"field": "lat",
+					"type": "search_panel_field"
+				},
+				"search_panel_field10": {
+					"field": "lng",
+					"type": "search_panel_field"
 				},
 				"username_button": {
 					"type": "username_button",
@@ -1792,6 +1889,9 @@
 				"collapse_button": {
 					"type": "collapse_button"
 				},
+				"add": {
+					"type": "add"
+				},
 				"-": {
 					"type": "-"
 				},
@@ -1807,111 +1907,115 @@
 				"delete_selected": {
 					"type": "delete_selected"
 				},
-				"master_info": {
-					"type": "master_info",
-					"tables": {
-						"3836892972": "true"
-					}
-				},
-				"edit_selected": {
-					"type": "edit_selected"
-				},
-				"inline_save_all": {
-					"type": "inline_save_all"
-				},
-				"inline_cancel_all": {
-					"type": "inline_cancel_all"
-				},
-				"inline_add": {
-					"type": "inline_add"
-				},
-				"simple_grid_field2": {
-					"field": "idacccat",
-					"type": "grid_field",
-					"inlineEdit": true,
-					"inlineAdd": true,
-					"width": "300px"
-				},
 				"simple_grid_field": {
-					"type": "grid_field_label",
-					"field": "idacccat"
-				},
-				"simple_grid_field3": {
-					"field": "cantidad",
+					"field": "id",
 					"type": "grid_field",
-					"inlineEdit": true,
-					"inlineAdd": true,
-					"width": "100px"
-				},
-				"simple_grid_field10": {
-					"type": "grid_field_label",
-					"field": "cantidad"
-				},
-				"simple_grid_field4": {
-					"field": "precio",
-					"type": "grid_field",
-					"inlineEdit": true,
-					"inlineAdd": true,
-					"width": "125px"
+					"inlineAdd": false,
+					"inlineEdit": false
 				},
 				"simple_grid_field11": {
 					"type": "grid_field_label",
-					"field": "precio"
+					"field": "id"
 				},
-				"simple_grid_field7": {
-					"field": "precioasd",
+				"simple_grid_field1": {
+					"field": "estado",
 					"type": "grid_field",
-					"inlineEdit": true,
-					"inlineAdd": true,
-					"width": "200px"
+					"inlineAdd": false,
+					"inlineEdit": false
 				},
 				"simple_grid_field12": {
 					"type": "grid_field_label",
-					"field": "precioasd"
+					"field": "estado"
 				},
-				"simple_grid_field5": {
-					"field": "dto",
+				"simple_grid_field2": {
+					"field": "ciudad",
 					"type": "grid_field",
-					"inlineEdit": true,
-					"inlineAdd": true,
-					"width": "100px"
+					"inlineAdd": false,
+					"inlineEdit": false
 				},
 				"simple_grid_field13": {
 					"type": "grid_field_label",
-					"field": "dto"
+					"field": "ciudad"
 				},
-				"simple_grid_field6": {
-					"field": "impto",
+				"simple_grid_field3": {
+					"field": "cp",
 					"type": "grid_field",
-					"inlineEdit": true,
-					"inlineAdd": true,
-					"width": "100px"
+					"inlineAdd": false,
+					"inlineEdit": false
 				},
 				"simple_grid_field14": {
 					"type": "grid_field_label",
-					"field": "impto"
+					"field": "cp"
 				},
-				"simple_grid_field8": {
-					"field": "importe",
+				"simple_grid_field4": {
+					"field": "calle",
 					"type": "grid_field",
-					"inlineEdit": true,
-					"inlineAdd": true,
-					"width": "125px"
+					"inlineAdd": false,
+					"inlineEdit": false
 				},
 				"simple_grid_field15": {
 					"type": "grid_field_label",
-					"field": "importe"
+					"field": "calle"
 				},
-				"simple_grid_field9": {
-					"field": "importeasd",
+				"simple_grid_field5": {
+					"field": "numeroext",
 					"type": "grid_field",
-					"inlineEdit": true,
-					"inlineAdd": true,
-					"width": "125px"
+					"inlineAdd": false,
+					"inlineEdit": false
 				},
 				"simple_grid_field16": {
 					"type": "grid_field_label",
-					"field": "importeasd"
+					"field": "numeroext"
+				},
+				"simple_grid_field6": {
+					"field": "numeroint",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field17": {
+					"type": "grid_field_label",
+					"field": "numeroint"
+				},
+				"simple_grid_field7": {
+					"field": "colonia",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field18": {
+					"type": "grid_field_label",
+					"field": "colonia"
+				},
+				"simple_grid_field8": {
+					"field": "idaccenc",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field19": {
+					"type": "grid_field_label",
+					"field": "idaccenc"
+				},
+				"simple_grid_field9": {
+					"field": "lat",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field20": {
+					"type": "grid_field_label",
+					"field": "lat"
+				},
+				"simple_grid_field10": {
+					"field": "lng",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field21": {
+					"type": "grid_field_label",
+					"field": "lng"
 				},
 				"grid_checkbox": {
 					"type": "grid_checkbox"
@@ -1919,14 +2023,8 @@
 				"grid_checkbox_head": {
 					"type": "grid_checkbox_head"
 				},
-				"grid_inline_edit": {
-					"type": "grid_inline_edit"
-				},
-				"grid_inline_save": {
-					"type": "grid_inline_save"
-				},
-				"grid_inline_cancel": {
-					"type": "grid_inline_cancel"
+				"grid_edit": {
+					"type": "grid_edit"
 				}
 			},
 			"dbProps": {},
@@ -2040,7 +2138,8 @@
 								"simple_grid_field6",
 								"simple_grid_field7",
 								"simple_grid_field8",
-								"simple_grid_field9"
+								"simple_grid_field9",
+								"simple_grid_field10"
 							]
 						}
 					},
@@ -2063,39 +2162,43 @@
 					"type": "simple_grid_field"
 				},
 				"simple_grid_field1": {
-					"field": "idaccenc",
+					"field": "estado",
 					"type": "simple_grid_field"
 				},
 				"simple_grid_field2": {
-					"field": "idacccat",
+					"field": "ciudad",
 					"type": "simple_grid_field"
 				},
 				"simple_grid_field3": {
-					"field": "cantidad",
+					"field": "cp",
 					"type": "simple_grid_field"
 				},
 				"simple_grid_field4": {
-					"field": "precio",
+					"field": "calle",
 					"type": "simple_grid_field"
 				},
 				"simple_grid_field5": {
-					"field": "dto",
+					"field": "numeroext",
 					"type": "simple_grid_field"
 				},
 				"simple_grid_field6": {
-					"field": "impto",
+					"field": "numeroint",
 					"type": "simple_grid_field"
 				},
 				"simple_grid_field7": {
-					"field": "precioasd",
+					"field": "colonia",
 					"type": "simple_grid_field"
 				},
 				"simple_grid_field8": {
-					"field": "importe",
+					"field": "idaccenc",
 					"type": "simple_grid_field"
 				},
 				"simple_grid_field9": {
-					"field": "importeasd",
+					"field": "lat",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field10": {
+					"field": "lng",
 					"type": "simple_grid_field"
 				}
 			},
@@ -2118,6 +2221,6 @@
 		"addressFields": []
 	},
 	"caption": {
-		"Spanish": "Accmov"
+		"Spanish": "Entregasacc"
 	}
 }

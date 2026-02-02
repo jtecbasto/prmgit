@@ -124,6 +124,13 @@
 				"height": 124
 			},
 			{
+				"gid": 80289759,
+				"y": 1237,
+				"x": 524,
+				"width": 145.28125,
+				"height": 348
+			},
+			{
 				"gid": 749770169,
 				"y": 379,
 				"x": 624,
@@ -580,6 +587,20 @@
 							"table": 3836892972,
 							"pageType": "list"
 						}
+					},
+					{
+						"id": "19",
+						"data": {
+							"name": {
+								"table": "entregasacc",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 80289759,
+							"pageType": "list"
+						}
 					}
 				]
 			}
@@ -683,7 +704,8 @@
 								"welcome_item18",
 								"welcome_item16",
 								"welcome_item17",
-								"welcome_item19"
+								"welcome_item19",
+								"welcome_item20"
 							]
 						}
 					},
@@ -998,6 +1020,18 @@
 						"type": 6
 					},
 					"background": "#cfae83",
+					"linkType": 0
+				},
+				"welcome_item20": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "entregasacc",
+					"linkPage": "list",
+					"linkText": {
+						"table": "entregasacc",
+						"type": 6
+					},
+					"background": "#5f9ea0",
 					"linkType": 0
 				}
 			},
