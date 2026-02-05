@@ -7,7 +7,7 @@
 			"asc": false
 		}
 	],
-	"sql": "SELECT\r\naccenc.id,\r\naccenc.idtipomov,\r\naccenc.referencia,\r\naccenc.fecha,\r\naccenc.idtienda,\r\naccenc.idtienda2,\r\naccenc.idcliente,\r\nc.nombre_completo cliente,\r\nt.tienda,\r\naccenc.usuario,\r\naccenc.fechaingreso,\r\nserviciosmoviles_uggroups.Acceso,\r\naccenc.venta,\r\nea.estado,\r\nea.ciudad,\r\nea.cp,\r\n\tea.calle,\r\n\tea.numeroext,\r\n\tea.numeroint,\r\n\tea.colonia,\r\n\tea.lat,\r\n\tea.lng,\r\n\taccenc.doctos,\r\n\t\tCONCAT(TRIM(CONCAT_WS(' ',\r\n      IF(IFNULL(ea.calle,'')='','', CONCAT('C.',ea.calle)),\r\n      IFNULL(CONCAT('No.',ea.numeroext),''),\r\n      IFNULL(CONCAT('Int.',ea.numeroint),''),\r\n      IFNULL(ea.colonia,''), IFNULL(CONCAT('C.P.',ea.cp),''),\r\n      IFNULL(ea.ciudad,''), IFNULL(ea.estado,'')\r\n    ))) AS direccion\r\nFROM accenc\r\nINNER JOIN serviciosmoviles_users ON accenc.usuario = serviciosmoviles_users.username\r\nINNER JOIN serviciosmoviles_ugmembers ON serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName\r\nINNER JOIN serviciosmoviles_uggroups ON serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID\r\ninner join clientes c on accenc.idcliente=c.idcliente\r\ninner join tiendas t on accenc.idtienda=t.idtienda\r\nleft join entregasacc ea on accenc.id=ea.idaccenc\r\nWHERE (accenc.idtipomov =2) and accenc.idtienda=:session.Tienda and\r\n (accenc.usuario =':session.UserID' OR if(:session.acceso=1, accenc.idtienda=:session.Tienda, false) OR ':session.UserID' ='ADMIN') \r\n\r\nORDER BY accenc.id DESC\r\n",
+	"sql": "SELECT\r\naccenc.id,\r\naccenc.idtipomov,\r\naccenc.referencia,\r\naccenc.fecha,\r\naccenc.idtienda,\r\naccenc.idtienda2,\r\naccenc.idcliente,\r\nc.nombre_completo cliente,\r\nt.tienda,\r\naccenc.usuario,\r\naccenc.fechaingreso,\r\nserviciosmoviles_uggroups.Acceso,\r\naccenc.venta,\r\nea.estado,\r\nea.ciudad,\r\nea.cp,\r\n\tea.calle,\r\n\tea.numeroext,\r\n\tea.numeroint,\r\n\tea.colonia,\r\n\tea.lat,\r\n\tea.lng,\r\n\taccenc.doctos,\r\n\t\tCONCAT(TRIM(CONCAT_WS(' ',\r\n      IF(IFNULL(ea.calle,'')='','', CONCAT('C.',ea.calle)),\r\n      IFNULL(CONCAT('No.',ea.numeroext),''),\r\n      IFNULL(CONCAT('Int.',ea.numeroint),''),\r\n      IFNULL(ea.colonia,''), IFNULL(CONCAT('C.P.',ea.cp),''),\r\n      IFNULL(ea.ciudad,''), IFNULL(ea.estado,'')\r\n    ))) AS direccion,\r\n    accenc.observaciones\r\nFROM accenc\r\nINNER JOIN serviciosmoviles_users ON accenc.usuario = serviciosmoviles_users.username\r\nINNER JOIN serviciosmoviles_ugmembers ON serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName\r\nINNER JOIN serviciosmoviles_uggroups ON serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID\r\ninner join clientes c on accenc.idcliente=c.idcliente\r\ninner join tiendas t on accenc.idtienda=t.idtienda\r\nleft join entregasacc ea on accenc.id=ea.idaccenc\r\nWHERE (accenc.idtipomov =2) and accenc.idtienda=:session.Tienda and\r\n (accenc.usuario =':session.UserID' OR if(:session.acceso=1, accenc.idtienda=:session.Tienda, false) OR ':session.UserID' ='ADMIN') \r\n\r\nORDER BY accenc.id DESC\r\n",
 	"connId": "conn",
 	"originalTable": "accenc",
 	"name": "accenc",
@@ -470,6 +470,26 @@
 				"Spanish": "Dirección"
 			},
 			"tableName": ""
+		},
+		{
+			"name": "observaciones",
+			"sqlExpression": "accenc.observaciones",
+			"index": 25,
+			"strField": "observaciones",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Text area",
+					"textboxMaxLenth": 200
+				}
+			],
+			"label": {
+				"Spanish": "Observaciones"
+			},
+			"tableName": ""
 		}
 	],
 	"whereTabs": [
@@ -484,17 +504,17 @@
 		{
 			"eventId": "EVENT_BEFOREADD",
 			"pageType": "add",
-			"code": "$values['idtienda']=$_SESSION[\"Tienda\"];\n$values['usuario']=$_SESSION[\"UserID\"];\n$values['fechaingreso']=date('Y-m-d H:i:s');\n$values['idtipomov']=2;   //Venta\n\n$b=$values;\n$pageObject->setProxyValue(\"entrega_tmp\", $b);\nunset($values[\"estado\"]);\nunset($values[\"ciudad\"]);\nunset($values[\"cp\"]);\n\n\nreturn true;"
+			"code": "$values['idtienda']=$_SESSION[\"Tienda\"];\n$values['usuario']=$_SESSION[\"UserID\"];\n$values['fechaingreso']=date('Y-m-d H:i:s');\n$values['idtipomov']=2;   //Venta\n\n$b=$values;\n$pageObject->setProxyValue(\"entrega_tmp\", $b);\nunset($values[\"estado\"]);\nunset($values[\"ciudad\"]);\nunset($values[\"cp\"]);\nunset($values[\"calle\"]);\nunset($values[\"numeroext\"]);\nunset($values[\"numeroint\"]);\nunset($values[\"colonia\"]);\nunset($values[\"lat\"]);\nunset($values[\"lng\"]);\n\n\nreturn true;"
 		},
 		{
 			"eventId": "EVENT_AFTERADD",
 			"pageType": "add",
-			"code": "//**********  Display a message on the Web page  ************\n$id=$values['id'];\n$b = $pageObject->getProxyValue(\"entrega_tmp\");\n\n\n//**********  Insert a record into another table  ************  \n  if (\n        $b[\"estado\"] !== '' ||\n        $b[\"ciudad\"] !== '' ||\n        $b[\"cp\"] !== ''\n    ) {\n        $data = array();\n        \n            $data[\"estado\"] = $b[\"estado\"]; \n            $data[\"ciudad\"] = $b[\"ciudad\"]; \n            $data[\"cp\"] = $b[\"cp\"]; \n            $data[\"idaccenc\"]=$id;\n        \n             DB::Insert(\"entregasacc\", $data );\n        }\n\n\n\n\n\n//**********  Redirect to another page  ************\n\n\nheader(\"Location:accenc_edit.php?editid1=\".$id);\nexit();\n\n\n"
+			"code": "//**********  Display a message on the Web page  ************\n$id=$values['id'];\n$b = $pageObject->getProxyValue(\"entrega_tmp\");\n\n\n//**********  Insert a record into another table  ************  \n  if (\n        $b[\"estado\"] !== '' ||\n        $b[\"ciudad\"] !== '' ||\n        $b[\"cp\"] !== ''\n    ) {\n        $data = array();\n        \n            $data[\"estado\"] = $b[\"estado\"]; \n            $data[\"ciudad\"] = $b[\"ciudad\"]; \n            $data[\"calle\"] = $b[\"calle\"]; \n            $data[\"cp\"] = $b[\"cp\"]; \n            $data[\"colonia\"] = $b[\"colonia\"]; \n            $data[\"numeroext\"] = $b[\"numeroext\"]; \n            $data[\"numeroint\"] = $b[\"numeroint\"]; \n            $data[\"lat\"] = $b[\"lat\"]; \n            $data[\"lng\"] = $b[\"lng\"]; \n            $data[\"idaccenc\"]=$id;\n        \n             DB::Insert(\"entregasacc\", $data );\n        }\n\n\n\n\n\n//**********  Redirect to another page  ************\n\n\nheader(\"Location:accenc_edit.php?editid1=\".$id);\nexit();\n\n\n"
 		},
 		{
 			"eventId": "EVENT_AFTEREDIT",
 			"pageType": "edit",
-			"code": "$b = $pageObject->getProxyValue(\"entrega_tmp\");\n\n\n//error_log($b[\"estado\"],3, \"debug_log.log\");\n  if (\n        $b[\"estado\"] !== '' ||\n        $b[\"ciudad\"] !== '' ||\n        $b[\"cp\"] !== ''\n    ) {\n        $data = array();\n        \n            $data[\"estado\"] = $b[\"estado\"]; \n            $data[\"ciudad\"] = $b[\"ciudad\"]; \n            $data[\"calle\"] = $b[\"calle\"]; \n            $data[\"cp\"] = $b[\"cp\"]; \n            $data[\"colonia\"] = $b[\"colonia\"]; \n            $data[\"numeroext\"] = $b[\"numeroext\"]; \n            $data[\"numeroint\"] = $b[\"numeroint\"]; \n            $data[\"lat\"] = $b[\"lat\"]; \n            $data[\"lng\"] = $b[\"lng\"]; \n            \n        \n        \n        $rs = DB::Select(\"entregasacc\", \"idaccenc=\".$values[\"id\"] );\n        $record = $rs->fetchAssoc() ;\n        if ($record) {\n            $keyvalues[\"idaccenc\"] = $values[\"id\"];\n            DB::Update(\"entregasacc\", $data, $keyvalues );\n        } else {\n             DB::Insert(\"entregasacc\", $data );\n        }\n\n}\n\n\n\n"
+			"code": "$id=$values['id'];\n$b = $pageObject->getProxyValue(\"entrega_tmp\");\n\n\n//error_log($b[\"estado\"],3, \"debug_log.log\");\n  if (\n        $b[\"estado\"] !== '' ||\n        $b[\"ciudad\"] !== '' ||\n        $b[\"cp\"] !== ''\n    ) {\n        $data = array();\n        \n            $data[\"estado\"] = $b[\"estado\"]; \n            $data[\"ciudad\"] = $b[\"ciudad\"]; \n            $data[\"calle\"] = $b[\"calle\"]; \n            $data[\"cp\"] = $b[\"cp\"]; \n            $data[\"colonia\"] = $b[\"colonia\"]; \n            $data[\"numeroext\"] = $b[\"numeroext\"]; \n            $data[\"numeroint\"] = $b[\"numeroint\"]; \n            $data[\"lat\"] = $b[\"lat\"]; \n            $data[\"lng\"] = $b[\"lng\"]; \n            $data[\"idaccess\"]=$id;\n        \n        \n        $rs = DB::Select(\"entregasacc\", \"idaccenc=\".$values[\"id\"] );\n        $record = $rs->fetchAssoc() ;\n        if ($record) {\n            $keyvalues[\"idaccenc\"] = $values[\"id\"];\n            DB::Update(\"entregasacc\", $data, $keyvalues );\n        } else {\n             DB::Insert(\"entregasacc\", $data );\n        }\n\n}\n\n\n\n"
 		},
 		{
 			"eventId": "EVENT_JS_ONLOAD",
@@ -828,7 +848,9 @@
 						},
 						"c5": {
 							"model": "c1",
-							"items": []
+							"items": [
+								"integrated_edit_field11"
+							]
 						}
 					},
 					"deferredItems": [],
@@ -876,6 +898,26 @@
 								}
 							],
 							"section": ""
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c3"
+								},
+								{
+									"cell": "c4"
+								}
+							]
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c2",
+									"colspan": 2
+								}
+							]
 						}
 					],
 					"cells": {
@@ -894,6 +936,25 @@
 								"integrated_edit_field12",
 								"integrated_edit_field13",
 								"integrated_edit_field14"
+							]
+						},
+						"c2": {
+							"model": "c1",
+							"items": [
+								"text"
+							],
+							"align": "center"
+						},
+						"c3": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field15"
+							]
+						},
+						"c4": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field16"
 							]
 						}
 					},
@@ -1015,6 +1076,29 @@
 				},
 				"integrated_edit_field9": {
 					"field": "doctos",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field11": {
+					"field": "observaciones",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"text": {
+					"type": "text",
+					"label": {
+						"text": "<div id=\"google-map\" style=\"height: 400px; width: 100%; margin-bottom: 10px; border: 1px solid #ccc;\"></div>\n<p><strong>Haz clic en el mapa para ubicar o arrastra el marcador.</strong></p>\n\n<script src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyBEbOZrRNV7JiveFroZVC2AFkoMJ18VKyg&libraries=geometry,places&callback=initGoogleMap\" async defer></script>\n\n<script>\n// ====================================================================\n// 📌 1. CONFIGURACIÓN DE IDS (AJUSTA ESTOS IDS SI NO COINCIDEN)\n// ====================================================================\nconst FIELD_IDS = {\n    calle:   'value_calle_1',\n    numext:  'value_numeroext_1',\n    colonia: 'value_colonia_1',\n    ciudad:  'value_ciudad_1',\n    estado:  'value_estado_1',\n    cp:      'value_cp_1',\n    lat:     'value_lat_1',\n    lng:     'value_lng_1'\n};\n\n// ====================================================================\n// 📌 2. VARIABLES GLOBALES Y HELPERS\n// ====================================================================\nlet map;\nlet marker;\nlet geocoder;\nlet mapInitialized = false;\n\nconst $id = (id) => document.getElementById(id);\nconst safeTrim = (v) => (v || '').toString().trim();\nconst isValidLatLng = (lat, lng) => {\n    const a = Number(lat), b = Number(lng);\n    return Number.isFinite(a) && Number.isFinite(b) && a <= 90 && a >= -90 && b <= 180 && b >= -180;\n};\n\n// ====================================================================\n// 📌 3. FUNCIONES PRINCIPALES\n// ====================================================================\n\n// --- Inicialización del Mapa (Llamada por el API script) ---\nfunction initGoogleMap() {\n    if (mapInitialized) return;\n\n    const defaultCoords = { lat: 21.0038, lng: -89.6183 }; // Mérida, México como centro por defecto\n    \n    const initialLat = safeTrim($id(FIELD_IDS.lat)?.value);\n    const initialLng = safeTrim($id(FIELD_IDS.lng)?.value);\n    const initialCoords = isValidLatLng(initialLat, initialLng) \n        ? { lat: Number(initialLat), lng: Number(initialLng) } \n        : defaultCoords;\n\n    map = new google.maps.Map($id('google-map'), {\n        center: initialCoords,\n        zoom: isValidLatLng(initialLat, initialLng) ? 17 : 12,\n        mapTypeId: 'roadmap',\n        gestureHandling: 'greedy' // 🚀 Evita el molesto \"Ctrl + Scroll\"\n    });\n\n    geocoder = new google.maps.Geocoder();\n    mapInitialized = true;\n\n    // Colocar marcador si hay coordenadas iniciales\n    if (isValidLatLng(initialLat, initialLng)) {\n        placeMarker(initialCoords);\n    }\n    \n    // Listener: Al hacer CLIC en el mapa\n    map.addListener('click', (e) => {\n        placeMarker(e.latLng); \n        updateFieldsAndGeocode(e.latLng); \n    });\n    \n    // PHPRunner necesita esta línea para que el mapa se muestre correctamente en pestañas/secciones\n    setTimeout(() => google.maps.event.trigger(map, 'resize'), 300);\n}\n\n// --- Coloca el marcador y actualiza Lat/Lng al arrastrar o hacer clic ---\nfunction placeMarker(location) {\n    if (marker) {\n        marker.setPosition(location);\n    } else {\n        marker = new google.maps.Marker({\n            position: location,\n            map: map,\n            draggable: true // 📌 Permite arrastrar el marcador\n        });\n        \n        // Listener: Al terminar de arrastrar el marcador\n        marker.addListener('dragend', function() {\n            const newLocation = marker.getPosition();\n            updateFieldsAndGeocode(newLocation);\n        });\n    }\n    map.setCenter(location);\n    \n    // Si no usamos updateFieldsAndGeocode (ej. al inicio), aseguramos la posición\n    $id(FIELD_IDS.lat).value = location.lat().toFixed(6);\n    $id(FIELD_IDS.lng).value = location.lng().toFixed(6);\n}\n\n// --- Función central: Actualiza campos y pide Geocodificación Inversa ---\nfunction updateFieldsAndGeocode(location) {\n    // 1. Actualiza campos Lat/Lng\n    $id(FIELD_IDS.lat).value = location.lat().toFixed(6);\n    $id(FIELD_IDS.lng).value = location.lng().toFixed(6);\n    \n    // 2. Realiza la geocodificación inversa (Lat/Lng -> Dirección)\n    reverseGeocode(location);\n}\n\n// --- Geocodificación Inversa (Lat/Lng -> Dirección) ---\nfunction reverseGeocode(latLng) {\n    if (!geocoder) return;\n\n    geocoder.geocode({ location: latLng })\n        .then((response) => {\n            if (response.results[0]) {\n                populateAddressFields(response.results[0]);\n            }\n        })\n        .catch((e) => console.error('Falló la geocodificación inversa:', e));\n}\n\nfunction getAddressComponent(components, type) {\n    const component = components.find(c => c.types.includes(type));\n    return component ? component.long_name : '';\n}\n\nfunction populateAddressFields(result) {\n    const components = result.address_components;\n    \n    // Obtener componentes específicos de Google Maps\n    const street = getAddressComponent(components, 'route');\n    const houseNumber = getAddressComponent(components, 'street_number');\n    const neighborhood = getAddressComponent(components, 'sublocality_level_1') || getAddressComponent(components, 'neighborhood');\n    const city = getAddressComponent(components, 'locality') || getAddressComponent(components, 'administrative_area_level_2');\n    const state = getAddressComponent(components, 'administrative_area_level_1');\n    const postalCode = getAddressComponent(components, 'postal_code');\n\n    // Llenar los campos del formulario\n    if ($id(FIELD_IDS.estado)) $id(FIELD_IDS.estado).value = state;\n    if ($id(FIELD_IDS.ciudad)) $id(FIELD_IDS.ciudad).value = city;\n    if ($id(FIELD_IDS.cp)) $id(FIELD_IDS.cp).value = postalCode;\n    if ($id(FIELD_IDS.colonia)) $id(FIELD_IDS.colonia).value = neighborhood;\n    if ($id(FIELD_IDS.calle)) $id(FIELD_IDS.calle).value = street;\n    if ($id(FIELD_IDS.numext)) $id(FIELD_IDS.numext).value = houseNumber;\n}\n\n// --- Geocodificación (Dirección -> Lat/Lng) desde campos de texto ---\nfunction geocodeAddressFromFields() {\n    const calle = safeTrim($id(FIELD_IDS.calle)?.value);\n    const numext = safeTrim($id(FIELD_IDS.numext)?.value);\n    const colonia = safeTrim($id(FIELD_IDS.colonia)?.value);\n    const ciudad = safeTrim($id(FIELD_IDS.ciudad)?.value) || '';\n    const estado = safeTrim($id(FIELD_IDS.estado)?.value) || '';\n    const cp = safeTrim($id(FIELD_IDS.cp)?.value);\n\n    const addressParts = [\n        calle + (numext ? ' ' + numext : ''),\n        colonia,\n        ciudad,\n        estado,\n        cp,\n        'México'\n    ].filter(Boolean);\n    \n    const address = addressParts.join(', ');\n\n    if (!address || !geocoder || (!calle && !colonia)) return;\n\n    geocoder.geocode({ address: address })\n        .then((response) => {\n            if (response.results[0]) {\n                const location = response.results[0].geometry.location;\n                placeMarker(location);\n                map.setZoom(17);\n            }\n        })\n        .catch((e) => console.error('Geocoding falló por:', e));\n}\n\n\n// ====================================================================\n// 📌 4. LÓGICA DE ARRANQUE Y EVENTOS (Manejo de Tabs/Redimensionamiento)\n// ====================================================================\n\nfunction attachListeners() {\n    const addressFields = [FIELD_IDS.calle, FIELD_IDS.numext, FIELD_IDS.colonia, FIELD_IDS.ciudad, FIELD_IDS.estado, FIELD_IDS.cp];\n\n    // Observa cambios en los campos de dirección (al salir o presionar Enter)\n    addressFields.forEach(id => {\n        const el = $id(id);\n        if (!el) return;\n        \n        el.addEventListener('blur', geocodeAddressFromFields);\n        el.addEventListener('keydown', (e) => {\n            if (e.key === 'Enter') {\n                e.preventDefault();\n                geocodeAddressFromFields();\n            }\n        });\n    });\n\n    // Observa cambios en Lat/Lng manuales para centrar el mapa\n    [FIELD_IDS.lat, FIELD_IDS.lng].forEach(id => {\n        const el = $id(id);\n        if (!el) return;\n        el.addEventListener('change', () => {\n            const lat = safeTrim($id(FIELD_IDS.lat)?.value);\n            const lng = safeTrim($id(FIELD_IDS.lng)?.value);\n            if (isValidLatLng(lat, lng)) {\n                placeMarker(new google.maps.LatLng(Number(lat), Number(lng)));\n                map.setZoom(17);\n            }\n        });\n    });\n}\n\n// Maneja la inicialización tardía en caso de que el mapa esté en una pestaña oculta\nfunction checkMapVisibility() {\n    const mapContainer = $id('google-map');\n    if (mapContainer && mapContainer.offsetParent !== null && mapContainer.offsetWidth > 0) {\n        if (!mapInitialized && typeof google !== 'undefined' && typeof google.maps !== 'undefined') {\n             // La inicialización real ocurre por el 'callback=initGoogleMap' en la URL del API\n             // Solo llamamos al resize si ya cargó\n             setTimeout(() => google.maps.event.trigger(map, 'resize'), 100);\n             return true;\n        }\n    }\n    return false;\n}\n\ndocument.addEventListener('DOMContentLoaded', function() {\n    attachListeners();\n\n    // Revisa la visibilidad al inicio\n    checkMapVisibility(); \n    \n    // Observador para cuando se cambie de pestaña\n    document.body.addEventListener('click', function(e) {\n        if (e.target.closest('[data-toggle=\"tab\"], .step-tab, .nav-link')) {\n            setTimeout(() => {\n                if (mapInitialized) google.maps.event.trigger(map, 'resize');\n                else checkMapVisibility();\n            }, 400);\n        }\n    });\n});\n</script>",
+						"type": 0
+					},
+					"editedByRte": false
+				},
+				"integrated_edit_field15": {
+					"field": "lat",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field16": {
+					"field": "lng",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				}
@@ -1583,7 +1667,9 @@
 						},
 						"c5": {
 							"model": "c1",
-							"items": []
+							"items": [
+								"edit_field7"
+							]
 						}
 					},
 					"deferredItems": [],
@@ -1604,6 +1690,26 @@
 								}
 							],
 							"section": ""
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c3"
+								},
+								{
+									"cell": "c4"
+								}
+							]
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c2",
+									"colspan": 2
+								}
+							]
 						}
 					],
 					"cells": {
@@ -1622,6 +1728,25 @@
 								"edit_field4",
 								"edit_field5",
 								"edit_field6"
+							]
+						},
+						"c2": {
+							"model": "c1",
+							"items": [
+								"text"
+							],
+							"align": "center"
+						},
+						"c3": {
+							"model": "c1",
+							"items": [
+								"edit_field8"
+							]
+						},
+						"c4": {
+							"model": "c1",
+							"items": [
+								"edit_field10"
 							]
 						}
 					},
@@ -1772,6 +1897,32 @@
 				},
 				"edit_field9": {
 					"field": "doctos",
+					"type": "integrated_edit_field",
+					"updateOnEdit": false,
+					"orientation": 0
+				},
+				"edit_field7": {
+					"field": "observaciones",
+					"type": "integrated_edit_field",
+					"updateOnEdit": false,
+					"orientation": 0
+				},
+				"text": {
+					"type": "text",
+					"label": {
+						"text": "<div id=\"google-map\" style=\"height: 400px; width: 100%; margin-bottom: 10px; border: 1px solid #ccc;\"></div>\n<p><strong>Haz clic en el mapa para ubicar o arrastra el marcador.</strong></p>\n\n<script src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyBEbOZrRNV7JiveFroZVC2AFkoMJ18VKyg&libraries=geometry,places&callback=initGoogleMap\" async defer></script>\n\n<script>\n// ====================================================================\n// 📌 1. CONFIGURACIÓN DE IDS (AJUSTA ESTOS IDS SI NO COINCIDEN)\n// ====================================================================\nconst FIELD_IDS = {\n    calle:   'value_calle_1',\n    numext:  'value_numeroext_1',\n    colonia: 'value_colonia_1',\n    ciudad:  'value_ciudad_1',\n    estado:  'value_estado_1',\n    cp:      'value_cp_1',\n    lat:     'value_lat_1',\n    lng:     'value_lng_1'\n};\n\n// ====================================================================\n// 📌 2. VARIABLES GLOBALES Y HELPERS\n// ====================================================================\nlet map;\nlet marker;\nlet geocoder;\nlet mapInitialized = false;\n\nconst $id = (id) => document.getElementById(id);\nconst safeTrim = (v) => (v || '').toString().trim();\nconst isValidLatLng = (lat, lng) => {\n    const a = Number(lat), b = Number(lng);\n    return Number.isFinite(a) && Number.isFinite(b) && a <= 90 && a >= -90 && b <= 180 && b >= -180;\n};\n\n// ====================================================================\n// 📌 3. FUNCIONES PRINCIPALES\n// ====================================================================\n\n// --- Inicialización del Mapa (Llamada por el API script) ---\nfunction initGoogleMap() {\n    if (mapInitialized) return;\n\n    const defaultCoords = { lat: 21.0038, lng: -89.6183 }; // Mérida, México como centro por defecto\n    \n    const initialLat = safeTrim($id(FIELD_IDS.lat)?.value);\n    const initialLng = safeTrim($id(FIELD_IDS.lng)?.value);\n    const initialCoords = isValidLatLng(initialLat, initialLng) \n        ? { lat: Number(initialLat), lng: Number(initialLng) } \n        : defaultCoords;\n\n    map = new google.maps.Map($id('google-map'), {\n        center: initialCoords,\n        zoom: isValidLatLng(initialLat, initialLng) ? 17 : 12,\n        mapTypeId: 'roadmap',\n        gestureHandling: 'greedy' // 🚀 Evita el molesto \"Ctrl + Scroll\"\n    });\n\n    geocoder = new google.maps.Geocoder();\n    mapInitialized = true;\n\n    // Colocar marcador si hay coordenadas iniciales\n    if (isValidLatLng(initialLat, initialLng)) {\n        placeMarker(initialCoords);\n    }\n    \n    // Listener: Al hacer CLIC en el mapa\n    map.addListener('click', (e) => {\n        placeMarker(e.latLng); \n        updateFieldsAndGeocode(e.latLng); \n    });\n    \n    // PHPRunner necesita esta línea para que el mapa se muestre correctamente en pestañas/secciones\n    setTimeout(() => google.maps.event.trigger(map, 'resize'), 300);\n}\n\n// --- Coloca el marcador y actualiza Lat/Lng al arrastrar o hacer clic ---\nfunction placeMarker(location) {\n    if (marker) {\n        marker.setPosition(location);\n    } else {\n        marker = new google.maps.Marker({\n            position: location,\n            map: map,\n            draggable: true // 📌 Permite arrastrar el marcador\n        });\n        \n        // Listener: Al terminar de arrastrar el marcador\n        marker.addListener('dragend', function() {\n            const newLocation = marker.getPosition();\n            updateFieldsAndGeocode(newLocation);\n        });\n    }\n    map.setCenter(location);\n    \n    // Si no usamos updateFieldsAndGeocode (ej. al inicio), aseguramos la posición\n    $id(FIELD_IDS.lat).value = location.lat().toFixed(6);\n    $id(FIELD_IDS.lng).value = location.lng().toFixed(6);\n}\n\n// --- Función central: Actualiza campos y pide Geocodificación Inversa ---\nfunction updateFieldsAndGeocode(location) {\n    // 1. Actualiza campos Lat/Lng\n    $id(FIELD_IDS.lat).value = location.lat().toFixed(6);\n    $id(FIELD_IDS.lng).value = location.lng().toFixed(6);\n    \n    // 2. Realiza la geocodificación inversa (Lat/Lng -> Dirección)\n    reverseGeocode(location);\n}\n\n// --- Geocodificación Inversa (Lat/Lng -> Dirección) ---\nfunction reverseGeocode(latLng) {\n    if (!geocoder) return;\n\n    geocoder.geocode({ location: latLng })\n        .then((response) => {\n            if (response.results[0]) {\n                populateAddressFields(response.results[0]);\n            }\n        })\n        .catch((e) => console.error('Falló la geocodificación inversa:', e));\n}\n\nfunction getAddressComponent(components, type) {\n    const component = components.find(c => c.types.includes(type));\n    return component ? component.long_name : '';\n}\n\nfunction populateAddressFields(result) {\n    const components = result.address_components;\n    \n    // Obtener componentes específicos de Google Maps\n    const street = getAddressComponent(components, 'route');\n    const houseNumber = getAddressComponent(components, 'street_number');\n    const neighborhood = getAddressComponent(components, 'sublocality_level_1') || getAddressComponent(components, 'neighborhood');\n    const city = getAddressComponent(components, 'locality') || getAddressComponent(components, 'administrative_area_level_2');\n    const state = getAddressComponent(components, 'administrative_area_level_1');\n    const postalCode = getAddressComponent(components, 'postal_code');\n\n    // Llenar los campos del formulario\n    if ($id(FIELD_IDS.estado)) $id(FIELD_IDS.estado).value = state;\n    if ($id(FIELD_IDS.ciudad)) $id(FIELD_IDS.ciudad).value = city;\n    if ($id(FIELD_IDS.cp)) $id(FIELD_IDS.cp).value = postalCode;\n    if ($id(FIELD_IDS.colonia)) $id(FIELD_IDS.colonia).value = neighborhood;\n    if ($id(FIELD_IDS.calle)) $id(FIELD_IDS.calle).value = street;\n    if ($id(FIELD_IDS.numext)) $id(FIELD_IDS.numext).value = houseNumber;\n}\n\n// --- Geocodificación (Dirección -> Lat/Lng) desde campos de texto ---\nfunction geocodeAddressFromFields() {\n    const calle = safeTrim($id(FIELD_IDS.calle)?.value);\n    const numext = safeTrim($id(FIELD_IDS.numext)?.value);\n    const colonia = safeTrim($id(FIELD_IDS.colonia)?.value);\n    const ciudad = safeTrim($id(FIELD_IDS.ciudad)?.value) || '';\n    const estado = safeTrim($id(FIELD_IDS.estado)?.value) || '';\n    const cp = safeTrim($id(FIELD_IDS.cp)?.value);\n\n    const addressParts = [\n        calle + (numext ? ' ' + numext : ''),\n        colonia,\n        ciudad,\n        estado,\n        cp,\n        'México'\n    ].filter(Boolean);\n    \n    const address = addressParts.join(', ');\n\n    if (!address || !geocoder || (!calle && !colonia)) return;\n\n    geocoder.geocode({ address: address })\n        .then((response) => {\n            if (response.results[0]) {\n                const location = response.results[0].geometry.location;\n                placeMarker(location);\n                map.setZoom(17);\n            }\n        })\n        .catch((e) => console.error('Geocoding falló por:', e));\n}\n\n\n// ====================================================================\n// 📌 4. LÓGICA DE ARRANQUE Y EVENTOS (Manejo de Tabs/Redimensionamiento)\n// ====================================================================\n\nfunction attachListeners() {\n    const addressFields = [FIELD_IDS.calle, FIELD_IDS.numext, FIELD_IDS.colonia, FIELD_IDS.ciudad, FIELD_IDS.estado, FIELD_IDS.cp];\n\n    // Observa cambios en los campos de dirección (al salir o presionar Enter)\n    addressFields.forEach(id => {\n        const el = $id(id);\n        if (!el) return;\n        \n        el.addEventListener('blur', geocodeAddressFromFields);\n        el.addEventListener('keydown', (e) => {\n            if (e.key === 'Enter') {\n                e.preventDefault();\n                geocodeAddressFromFields();\n            }\n        });\n    });\n\n    // Observa cambios en Lat/Lng manuales para centrar el mapa\n    [FIELD_IDS.lat, FIELD_IDS.lng].forEach(id => {\n        const el = $id(id);\n        if (!el) return;\n        el.addEventListener('change', () => {\n            const lat = safeTrim($id(FIELD_IDS.lat)?.value);\n            const lng = safeTrim($id(FIELD_IDS.lng)?.value);\n            if (isValidLatLng(lat, lng)) {\n                placeMarker(new google.maps.LatLng(Number(lat), Number(lng)));\n                map.setZoom(17);\n            }\n        });\n    });\n}\n\n// Maneja la inicialización tardía en caso de que el mapa esté en una pestaña oculta\nfunction checkMapVisibility() {\n    const mapContainer = $id('google-map');\n    if (mapContainer && mapContainer.offsetParent !== null && mapContainer.offsetWidth > 0) {\n        if (!mapInitialized && typeof google !== 'undefined' && typeof google.maps !== 'undefined') {\n             // La inicialización real ocurre por el 'callback=initGoogleMap' en la URL del API\n             // Solo llamamos al resize si ya cargó\n             setTimeout(() => google.maps.event.trigger(map, 'resize'), 100);\n             return true;\n        }\n    }\n    return false;\n}\n\ndocument.addEventListener('DOMContentLoaded', function() {\n    attachListeners();\n\n    // Revisa la visibilidad al inicio\n    checkMapVisibility(); \n    \n    // Observador para cuando se cambie de pestaña\n    document.body.addEventListener('click', function(e) {\n        if (e.target.closest('[data-toggle=\"tab\"], .step-tab, .nav-link')) {\n            setTimeout(() => {\n                if (mapInitialized) google.maps.event.trigger(map, 'resize');\n                else checkMapVisibility();\n            }, 400);\n        }\n    });\n});\n</script>",
+						"type": 0
+					},
+					"editedByRte": false
+				},
+				"edit_field8": {
+					"field": "lat",
+					"type": "integrated_edit_field",
+					"updateOnEdit": false,
+					"orientation": 0
+				},
+				"edit_field10": {
+					"field": "lng",
 					"type": "integrated_edit_field",
 					"updateOnEdit": false,
 					"orientation": 0
@@ -2771,7 +2922,8 @@
 								"simple_grid_field33",
 								"simple_grid_field34",
 								"simple_grid_field35",
-								"simple_grid_field36"
+								"simple_grid_field36",
+								"simple_grid_field37"
 							]
 						}
 					},
@@ -2933,6 +3085,10 @@
 				"simple_grid_field36": {
 					"field": "direccion",
 					"type": "simple_grid_field"
+				},
+				"simple_grid_field37": {
+					"field": "observaciones",
+					"type": "simple_grid_field"
 				}
 			},
 			"dbProps": {},
@@ -3070,7 +3226,8 @@
 								"simple_grid_field33",
 								"simple_grid_field34",
 								"simple_grid_field35",
-								"simple_grid_field36"
+								"simple_grid_field36",
+								"simple_grid_field37"
 							]
 						}
 					},
@@ -3228,6 +3385,10 @@
 				},
 				"simple_grid_field36": {
 					"field": "direccion",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field37": {
+					"field": "observaciones",
 					"type": "simple_grid_field"
 				}
 			},

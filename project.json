@@ -152,6 +152,13 @@
 				"height": 124
 			},
 			{
+				"gid": 605844771,
+				"y": 1125,
+				"x": 950,
+				"width": 112.59375,
+				"height": 208
+			},
+			{
 				"gid": 3847630651,
 				"y": 432,
 				"x": 459,
@@ -444,7 +451,7 @@
 				"password": "",
 				"host": "ftp.rocasamexico.com",
 				"port": 21,
-				"pathname": "/public_html/prm1",
+				"pathname": "/public_html/prm_pruebas",
 				"passive": true,
 				"secureType": 0,
 				"useCCC": false,
@@ -491,7 +498,7 @@
 						"code": "$host = 'localhost';\r\n$user = 'rocasamexico_admin';\r\n$pwd = 'Rocas@Mexico.2025**';\r\n$port = 3306;\r\n$sys_dbname = 'rocasamexico_prm';"
 					}
 				],
-				"selectedCustomConn": "New connection"
+				"selectedCustomConn": "Local"
 			}
 		}
 	],
@@ -525,6 +532,20 @@
 							"iconName": "glyphicon-headphones",
 							"showIconType": 2,
 							"table": 35049744,
+							"pageType": "list"
+						}
+					},
+					{
+						"id": "19",
+						"data": {
+							"name": {
+								"text": "Ventas",
+								"type": 0
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 1911098216,
 							"pageType": "list"
 						}
 					},
@@ -589,16 +610,16 @@
 						}
 					},
 					{
-						"id": "19",
+						"id": "20",
 						"data": {
 							"name": {
-								"table": "entregasacc",
+								"table": "logicos",
 								"type": 6
 							},
 							"pageId": "list",
 							"itemType": 2,
 							"linkType": 0,
-							"table": 80289759,
+							"table": 605844771,
 							"pageType": "list"
 						}
 					}
@@ -705,7 +726,8 @@
 								"welcome_item16",
 								"welcome_item17",
 								"welcome_item19",
-								"welcome_item20"
+								"welcome_item20",
+								"welcome_item21"
 							]
 						}
 					},
@@ -1032,6 +1054,18 @@
 						"type": 6
 					},
 					"background": "#5f9ea0",
+					"linkType": 0
+				},
+				"welcome_item21": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "logicos",
+					"linkPage": "list",
+					"linkText": {
+						"table": "logicos",
+						"type": 6
+					},
+					"background": "#edca00",
 					"linkType": 0
 				}
 			},

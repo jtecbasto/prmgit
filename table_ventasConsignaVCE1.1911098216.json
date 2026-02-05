@@ -97,7 +97,8 @@
 			],
 			"editFormats": [
 				{
-					"format": "Date"
+					"format": "Date",
+					"dateShowTime": true
 				}
 			],
 			"label": {
@@ -691,6 +692,7 @@
 			"editFormats": [
 				{
 					"format": "Lookup wizard",
+					"lookupType": 2,
 					"lookupTable": "logicos",
 					"lookupTableConnection": "conn",
 					"lookupLinkField": "idlogico",
@@ -714,6 +716,7 @@
 			"editFormats": [
 				{
 					"format": "Lookup wizard",
+					"lookupType": 2,
 					"lookupTable": "logicos",
 					"lookupTableConnection": "conn",
 					"lookupLinkField": "idlogico",
@@ -848,7 +851,14 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"format": "Lookup wizard",
+					"lookupTable": "logicos",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "idlogico",
+					"lookupDisplayField": "idlogico",
+					"lookupOrderBy": "corinc"
+				}
 			],
 			"label": {
 				"Spanish": "Captura Contrato"
@@ -865,7 +875,13 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"format": "Lookup wizard",
+					"lookupTable": "logicos",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "idlogico",
+					"lookupDisplayField": "corinc"
+				}
 			],
 			"label": {
 				"Spanish": "Captura Cuenta"
@@ -882,7 +898,13 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"format": "Lookup wizard",
+					"lookupTable": "logicos",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "idlogico",
+					"lookupDisplayField": "corinc"
+				}
 			],
 			"label": {
 				"Spanish": "Captura Orden"
@@ -916,12 +938,14 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"textboxMaxLenth": 10
+				}
 			],
 			"label": {
 				"Spanish": "Contrato Corregido"
 			},
-			"tableName": "ventas"
+			"tableName": ""
 		},
 		{
 			"name": "cuenta_corregida",
@@ -933,12 +957,14 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"textboxMaxLenth": 50
+				}
 			],
 			"label": {
 				"Spanish": "Cuenta Corregida"
 			},
-			"tableName": "ventas"
+			"tableName": ""
 		},
 		{
 			"name": "orden_corregida",
@@ -950,12 +976,20 @@
 				{}
 			],
 			"editFormats": [
-				{}
+				{
+					"validateAs": "Regular expression",
+					"validateRegex": "^[A-Z0-9]{11}$",
+					"validateRegexMessage": {
+						"text": "El valor no es válido",
+						"type": 0
+					},
+					"textboxMaxLenth": 11
+				}
 			],
 			"label": {
 				"Spanish": "Orden Corregida"
 			},
-			"tableName": "ventas"
+			"tableName": ""
 		},
 		{
 			"name": "idtv",
@@ -2052,39 +2086,6 @@
 				"autoinc": false,
 				"defaultValueSQL": null,
 				"defaultValue": ""
-			},
-			{
-				"name": "contrato_corregido",
-				"type": 200,
-				"size": 11,
-				"scale": 0,
-				"typeName": "varchar(11)",
-				"nullable": true,
-				"autoinc": false,
-				"defaultValueSQL": null,
-				"defaultValue": ""
-			},
-			{
-				"name": "cuenta_corregida",
-				"type": 200,
-				"size": 50,
-				"scale": 0,
-				"typeName": "varchar(50)",
-				"nullable": true,
-				"autoinc": false,
-				"defaultValueSQL": null,
-				"defaultValue": ""
-			},
-			{
-				"name": "orden_corregida",
-				"type": 200,
-				"size": 11,
-				"scale": 0,
-				"typeName": "varchar(11)",
-				"nullable": true,
-				"autoinc": false,
-				"defaultValueSQL": null,
-				"defaultValue": ""
 			}
 		],
 		"primaryKeys": [
@@ -2607,72 +2608,7 @@
 					"cells": {
 						"c1": {
 							"model": "c1",
-							"items": [
-								"export_field",
-								"export_field2",
-								"export_field3",
-								"export_field4",
-								"export_field5",
-								"export_field7",
-								"export_field8",
-								"export_field9",
-								"export_field10",
-								"export_field11",
-								"export_field12",
-								"export_field13",
-								"export_field14",
-								"export_field15",
-								"export_field16",
-								"export_field17",
-								"export_field18",
-								"export_field19",
-								"export_field20",
-								"export_field21",
-								"export_field22",
-								"export_field23",
-								"export_field24",
-								"export_field25",
-								"export_field26",
-								"export_field27",
-								"export_field28",
-								"export_field29",
-								"export_field30",
-								"export_field31",
-								"export_field33",
-								"export_field34",
-								"export_field35",
-								"export_field36",
-								"export_field38",
-								"export_field39",
-								"export_field40",
-								"export_field41",
-								"export_field44",
-								"export_field47",
-								"export_field49",
-								"export_field64",
-								"export_field65",
-								"export_field66",
-								"export_field67",
-								"export_field68",
-								"export_field76",
-								"export_field77",
-								"export_field78",
-								"export_field79",
-								"export_field1",
-								"export_field6",
-								"export_field32",
-								"export_field37",
-								"export_field42",
-								"export_field43",
-								"export_field45",
-								"export_field46",
-								"export_field48",
-								"export_field50",
-								"export_field51",
-								"export_field52",
-								"export_field53",
-								"export_field54"
-							]
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -2719,262 +2655,6 @@
 				},
 				"export_cancel": {
 					"type": "export_cancel"
-				},
-				"export_field": {
-					"field": "idventa",
-					"type": "export_field"
-				},
-				"export_field2": {
-					"field": "idtipoventa",
-					"type": "export_field"
-				},
-				"export_field3": {
-					"field": "sucursal",
-					"type": "export_field"
-				},
-				"export_field4": {
-					"field": "fecha",
-					"type": "export_field"
-				},
-				"export_field5": {
-					"field": "fechacaptura",
-					"type": "export_field"
-				},
-				"export_field7": {
-					"field": "segmento",
-					"type": "export_field"
-				},
-				"export_field8": {
-					"field": "esnimei",
-					"type": "export_field"
-				},
-				"export_field9": {
-					"field": "simcard",
-					"type": "export_field"
-				},
-				"export_field10": {
-					"field": "dn",
-					"type": "export_field"
-				},
-				"export_field11": {
-					"field": "cuenta",
-					"type": "export_field"
-				},
-				"export_field12": {
-					"field": "contrato",
-					"type": "export_field"
-				},
-				"export_field13": {
-					"field": "contratoportal",
-					"type": "export_field"
-				},
-				"export_field14": {
-					"field": "plan",
-					"type": "export_field"
-				},
-				"export_field15": {
-					"field": "renta",
-					"type": "export_field"
-				},
-				"export_field16": {
-					"field": "plazo",
-					"type": "export_field"
-				},
-				"export_field17": {
-					"field": "plazopendiente",
-					"type": "export_field"
-				},
-				"export_field18": {
-					"field": "usuario",
-					"type": "export_field"
-				},
-				"export_field19": {
-					"field": "tienda",
-					"type": "export_field"
-				},
-				"export_field20": {
-					"field": "Factura",
-					"type": "export_field"
-				},
-				"export_field21": {
-					"field": "fechavenci",
-					"type": "export_field"
-				},
-				"export_field22": {
-					"field": "ciclo",
-					"type": "export_field"
-				},
-				"export_field23": {
-					"field": "modifico",
-					"type": "export_field"
-				},
-				"export_field24": {
-					"field": "fechamodif",
-					"type": "export_field"
-				},
-				"export_field25": {
-					"field": "PagoTotal",
-					"type": "export_field"
-				},
-				"export_field26": {
-					"field": "Efectivo",
-					"type": "export_field"
-				},
-				"export_field27": {
-					"field": "NC",
-					"type": "export_field"
-				},
-				"export_field28": {
-					"field": "TC",
-					"type": "export_field"
-				},
-				"export_field29": {
-					"field": "rfc",
-					"type": "export_field"
-				},
-				"export_field30": {
-					"field": "cargofaciva",
-					"type": "export_field"
-				},
-				"export_field31": {
-					"field": "almacenatt",
-					"type": "export_field"
-				},
-				"export_field33": {
-					"field": "modo",
-					"type": "export_field"
-				},
-				"export_field34": {
-					"field": "addon",
-					"type": "export_field"
-				},
-				"export_field35": {
-					"field": "dnpreferido",
-					"type": "export_field"
-				},
-				"export_field36": {
-					"field": "ventadomicilio",
-					"type": "export_field"
-				},
-				"export_field38": {
-					"field": "idsolicitud",
-					"type": "export_field"
-				},
-				"export_field39": {
-					"field": "vtasimg",
-					"type": "export_field"
-				},
-				"export_field40": {
-					"field": "equipoincluido",
-					"type": "export_field"
-				},
-				"export_field41": {
-					"field": "tiendamovil",
-					"type": "export_field"
-				},
-				"export_field44": {
-					"field": "tiposegmento",
-					"type": "export_field"
-				},
-				"export_field47": {
-					"field": "idpromocion",
-					"type": "export_field"
-				},
-				"export_field49": {
-					"field": "orden",
-					"type": "export_field"
-				},
-				"export_field64": {
-					"field": "comisionable",
-					"type": "export_field"
-				},
-				"export_field65": {
-					"field": "consumos",
-					"type": "export_field"
-				},
-				"export_field66": {
-					"field": "captura_contrato",
-					"type": "export_field"
-				},
-				"export_field67": {
-					"field": "captura_cuenta",
-					"type": "export_field"
-				},
-				"export_field68": {
-					"field": "captura_orden",
-					"type": "export_field"
-				},
-				"export_field76": {
-					"field": "validador",
-					"type": "export_field"
-				},
-				"export_field77": {
-					"field": "contrato_corregido",
-					"type": "export_field"
-				},
-				"export_field78": {
-					"field": "cuenta_corregida",
-					"type": "export_field"
-				},
-				"export_field79": {
-					"field": "orden_corregida",
-					"type": "export_field"
-				},
-				"export_field1": {
-					"field": "idtv",
-					"type": "export_field"
-				},
-				"export_field6": {
-					"field": "cliente",
-					"type": "export_field"
-				},
-				"export_field32": {
-					"field": "planes",
-					"type": "export_field"
-				},
-				"export_field37": {
-					"field": "Acceso",
-					"type": "export_field"
-				},
-				"export_field42": {
-					"field": "rentaplan",
-					"type": "export_field"
-				},
-				"export_field43": {
-					"field": "tiendanombre",
-					"type": "export_field"
-				},
-				"export_field45": {
-					"field": "descripcion",
-					"type": "export_field"
-				},
-				"export_field46": {
-					"field": "usuarioexporta",
-					"type": "export_field"
-				},
-				"export_field48": {
-					"field": "fullname",
-					"type": "export_field"
-				},
-				"export_field50": {
-					"field": "clasif",
-					"type": "export_field"
-				},
-				"export_field51": {
-					"field": "idcli",
-					"type": "export_field"
-				},
-				"export_field52": {
-					"field": "idcita",
-					"type": "export_field"
-				},
-				"export_field53": {
-					"field": "renov_btn",
-					"type": "export_field"
-				},
-				"export_field54": {
-					"field": "valida",
-					"type": "export_field"
 				}
 			},
 			"dbProps": {},
@@ -3497,6 +3177,34 @@
 							"section": "",
 							"cells": [
 								{
+									"cell": "c9"
+								},
+								{
+									"cell": "c10"
+								},
+								{
+									"cell": "c11"
+								}
+							]
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c6"
+								},
+								{
+									"cell": "c7"
+								},
+								{
+									"cell": "c8"
+								}
+							]
+						},
+						{
+							"section": "",
+							"cells": [
+								{
 									"cell": "c4"
 								},
 								{
@@ -3513,7 +3221,6 @@
 							"model": "c1",
 							"items": [
 								"integrated_edit_field7",
-								"integrated_edit_field8",
 								"integrated_edit_field1",
 								"integrated_edit_field39",
 								"integrated_edit_field",
@@ -3543,22 +3250,20 @@
 						"c5": {
 							"model": "c1",
 							"items": [
-								"integrated_edit_field10",
-								"integrated_edit_field48",
-								"integrated_edit_field11"
+								"integrated_edit_field10"
 							]
 						},
 						"c16": {
 							"model": "c1",
 							"items": [
-								"integrated_edit_field66",
-								"integrated_edit_field67",
-								"integrated_edit_field65"
+								"integrated_edit_field66"
 							]
 						},
 						"c17": {
 							"model": "c1",
-							"items": []
+							"items": [
+								"integrated_edit_field8"
+							]
 						},
 						"c18": {
 							"model": "c1",
@@ -3571,14 +3276,48 @@
 						"c": {
 							"model": "c1",
 							"items": [
-								"integrated_edit_field77",
-								"integrated_edit_field78",
-								"integrated_edit_field76"
+								"integrated_edit_field77"
 							]
 						},
 						"c1": {
 							"model": "c1",
 							"items": []
+						},
+						"c6": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field11"
+							]
+						},
+						"c7": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field65"
+							]
+						},
+						"c8": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field76"
+							]
+						},
+						"c9": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field48"
+							]
+						},
+						"c10": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field67"
+							]
+						},
+						"c11": {
+							"model": "c1",
+							"items": [
+								"integrated_edit_field78"
+							]
 						}
 					},
 					"deferredItems": [],
