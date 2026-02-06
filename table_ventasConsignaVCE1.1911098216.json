@@ -1,5 +1,5 @@
 {
-	"sql": "SELECT\r\nsolicitudes.orden AS idsolicitud,\r\nventas.idventa,\r\nventas.idtipoventa,\r\nventas.idtipoventa AS idtv,\r\nventas.fecha,\r\nventas.fechacaptura,\r\nclientes.nombre_completo AS cliente,\r\nventas.segmento,\r\nventas.esnimei,\r\nventas.simcard,\r\nventas.dn,\r\nventas.dnpreferido,\r\nventas.ventadomicilio,\r\nventas.cuenta,\r\nventas.contrato,\r\nventas.contratoportal,\r\nventas.`plan` AS `plan`,\r\nventas.`plan` AS planes,\r\nventas.plazo,\r\nventas.plazopendiente,\r\nventas.usuario,\r\nserviciosmoviles_uggroups.Acceso,\r\nventas.renta,\r\nplanes.renta AS rentaplan,\r\nventas.tienda,\r\ntiendas.Tienda AS tiendanombre,\r\ncompras.descripcion,\r\nventas.Factura,\r\nventas.fechavenci,\r\nventas.ciclo,\r\n'' AS usuarioexporta,\r\nserviciosmoviles_users.fullname,\r\nventas.modifico,\r\nventas.fechamodif,\r\nventas.PagoTotal,\r\nventas.Efectivo,\r\nventas.NC,\r\nventas.TC,\r\nventas.rfc,\r\nventas.cargofaciva,\r\nventas.almacenatt,\r\ncompras.Clasif AS clasif,\r\nventas.modo,\r\nventas.addon,\r\nventas.sucursal,\r\nventas.vtasimg,\r\nventas.equipoincluido,\r\nventas.tiendamovil,\r\nventas.tiposegmento,\r\nventas.idpromocion,\r\nventas.orden,\r\nsolicitudes.idcli,\r\nsolicitudes.idcita,\r\n'' AS renov_btn,\r\nventas.comisionable,\r\nventas.consumos,\r\nventas.captura_contrato,\r\nventas.captura_cuenta,\r\nventas.captura_orden,\r\nventas.contrato_corregido,\r\nventas.cuenta_corregida,\r\nventas.orden_corregida,\r\nsectores_validacion.validador,\r\nventas.validador AS valida\r\nFROM ventas\r\nINNER JOIN serviciosmoviles_users ON ventas.usuario = serviciosmoviles_users.username\r\nINNER JOIN serviciosmoviles_ugmembers ON serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName\r\nINNER JOIN serviciosmoviles_uggroups ON serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID\r\nLEFT OUTER JOIN solicitudes ON ventas.idsolicitud = solicitudes.idsolicitud\r\nLEFT OUTER JOIN clientes ON ventas.idcliente = clientes.idcliente\r\nLEFT OUTER JOIN tiendas ON ventas.tienda = tiendas.IdTienda\r\nLEFT OUTER JOIN planes ON ventas.`plan` = planes.idplan\r\nLEFT OUTER JOIN sectores_validacion ON tiendas.idsectorvalida = sectores_validacion.id\r\nINNER JOIN compras ON ventas.esnimei = compras.noserie\r\nINNER JOIN tiposventa ON ventas.idtipoventa = tiposventa.idtipoventa\r\nWHERE (ventas.fecha between \r\n DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE()) AND (compras.Clasif =2) AND (tiposventa.idtipoventa in (22,23,1,5,10,11))\r\n",
+	"sql": "SELECT\r\nsolicitudes.orden AS idsolicitud,\r\nventas.idventa,\r\nventas.idtipoventa,\r\nventas.idtipoventa AS idtv,\r\nventas.fecha,\r\nventas.fechacaptura,\r\nclientes.nombre_completo AS cliente,\r\nventas.segmento,\r\nventas.esnimei,\r\nventas.simcard,\r\nventas.dn,\r\nventas.dnpreferido,\r\nventas.ventadomicilio,\r\nventas.cuenta,\r\nventas.contrato,\r\nventas.contratoportal,\r\nventas.`plan` AS `plan`,\r\nventas.`plan` AS planes,\r\nventas.plazo,\r\nventas.plazopendiente,\r\nventas.usuario,\r\nserviciosmoviles_uggroups.Acceso,\r\nventas.renta,\r\nplanes.renta AS rentaplan,\r\nventas.tienda,\r\ntiendas.Tienda AS tiendanombre,\r\ncompras.descripcion,\r\nventas.Factura,\r\nventas.fechavenci,\r\nventas.ciclo,\r\n'' AS usuarioexporta,\r\nserviciosmoviles_users.fullname,\r\nventas.modifico,\r\nventas.fechamodif,\r\nventas.PagoTotal,\r\nventas.Efectivo,\r\nventas.NC,\r\nventas.TC,\r\nventas.rfc,\r\nventas.cargofaciva,\r\nventas.almacenatt,\r\ncompras.Clasif AS clasif,\r\nventas.modo,\r\nventas.addon,\r\nventas.sucursal,\r\nventas.vtasimg,\r\nventas.equipoincluido,\r\nventas.tiendamovil,\r\nventas.tiposegmento,\r\nventas.idpromocion,\r\nventas.orden,\r\nsolicitudes.idcli,\r\nsolicitudes.idcita,\r\n'' AS renov_btn,\r\nventas.comisionable,\r\nventas.consumos,\r\nventas.captura_contrato,\r\nventas.captura_cuenta,\r\nventas.captura_orden,\r\nventas.contrato_corregido,\r\nventas.cuenta_corregida,\r\nventas.orden_corregida,\r\nsectores_validacion.validador,\r\nventas.validador AS valida,\r\nsectores_validacion.sector\r\nFROM ventas\r\nINNER JOIN serviciosmoviles_users ON ventas.usuario = serviciosmoviles_users.username\r\nINNER JOIN serviciosmoviles_ugmembers ON serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName\r\nINNER JOIN serviciosmoviles_uggroups ON serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID\r\nLEFT OUTER JOIN solicitudes ON ventas.idsolicitud = solicitudes.idsolicitud\r\nLEFT OUTER JOIN clientes ON ventas.idcliente = clientes.idcliente\r\nLEFT OUTER JOIN tiendas ON ventas.tienda = tiendas.IdTienda\r\nLEFT OUTER JOIN planes ON ventas.`plan` = planes.idplan\r\nLEFT OUTER JOIN sectores_validacion ON tiendas.idsectorvalida = sectores_validacion.id\r\nINNER JOIN compras ON ventas.esnimei = compras.noserie\r\nINNER JOIN tiposventa ON ventas.idtipoventa = tiposventa.idtipoventa\r\nWHERE (ventas.fecha between \r\n DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE()) AND (compras.Clasif =2) AND (tiposventa.idtipoventa in (22,23,1,5,10,11)) and if(':session.UserID'='ADMIN',1,sectores_validacion.validador=':session.UserID')\r\n",
 	"type": 1,
 	"connId": "conn",
 	"originalTable": "ventas",
@@ -853,10 +853,11 @@
 			"editFormats": [
 				{
 					"format": "Lookup wizard",
+					"lookupType": 2,
 					"lookupTable": "logicos",
 					"lookupTableConnection": "conn",
 					"lookupLinkField": "idlogico",
-					"lookupDisplayField": "idlogico",
+					"lookupDisplayField": "corinc",
 					"lookupOrderBy": "corinc"
 				}
 			],
@@ -1230,13 +1231,34 @@
 				"Spanish": "Valida"
 			},
 			"tableName": "ventas"
+		},
+		{
+			"name": "sector",
+			"sqlExpression": "sectores_validacion.sector",
+			"index": 65,
+			"strField": "sector",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Sector"
+			},
+			"tableName": "sectores_validacion"
 		}
 	],
+	"queryContext": {
+		"sesion.userID": "LCHEVAL",
+		"sesion.UserID": "LCHEVAL"
+	},
 	"eventHandlers": [
 		{
 			"eventId": "EVENT_BEFOREQUERY_LIST",
 			"pageType": "list",
-			"code": "$strOrderBy=\"ORDER BY fechacaptura desc\";\n\n\n\n\nif (strtoupper($_SESSION['UserID'])=='ADMIN') {\n\t\t\t$strWhereClause = \" 1=1 \";\n} else {\n\t\t\t\t\t  $strWhereClause=whereAdd($strWhereClause,\" sectores_validacion.validador = '\".$_SESSION['UserID'].\"'\");\n\n}\n\n\n"
+			"code": "$strOrderBy=\"ORDER BY fechacaptura desc\";\n\n/*\n\n\nif (strtoupper($_SESSION['UserID'])=='ADMIN') {\n\t\t\t$strWhereClause = \" 1=1 \";\n} else {\n\t\t\t\t\t  $strWhereClause=whereAdd($strWhereClause,\" sectores_validacion.validador = '\".$_SESSION['UserID'].\"'\");\n\n}\n\n\n*/"
 		}
 	],
 	"dbTableInfo": {
@@ -4090,6 +4112,8 @@
 						"c1": {
 							"model": "c1",
 							"items": [
+								"inline_save_all",
+								"inline_cancel_all",
 								"delete"
 							]
 						},
@@ -4097,7 +4121,8 @@
 							"model": "c2",
 							"items": [
 								"details_found",
-								"page_size"
+								"page_size",
+								"columns_control"
 							]
 						}
 					},
@@ -4158,7 +4183,7 @@
 							"model": "c1",
 							"items": [
 								"menu",
-								"search_panel"
+								"filter_panel"
 							]
 						}
 					},
@@ -4220,6 +4245,8 @@
 							"items": [
 								"simple_grid_field4",
 								"simple_grid_field5",
+								"simple_grid_field2",
+								"simple_grid_field",
 								"simple_grid_field8",
 								"simple_grid_field9",
 								"simple_grid_field10",
@@ -4238,15 +4265,18 @@
 								"simple_grid_field79",
 								"simple_grid_field1",
 								"simple_grid_field48",
-								"simple_grid_field54",
-								"simple_grid_field"
+								"simple_grid_field54"
 							]
 						}
 					},
 					"deferredItems": [
 						"grid_checkbox",
 						"grid_checkbox_head",
-						"grid_edit"
+						"grid_edit",
+						"grid_inline_cancel",
+						"grid_inline_edit",
+						"grid_inline_save",
+						"saving_icon"
 					],
 					"recsPerRow": 1
 				},
@@ -4290,158 +4320,155 @@
 					"field": "fecha",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": false
 				},
 				"simple_grid_field5": {
 					"field": "fechacaptura",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": false
 				},
 				"simple_grid_field8": {
 					"field": "esnimei",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": false
 				},
 				"simple_grid_field9": {
 					"field": "simcard",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": false
 				},
 				"simple_grid_field10": {
 					"field": "dn",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": false
 				},
 				"simple_grid_field11": {
 					"field": "cuenta",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": false
 				},
 				"simple_grid_field12": {
 					"field": "contrato",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": false
 				},
 				"simple_grid_field34": {
 					"field": "addon",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": false
 				},
 				"simple_grid_field35": {
 					"field": "dnpreferido",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": false
 				},
 				"simple_grid_field49": {
 					"field": "orden",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": true
 				},
 				"simple_grid_field64": {
 					"field": "comisionable",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": false
 				},
 				"simple_grid_field65": {
 					"field": "consumos",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": false
 				},
 				"simple_grid_field66": {
 					"field": "captura_contrato",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": true,
+					"clickSort": false,
+					"showFilter": true
 				},
 				"simple_grid_field67": {
 					"field": "captura_cuenta",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": true,
+					"clickSort": false,
+					"showFilter": true
 				},
 				"simple_grid_field68": {
 					"field": "captura_orden",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": true,
+					"clickSort": false,
+					"showFilter": true
 				},
 				"simple_grid_field77": {
 					"field": "contrato_corregido",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": true,
+					"clickSort": false,
+					"showFilter": false
 				},
 				"simple_grid_field78": {
 					"field": "cuenta_corregida",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": true,
+					"clickSort": false,
+					"showFilter": false
 				},
 				"simple_grid_field79": {
 					"field": "orden_corregida",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"search_panel": {
-					"type": "search_panel",
-					"items": [
-						"search_panel_field49",
-						"search_panel_field12",
-						"search_panel_field11",
-						"search_panel_field10",
-						"search_panel_field4"
-					],
-					"_flexiblePanel": true
+					"inlineEdit": true,
+					"clickSort": false,
+					"showFilter": false
 				},
 				"list_options": {
 					"type": "list_options",
 					"items": [
+						"edit_selected",
 						"export_selected",
 						"delete_selected",
 						"-1",
-						"show_search_panel",
-						"hide_search_panel",
-						"-3",
 						"export"
 					]
-				},
-				"show_search_panel": {
-					"type": "show_search_panel"
-				},
-				"hide_search_panel": {
-					"type": "hide_search_panel"
-				},
-				"search_panel_field4": {
-					"field": "fecha",
-					"type": "search_panel_field"
-				},
-				"search_panel_field10": {
-					"field": "dn",
-					"type": "search_panel_field"
-				},
-				"search_panel_field11": {
-					"field": "cuenta",
-					"type": "search_panel_field"
-				},
-				"search_panel_field12": {
-					"field": "contrato",
-					"type": "search_panel_field"
-				},
-				"search_panel_field49": {
-					"field": "orden",
-					"type": "search_panel_field"
 				},
 				"username_button": {
 					"type": "username_button",
@@ -4480,7 +4507,8 @@
 					"type": "-"
 				},
 				"grid_edit": {
-					"type": "grid_edit"
+					"type": "grid_edit",
+					"popup": true
 				},
 				"delete": {
 					"type": "delete"
@@ -4492,19 +4520,25 @@
 					"field": "idtv",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": false
 				},
 				"simple_grid_field48": {
 					"field": "fullname",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": false
 				},
 				"simple_grid_field54": {
 					"field": "valida",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": false
 				},
 				"export": {
 					"type": "export"
@@ -4519,11 +4553,56 @@
 					"field": "tiendanombre",
 					"type": "simple_grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": false
+				},
+				"simple_grid_field2": {
+					"field": "sector",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": true
+				},
+				"columns_control": {
+					"type": "columns_control",
+					"reorder": true,
+					"showHide": true
+				},
+				"filter_panel": {
+					"type": "filter_panel",
+					"items": []
+				},
+				"grid_inline_cancel": {
+					"type": "grid_inline_cancel"
+				},
+				"inline_save_all": {
+					"type": "inline_save_all"
+				},
+				"inline_cancel_all": {
+					"type": "inline_cancel_all"
+				},
+				"edit_selected": {
+					"type": "edit_selected"
+				},
+				"grid_inline_edit": {
+					"type": "grid_inline_edit"
+				},
+				"grid_inline_save": {
+					"type": "grid_inline_save"
+				},
+				"saving_icon": {
+					"type": "saving_icon"
 				}
 			},
 			"dbProps": {},
+			"spreadsheetGrid": true,
+			"autoAddNewRecord": false,
 			"version": 13,
+			"reorderRows": false,
+			"reorderRowsField": "",
+			"addToBottom": false,
 			"imageItem": {
 				"type": "page_image"
 			},
