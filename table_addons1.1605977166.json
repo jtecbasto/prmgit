@@ -1,92 +1,31 @@
 {
-	"orderInfo": [
-		{
-			"index": 1,
-			"field": "idventaaddon",
-			"expr": "idventaaddon",
-			"asc": false
-		}
-	],
-	"sql": "SELECT\r\nidventaaddon,\r\nidventa,\r\nidaddon,\r\nprecio,\r\nfcanceladdon,\r\nfactivaaddon,\r\nfcapturaaddon,\r\nusuario,\r\ncontrato,\r\ntelefono,\r\nidtienda,\r\nidcliente,\r\ndn,\r\ncuenta\r\nFROM addons\r\nWHERE  (contrato is not null)  and\r\n(\r\n  UPPER(':session.UserID') = 'ADMIN'\r\n  OR usuario = ':session.UserID'\r\n  OR :session.Acceso <= 1\r\n  OR (:session.Acceso = 2 AND idtienda = :session.Tienda)\r\n)\r\n\r\norder by idventaaddon desc",
+	"sql": "SELECT\n\tidaddon,\n\tprecio,\n\tfactivaaddon,\n\tverificacion_realizada,\n\tidventaaddon\nFROM\n\taddons\n",
+	"type": 1,
 	"connId": "conn",
 	"originalTable": "addons",
-	"name": "addons",
-	"shortTableName": "addons",
+	"name": "view_addons",
+	"shortTableName": "addons1",
 	"dbType": 0,
 	"keyFields": [
 		"idventaaddon"
 	],
+	"masterTables": [
+		{
+			"table": 1911098216,
+			"masterKeys": [
+				"idventa"
+			],
+			"detailsKeys": [
+				"idventa"
+			]
+		}
+	],
 	"detailsBadgeColor": "e8926f",
 	"fields": [
 		{
-			"name": "idventaaddon",
-			"sqlExpression": "idventaaddon",
-			"index": 1,
-			"strField": "idventaaddon",
-			"type": 3,
-			"autoinc": true,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{}
-			],
-			"label": {
-				"Spanish": "Idventaaddon"
-			},
-			"tableName": "addons"
-		},
-		{
-			"name": "idventa",
-			"sqlExpression": "idventa",
-			"index": 2,
-			"strField": "idventa",
-			"type": 3,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{}
-			],
-			"label": {
-				"Spanish": "Idventa"
-			},
-			"tableName": "addons"
-		},
-		{
-			"name": "idaddon",
-			"sqlExpression": "idaddon",
-			"index": 3,
-			"strField": "idaddon",
-			"type": 3,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{
-					"format": "Lookup wizard",
-					"required": true,
-					"lookupTable": "cataddons",
-					"lookupTableConnection": "conn",
-					"lookupLinkField": "idaddon",
-					"lookupDisplayField": "addon",
-					"lookupAutofillFields": [
-						{
-							"masterField": "precio",
-							"lookupField": "precio"
-						}
-					]
-				}
-			],
-			"label": {
-				"Spanish": "Addon"
-			},
-			"tableName": "addons"
-		},
-		{
 			"name": "precio",
 			"sqlExpression": "precio",
-			"index": 4,
+			"index": 2,
 			"strField": "precio",
 			"type": 5,
 			"viewFormats": [
@@ -106,31 +45,9 @@
 			"tableName": "addons"
 		},
 		{
-			"name": "fcanceladdon",
-			"sqlExpression": "fcanceladdon",
-			"index": 5,
-			"strField": "fcanceladdon",
-			"type": 135,
-			"viewFormats": [
-				{
-					"format": "Short Date"
-				}
-			],
-			"editFormats": [
-				{
-					"format": "Date",
-					"dateEditType": 11
-				}
-			],
-			"label": {
-				"Spanish": "Fecha cancelación"
-			},
-			"tableName": "addons"
-		},
-		{
 			"name": "factivaaddon",
 			"sqlExpression": "factivaaddon",
-			"index": 6,
+			"index": 3,
 			"strField": "factivaaddon",
 			"type": 7,
 			"viewFormats": [
@@ -151,83 +68,31 @@
 			"tableName": "addons"
 		},
 		{
-			"name": "fcapturaaddon",
-			"sqlExpression": "fcapturaaddon",
-			"index": 7,
-			"strField": "fcapturaaddon",
-			"type": 135,
+			"name": "verificacion_realizada",
+			"sqlExpression": "verificacion_realizada",
+			"index": 4,
+			"strField": "verificacion_realizada",
+			"type": 2,
 			"viewFormats": [
 				{
-					"format": "Short Date"
+					"format": "Checkbox"
 				}
 			],
 			"editFormats": [
 				{
-					"format": "Date",
-					"dateEditType": 11
+					"format": "Checkbox"
 				}
 			],
 			"label": {
-				"Spanish": "Fcapturaaddon"
+				"Spanish": "Verificacion Realizada"
 			},
 			"tableName": "addons"
 		},
 		{
-			"name": "usuario",
-			"sqlExpression": "usuario",
-			"index": 8,
-			"strField": "usuario",
-			"type": 200,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{}
-			],
-			"label": {
-				"Spanish": "Usuario"
-			},
-			"tableName": "addons"
-		},
-		{
-			"name": "contrato",
-			"sqlExpression": "contrato",
-			"index": 9,
-			"strField": "contrato",
-			"type": 200,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{}
-			],
-			"label": {
-				"Spanish": "Contrato"
-			},
-			"tableName": "addons"
-		},
-		{
-			"name": "telefono",
-			"sqlExpression": "telefono",
-			"index": 10,
-			"strField": "telefono",
-			"type": 200,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{}
-			],
-			"label": {
-				"Spanish": "Teléfono"
-			},
-			"tableName": "addons"
-		},
-		{
-			"name": "idtienda",
-			"sqlExpression": "idtienda",
-			"index": 11,
-			"strField": "idtienda",
+			"name": "idaddon",
+			"sqlExpression": "idaddon",
+			"index": 1,
+			"strField": "idaddon",
 			"type": 3,
 			"viewFormats": [
 				{}
@@ -235,55 +100,25 @@
 			"editFormats": [
 				{
 					"format": "Lookup wizard",
-					"required": true,
-					"lookupType": 2,
-					"lookupTable": "tiendas",
+					"lookupTable": "cataddons",
 					"lookupTableConnection": "conn",
-					"lookupLinkField": "IdTienda",
-					"lookupDisplayField": "Tienda",
-					"lookupOrderBy": "Tienda",
-					"lookupListPage": "list"
+					"lookupLinkField": "idaddon",
+					"lookupDisplayField": "addon",
+					"lookupOrderBy": "idaddon"
 				}
 			],
 			"label": {
-				"Spanish": "Tienda"
+				"Spanish": "Idaddon"
 			},
 			"tableName": "addons"
 		},
 		{
-			"name": "idcliente",
-			"sqlExpression": "idcliente",
-			"index": 12,
-			"strField": "idcliente",
+			"name": "idventaaddon",
+			"sqlExpression": "idventaaddon",
+			"index": 5,
+			"strField": "idventaaddon",
 			"type": 3,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{
-					"format": "Lookup wizard",
-					"required": true,
-					"lookupType": 2,
-					"lookupTable": "clientes",
-					"lookupTableConnection": "conn",
-					"lookupLinkField": "idcliente",
-					"lookupDisplayField": "upper(concat(paterno,' ',materno,' ',nombre))",
-					"lookupCustomDisplay": true,
-					"lookupControlType": 2,
-					"lookupListPage": "list"
-				}
-			],
-			"label": {
-				"Spanish": "Cliente"
-			},
-			"tableName": "addons"
-		},
-		{
-			"name": "dn",
-			"sqlExpression": "dn",
-			"index": 13,
-			"strField": "dn",
-			"type": 200,
+			"autoinc": true,
 			"viewFormats": [
 				{}
 			],
@@ -291,24 +126,7 @@
 				{}
 			],
 			"label": {
-				"Spanish": "DN"
-			},
-			"tableName": "addons"
-		},
-		{
-			"name": "cuenta",
-			"sqlExpression": "cuenta",
-			"index": 14,
-			"strField": "cuenta",
-			"type": 200,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{}
-			],
-			"label": {
-				"Spanish": "Cuenta"
+				"Spanish": "Idventaaddon"
 			},
 			"tableName": "addons"
 		}
@@ -574,7 +392,7 @@
 			"id": "add",
 			"type": "add",
 			"layoutId": "nomenu",
-			"disabled": false,
+			"disabled": true,
 			"default": 0,
 			"forms": {
 				"above-grid": {
@@ -696,17 +514,12 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"integrated_edit_field11",
-								"integrated_edit_field10",
-								"integrated_edit_field1",
 								"integrated_edit_field4"
 							]
 						},
 						"c11": {
 							"model": "c1",
 							"items": [
-								"integrated_edit_field7",
-								"integrated_edit_field12",
 								"integrated_edit_field2"
 							]
 						}
@@ -736,11 +549,6 @@
 				"add_reset": {
 					"type": "add_reset"
 				},
-				"integrated_edit_field1": {
-					"field": "idaddon",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
 				"integrated_edit_field2": {
 					"field": "precio",
 					"type": "integrated_edit_field",
@@ -750,28 +558,6 @@
 				},
 				"integrated_edit_field4": {
 					"field": "factivaaddon",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field7": {
-					"field": "contrato",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field10": {
-					"field": "idcliente",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field11": {
-					"field": "dn",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"bold": true,
-					"font-size": "2em"
-				},
-				"integrated_edit_field12": {
-					"field": "cuenta",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
@@ -803,7 +589,7 @@
 			"id": "export",
 			"type": "export",
 			"layoutId": "first",
-			"disabled": false,
+			"disabled": true,
 			"default": 0,
 			"forms": {
 				"supertop": {
@@ -866,16 +652,8 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"export_field2",
 								"export_field3",
-								"export_field4",
-								"export_field5",
-								"export_field7",
-								"export_field8",
-								"export_field10",
-								"export_field11",
-								"export_field12",
-								"export_field13"
+								"export_field5"
 							]
 						}
 					},
@@ -924,44 +702,12 @@
 				"export_cancel": {
 					"type": "export_cancel"
 				},
-				"export_field2": {
-					"field": "idaddon",
-					"type": "export_field"
-				},
 				"export_field3": {
 					"field": "precio",
 					"type": "export_field"
 				},
-				"export_field4": {
-					"field": "fcanceladdon",
-					"type": "export_field"
-				},
 				"export_field5": {
 					"field": "factivaaddon",
-					"type": "export_field"
-				},
-				"export_field7": {
-					"field": "usuario",
-					"type": "export_field"
-				},
-				"export_field8": {
-					"field": "contrato",
-					"type": "export_field"
-				},
-				"export_field10": {
-					"field": "idtienda",
-					"type": "export_field"
-				},
-				"export_field11": {
-					"field": "idcliente",
-					"type": "export_field"
-				},
-				"export_field12": {
-					"field": "dn",
-					"type": "export_field"
-				},
-				"export_field13": {
-					"field": "cuenta",
 					"type": "export_field"
 				}
 			},
@@ -984,7 +730,7 @@
 			"id": "import",
 			"type": "import",
 			"layoutId": "first",
-			"disabled": false,
+			"disabled": true,
 			"default": 0,
 			"forms": {
 				"supertop": {
@@ -1047,16 +793,8 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"import_field2",
 								"import_field3",
-								"import_field4",
-								"import_field5",
-								"import_field7",
-								"import_field8",
-								"import_field10",
-								"import_field11",
-								"import_field12",
-								"import_field13"
+								"import_field5"
 							]
 						}
 					},
@@ -1068,44 +806,12 @@
 				"import_header": {
 					"type": "import_header"
 				},
-				"import_field2": {
-					"field": "idaddon",
-					"type": "import_field"
-				},
 				"import_field3": {
 					"field": "precio",
 					"type": "import_field"
 				},
-				"import_field4": {
-					"field": "fcanceladdon",
-					"type": "import_field"
-				},
 				"import_field5": {
 					"field": "factivaaddon",
-					"type": "import_field"
-				},
-				"import_field7": {
-					"field": "usuario",
-					"type": "import_field"
-				},
-				"import_field8": {
-					"field": "contrato",
-					"type": "import_field"
-				},
-				"import_field10": {
-					"field": "idtienda",
-					"type": "import_field"
-				},
-				"import_field11": {
-					"field": "idcliente",
-					"type": "import_field"
-				},
-				"import_field12": {
-					"field": "dn",
-					"type": "import_field"
-				},
-				"import_field13": {
-					"field": "cuenta",
 					"type": "import_field"
 				}
 			},
@@ -1124,7 +830,7 @@
 			"id": "edit",
 			"type": "edit",
 			"layoutId": "nomenu",
-			"disabled": false,
+			"disabled": true,
 			"default": 0,
 			"forms": {
 				"above-grid": {
@@ -1250,23 +956,11 @@
 					"cells": {
 						"c1": {
 							"model": "c1",
-							"items": [
-								"integrated_edit_field11",
-								"integrated_edit_field9",
-								"integrated_edit_field10",
-								"integrated_edit_field1",
-								"integrated_edit_field4"
-							]
+							"items": []
 						},
 						"c": {
 							"model": "c1",
-							"items": [
-								"integrated_edit_field7",
-								"integrated_edit_field12",
-								"integrated_edit_field2",
-								"integrated_edit_field3",
-								"integrated_edit_field6"
-							]
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -1290,68 +984,6 @@
 				},
 				"edit_close": {
 					"type": "edit_close"
-				},
-				"integrated_edit_field1": {
-					"field": "idaddon",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field2": {
-					"field": "precio",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field3": {
-					"field": "fcanceladdon",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field4": {
-					"field": "factivaaddon",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field6": {
-					"field": "usuario",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field7": {
-					"field": "contrato",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field9": {
-					"field": "idtienda",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field10": {
-					"field": "idcliente",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field11": {
-					"field": "dn",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false,
-					"bold": true,
-					"font-size": "2em"
-				},
-				"integrated_edit_field12": {
-					"field": "cuenta",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
 				},
 				"section": {
 					"type": "section",
@@ -1381,7 +1013,7 @@
 			"id": "view",
 			"type": "view",
 			"layoutId": "nomenu",
-			"disabled": false,
+			"disabled": true,
 			"default": 0,
 			"forms": {
 				"above-grid": {
@@ -1431,7 +1063,9 @@
 						},
 						"c2": {
 							"model": "c2",
-							"items": []
+							"items": [
+								"hamburger"
+							]
 						}
 					},
 					"deferredItems": [],
@@ -1506,21 +1140,13 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"integrated_edit_field11",
-								"integrated_edit_field9",
-								"integrated_edit_field10",
-								"integrated_edit_field1",
 								"integrated_edit_field4"
 							]
 						},
 						"c": {
 							"model": "c1",
 							"items": [
-								"integrated_edit_field7",
-								"integrated_edit_field12",
-								"integrated_edit_field2",
-								"integrated_edit_field3",
-								"integrated_edit_field6"
+								"integrated_edit_field2"
 							]
 						}
 					},
@@ -1551,46 +1177,8 @@
 					"panelType": 3,
 					"foldable": false
 				},
-				"integrated_edit_field9": {
-					"field": "idtienda",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field11": {
-					"field": "dn",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false,
-					"bold": true,
-					"font-size": "2em"
-				},
-				"integrated_edit_field10": {
-					"field": "idcliente",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field1": {
-					"field": "idaddon",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
 				"integrated_edit_field4": {
 					"field": "factivaaddon",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field7": {
-					"field": "contrato",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field12": {
-					"field": "cuenta",
 					"type": "integrated_edit_field",
 					"orientation": 0,
 					"updateOnEdit": false
@@ -1601,17 +1189,9 @@
 					"orientation": 0,
 					"updateOnEdit": false
 				},
-				"integrated_edit_field3": {
-					"field": "fcanceladdon",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
-				},
-				"integrated_edit_field6": {
-					"field": "usuario",
-					"type": "integrated_edit_field",
-					"orientation": 0,
-					"updateOnEdit": false
+				"hamburger": {
+					"type": "hamburger",
+					"items": []
 				}
 			},
 			"dbProps": {},
@@ -1652,16 +1232,15 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"add",
-								"delete"
+								"inline_save_all",
+								"inline_cancel_all"
 							]
 						},
 						"c2": {
 							"model": "c2",
 							"items": [
 								"details_found",
-								"page_size",
-								"print_panel"
+								"page_size"
 							]
 						}
 					},
@@ -1721,8 +1300,7 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"menu",
-								"search_panel"
+								"menu"
 							]
 						}
 					},
@@ -1766,43 +1344,6 @@
 					"deferredItems": [],
 					"recsPerRow": 1
 				},
-				"grid": {
-					"modelId": "simple-grid",
-					"grid": [
-						{
-							"cells": [
-								{
-									"cell": "c1"
-								}
-							],
-							"section": ""
-						}
-					],
-					"cells": {
-						"c1": {
-							"model": "c1",
-							"items": [
-								"simple_grid_field12",
-								"simple_grid_field11",
-								"simple_grid_field13",
-								"simple_grid_field2",
-								"simple_grid_field3",
-								"simple_grid_field5",
-								"simple_grid_field8",
-								"simple_grid_field4",
-								"simple_grid_field7",
-								"simple_grid_field10"
-							]
-						}
-					},
-					"deferredItems": [
-						"grid_checkbox",
-						"grid_checkbox_head",
-						"grid_edit",
-						"grid_view"
-					],
-					"recsPerRow": 1
-				},
 				"top": {
 					"modelId": "list-sidebar-top",
 					"grid": [
@@ -1818,6 +1359,215 @@
 					"cells": {
 						"c2": {
 							"model": "c2",
+							"items": [
+								"master_info"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "horizontal-grid",
+					"grid": [
+						{
+							"section": "head",
+							"cells": [
+								{
+									"cell": "headcell_icons"
+								},
+								{
+									"cell": "headcell_checkbox"
+								},
+								{
+									"cell": "headcell_field1"
+								},
+								{
+									"cell": "headcell_field2"
+								},
+								{
+									"cell": "headcell_field3"
+								},
+								{
+									"cell": "headcell_field"
+								}
+							]
+						},
+						{
+							"section": "body",
+							"cells": [
+								{
+									"cell": "cell_icons"
+								},
+								{
+									"cell": "cell_checkbox"
+								},
+								{
+									"cell": "cell_field1"
+								},
+								{
+									"cell": "cell_field2"
+								},
+								{
+									"cell": "cell_field3"
+								},
+								{
+									"cell": "cell_field"
+								}
+							]
+						},
+						{
+							"section": "foot",
+							"cells": [
+								{
+									"cell": "footcell_icons"
+								},
+								{
+									"cell": "footcell_checkbox"
+								},
+								{
+									"cell": "footcell_field1"
+								},
+								{
+									"cell": "footcell_field2"
+								},
+								{
+									"cell": "footcell_field3"
+								},
+								{
+									"cell": "footcell_field"
+								}
+							]
+						}
+					],
+					"cells": {
+						"headcell_field1": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label1"
+							],
+							"field": "idaddon",
+							"columnName": "field"
+						},
+						"cell_field1": {
+							"model": "cell_field",
+							"items": [
+								"grid_field1"
+							],
+							"field": "idaddon",
+							"columnName": "field"
+						},
+						"footcell_field1": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "idaddon",
+							"columnName": "field"
+						},
+						"headcell_field2": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field6"
+							],
+							"field": "factivaaddon",
+							"columnName": "field"
+						},
+						"cell_field2": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field5"
+							],
+							"field": "factivaaddon",
+							"columnName": "field"
+						},
+						"footcell_field2": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "factivaaddon",
+							"columnName": "field"
+						},
+						"headcell_checkbox": {
+							"model": "headcell_checkbox",
+							"items": [
+								"grid_checkbox_head"
+							],
+							"columnName": "checkbox",
+							"field": ""
+						},
+						"cell_checkbox": {
+							"model": "cell_checkbox",
+							"items": [
+								"grid_checkbox"
+							],
+							"columnName": "checkbox",
+							"field": ""
+						},
+						"footcell_checkbox": {
+							"model": "footcell_checkbox",
+							"items": [],
+							"columnName": "checkbox",
+							"field": ""
+						},
+						"headcell_field3": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field4"
+							],
+							"field": "precio",
+							"columnName": "field"
+						},
+						"cell_field3": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field3"
+							],
+							"field": "precio",
+							"columnName": "field",
+							"align": "center"
+						},
+						"footcell_field3": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "precio",
+							"columnName": "field"
+						},
+						"headcell_field": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label"
+							],
+							"field": "verificacion_realizada",
+							"columnName": "field"
+						},
+						"cell_field": {
+							"model": "cell_field",
+							"items": [
+								"grid_field"
+							],
+							"field": "verificacion_realizada",
+							"columnName": "field",
+							"align": "center"
+						},
+						"footcell_field": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "verificacion_realizada",
+							"columnName": "field"
+						},
+						"headcell_icons": {
+							"model": "headcell_icons",
+							"items": []
+						},
+						"cell_icons": {
+							"model": "cell_icons",
+							"items": [
+								"grid_inline_edit",
+								"grid_inline_save",
+								"grid_inline_cancel",
+								"saving_icon"
+							]
+						},
+						"footcell_icons": {
+							"model": "footcell_icons",
 							"items": []
 						}
 					},
@@ -1844,150 +1594,14 @@
 				"pagination": {
 					"type": "pagination"
 				},
-				"grid_checkbox": {
-					"type": "grid_checkbox"
-				},
-				"grid_checkbox_head": {
-					"type": "grid_checkbox_head"
-				},
 				"details_found": {
 					"type": "details_found"
-				},
-				"simple_grid_field2": {
-					"field": "idaddon",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field3": {
-					"field": "precio",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field4": {
-					"field": "fcanceladdon",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field5": {
-					"field": "factivaaddon",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field7": {
-					"field": "usuario",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field8": {
-					"field": "contrato",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field10": {
-					"field": "idtienda",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field11": {
-					"field": "idcliente",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field12": {
-					"field": "dn",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field13": {
-					"field": "cuenta",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"search_panel": {
-					"type": "search_panel",
-					"items": [
-						"search_panel_field13",
-						"search_panel_field12",
-						"search_panel_field11",
-						"search_panel_field10",
-						"search_panel_field8",
-						"search_panel_field7",
-						"search_panel_field5",
-						"search_panel_field4",
-						"search_panel_field3",
-						"search_panel_field2"
-					],
-					"_flexiblePanel": true
 				},
 				"list_options": {
 					"type": "list_options",
 					"items": [
-						"export_selected",
-						"delete_selected",
-						"-1",
-						"show_search_panel",
-						"hide_search_panel",
-						"-",
-						"export",
-						"-2",
-						"import"
+						"edit_selected"
 					]
-				},
-				"show_search_panel": {
-					"type": "show_search_panel"
-				},
-				"hide_search_panel": {
-					"type": "hide_search_panel"
-				},
-				"search_panel_field2": {
-					"field": "idaddon",
-					"type": "search_panel_field"
-				},
-				"search_panel_field3": {
-					"field": "precio",
-					"type": "search_panel_field"
-				},
-				"search_panel_field4": {
-					"field": "fcanceladdon",
-					"type": "search_panel_field"
-				},
-				"search_panel_field5": {
-					"field": "factivaaddon",
-					"type": "search_panel_field"
-				},
-				"search_panel_field7": {
-					"field": "usuario",
-					"type": "search_panel_field"
-				},
-				"search_panel_field8": {
-					"field": "contrato",
-					"type": "search_panel_field"
-				},
-				"search_panel_field10": {
-					"field": "idtienda",
-					"type": "search_panel_field"
-				},
-				"search_panel_field11": {
-					"field": "idcliente",
-					"type": "search_panel_field"
-				},
-				"search_panel_field12": {
-					"field": "dn",
-					"type": "search_panel_field"
-				},
-				"search_panel_field13": {
-					"field": "cuenta",
-					"type": "search_panel_field"
 				},
 				"username_button": {
 					"type": "username_button",
@@ -2016,66 +1630,111 @@
 				"collapse_button": {
 					"type": "collapse_button"
 				},
-				"add": {
-					"type": "add"
-				},
-				"export": {
-					"type": "export"
-				},
 				"-": {
 					"type": "-"
-				},
-				"export_selected": {
-					"type": "export_selected"
 				},
 				"-1": {
 					"type": "-"
 				},
-				"import": {
-					"type": "import"
-				},
 				"-2": {
 					"type": "-"
 				},
-				"grid_edit": {
-					"type": "grid_edit"
+				"master_info": {
+					"type": "master_info",
+					"tables": {
+						"1911098216": "true"
+					}
 				},
-				"grid_view": {
-					"type": "grid_view"
+				"-3": {
+					"type": "-"
 				},
-				"print_panel": {
-					"type": "print_panel",
-					"items": [
-						"print_scope",
-						"print_records",
-						"print_button"
-					]
+				"-4": {
+					"type": "-"
 				},
-				"print_scope": {
-					"type": "print_scope"
+				"simple_grid_field3": {
+					"field": "precio",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
 				},
-				"print_button": {
-					"type": "print_button"
+				"simple_grid_field4": {
+					"type": "grid_field_label",
+					"field": "precio"
 				},
-				"print_records": {
-					"type": "print_records"
+				"simple_grid_field5": {
+					"field": "factivaaddon",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
 				},
-				"delete": {
-					"type": "delete"
+				"simple_grid_field6": {
+					"type": "grid_field_label",
+					"field": "factivaaddon"
 				},
-				"delete_selected": {
-					"type": "delete_selected"
+				"grid_checkbox": {
+					"type": "grid_checkbox"
+				},
+				"grid_checkbox_head": {
+					"type": "grid_checkbox_head"
+				},
+				"grid_field": {
+					"field": "verificacion_realizada",
+					"type": "grid_field",
+					"inlineEdit": true,
+					"inlineAdd": false
+				},
+				"grid_field_label": {
+					"type": "grid_field_label",
+					"field": "verificacion_realizada"
+				},
+				"grid_field1": {
+					"field": "idaddon",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label1": {
+					"type": "grid_field_label",
+					"field": "idaddon"
+				},
+				"-5": {
+					"type": "-"
+				},
+				"edit_selected": {
+					"type": "edit_selected"
+				},
+				"grid_inline_edit": {
+					"type": "grid_inline_edit"
+				},
+				"grid_inline_save": {
+					"type": "grid_inline_save"
+				},
+				"grid_inline_cancel": {
+					"type": "grid_inline_cancel"
+				},
+				"saving_icon": {
+					"type": "saving_icon"
+				},
+				"inline_save_all": {
+					"type": "inline_save_all"
+				},
+				"inline_cancel_all": {
+					"type": "inline_cancel_all"
 				}
 			},
 			"dbProps": {},
+			"responsiveGrid": false,
+			"spreadsheetGrid": true,
+			"autoAddNewRecord": false,
 			"version": 13,
+			"pageWidth": "compact",
 			"imageItem": {
 				"type": "page_image"
 			},
 			"imageBgColor": "#f2f2f2",
 			"controlsBgColor": "white",
 			"imagePosition": "right",
-			"pageCSS": "/* Put  your custom CSS code here */\n\n/* Put  your custom CSS code here */\n/*\n.table {\n    font-family: 'Arial', sans-serif !important;\n    font-size: 12px !important;\n    border-collapse: collapse !important;\n}*/\n\n\n/* ========================================================= */\n/* VARIABLES DE COLOR */\n/* ========================================================= */\n:root {\n    /* Color de acento para botones, foco y texto */\n    --color-acento: #48C9B0; /* Turquesa/Menta */ \n    --color-elegante: #1C334A; /* Azul Marino Oscuro */\n}\n\n/* ========================================================= */\n/* 1. Fondo de la Página: Degradado Azul Cielo Intenso       */\n/* ========================================================= */\nbody, .container-fluid {\n    /* Mismo fondo azul que usamos en el formulario de agregar */\n    background: linear-gradient(180deg, #E0F7FA 0%, #B3E5FC 100%) !important; \n    min-height: 100vh;\n}\n\n/* ========================================================= */\n/* 2. Contenedor de la Lista (El \"Body\" principal de la tabla) */\n/* Aplicamos el efecto de Tarjeta y Sombra a este contenedor */\n/* El selector depende del tema, pero '.rnr-b-grid' suele ser el contenedor de la tabla */\n.rnr-body .rnr-c-body, \n.rnr-b-grid, \n.rnr-c-grid,\n.panel-default {\n    background-color: #FFFFFF !important; \n    border: none !important; \n    border-radius: 12px !important; \n    \n    /* Sombreado elegante de la tarjeta */\n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), \n                0 2px 6px rgba(0, 0, 0, 0.05) !important; \n}\n\n/* 3. Encabezados y Barras de Herramientas (Parte superior e inferior) */\n/* Limpiamos el diseño de los paneles que rodean la tabla */\n.rnr-c-hsucc, .rnr-c-message, .rnr-c-hcell {\n    background-color: transparent !important;\n    border: none !important;\n}\n\n/* 4. Estilo de las Filas de Datos (Efecto Hover de Elevación) */\n/* Le da interactividad a la tabla */\n.rnr-body tr {\n    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;\n}\n\n.rnr-body tr:hover {\n    background-color: #fcfcfc !important; /* Ligeramente más claro al pasar el mouse */\n    \n    /* Sombra y elevación sutil para destacar la fila */\n    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1), \n                0 1px 3px rgba(0, 0, 0, 0.05) !important;\n    transform: translateY(-1px);\n}\n\n/* 5. Asegurar que las celdas del encabezado de la tabla se vean bien */\n.rnr-c-grid th {\n    background-color: #f7f7f7 !important; /* Fondo sutil para el header de la tabla */\n    color: var(--color-elegante) !important;\n    font-weight: 600;\n    border-bottom: 2px solid var(--color-acento) !important;\n}\n\n/* 6. Barras de Paginación y Búsqueda */\n.rnr-bottom .panel, .rnr-c-search, .rnr-c-top, .rnr-bottom-nav {\n    background-color: transparent !important;\n    border: none !important;\n    box-shadow: none !important; /* Quitamos la sombra a estos elementos */\n}\n\n\n\n/* ========================================================= */\n/* ESTILOS PARA CELDAS DE ESTADO (FORMATO CONDICIONAL)       */\n/* ========================================================= */\n\n/* Clase base para el estilo de \"badge\" o \"tag\" */\n.status-badge {\n    display: inline-block; /* Para que tome el tamaño del contenido */\n    padding: 5px 10px; /* Relleno interno */\n    border-radius: 20px; /* MUY REDONDEADO para el efecto de píldora */\n    font-weight: bold;\n    font-size: 0.85em;\n    text-align: center;\n    min-width: 80px; /* Ancho mínimo para que no se vea muy pequeño */\n    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Sombra sutil */\n}\n\n/* Estado: Entregado (Verde) */\n.status-entregado {\n    background-color: #D4EDDA; /* Verde pastel claro */\n    color: #155724; /* Texto verde oscuro */\n    border: 1px solid #C3E6CB; /* Borde sutil */\n}\n\n/* Estado: Pendiente (Amarillo) */\n.status-pendiente {\n    background-color: #FFF3CD; /* Amarillo pastel claro */\n    color: #856404; /* Texto amarillo oscuro */\n    border: 1px solid #FFEEBA;\n}\n\n/* Estado: Cancelado (Rojo) */\n.status-cancelado {\n    background-color: #F8D7DA; /* Rojo pastel claro */\n    color: #721C24; /* Texto rojo oscuro */\n    border: 1px solid #F5C6CB;\n}\n\n/* Agrega más estados según sea necesario */\n/* Estado: En Proceso (Azul) */\n.status-en-proceso {\n    background-color: #D1ECF1; /* Azul pastel claro */\n    color: #0C5460; /* Texto azul oscuro */\n    border: 1px solid #BEE5EB;\n}\n\n\n/* ========================================================= */\n/* ELIMINAR SEPARADORES DE COLUMNA (LÍNEAS VERTICALES)        */\n/* ========================================================= */\n/* Mantén líneas horizontales ligeras, borra las verticales */\n.rnr-gridtable td,\n.rnr-gridtable th {\n  border-left: none !important;\n  border-right: none !important;\n  box-shadow: none !important; /* algunos temas usan sombras como divisores */\n}\n\n/* Si quieres una línea horizontal sutil */\n.rnr-gridtable td {\n  border-top: 1px solid #eee !important;\n}\n.rnr-gridtable thead th {\n  border-bottom: 1px solid #e6e6e6 !important;\n}\n",
+			"pageCSS": "",
 			"listTotals": 1,
 			"title": {}
 		},
@@ -2083,7 +1742,7 @@
 			"id": "print",
 			"type": "print",
 			"layoutId": "basic",
-			"disabled": false,
+			"disabled": true,
 			"default": 0,
 			"forms": {
 				"above-grid": {
@@ -2160,7 +1819,9 @@
 						},
 						"c4": {
 							"model": "c4",
-							"items": []
+							"items": [
+								"master_info"
+							]
 						}
 					},
 					"deferredItems": [],
@@ -2182,16 +1843,8 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"simple_grid_field2",
 								"simple_grid_field3",
-								"simple_grid_field4",
-								"simple_grid_field5",
-								"simple_grid_field7",
-								"simple_grid_field8",
-								"simple_grid_field10",
-								"simple_grid_field11",
-								"simple_grid_field12",
-								"simple_grid_field13"
+								"simple_grid_field5"
 							]
 						}
 					},
@@ -2209,45 +1862,19 @@
 				"print_pages": {
 					"type": "print_pages"
 				},
-				"simple_grid_field2": {
-					"field": "idaddon",
-					"type": "simple_grid_field"
-				},
 				"simple_grid_field3": {
 					"field": "precio",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field4": {
-					"field": "fcanceladdon",
 					"type": "simple_grid_field"
 				},
 				"simple_grid_field5": {
 					"field": "factivaaddon",
 					"type": "simple_grid_field"
 				},
-				"simple_grid_field7": {
-					"field": "usuario",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field8": {
-					"field": "contrato",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field10": {
-					"field": "idtienda",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field11": {
-					"field": "idcliente",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field12": {
-					"field": "dn",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field13": {
-					"field": "cuenta",
-					"type": "simple_grid_field"
+				"master_info": {
+					"type": "master_info",
+					"tables": {
+						"1911098216": "true"
+					}
 				}
 			},
 			"dbProps": {},
@@ -2269,6 +1896,6 @@
 		"addressFields": []
 	},
 	"caption": {
-		"Spanish": "Addons"
+		"Spanish": "View Addons"
 	}
 }

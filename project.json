@@ -62,8 +62,8 @@
 			},
 			{
 				"gid": 3680839223,
-				"y": 685,
-				"x": 315,
+				"y": 1261,
+				"x": 1177,
 				"width": 153.734375,
 				"height": 400
 			},
@@ -251,9 +251,16 @@
 			},
 			{
 				"gid": 1911098216,
-				"y": 965,
-				"x": 715,
+				"y": 993,
+				"x": 614,
 				"width": 205.984375,
+				"height": 400
+			},
+			{
+				"gid": 1605977166,
+				"y": 1387,
+				"x": 882,
+				"width": 150.734375,
 				"height": 400
 			},
 			{
@@ -536,20 +543,6 @@
 						}
 					},
 					{
-						"id": "19",
-						"data": {
-							"name": {
-								"text": "Ventas",
-								"type": 0
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 1911098216,
-							"pageType": "list"
-						}
-					},
-					{
 						"id": "17",
 						"data": {
 							"name": {
@@ -610,16 +603,16 @@
 						}
 					},
 					{
-						"id": "20",
+						"id": "19",
 						"data": {
 							"name": {
-								"table": "logicos",
-								"type": 6
+								"text": "Verificación de Ventas",
+								"type": 0
 							},
 							"pageId": "list",
 							"itemType": 2,
 							"linkType": 0,
-							"table": 605844771,
+							"table": 1911098216,
 							"pageType": "list"
 						}
 					}
@@ -727,7 +720,8 @@
 								"welcome_item17",
 								"welcome_item19",
 								"welcome_item20",
-								"welcome_item21"
+								"welcome_item21",
+								"welcome_item22"
 							]
 						}
 					},
@@ -1066,6 +1060,18 @@
 						"type": 6
 					},
 					"background": "#edca00",
+					"linkType": 0
+				},
+				"welcome_item22": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "view_addons",
+					"linkPage": "list",
+					"linkText": {
+						"table": "view_addons",
+						"type": 6
+					},
+					"background": "#e8926f",
 					"linkType": 0
 				}
 			},

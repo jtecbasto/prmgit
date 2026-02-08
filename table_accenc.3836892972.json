@@ -489,7 +489,7 @@
 			"label": {
 				"Spanish": "Observaciones"
 			},
-			"tableName": ""
+			"tableName": "accenc"
 		}
 	],
 	"whereTabs": [
@@ -684,6 +684,17 @@
 				"size": 0,
 				"scale": 0,
 				"typeName": "mediumtext",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "observaciones",
+				"type": 200,
+				"size": 200,
+				"scale": 0,
+				"typeName": "varchar(200)",
 				"nullable": true,
 				"autoinc": false,
 				"defaultValueSQL": null,
