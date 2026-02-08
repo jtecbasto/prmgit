@@ -1,5 +1,5 @@
 {
-	"sql": "SELECT\r\nventas.idventa,\r\ntiposventa.tipoventa,\r\nventas.fecha,\r\nventas.fechacaptura,\r\nclientes.nombre_completo AS cliente,\r\nventas.segmento,\r\nventas.esnimei,\r\nventas.simcard,\r\nventas.dn,\r\nventas.dnpreferido,\r\nventas.ventadomicilio,\r\nventas.cuenta,\r\nventas.contrato,\r\nventas.contratoportal,\r\nventas.`plan` AS `plan`,\r\nventas.`plan` AS planes,\r\nventas.plazo,\r\nventas.plazopendiente,\r\nventas.usuario,\r\nserviciosmoviles_uggroups.Acceso,\r\nventas.renta,\r\nplanes.renta AS rentaplan,\r\nventas.tienda,\r\ntiendas.Tienda AS tiendanombre,\r\ncompras.descripcion,\r\nventas.Factura,\r\nventas.fechavenci,\r\nventas.ciclo,\r\nserviciosmoviles_users.fullname usuario,\r\nventas.modifico,\r\nventas.fechamodif,\r\nventas.PagoTotal,\r\nventas.Efectivo,\r\nventas.NC,\r\nventas.TC,\r\nventas.rfc,\r\nventas.cargofaciva,\r\nventas.almacenatt,\r\ncompras.Clasif AS clasif,\r\nventas.modo,\r\nventas.addon,\r\nventas.vtasimg,\r\nventas.equipoincluido,\r\nventas.tiendamovil,\r\nventas.tiposegmento,\r\nventas.idpromocion,\r\nventas.orden,\r\nventas.comisionable,\r\nventas.consumos,\r\nventas.captura_contrato,\r\nventas.captura_cuenta,\r\nventas.captura_orden,\r\nventas.contrato_corregido,\r\nventas.cuenta_corregida,\r\nventas.orden_corregida,\r\nsectores_validacion.validador,\r\nventas.validador AS valida,\r\nsectores_validacion.sector,\r\nventas.ultimo_pago,\r\nventas.carrusel,\r\na.seguros seguro_capturado,\r\na.seguro_verificado,\r\na.control control_capturado,\r\na.control_verificado,\r\na.nfs nfs_capturado,\r\na.nfs_verificado,\r\nyear(ventas.fecha) anio,\r\nmonth(ventas.fecha) mes\r\nFROM ventas\r\nINNER JOIN serviciosmoviles_users ON ventas.usuario = serviciosmoviles_users.username\r\nINNER JOIN serviciosmoviles_ugmembers ON serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName\r\nINNER JOIN serviciosmoviles_uggroups ON serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID\r\nLEFT OUTER JOIN clientes ON ventas.idcliente = clientes.idcliente\r\nLEFT OUTER JOIN tiendas ON ventas.tienda = tiendas.IdTienda\r\nLEFT OUTER JOIN planes ON ventas.`plan` = planes.idplan\r\nLEFT OUTER JOIN sectores_validacion ON tiendas.idsectorvalida = sectores_validacion.id\r\nleft outer join (\r\nselect a.idventa,sum(if(g.idgaddon=8, 1, 0)) seguros, sum(if(g.idgaddon=8 and verificacion_realizada , 1, 0)) seguro_verificado , \r\nsum(if(g.idgaddon=10,1,0)) control, sum(if(g.idgaddon=10 and verificacion_realizada,1,0) ) control_verificado,\r\n  sum(if(g.idgaddon=14,1,0) ) nfs, sum(if(g.idgaddon=14 and verificacion_realizada,1,0) ) nfs_verificado  from addons a inner join cataddons c on a.idaddon=c.idaddon inner join  gaddons g on c.idgaddon=g.idgaddon\r\ngroup by a.idventa having seguro_verificado=1) a on ventas.idventa=a.idventa \r\nINNER JOIN compras ON ventas.esnimei = compras.noserie\r\nINNER JOIN tiposventa ON ventas.idtipoventa = tiposventa.idtipoventa\r\nWHERE (ventas.fecha between \r\n DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE()) AND (compras.Clasif =2) AND (tiposventa.idtipoventa in (22,23,1,5,10,11)) and if(':session.UserID'='ADMIN',1,sectores_validacion.validador=':session.UserID')\r\n",
+	"sql": "SELECT\r\nventas.idventa,\r\ntiposventa.tipoventa,\r\nventas.fecha,\r\nventas.fechacaptura,\r\nclientes.nombre_completo AS cliente,\r\nventas.segmento,\r\nventas.esnimei,\r\nventas.simcard,\r\nventas.dn,\r\nventas.dnpreferido,\r\nventas.ventadomicilio,\r\nventas.cuenta,\r\nventas.contrato,\r\nventas.contratoportal,\r\nventas.`plan` AS `plan`,\r\nventas.`plan` AS planes,\r\nventas.plazo,\r\nventas.plazopendiente,\r\nventas.usuario,\r\nserviciosmoviles_uggroups.Acceso,\r\nventas.renta,\r\nplanes.renta AS rentaplan,\r\nventas.tienda,\r\ntiendas.Tienda AS tiendanombre,\r\ncompras.descripcion,\r\nventas.Factura,\r\nventas.fechavenci,\r\nventas.ciclo,\r\nserviciosmoviles_users.fullname,\r\nventas.modifico,\r\nventas.fechamodif,\r\nventas.PagoTotal,\r\nventas.Efectivo,\r\nventas.NC,\r\nventas.TC,\r\nventas.rfc,\r\nventas.cargofaciva,\r\nventas.almacenatt,\r\ncompras.Clasif AS clasif,\r\nventas.modo,\r\nventas.addon,\r\nventas.vtasimg,\r\nventas.equipoincluido,\r\nventas.tiendamovil,\r\nventas.tiposegmento,\r\nventas.idpromocion,\r\nventas.orden,\r\nventas.comisionable,\r\nventas.consumos,\r\nventas.captura_contrato,\r\nventas.captura_cuenta,\r\nventas.captura_orden,\r\nventas.contrato_corregido,\r\nventas.cuenta_corregida,\r\nventas.orden_corregida,\r\nsectores_validacion.validador,\r\nventas.validador AS valida,\r\nsectores_validacion.sector,\r\nventas.ultimo_pago,\r\nventas.carrusel,\r\na.seguros seguro_capturado,\r\na.seguro_verificado,\r\na.control control_capturado,\r\na.control_verificado,\r\na.nfs nfs_capturado,\r\na.nfs_verificado,\r\nventas.anio,\r\n CASE MONTH(ventas.mes)\r\n  WHEN 1 THEN 'Enero'\r\n  WHEN 2 THEN 'Febrero'\r\n  WHEN 3 THEN 'Marzo'\r\n  WHEN 4 THEN 'Abril'\r\n  WHEN 5 THEN 'Mayo'\r\n  WHEN 6 THEN 'Junio'\r\n  WHEN 7 THEN 'Julio'\r\n  WHEN 8 THEN 'Agosto'\r\n  WHEN 9 THEN 'Septiembre'\r\n  WHEN 10 THEN 'Octubre'\r\n  WHEN 11 THEN 'Noviembre'\r\n  WHEN 12 THEN 'Diciembre'\r\nEND AS mes\r\nFROM ventas\r\nINNER JOIN serviciosmoviles_users ON ventas.usuario = serviciosmoviles_users.username\r\nINNER JOIN serviciosmoviles_ugmembers ON serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName\r\nINNER JOIN serviciosmoviles_uggroups ON serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID\r\nLEFT OUTER JOIN clientes ON ventas.idcliente = clientes.idcliente\r\nLEFT OUTER JOIN tiendas ON ventas.tienda = tiendas.IdTienda\r\nLEFT OUTER JOIN planes ON ventas.`plan` = planes.idplan\r\nLEFT OUTER JOIN sectores_validacion ON tiendas.idsectorvalida = sectores_validacion.id\r\nleft outer join (\r\nselect a.idventa,sum(if(g.idgaddon=8, 1, 0)) seguros, sum(if(g.idgaddon=8 and verificacion_realizada , 1, 0)) seguro_verificado , \r\nsum(if(g.idgaddon=10,1,0)) control, sum(if(g.idgaddon=10 and verificacion_realizada,1,0) ) control_verificado,\r\n  sum(if(g.idgaddon=14,1,0) ) nfs, sum(if(g.idgaddon=14 and verificacion_realizada,1,0) ) nfs_verificado  from addons a inner join cataddons c on a.idaddon=c.idaddon inner join  gaddons g on c.idgaddon=g.idgaddon\r\ngroup by a.idventa having seguro_verificado=1) a on ventas.idventa=a.idventa \r\nINNER JOIN compras ON ventas.esnimei = compras.noserie\r\nINNER JOIN tiposventa ON ventas.idtipoventa = tiposventa.idtipoventa\r\nWHERE (ventas.fecha between \r\n DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE()) AND (compras.Clasif =2) AND (tiposventa.idtipoventa in (22,23,1,5,10,11)) and if(':session.UserID'='ADMIN',1,sectores_validacion.validador=':session.UserID')\r\n",
 	"type": 1,
 	"connId": "conn",
 	"originalTable": "ventas",
@@ -1297,7 +1297,7 @@
 		},
 		{
 			"name": "anio",
-			"sqlExpression": "anio",
+			"sqlExpression": "ventas.anio",
 			"index": 67,
 			"strField": "anio",
 			"type": 3,
@@ -1314,10 +1314,10 @@
 		},
 		{
 			"name": "mes",
-			"sqlExpression": "mes",
+			"sqlExpression": "CASE MONTH(ventas.mes)\r\n  WHEN 1 THEN 'Enero'\r\n  WHEN 2 THEN 'Febrero'\r\n  WHEN 3 THEN 'Marzo'\r\n  WHEN 4 THEN 'Abril'\r\n  WHEN 5 THEN 'Mayo'\r\n  WHEN 6 THEN 'Junio'\r\n  WHEN 7 THEN 'Julio'\r\n  WHEN 8 THEN 'Agosto'\r\n  WHEN 9 THEN 'Septiembre'\r\n  WHEN 10 THEN 'Octubre'\r\n  WHEN 11 THEN 'Noviembre'\r\n  WHEN 12 THEN 'Diciembre'\r\nEND",
 			"index": 68,
 			"strField": "mes",
-			"type": 3,
+			"type": 200,
 			"viewFormats": [
 				{}
 			],
@@ -1327,7 +1327,24 @@
 			"label": {
 				"Spanish": "Mes"
 			},
-			"tableName": "ventas"
+			"tableName": ""
+		},
+		{
+			"name": "fullname",
+			"sqlExpression": "serviciosmoviles_users.fullname",
+			"index": 29,
+			"strField": "fullname",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Fullname"
+			},
+			"tableName": "serviciosmoviles_users"
 		}
 	],
 	"queryContext": {
@@ -2754,7 +2771,9 @@
 					"cells": {
 						"c1": {
 							"model": "c1",
-							"items": []
+							"items": [
+								"export_field"
+							]
 						}
 					},
 					"deferredItems": [],
@@ -2801,6 +2820,10 @@
 				},
 				"export_cancel": {
 					"type": "export_cancel"
+				},
+				"export_field": {
+					"field": "fullname",
+					"type": "export_field"
 				}
 			},
 			"dbProps": {},
@@ -4273,6 +4296,7 @@
 							"model": "c1",
 							"items": [
 								"menu",
+								"search_panel",
 								"filter_panel"
 							]
 						}
@@ -4433,6 +4457,12 @@
 								},
 								{
 									"cell": "headcell_field29"
+								},
+								{
+									"cell": "headcell_field5"
+								},
+								{
+									"cell": "headcell_field30"
 								}
 							]
 						},
@@ -4540,6 +4570,12 @@
 								},
 								{
 									"cell": "cell_field29"
+								},
+								{
+									"cell": "cell_field5"
+								},
+								{
+									"cell": "cell_field30"
 								}
 							]
 						},
@@ -4547,7 +4583,7 @@
 							"cells": [
 								{
 									"cell": "cell_dpreview",
-									"colspan": 34
+									"colspan": 36
 								}
 							],
 							"section": "body"
@@ -4651,6 +4687,12 @@
 								},
 								{
 									"cell": "footcell_field29"
+								},
+								{
+									"cell": "footcell_field5"
+								},
+								{
+									"cell": "footcell_field30"
 								}
 							]
 						}
@@ -5404,6 +5446,44 @@
 							],
 							"field": "fecha",
 							"columnName": "field"
+						},
+						"headcell_field5": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label8"
+							],
+							"field": "fullname"
+						},
+						"cell_field5": {
+							"model": "cell_field",
+							"items": [
+								"grid_field8"
+							],
+							"field": "fullname"
+						},
+						"footcell_field5": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "fullname"
+						},
+						"headcell_field30": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label9"
+							],
+							"field": "usuario"
+						},
+						"cell_field30": {
+							"model": "cell_field",
+							"items": [
+								"grid_field9"
+							],
+							"field": "usuario"
+						},
+						"footcell_field30": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "usuario"
 						}
 					},
 					"deferredItems": [],
@@ -5438,6 +5518,9 @@
 						"edit_selected",
 						"export_selected",
 						"delete_selected",
+						"-9",
+						"show_search_panel",
+						"hide_search_panel",
 						"-8",
 						"export"
 					]
@@ -5976,6 +6059,45 @@
 				},
 				"-8": {
 					"type": "-"
+				},
+				"grid_field8": {
+					"field": "fullname",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label8": {
+					"type": "grid_field_label",
+					"field": "fullname"
+				},
+				"search_panel": {
+					"type": "search_panel",
+					"items": [
+						"search_panel_field"
+					]
+				},
+				"show_search_panel": {
+					"type": "show_search_panel"
+				},
+				"-9": {
+					"type": "-"
+				},
+				"hide_search_panel": {
+					"type": "hide_search_panel"
+				},
+				"search_panel_field": {
+					"field": "fullname",
+					"type": "search_panel_field"
+				},
+				"grid_field9": {
+					"field": "usuario",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label9": {
+					"type": "grid_field_label",
+					"field": "usuario"
 				}
 			},
 			"dbProps": {},
@@ -5991,7 +6113,7 @@
 			"imageBgColor": "#f2f2f2",
 			"controlsBgColor": "white",
 			"imagePosition": "right",
-			"pageCSS": "/* Put  your custom CSS code here */\n\n/* 1) El TD del details preview siempre ocupa todo (colspan). \n      Aquí hacemos que SOLO el contenido no se estire. */\ntd[data-cellid=\"grid_cell_dpreview\"]{\n  background: transparent !important;\n  /* ajusta padding a tu gusto */\n  padding: 8px 10px !important;\n}\n\n/* 2) El contenedor del preview: que sea inline-block y con ancho limitado */\ntd[data-cellid=\"grid_cell_dpreview\"] > div[data-itemtype=\"details_preview\"]{\n  display: inline-block !important;\n  width: auto !important;\n  max-width: 720px;           /* <-- AJUSTA ESTE ANCHO */\n  vertical-align: top;\n}\n\n/* 3) El “hueco” donde PHPRunner inyecta el detalle */\ntd[data-cellid=\"grid_cell_dpreview\"] [data-details-preview]{\n  display: inline-block !important;\n  width: auto !important;\n  max-width: 100%;\n}\n\n/* 4) PHPRunner/Bootstrap suelen forzar tablas al 100%: las bajamos a \"auto\" SOLO aquí */\ntd[data-cellid=\"grid_cell_dpreview\"] [data-details-preview] table,\ntd[data-cellid=\"grid_cell_dpreview\"] [data-details-preview] .table{\n  width: auto !important;\n  display: inline-table;\n}\n\n/* 5) Por si algún wrapper trae width:100% */\ntd[data-cellid=\"grid_cell_dpreview\"] > div[data-itemtype=\"details_preview\"] *{\n  max-width: 100%;\n}\n",
+			"pageCSS": "/* Put  your custom CSS code here */\n/* Put  your custom CSS code here */\n/*\n.table {\n    font-family: 'Arial', sans-serif !important;\n    font-size: 12px !important;\n    border-collapse: collapse !important;\n}*/\n\n\n/* ========================================================= */\n/* VARIABLES DE COLOR */\n/* ========================================================= */\n:root {\n    /* Color de acento para botones, foco y texto */\n    --color-acento: #48C9B0; /* Turquesa/Menta */ \n    --color-elegante: #1C334A; /* Azul Marino Oscuro */\n}\n\n/* ========================================================= */\n/* 1. Fondo de la Página: Degradado Azul Cielo Intenso       */\n/* ========================================================= */\nbody, .container-fluid {\n    /* Mismo fondo azul que usamos en el formulario de agregar */\n    background: linear-gradient(180deg, #E0F7FA 0%, #B3E5FC 100%) !important; \n    min-height: 100vh;\n}\n\n/* ========================================================= */\n/* 2. Contenedor de la Lista (El \"Body\" principal de la tabla) */\n/* Aplicamos el efecto de Tarjeta y Sombra a este contenedor */\n/* El selector depende del tema, pero '.rnr-b-grid' suele ser el contenedor de la tabla */\n.rnr-body .rnr-c-body, \n.rnr-b-grid, \n.rnr-c-grid,\n.panel-default {\n    background-color: #FFFFFF !important; \n    border: none !important; \n    border-radius: 12px !important; \n    \n    /* Sombreado elegante de la tarjeta */\n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), \n                0 2px 6px rgba(0, 0, 0, 0.05) !important; \n}\n\n/* 3. Encabezados y Barras de Herramientas (Parte superior e inferior) */\n/* Limpiamos el diseño de los paneles que rodean la tabla */\n.rnr-c-hsucc, .rnr-c-message, .rnr-c-hcell {\n    background-color: transparent !important;\n    border: none !important;\n}\n\n/* 4. Estilo de las Filas de Datos (Efecto Hover de Elevación) */\n/* Le da interactividad a la tabla */\n.rnr-body tr {\n    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;\n}\n\n.rnr-body tr:hover {\n    background-color: #fcfcfc !important; /* Ligeramente más claro al pasar el mouse */\n    \n    /* Sombra y elevación sutil para destacar la fila */\n    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1), \n                0 1px 3px rgba(0, 0, 0, 0.05) !important;\n    transform: translateY(-1px);\n}\n\n/* 5. Asegurar que las celdas del encabezado de la tabla se vean bien */\n.rnr-c-grid th {\n    background-color: #f7f7f7 !important; /* Fondo sutil para el header de la tabla */\n    color: var(--color-elegante) !important;\n    font-weight: 600;\n    border-bottom: 2px solid var(--color-acento) !important;\n}\n\n/* 6. Barras de Paginación y Búsqueda */\n.rnr-bottom .panel, .rnr-c-search, .rnr-c-top, .rnr-bottom-nav {\n    background-color: transparent !important;\n    border: none !important;\n    box-shadow: none !important; /* Quitamos la sombra a estos elementos */\n}\n\n\n\n/* ========================================================= */\n/* ESTILOS PARA CELDAS DE ESTADO (FORMATO CONDICIONAL)       */\n/* ========================================================= */\n\n/* Clase base para el estilo de \"badge\" o \"tag\" */\n.status-badge {\n    display: inline-block; /* Para que tome el tamaño del contenido */\n    padding: 5px 10px; /* Relleno interno */\n    border-radius: 20px; /* MUY REDONDEADO para el efecto de píldora */\n    font-weight: bold;\n    font-size: 0.85em;\n    text-align: center;\n    min-width: 80px; /* Ancho mínimo para que no se vea muy pequeño */\n    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Sombra sutil */\n}\n\n/* Estado: Entregado (Verde) */\n.status-entregado {\n    background-color: #D4EDDA; /* Verde pastel claro */\n    color: #155724; /* Texto verde oscuro */\n    border: 1px solid #C3E6CB; /* Borde sutil */\n}\n\n/* Estado: Pendiente (Amarillo) */\n.status-pendiente {\n    background-color: #FFF3CD; /* Amarillo pastel claro */\n    color: #856404; /* Texto amarillo oscuro */\n    border: 1px solid #FFEEBA;\n}\n\n/* Estado: Cancelado (Rojo) */\n.status-cancelado {\n    background-color: #F8D7DA; /* Rojo pastel claro */\n    color: #721C24; /* Texto rojo oscuro */\n    border: 1px solid #F5C6CB;\n}\n\n/* Agrega más estados según sea necesario */\n/* Estado: En Proceso (Azul) */\n.status-en-proceso {\n    background-color: #D1ECF1; /* Azul pastel claro */\n    color: #0C5460; /* Texto azul oscuro */\n    border: 1px solid #BEE5EB;\n}\n\n\n/* ========================================================= */\n/* ELIMINAR SEPARADORES DE COLUMNA (LÍNEAS VERTICALES)        */\n/* ========================================================= */\n/* Mantén líneas horizontales ligeras, borra las verticales */\n.rnr-gridtable td,\n.rnr-gridtable th {\n  border-left: none !important;\n  border-right: none !important;\n  box-shadow: none !important; /* algunos temas usan sombras como divisores */\n}\n\n/* Si quieres una línea horizontal sutil */\n.rnr-gridtable td {\n  border-top: 1px solid #eee !important;\n}\n.rnr-gridtable thead th {\n  border-bottom: 1px solid #e6e6e6 !important;\n}\n\n\n\n\n\n\n\n\n/* 1) El TD del details preview siempre ocupa todo (colspan). \n      Aquí hacemos que SOLO el contenido no se estire. */\ntd[data-cellid=\"grid_cell_dpreview\"]{\n  background: transparent !important;\n  /* ajusta padding a tu gusto */\n  padding: 8px 10px !important;\n}\n\n/* 2) El contenedor del preview: que sea inline-block y con ancho limitado */\ntd[data-cellid=\"grid_cell_dpreview\"] > div[data-itemtype=\"details_preview\"]{\n  display: inline-block !important;\n  width: auto !important;\n  max-width: 720px;           /* <-- AJUSTA ESTE ANCHO */\n  vertical-align: top;\n}\n\n/* 3) El “hueco” donde PHPRunner inyecta el detalle */\ntd[data-cellid=\"grid_cell_dpreview\"] [data-details-preview]{\n  display: inline-block !important;\n  width: auto !important;\n  max-width: 100%;\n}\n\n/* 4) PHPRunner/Bootstrap suelen forzar tablas al 100%: las bajamos a \"auto\" SOLO aquí */\ntd[data-cellid=\"grid_cell_dpreview\"] [data-details-preview] table,\ntd[data-cellid=\"grid_cell_dpreview\"] [data-details-preview] .table{\n  width: auto !important;\n  display: inline-table;\n}\n\n/* 5) Por si algún wrapper trae width:100% */\ntd[data-cellid=\"grid_cell_dpreview\"] > div[data-itemtype=\"details_preview\"] *{\n  max-width: 100%;\n}\n",
 			"listTotals": 1,
 			"title": {}
 		},
@@ -6565,7 +6687,8 @@
 								"simple_grid_field70",
 								"simple_grid_field71",
 								"simple_grid_field33",
-								"simple_grid_field55"
+								"simple_grid_field55",
+								"simple_grid_field1"
 							]
 						}
 					},
@@ -6847,6 +6970,10 @@
 				"simple_grid_field55": {
 					"field": "mes",
 					"type": "simple_grid_field"
+				},
+				"simple_grid_field1": {
+					"field": "fullname",
+					"type": "simple_grid_field"
 				}
 			},
 			"dbProps": {},
@@ -7014,7 +7141,8 @@
 								"simple_grid_field70",
 								"simple_grid_field71",
 								"simple_grid_field33",
-								"simple_grid_field55"
+								"simple_grid_field55",
+								"simple_grid_field1"
 							]
 						}
 					},
@@ -7292,6 +7420,10 @@
 				},
 				"simple_grid_field55": {
 					"field": "mes",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field1": {
+					"field": "fullname",
 					"type": "simple_grid_field"
 				}
 			},
