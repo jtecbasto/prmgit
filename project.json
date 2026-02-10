@@ -458,7 +458,7 @@
 				"password": "",
 				"host": "ftp.rocasamexico.com",
 				"port": 21,
-				"pathname": "/public_html/prm_pruebas",
+				"pathname": "/public_html/prm1",
 				"passive": true,
 				"secureType": 0,
 				"useCCC": false,

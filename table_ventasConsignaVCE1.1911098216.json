@@ -1,5 +1,5 @@
 {
-	"sql": "SELECT\r\nventas.idventa,\r\ntiposventa.tipoventa,\r\nventas.fecha,\r\nventas.fechacaptura,\r\nclientes.nombre_completo AS cliente,\r\nventas.segmento,\r\nventas.esnimei,\r\nventas.simcard,\r\nventas.dn,\r\nventas.dnpreferido,\r\nventas.ventadomicilio,\r\nventas.cuenta,\r\nventas.contrato,\r\nventas.contratoportal,\r\nventas.`plan` AS `plan`,\r\nventas.`plan` AS planes,\r\nventas.plazo,\r\nventas.plazopendiente,\r\nventas.usuario,\r\nserviciosmoviles_uggroups.Acceso,\r\nventas.renta,\r\nplanes.renta AS rentaplan,\r\nventas.tienda,\r\ntiendas.Tienda AS tiendanombre,\r\ncompras.descripcion,\r\nventas.Factura,\r\nventas.fechavenci,\r\nventas.ciclo,\r\nserviciosmoviles_users.fullname,\r\nventas.modifico,\r\nventas.fechamodif,\r\nventas.PagoTotal,\r\nventas.Efectivo,\r\nventas.NC,\r\nventas.TC,\r\nventas.rfc,\r\nventas.cargofaciva,\r\nventas.almacenatt,\r\ncompras.Clasif AS clasif,\r\nventas.modo,\r\nventas.addon,\r\nventas.vtasimg,\r\nventas.equipoincluido,\r\nventas.tiendamovil,\r\nventas.tiposegmento,\r\nventas.idpromocion,\r\nventas.orden,\r\nventas.comisionable,\r\nventas.consumos,\r\nventas.captura_contrato,\r\nventas.captura_cuenta,\r\nventas.captura_orden,\r\nventas.contrato_corregido,\r\nventas.cuenta_corregida,\r\nventas.orden_corregida,\r\nsectores_validacion.validador,\r\nventas.validador AS valida,\r\nsectores_validacion.sector,\r\nventas.ultimo_pago,\r\nventas.carrusel,\r\na.seguros seguro_capturado,\r\na.seguro_verificado,\r\na.control control_capturado,\r\na.control_verificado,\r\na.nfs nfs_capturado,\r\na.nfs_verificado,\r\nventas.anio,\r\n CASE MONTH(ventas.mes)\r\n  WHEN 1 THEN 'Enero'\r\n  WHEN 2 THEN 'Febrero'\r\n  WHEN 3 THEN 'Marzo'\r\n  WHEN 4 THEN 'Abril'\r\n  WHEN 5 THEN 'Mayo'\r\n  WHEN 6 THEN 'Junio'\r\n  WHEN 7 THEN 'Julio'\r\n  WHEN 8 THEN 'Agosto'\r\n  WHEN 9 THEN 'Septiembre'\r\n  WHEN 10 THEN 'Octubre'\r\n  WHEN 11 THEN 'Noviembre'\r\n  WHEN 12 THEN 'Diciembre'\r\nEND AS mes\r\nFROM ventas\r\nINNER JOIN serviciosmoviles_users ON ventas.usuario = serviciosmoviles_users.username\r\nINNER JOIN serviciosmoviles_ugmembers ON serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName\r\nINNER JOIN serviciosmoviles_uggroups ON serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID\r\nLEFT OUTER JOIN clientes ON ventas.idcliente = clientes.idcliente\r\nLEFT OUTER JOIN tiendas ON ventas.tienda = tiendas.IdTienda\r\nLEFT OUTER JOIN planes ON ventas.`plan` = planes.idplan\r\nLEFT OUTER JOIN sectores_validacion ON tiendas.idsectorvalida = sectores_validacion.id\r\nleft outer join (\r\nselect a.idventa,sum(if(g.idgaddon=8, 1, 0)) seguros, sum(if(g.idgaddon=8 and verificacion_realizada , 1, 0)) seguro_verificado , \r\nsum(if(g.idgaddon=10,1,0)) control, sum(if(g.idgaddon=10 and verificacion_realizada,1,0) ) control_verificado,\r\n  sum(if(g.idgaddon=14,1,0) ) nfs, sum(if(g.idgaddon=14 and verificacion_realizada,1,0) ) nfs_verificado  from addons a inner join cataddons c on a.idaddon=c.idaddon inner join  gaddons g on c.idgaddon=g.idgaddon\r\ngroup by a.idventa having seguro_verificado=1) a on ventas.idventa=a.idventa \r\nINNER JOIN compras ON ventas.esnimei = compras.noserie\r\nINNER JOIN tiposventa ON ventas.idtipoventa = tiposventa.idtipoventa\r\nWHERE (ventas.fecha between \r\n DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE()) AND (compras.Clasif =2) AND (tiposventa.idtipoventa in (22,23,1,5,10,11)) and if(':session.UserID'='ADMIN',1,sectores_validacion.validador=':session.UserID')\r\n",
+	"sql": "SELECT\r\nventas.idventa,\r\ntiposventa.tipoventa,\r\nventas.fecha,\r\nventas.fechacaptura,\r\nclientes.nombre_completo AS cliente,\r\nventas.segmento,\r\nventas.esnimei,\r\nventas.simcard,\r\nventas.dn,\r\nventas.dnpreferido,\r\nventas.ventadomicilio,\r\nventas.cuenta,\r\nventas.contrato,\r\nventas.contratoportal,\r\nventas.`plan` AS `plan`,\r\nventas.`plan` AS planes,\r\nventas.plazo,\r\nventas.plazopendiente,\r\nventas.usuario,\r\nserviciosmoviles_uggroups.Acceso,\r\nventas.renta,\r\nplanes.renta AS rentaplan,\r\nventas.tienda,\r\ntiendas.Tienda AS tiendanombre,\r\ncompras.descripcion,\r\nventas.Factura,\r\nventas.fechavenci,\r\nventas.ciclo,\r\nserviciosmoviles_users.fullname,\r\nventas.modifico,\r\nventas.fechamodif,\r\nventas.PagoTotal,\r\nventas.Efectivo,\r\nventas.NC,\r\nventas.TC,\r\nventas.rfc,\r\nventas.cargofaciva,\r\nventas.almacenatt,\r\ncompras.Clasif AS clasif,\r\nventas.modo,\r\nventas.addon,\r\nventas.vtasimg,\r\nventas.equipoincluido,\r\nventas.tiendamovil,\r\nventas.tiposegmento,\r\nventas.idpromocion,\r\nventas.orden,\r\nventas.comisionable,\r\nventas.consumos,\r\nventas.captura_contrato,\r\nventas.captura_cuenta,\r\nventas.captura_orden,\r\nventas.contrato_corregido,\r\nventas.cuenta_corregida,\r\nventas.orden_corregida,\r\nsectores_validacion.validador,\r\nventas.validador AS valida,\r\nsectores_validacion.sector,\r\nventas.ultimo_pago,\r\nventas.carrusel,\r\na.seguros seguro_capturado,\r\na.seguro_verificado,\r\na.control control_capturado,\r\na.control_verificado,\r\na.nfs nfs_capturado,\r\na.nfs_verificado,\r\nventas.anio,\r\n CASE ventas.mes\r\n  WHEN 1 THEN 'Enero'\r\n  WHEN 2 THEN 'Febrero'\r\n  WHEN 3 THEN 'Marzo'\r\n  WHEN 4 THEN 'Abril'\r\n  WHEN 5 THEN 'Mayo'\r\n  WHEN 6 THEN 'Junio'\r\n  WHEN 7 THEN 'Julio'\r\n  WHEN 8 THEN 'Agosto'\r\n  WHEN 9 THEN 'Septiembre'\r\n  WHEN 10 THEN 'Octubre'\r\n  WHEN 11 THEN 'Noviembre'\r\n  WHEN 12 THEN 'Diciembre'\r\nEND AS mes,\r\nventas.fecha_prox_vencimiento\r\nFROM ventas\r\nINNER JOIN serviciosmoviles_users ON ventas.usuario = serviciosmoviles_users.username\r\nINNER JOIN serviciosmoviles_ugmembers ON serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName\r\nINNER JOIN serviciosmoviles_uggroups ON serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID\r\nLEFT OUTER JOIN clientes ON ventas.idcliente = clientes.idcliente\r\nLEFT OUTER JOIN tiendas ON ventas.tienda = tiendas.IdTienda\r\nLEFT OUTER JOIN planes ON ventas.`plan` = planes.idplan\r\nLEFT OUTER JOIN sectores_validacion ON tiendas.idsectorvalida = sectores_validacion.id\r\nleft outer join (\r\nselect a.idventa,sum(if(g.idgaddon=8, 1, 0)) seguros, sum(if(g.idgaddon=8 and verificacion_realizada , 1, 0)) seguro_verificado , \r\nsum(if(g.idgaddon=10,1,0)) control, sum(if(g.idgaddon=10 and verificacion_realizada,1,0) ) control_verificado,\r\n  sum(if(g.idgaddon=14,1,0) ) nfs, sum(if(g.idgaddon=14 and verificacion_realizada,1,0) ) nfs_verificado  from addons a inner join cataddons c on a.idaddon=c.idaddon inner join  gaddons g on c.idgaddon=g.idgaddon\r\ngroup by a.idventa ) a on ventas.idventa=a.idventa \r\nINNER JOIN compras ON ventas.esnimei = compras.noserie\r\nINNER JOIN tiposventa ON ventas.idtipoventa = tiposventa.idtipoventa\r\nWHERE (ventas.fecha between \r\n DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE()) AND (compras.Clasif =2) AND (tiposventa.idtipoventa in (22,23,1,5,10,11)) and if(':session.UserID'='ADMIN',1,tiendas.validador=':session.UserID')\r\n",
 	"type": 1,
 	"connId": "conn",
 	"originalTable": "ventas",
@@ -1314,7 +1314,7 @@
 		},
 		{
 			"name": "mes",
-			"sqlExpression": "CASE MONTH(ventas.mes)\r\n  WHEN 1 THEN 'Enero'\r\n  WHEN 2 THEN 'Febrero'\r\n  WHEN 3 THEN 'Marzo'\r\n  WHEN 4 THEN 'Abril'\r\n  WHEN 5 THEN 'Mayo'\r\n  WHEN 6 THEN 'Junio'\r\n  WHEN 7 THEN 'Julio'\r\n  WHEN 8 THEN 'Agosto'\r\n  WHEN 9 THEN 'Septiembre'\r\n  WHEN 10 THEN 'Octubre'\r\n  WHEN 11 THEN 'Noviembre'\r\n  WHEN 12 THEN 'Diciembre'\r\nEND",
+			"sqlExpression": "CASE ventas.mes\r\n  WHEN 1 THEN 'Enero'\r\n  WHEN 2 THEN 'Febrero'\r\n  WHEN 3 THEN 'Marzo'\r\n  WHEN 4 THEN 'Abril'\r\n  WHEN 5 THEN 'Mayo'\r\n  WHEN 6 THEN 'Junio'\r\n  WHEN 7 THEN 'Julio'\r\n  WHEN 8 THEN 'Agosto'\r\n  WHEN 9 THEN 'Septiembre'\r\n  WHEN 10 THEN 'Octubre'\r\n  WHEN 11 THEN 'Noviembre'\r\n  WHEN 12 THEN 'Diciembre'\r\nEND",
 			"index": 68,
 			"strField": "mes",
 			"type": 200,
@@ -1345,6 +1345,28 @@
 				"Spanish": "Fullname"
 			},
 			"tableName": "serviciosmoviles_users"
+		},
+		{
+			"name": "fecha_prox_vencimiento",
+			"sqlExpression": "ventas.fecha_prox_vencimiento",
+			"index": 69,
+			"strField": "fecha_prox_vencimiento",
+			"type": 7,
+			"viewFormats": [
+				{
+					"format": "Short Date"
+				}
+			],
+			"editFormats": [
+				{
+					"format": "Date",
+					"dateEditType": 11
+				}
+			],
+			"label": {
+				"Spanish": "Fecha Prox. Vencimiento"
+			},
+			"tableName": "ventas"
 		}
 	],
 	"queryContext": {
@@ -2273,6 +2295,17 @@
 				"autoinc": false,
 				"defaultValueSQL": null,
 				"defaultValue": ""
+			},
+			{
+				"name": "fecha_prox_vencimiento",
+				"type": 7,
+				"size": 0,
+				"scale": 0,
+				"typeName": "date",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
 			}
 		],
 		"primaryKeys": [
@@ -2771,9 +2804,7 @@
 					"cells": {
 						"c1": {
 							"model": "c1",
-							"items": [
-								"export_field"
-							]
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -2820,10 +2851,6 @@
 				},
 				"export_cancel": {
 					"type": "export_cancel"
-				},
-				"export_field": {
-					"field": "fullname",
-					"type": "export_field"
 				}
 			},
 			"dbProps": {},
@@ -4296,7 +4323,6 @@
 							"model": "c1",
 							"items": [
 								"menu",
-								"search_panel",
 								"filter_panel"
 							]
 						}
@@ -4387,6 +4413,9 @@
 									"cell": "headcell_field4"
 								},
 								{
+									"cell": "headcell_field34"
+								},
+								{
 									"cell": "headcell_field6"
 								},
 								{
@@ -4463,6 +4492,12 @@
 								},
 								{
 									"cell": "headcell_field30"
+								},
+								{
+									"cell": "headcell_field33"
+								},
+								{
+									"cell": "headcell_field35"
 								}
 							]
 						},
@@ -4498,6 +4533,9 @@
 								},
 								{
 									"cell": "cell_field4"
+								},
+								{
+									"cell": "cell_field34"
 								},
 								{
 									"cell": "cell_field6"
@@ -4576,6 +4614,12 @@
 								},
 								{
 									"cell": "cell_field30"
+								},
+								{
+									"cell": "cell_field33"
+								},
+								{
+									"cell": "cell_field35"
 								}
 							]
 						},
@@ -4583,7 +4627,7 @@
 							"cells": [
 								{
 									"cell": "cell_dpreview",
-									"colspan": 36
+									"colspan": 39
 								}
 							],
 							"section": "body"
@@ -4614,7 +4658,8 @@
 									"cell": "footcell_field3"
 								},
 								{
-									"cell": "footcell_field4"
+									"cell": "footcell_field4",
+									"colspan": 2
 								},
 								{
 									"cell": "footcell_field6"
@@ -4693,6 +4738,12 @@
 								},
 								{
 									"cell": "footcell_field30"
+								},
+								{
+									"cell": "footcell_field31"
+								},
+								{
+									"cell": "footcell_field32"
 								}
 							]
 						}
@@ -4703,22 +4754,22 @@
 							"items": [
 								"grid_field_label6"
 							],
-							"field": "fecha",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"cell_field": {
 							"model": "cell_field",
 							"items": [
 								"grid_field6"
 							],
-							"field": "fecha",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"footcell_field": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "fecha",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field1": {
 							"model": "headcell_field",
@@ -4791,22 +4842,22 @@
 							"items": [
 								"simple_grid_field16"
 							],
-							"field": "tipoventa",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"cell_field4": {
 							"model": "cell_field",
 							"items": [
 								"simple_grid_field1"
 							],
-							"field": "tipoventa",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"footcell_field4": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "tipoventa",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field6": {
 							"model": "headcell_field",
@@ -5210,7 +5261,7 @@
 								"details_preview"
 							],
 							"columnName": "field",
-							"field": "nfs_verificado"
+							"field": "fecha_prox_vencimiento"
 						},
 						"headcell_checkbox": {
 							"model": "headcell_checkbox",
@@ -5237,7 +5288,7 @@
 						"headcell_icons": {
 							"model": "headcell_icons",
 							"items": [],
-							"columnName": "list-icons",
+							"columnName": "inline-edit",
 							"field": ""
 						},
 						"cell_icons": {
@@ -5248,13 +5299,13 @@
 								"grid_inline_cancel",
 								"saving_icon"
 							],
-							"columnName": "list-icons",
+							"columnName": "inline-edit",
 							"field": ""
 						},
 						"footcell_icons": {
 							"model": "footcell_icons",
 							"items": [],
-							"columnName": "list-icons",
+							"columnName": "inline-edit",
 							"field": ""
 						},
 						"headcell_details": {
@@ -5420,70 +5471,132 @@
 							"items": [
 								"simple_grid_field4"
 							],
-							"field": "fecha",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field31": {
 							"model": "headcell_field",
 							"items": [
 								"simple_grid_field7"
 							],
-							"field": "fecha",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field32": {
 							"model": "headcell_field",
 							"items": [
 								"grid_field_label7"
 							],
-							"field": "fecha",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"cell_field32": {
 							"model": "cell_field",
 							"items": [
 								"grid_field7"
 							],
-							"field": "fecha",
-							"columnName": "field"
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field5": {
 							"model": "headcell_field",
 							"items": [
 								"grid_field_label8"
 							],
-							"field": "fullname"
+							"field": "fullname",
+							"columnName": "field"
 						},
 						"cell_field5": {
 							"model": "cell_field",
 							"items": [
 								"grid_field8"
 							],
-							"field": "fullname"
+							"field": "fullname",
+							"columnName": "field"
 						},
 						"footcell_field5": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "fullname"
+							"field": "fullname",
+							"columnName": "field"
 						},
 						"headcell_field30": {
 							"model": "headcell_field",
 							"items": [
 								"grid_field_label9"
 							],
-							"field": "usuario"
+							"field": "usuario",
+							"columnName": "field"
 						},
 						"cell_field30": {
 							"model": "cell_field",
 							"items": [
 								"grid_field9"
 							],
-							"field": "usuario"
+							"field": "usuario",
+							"columnName": "field"
 						},
 						"footcell_field30": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "usuario"
+							"field": "usuario",
+							"columnName": "field"
+						},
+						"headcell_field33": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "",
+							"columnName": ""
+						},
+						"cell_field33": {
+							"model": "cell_field",
+							"items": [],
+							"field": "",
+							"columnName": ""
+						},
+						"footcell_field31": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "",
+							"columnName": ""
+						},
+						"headcell_field34": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label10"
+							],
+							"field": "",
+							"columnName": ""
+						},
+						"cell_field34": {
+							"model": "cell_field",
+							"items": [
+								"grid_field10"
+							],
+							"field": "",
+							"columnName": ""
+						},
+						"headcell_field35": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label11"
+							],
+							"field": "fecha_prox_vencimiento",
+							"columnName": "field"
+						},
+						"cell_field35": {
+							"model": "cell_field",
+							"items": [
+								"grid_field11"
+							],
+							"field": "fecha_prox_vencimiento",
+							"columnName": "field"
+						},
+						"footcell_field32": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "fecha_prox_vencimiento",
+							"columnName": "field"
 						}
 					},
 					"deferredItems": [],
@@ -5519,9 +5632,6 @@
 						"export_selected",
 						"delete_selected",
 						"-9",
-						"show_search_panel",
-						"hide_search_panel",
-						"-8",
 						"export"
 					]
 				},
@@ -5615,7 +5725,8 @@
 				"simple_grid_field7": {
 					"type": "grid_field_label",
 					"field": "fecha",
-					"clickSort": false
+					"clickSort": false,
+					"showFilter": true
 				},
 				"simple_grid_field5": {
 					"field": "fechacaptura",
@@ -5629,7 +5740,7 @@
 					"type": "grid_field_label",
 					"field": "fechacaptura",
 					"clickSort": false,
-					"showFilter": false
+					"showFilter": true
 				},
 				"simple_grid_field2": {
 					"field": "sector",
@@ -5657,7 +5768,7 @@
 					"type": "grid_field_label",
 					"field": "tiendanombre",
 					"clickSort": false,
-					"showFilter": false
+					"showFilter": true
 				},
 				"simple_grid_field1": {
 					"field": "tipoventa",
@@ -5668,7 +5779,8 @@
 				"simple_grid_field16": {
 					"type": "grid_field_label",
 					"field": "tipoventa",
-					"clickSort": false
+					"clickSort": false,
+					"showFilter": true
 				},
 				"simple_grid_field8": {
 					"field": "esnimei",
@@ -5682,7 +5794,7 @@
 					"type": "grid_field_label",
 					"field": "esnimei",
 					"clickSort": false,
-					"showFilter": false
+					"showFilter": true
 				},
 				"simple_grid_field9": {
 					"field": "simcard",
@@ -5696,7 +5808,7 @@
 					"type": "grid_field_label",
 					"field": "simcard",
 					"clickSort": false,
-					"showFilter": false
+					"showFilter": true
 				},
 				"simple_grid_field10": {
 					"field": "dn",
@@ -5710,7 +5822,7 @@
 					"type": "grid_field_label",
 					"field": "dn",
 					"clickSort": false,
-					"showFilter": false
+					"showFilter": true
 				},
 				"simple_grid_field35": {
 					"field": "dnpreferido",
@@ -5724,7 +5836,7 @@
 					"type": "grid_field_label",
 					"field": "dnpreferido",
 					"clickSort": false,
-					"showFilter": false
+					"showFilter": true
 				},
 				"simple_grid_field11": {
 					"field": "cuenta",
@@ -5766,7 +5878,7 @@
 					"type": "grid_field_label",
 					"field": "cuenta_corregida",
 					"clickSort": false,
-					"showFilter": false
+					"showFilter": true
 				},
 				"simple_grid_field12": {
 					"field": "contrato",
@@ -5808,7 +5920,7 @@
 					"type": "grid_field_label",
 					"field": "contrato_corregido",
 					"clickSort": false,
-					"showFilter": false
+					"showFilter": true
 				},
 				"simple_grid_field49": {
 					"field": "orden",
@@ -5850,7 +5962,7 @@
 					"type": "grid_field_label",
 					"field": "orden_corregida",
 					"clickSort": false,
-					"showFilter": false
+					"showFilter": true
 				},
 				"simple_grid_field65": {
 					"field": "consumos",
@@ -5864,7 +5976,7 @@
 					"type": "grid_field_label",
 					"field": "consumos",
 					"clickSort": false,
-					"showFilter": false
+					"showFilter": true
 				},
 				"simple_grid_field3": {
 					"field": "ultimo_pago",
@@ -5875,7 +5987,8 @@
 				"simple_grid_field22": {
 					"type": "grid_field_label",
 					"field": "ultimo_pago",
-					"clickSort": false
+					"clickSort": false,
+					"showFilter": true
 				},
 				"simple_grid_field64": {
 					"field": "comisionable",
@@ -5889,7 +6002,7 @@
 					"type": "grid_field_label",
 					"field": "comisionable",
 					"clickSort": false,
-					"showFilter": false
+					"showFilter": true
 				},
 				"simple_grid_field6": {
 					"field": "carrusel",
@@ -5900,7 +6013,8 @@
 				"simple_grid_field23": {
 					"type": "grid_field_label",
 					"field": "carrusel",
-					"clickSort": false
+					"clickSort": false,
+					"showFilter": true
 				},
 				"simple_grid_field54": {
 					"field": "valida",
@@ -5914,7 +6028,7 @@
 					"type": "grid_field_label",
 					"field": "valida",
 					"clickSort": false,
-					"showFilter": false
+					"showFilter": true
 				},
 				"details_preview": {
 					"type": "details_preview",
@@ -5977,7 +6091,8 @@
 				},
 				"grid_field_label": {
 					"type": "grid_field_label",
-					"field": "seguro_capturado"
+					"field": "seguro_capturado",
+					"showFilter": true
 				},
 				"grid_field1": {
 					"field": "seguro_verificado",
@@ -5987,7 +6102,8 @@
 				},
 				"grid_field_label1": {
 					"type": "grid_field_label",
-					"field": "seguro_verificado"
+					"field": "seguro_verificado",
+					"showFilter": true
 				},
 				"-6": {
 					"type": "-"
@@ -6000,7 +6116,8 @@
 				},
 				"grid_field_label2": {
 					"type": "grid_field_label",
-					"field": "control_capturado"
+					"field": "control_capturado",
+					"showFilter": true
 				},
 				"grid_field3": {
 					"field": "control_verificado",
@@ -6010,7 +6127,8 @@
 				},
 				"grid_field_label3": {
 					"type": "grid_field_label",
-					"field": "control_verificado"
+					"field": "control_verificado",
+					"showFilter": true
 				},
 				"grid_field4": {
 					"field": "nfs_capturado",
@@ -6020,7 +6138,8 @@
 				},
 				"grid_field_label4": {
 					"type": "grid_field_label",
-					"field": "nfs_capturado"
+					"field": "nfs_capturado",
+					"showFilter": true
 				},
 				"grid_field5": {
 					"field": "nfs_verificado",
@@ -6030,7 +6149,8 @@
 				},
 				"grid_field_label5": {
 					"type": "grid_field_label",
-					"field": "nfs_verificado"
+					"field": "nfs_verificado",
+					"showFilter": true
 				},
 				"-7": {
 					"type": "-"
@@ -6068,26 +6188,11 @@
 				},
 				"grid_field_label8": {
 					"type": "grid_field_label",
-					"field": "fullname"
-				},
-				"search_panel": {
-					"type": "search_panel",
-					"items": [
-						"search_panel_field"
-					]
-				},
-				"show_search_panel": {
-					"type": "show_search_panel"
+					"field": "fullname",
+					"showFilter": true
 				},
 				"-9": {
 					"type": "-"
-				},
-				"hide_search_panel": {
-					"type": "hide_search_panel"
-				},
-				"search_panel_field": {
-					"field": "fullname",
-					"type": "search_panel_field"
 				},
 				"grid_field9": {
 					"field": "usuario",
@@ -6097,7 +6202,30 @@
 				},
 				"grid_field_label9": {
 					"type": "grid_field_label",
-					"field": "usuario"
+					"field": "usuario",
+					"showFilter": true
+				},
+				"grid_field10": {
+					"field": "cliente",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label10": {
+					"type": "grid_field_label",
+					"field": "cliente",
+					"showFilter": true,
+					"clickSort": false
+				},
+				"grid_field11": {
+					"field": "fecha_prox_vencimiento",
+					"type": "grid_field",
+					"inlineEdit": true,
+					"inlineAdd": false
+				},
+				"grid_field_label11": {
+					"type": "grid_field_label",
+					"field": "fecha_prox_vencimiento"
 				}
 			},
 			"dbProps": {},
@@ -6688,7 +6816,8 @@
 								"simple_grid_field71",
 								"simple_grid_field33",
 								"simple_grid_field55",
-								"simple_grid_field1"
+								"simple_grid_field1",
+								"simple_grid_field56"
 							]
 						}
 					},
@@ -6974,6 +7103,10 @@
 				"simple_grid_field1": {
 					"field": "fullname",
 					"type": "simple_grid_field"
+				},
+				"simple_grid_field56": {
+					"field": "fecha_prox_vencimiento",
+					"type": "simple_grid_field"
 				}
 			},
 			"dbProps": {},
@@ -7142,7 +7275,8 @@
 								"simple_grid_field71",
 								"simple_grid_field33",
 								"simple_grid_field55",
-								"simple_grid_field1"
+								"simple_grid_field1",
+								"simple_grid_field56"
 							]
 						}
 					},
@@ -7424,6 +7558,10 @@
 				},
 				"simple_grid_field1": {
 					"field": "fullname",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field56": {
+					"field": "fecha_prox_vencimiento",
 					"type": "simple_grid_field"
 				}
 			},
