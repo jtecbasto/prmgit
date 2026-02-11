@@ -1,5 +1,5 @@
 {
-	"sql": "SELECT\r\nventas.idventa,\r\ntiposventa.tipoventa,\r\nventas.fecha,\r\nventas.fechacaptura,\r\nclientes.nombre_completo AS cliente,\r\nventas.segmento,\r\nventas.esnimei,\r\nventas.simcard,\r\nventas.dn,\r\nventas.dnpreferido,\r\nventas.ventadomicilio,\r\nventas.cuenta,\r\nventas.contrato,\r\nventas.contratoportal,\r\nventas.`plan` AS `plan`,\r\nventas.`plan` AS planes,\r\nventas.plazo,\r\nventas.plazopendiente,\r\nventas.usuario,\r\nserviciosmoviles_uggroups.Acceso,\r\nventas.renta,\r\nplanes.renta AS rentaplan,\r\nventas.tienda,\r\ntiendas.Tienda AS tiendanombre,\r\ncompras.descripcion,\r\nventas.Factura,\r\nventas.fechavenci,\r\nventas.ciclo,\r\nserviciosmoviles_users.fullname,\r\nventas.modifico,\r\nventas.fechamodif,\r\nventas.PagoTotal,\r\nventas.Efectivo,\r\nventas.NC,\r\nventas.TC,\r\nventas.rfc,\r\nventas.cargofaciva,\r\nventas.almacenatt,\r\ncompras.Clasif AS clasif,\r\nventas.modo,\r\nventas.addon,\r\nventas.vtasimg,\r\nventas.equipoincluido,\r\nventas.tiendamovil,\r\nventas.tiposegmento,\r\nventas.idpromocion,\r\nventas.orden,\r\nventas.comisionable,\r\nventas.consumos,\r\nventas.captura_contrato,\r\nventas.captura_cuenta,\r\nventas.captura_orden,\r\nventas.contrato_corregido,\r\nventas.cuenta_corregida,\r\nventas.orden_corregida,\r\nsectores_validacion.validador,\r\nventas.validador AS valida,\r\nsectores_validacion.sector,\r\nventas.ultimo_pago,\r\nventas.carrusel,\r\na.seguros seguro_capturado,\r\na.seguro_verificado,\r\na.control control_capturado,\r\na.control_verificado,\r\na.nfs nfs_capturado,\r\na.nfs_verificado,\r\nventas.anio,\r\n CASE ventas.mes\r\n  WHEN 1 THEN 'Enero'\r\n  WHEN 2 THEN 'Febrero'\r\n  WHEN 3 THEN 'Marzo'\r\n  WHEN 4 THEN 'Abril'\r\n  WHEN 5 THEN 'Mayo'\r\n  WHEN 6 THEN 'Junio'\r\n  WHEN 7 THEN 'Julio'\r\n  WHEN 8 THEN 'Agosto'\r\n  WHEN 9 THEN 'Septiembre'\r\n  WHEN 10 THEN 'Octubre'\r\n  WHEN 11 THEN 'Noviembre'\r\n  WHEN 12 THEN 'Diciembre'\r\nEND AS mes,\r\nventas.fecha_prox_vencimiento,\r\nventas.fecha_pago,\r\nventas.importe_adeudo,\r\nventas.fecha_ultima_validacion,\r\nventas.fecha_cancelacion,\r\nventas.fecha_suspension\r\n\r\nFROM ventas\r\nINNER JOIN serviciosmoviles_users ON ventas.usuario = serviciosmoviles_users.username\r\nINNER JOIN serviciosmoviles_ugmembers ON serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName\r\nINNER JOIN serviciosmoviles_uggroups ON serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID\r\nLEFT OUTER JOIN clientes ON ventas.idcliente = clientes.idcliente\r\nLEFT OUTER JOIN tiendas ON ventas.tienda = tiendas.IdTienda\r\nLEFT OUTER JOIN planes ON ventas.`plan` = planes.idplan\r\nLEFT OUTER JOIN sectores_validacion ON tiendas.idsectorvalida = sectores_validacion.id\r\nleft outer join (\r\nselect a.idventa,sum(if(g.idgaddon=8, 1, 0)) seguros, sum(if(g.idgaddon=8 and verificacion_realizada , 1, 0)) seguro_verificado , \r\nsum(if(g.idgaddon=10,1,0)) control, sum(if(g.idgaddon=10 and verificacion_realizada,1,0) ) control_verificado,\r\n  sum(if(g.idgaddon=14,1,0) ) nfs, sum(if(g.idgaddon=14 and verificacion_realizada,1,0) ) nfs_verificado  from addons a inner join cataddons c on a.idaddon=c.idaddon inner join  gaddons g on c.idgaddon=g.idgaddon\r\ngroup by a.idventa ) a on ventas.idventa=a.idventa \r\nINNER JOIN compras ON ventas.esnimei = compras.noserie\r\nINNER JOIN tiposventa ON ventas.idtipoventa = tiposventa.idtipoventa\r\nWHERE (ventas.fecha between \r\n DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE()) AND (compras.Clasif =2) AND (tiposventa.idtipoventa in (22,23,1,5,10,11)) and if(':session.UserID'='ADMIN',1,tiendas.validador=':session.UserID')\r\n",
+	"sql": "SELECT\r\nventas.idventa,\r\ntiposventa.tipoventa,\r\nventas.fecha,\r\nventas.fechacaptura,\r\nclientes.nombre_completo AS cliente,\r\nventas.segmento,\r\nventas.esnimei,\r\nventas.simcard,\r\nventas.dn,\r\nventas.dnpreferido,\r\nventas.ventadomicilio,\r\nventas.cuenta,\r\nventas.contrato,\r\nventas.contratoportal,\r\nventas.`plan` AS `plan`,\r\nventas.`plan` AS planes,\r\nventas.plazo,\r\nventas.plazopendiente,\r\nventas.usuario,\r\nserviciosmoviles_uggroups.Acceso,\r\nventas.renta,\r\nplanes.renta AS rentaplan,\r\nventas.tienda,\r\ntiendas.Tienda AS tiendanombre,\r\ncompras.descripcion,\r\nventas.Factura,\r\nventas.fechavenci,\r\nventas.ciclo,\r\nserviciosmoviles_users.fullname,\r\nventas.modifico,\r\nventas.fechamodif,\r\nventas.PagoTotal,\r\nventas.Efectivo,\r\nventas.NC,\r\nventas.TC,\r\nventas.rfc,\r\nventas.cargofaciva,\r\nventas.almacenatt,\r\ncompras.Clasif AS clasif,\r\nventas.modo,\r\nventas.addon,\r\nventas.vtasimg,\r\nventas.equipoincluido,\r\nventas.tiendamovil,\r\nventas.tiposegmento,\r\nventas.idpromocion,\r\nventas.orden,\r\nventas.comisionable,\r\nventas.consumos,\r\nventas.captura_contrato,\r\nventas.captura_cuenta,\r\nventas.captura_orden,\r\nventas.contrato_corregido,\r\nventas.cuenta_corregida,\r\nventas.orden_corregida,\r\nsectores_validacion.validador,\r\nventas.validador AS valida,\r\nsectores_validacion.sector,\r\nventas.ultimo_pago,\r\nventas.carrusel,\r\na.seguros seguro_capturado,\r\na.seguro_verificado,\r\na.control control_capturado,\r\na.control_verificado,\r\na.nfs nfs_capturado,\r\na.nfs_verificado,\r\nventas.anio,\r\n CASE ventas.mes\r\n  WHEN 1 THEN 'Enero'\r\n  WHEN 2 THEN 'Febrero'\r\n  WHEN 3 THEN 'Marzo'\r\n  WHEN 4 THEN 'Abril'\r\n  WHEN 5 THEN 'Mayo'\r\n  WHEN 6 THEN 'Junio'\r\n  WHEN 7 THEN 'Julio'\r\n  WHEN 8 THEN 'Agosto'\r\n  WHEN 9 THEN 'Septiembre'\r\n  WHEN 10 THEN 'Octubre'\r\n  WHEN 11 THEN 'Noviembre'\r\n  WHEN 12 THEN 'Diciembre'\r\nEND AS mes,\r\nventas.fecha_prox_vencimiento,\r\nventas.dia_pago,\r\nventas.importe_adeudo,\r\nventas.fecha_ultima_validacion,\r\nventas.fecha_cancelacion,\r\nventas.fecha_suspension\r\n\r\nFROM ventas\r\nINNER JOIN serviciosmoviles_users ON ventas.usuario = serviciosmoviles_users.username\r\nINNER JOIN serviciosmoviles_ugmembers ON serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName\r\nINNER JOIN serviciosmoviles_uggroups ON serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID\r\nLEFT OUTER JOIN clientes ON ventas.idcliente = clientes.idcliente\r\nLEFT OUTER JOIN tiendas ON ventas.tienda = tiendas.IdTienda\r\nLEFT OUTER JOIN planes ON ventas.`plan` = planes.idplan\r\nLEFT OUTER JOIN sectores_validacion ON tiendas.idsectorvalida = sectores_validacion.id\r\nleft outer join (\r\nselect a.idventa,sum(if(g.idgaddon=8, 1, 0)) seguros, sum(if(g.idgaddon=8 and verificacion_realizada , 1, 0)) seguro_verificado , \r\nsum(if(g.idgaddon=10,1,0)) control, sum(if(g.idgaddon=10 and verificacion_realizada,1,0) ) control_verificado,\r\n  sum(if(g.idgaddon=14,1,0) ) nfs, sum(if(g.idgaddon=14 and verificacion_realizada,1,0) ) nfs_verificado  from addons a inner join cataddons c on a.idaddon=c.idaddon inner join  gaddons g on c.idgaddon=g.idgaddon\r\ngroup by a.idventa ) a on ventas.idventa=a.idventa \r\nINNER JOIN compras ON ventas.esnimei = compras.noserie\r\nINNER JOIN tiposventa ON ventas.idtipoventa = tiposventa.idtipoventa\r\nWHERE (ventas.fecha between \r\n DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE()) AND (compras.Clasif =2) AND (tiposventa.idtipoventa in (22,23,1,2,3,5,10,11,12,14)) and if(':session.UserID'='ADMIN' or upper(':session.UserID')='SMORAV',1,tiendas.validador=':session.UserID')\r\n",
 	"type": 1,
 	"connId": "conn",
 	"originalTable": "ventas",
@@ -363,11 +363,12 @@
 				{
 					"format": "Lookup wizard",
 					"required": true,
+					"lookupType": 2,
 					"lookupTable": "ciclos",
 					"lookupTableConnection": "conn",
 					"lookupLinkField": "ciclo",
 					"lookupDisplayField": "corte",
-					"lookupWhere": "\"clasif = 2\""
+					"lookupWhere": "clasif = 2"
 				}
 			],
 			"label": {
@@ -1342,7 +1343,7 @@
 				{}
 			],
 			"label": {
-				"Spanish": "Fullname"
+				"Spanish": "Ejecutivo"
 			},
 			"tableName": "serviciosmoviles_users"
 		},
@@ -1365,28 +1366,6 @@
 			],
 			"label": {
 				"Spanish": "Prox. Vencimiento"
-			},
-			"tableName": "ventas"
-		},
-		{
-			"name": "fecha_pago",
-			"sqlExpression": "ventas.fecha_pago",
-			"index": 70,
-			"strField": "fecha_pago",
-			"type": 7,
-			"viewFormats": [
-				{
-					"format": "Short Date"
-				}
-			],
-			"editFormats": [
-				{
-					"format": "Date",
-					"dateEditType": 11
-				}
-			],
-			"label": {
-				"Spanish": "Fecha Pago"
 			},
 			"tableName": "ventas"
 		},
@@ -1472,6 +1451,23 @@
 			],
 			"label": {
 				"Spanish": "Suspensión"
+			},
+			"tableName": "ventas"
+		},
+		{
+			"name": "dia_pago",
+			"sqlExpression": "ventas.dia_pago",
+			"index": 70,
+			"strField": "dia_pago",
+			"type": 2,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Dia Pago"
 			},
 			"tableName": "ventas"
 		}
@@ -2415,11 +2411,11 @@
 				"defaultValue": ""
 			},
 			{
-				"name": "fecha_pago",
-				"type": 7,
-				"size": 0,
+				"name": "dia_pago",
+				"type": 16,
+				"size": 2,
 				"scale": 0,
-				"typeName": "date",
+				"typeName": "tinyint(2)",
 				"nullable": true,
 				"autoinc": false,
 				"defaultValueSQL": null,
@@ -4665,9 +4661,6 @@
 									"cell": "headcell_field36"
 								},
 								{
-									"cell": "headcell_field37"
-								},
-								{
 									"cell": "headcell_field38"
 								},
 								{
@@ -4678,6 +4671,9 @@
 								},
 								{
 									"cell": "headcell_field41"
+								},
+								{
+									"cell": "headcell_field37"
 								}
 							]
 						},
@@ -4805,9 +4801,6 @@
 									"cell": "cell_field36"
 								},
 								{
-									"cell": "cell_field37"
-								},
-								{
 									"cell": "cell_field38"
 								},
 								{
@@ -4818,6 +4811,9 @@
 								},
 								{
 									"cell": "cell_field41"
+								},
+								{
+									"cell": "cell_field37"
 								}
 							]
 						},
@@ -4947,9 +4943,6 @@
 									"cell": "footcell_field33"
 								},
 								{
-									"cell": "footcell_field34"
-								},
-								{
 									"cell": "footcell_field35"
 								},
 								{
@@ -4960,6 +4953,9 @@
 								},
 								{
 									"cell": "footcell_field38"
+								},
+								{
+									"cell": "footcell_field34"
 								}
 							]
 						}
@@ -5731,7 +5727,8 @@
 								"grid_field8"
 							],
 							"field": "fullname",
-							"columnName": "field"
+							"columnName": "field",
+							"nowrap": true
 						},
 						"footcell_field5": {
 							"model": "footcell_field",
@@ -5840,28 +5837,6 @@
 							"field": "ciclo",
 							"columnName": "field"
 						},
-						"headcell_field37": {
-							"model": "headcell_field",
-							"items": [
-								"grid_field_label13"
-							],
-							"field": "fecha_pago",
-							"columnName": "field"
-						},
-						"cell_field37": {
-							"model": "cell_field",
-							"items": [
-								"grid_field13"
-							],
-							"field": "fecha_pago",
-							"columnName": "field"
-						},
-						"footcell_field34": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "fecha_pago",
-							"columnName": "field"
-						},
 						"headcell_field38": {
 							"model": "headcell_field",
 							"items": [
@@ -5949,6 +5924,25 @@
 							"items": [],
 							"field": "fecha_suspension",
 							"columnName": "field"
+						},
+						"headcell_field37": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label13"
+							],
+							"field": "dia_pago"
+						},
+						"cell_field37": {
+							"model": "cell_field",
+							"items": [
+								"grid_field13"
+							],
+							"field": "dia_pago"
+						},
+						"footcell_field34": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "dia_pago"
 						}
 					},
 					"deferredItems": [],
@@ -5983,7 +5977,7 @@
 						"edit_selected",
 						"export_selected",
 						"delete_selected",
-						"-10",
+						"-11",
 						"export"
 					]
 				},
@@ -6577,27 +6571,19 @@
 				},
 				"grid_field_label11": {
 					"type": "grid_field_label",
-					"field": "fecha_prox_vencimiento"
+					"field": "fecha_prox_vencimiento",
+					"showFilter": true
 				},
 				"grid_field12": {
 					"field": "ciclo",
 					"type": "grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": true
 				},
 				"grid_field_label12": {
 					"type": "grid_field_label",
-					"field": "ciclo"
-				},
-				"grid_field13": {
-					"field": "fecha_pago",
-					"type": "grid_field",
-					"inlineEdit": true,
-					"inlineAdd": false
-				},
-				"grid_field_label13": {
-					"type": "grid_field_label",
-					"field": "fecha_pago"
+					"field": "ciclo",
+					"showFilter": true
 				},
 				"grid_field14": {
 					"field": "importe_adeudo",
@@ -6607,7 +6593,8 @@
 				},
 				"grid_field_label14": {
 					"type": "grid_field_label",
-					"field": "importe_adeudo"
+					"field": "importe_adeudo",
+					"showFilter": true
 				},
 				"grid_field15": {
 					"field": "fecha_ultima_validacion",
@@ -6617,7 +6604,8 @@
 				},
 				"grid_field_label15": {
 					"type": "grid_field_label",
-					"field": "fecha_ultima_validacion"
+					"field": "fecha_ultima_validacion",
+					"showFilter": true
 				},
 				"grid_field16": {
 					"field": "fecha_cancelacion",
@@ -6627,7 +6615,8 @@
 				},
 				"grid_field_label16": {
 					"type": "grid_field_label",
-					"field": "fecha_cancelacion"
+					"field": "fecha_cancelacion",
+					"showFilter": true
 				},
 				"grid_field17": {
 					"field": "fecha_suspension",
@@ -6637,9 +6626,24 @@
 				},
 				"grid_field_label17": {
 					"type": "grid_field_label",
-					"field": "fecha_suspension"
+					"field": "fecha_suspension",
+					"showFilter": true
 				},
 				"-10": {
+					"type": "-"
+				},
+				"grid_field13": {
+					"field": "dia_pago",
+					"type": "grid_field",
+					"inlineEdit": true,
+					"inlineAdd": false
+				},
+				"grid_field_label13": {
+					"type": "grid_field_label",
+					"field": "dia_pago",
+					"showFilter": true
+				},
+				"-11": {
 					"type": "-"
 				}
 			},
@@ -7233,11 +7237,11 @@
 								"simple_grid_field55",
 								"simple_grid_field1",
 								"simple_grid_field56",
-								"simple_grid_field58",
 								"simple_grid_field59",
 								"simple_grid_field60",
 								"simple_grid_field72",
-								"simple_grid_field73"
+								"simple_grid_field73",
+								"simple_grid_field58"
 							]
 						}
 					},
@@ -7528,10 +7532,6 @@
 					"field": "fecha_prox_vencimiento",
 					"type": "simple_grid_field"
 				},
-				"simple_grid_field58": {
-					"field": "fecha_pago",
-					"type": "simple_grid_field"
-				},
 				"simple_grid_field59": {
 					"field": "importe_adeudo",
 					"type": "simple_grid_field"
@@ -7546,6 +7546,10 @@
 				},
 				"simple_grid_field73": {
 					"field": "fecha_suspension",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field58": {
+					"field": "dia_pago",
 					"type": "simple_grid_field"
 				}
 			},
@@ -7717,11 +7721,11 @@
 								"simple_grid_field55",
 								"simple_grid_field1",
 								"simple_grid_field56",
-								"simple_grid_field58",
 								"simple_grid_field59",
 								"simple_grid_field60",
 								"simple_grid_field72",
-								"simple_grid_field73"
+								"simple_grid_field73",
+								"simple_grid_field58"
 							]
 						}
 					},
@@ -8009,10 +8013,6 @@
 					"field": "fecha_prox_vencimiento",
 					"type": "simple_grid_field"
 				},
-				"simple_grid_field58": {
-					"field": "fecha_pago",
-					"type": "simple_grid_field"
-				},
 				"simple_grid_field59": {
 					"field": "importe_adeudo",
 					"type": "simple_grid_field"
@@ -8027,6 +8027,10 @@
 				},
 				"simple_grid_field73": {
 					"field": "fecha_suspension",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field58": {
+					"field": "dia_pago",
 					"type": "simple_grid_field"
 				}
 			},

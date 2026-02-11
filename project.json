@@ -505,7 +505,7 @@
 						"code": "$host = 'localhost';\r\n$user = 'rocasamexico_admin';\r\n$pwd = 'Rocas@Mexico.2025**';\r\n$port = 3306;\r\n$sys_dbname = 'rocasamexico_prm';"
 					}
 				],
-				"selectedCustomConn": "Local"
+				"selectedCustomConn": "New connection"
 			}
 		}
 	],
