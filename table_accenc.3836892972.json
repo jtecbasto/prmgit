@@ -7,7 +7,7 @@
 			"asc": false
 		}
 	],
-	"sql": "SELECT\r\naccenc.id,\r\naccenc.idtipomov,\r\naccenc.referencia,\r\naccenc.fecha,\r\naccenc.idtienda,\r\naccenc.idtienda2,\r\naccenc.idcliente,\r\nc.nombre_completo cliente,\r\nt.tienda,\r\naccenc.usuario,\r\naccenc.fechaingreso,\r\nserviciosmoviles_uggroups.Acceso,\r\naccenc.venta,\r\nea.estado,\r\nea.ciudad,\r\nea.cp,\r\n\tea.calle,\r\n\tea.numeroext,\r\n\tea.numeroint,\r\n\tea.colonia,\r\n\tea.lat,\r\n\tea.lng,\r\n\taccenc.doctos,\r\n\t\tCONCAT(TRIM(CONCAT_WS(' ',\r\n      IF(IFNULL(ea.calle,'')='','', CONCAT('C.',ea.calle)),\r\n      IFNULL(CONCAT('No.',ea.numeroext),''),\r\n      IFNULL(CONCAT('Int.',ea.numeroint),''),\r\n      IFNULL(ea.colonia,''), IFNULL(CONCAT('C.P.',ea.cp),''),\r\n      IFNULL(ea.ciudad,''), IFNULL(ea.estado,'')\r\n    ))) AS direccion,\r\n    accenc.observaciones\r\nFROM accenc\r\nINNER JOIN serviciosmoviles_users ON accenc.usuario = serviciosmoviles_users.username\r\nINNER JOIN serviciosmoviles_ugmembers ON serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName\r\nINNER JOIN serviciosmoviles_uggroups ON serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID\r\ninner join clientes c on accenc.idcliente=c.idcliente\r\ninner join tiendas t on accenc.idtienda=t.idtienda\r\nleft join entregasacc ea on accenc.id=ea.idaccenc\r\nWHERE (accenc.idtipomov =2) and accenc.idtienda=:session.Tienda and\r\n (accenc.usuario =':session.UserID' OR if(:session.acceso=1, accenc.idtienda=:session.Tienda, false) OR ':session.UserID' ='ADMIN') \r\n\r\nORDER BY accenc.id DESC\r\n",
+	"sql": "SELECT\r\naccenc.id,\r\naccenc.idtipomov,\r\naccenc.referencia,\r\naccenc.fecha,\r\naccenc.idtienda,\r\naccenc.idtienda2,\r\naccenc.idcliente,\r\nc.nombre_completo cliente,\r\nt.tienda,\r\naccenc.usuario,\r\naccenc.fechaingreso,\r\nserviciosmoviles_uggroups.Acceso,\r\naccenc.venta,\r\nea.estado,\r\nea.ciudad,\r\nea.cp,\r\n\tea.calle,\r\n\tea.numeroext,\r\n\tea.numeroint,\r\n\tea.colonia,\r\n\tea.lat,\r\n\tea.lng,\r\n\taccenc.doctos,\r\n\t\tCONCAT(TRIM(CONCAT_WS(' ',\r\n      IF(IFNULL(ea.calle,'')='','', CONCAT('C.',ea.calle)),\r\n      IFNULL(CONCAT('No.',ea.numeroext),''),\r\n      IFNULL(CONCAT('Int.',ea.numeroint),''),\r\n      IFNULL(ea.colonia,''), IFNULL(CONCAT('C.P.',ea.cp),''),\r\n      IFNULL(ea.ciudad,''), IFNULL(ea.estado,'')\r\n    ))) AS direccion,\r\n    accenc.observaciones\r\nFROM accenc\r\nINNER JOIN serviciosmoviles_users ON accenc.usuario = serviciosmoviles_users.username\r\nINNER JOIN serviciosmoviles_ugmembers ON serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName\r\nINNER JOIN serviciosmoviles_uggroups ON serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID\r\ninner join clientes c on accenc.idcliente=c.idcliente\r\ninner join tiendas t on accenc.idtienda=t.idtienda\r\nleft join entregasacc ea on accenc.id=ea.idaccenc\r\nWHERE (accenc.idtipomov =2) AND ((accenc.idtienda=:session.Tienda and\r\n accenc.usuario =':session.UserID') OR if(:session.acceso=1, accenc.idtienda=:session.Tienda, false) OR (':session.UserID' ='ADMIN' AND accenc.idtienda=:session.tiendaNP) OR ((':session.Label'='MESADECONTROL' OR ':session.Label'='VALIDADOR') and accenc.idtienda=:session.tiendaNP))\r\n\r\nORDER BY accenc.id DESC\r\n",
 	"connId": "conn",
 	"originalTable": "accenc",
 	"name": "accenc",
@@ -498,7 +498,9 @@
 	"queryContext": {
 		"session.UserID": "15",
 		"session.acceso": "1",
-		"session.Tienda": "146"
+		"session.Tienda": "146",
+		"session.Label": "0",
+		"session.tiendaNP": "0"
 	},
 	"eventHandlers": [
 		{

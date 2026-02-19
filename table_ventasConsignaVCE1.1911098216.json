@@ -1,5 +1,5 @@
 {
-	"sql": "SELECT\r\nventas.idventa,\r\ntiposventa.tipoventa,\r\nventas.fecha,\r\nventas.fechacaptura,\r\nclientes.nombre_completo AS cliente,\r\nventas.segmento,\r\nventas.esnimei,\r\nventas.simcard,\r\nventas.dn,\r\nventas.dnpreferido,\r\nventas.ventadomicilio,\r\nventas.cuenta,\r\nventas.contrato,\r\nventas.contratoportal,\r\nventas.`plan` AS `plan`,\r\nventas.`plan` AS planes,\r\nventas.plazo,\r\nventas.plazopendiente,\r\nventas.usuario,\r\nserviciosmoviles_uggroups.Acceso,\r\nventas.renta,\r\nplanes.renta AS rentaplan,\r\nventas.tienda,\r\ntiendas.Tienda AS tiendanombre,\r\ncompras.descripcion,\r\nventas.Factura,\r\nventas.fechavenci,\r\nventas.ciclo,\r\nserviciosmoviles_users.fullname,\r\nventas.modifico,\r\nventas.fechamodif,\r\nventas.PagoTotal,\r\nventas.Efectivo,\r\nventas.NC,\r\nventas.TC,\r\nventas.rfc,\r\nventas.cargofaciva,\r\nventas.almacenatt,\r\ncompras.Clasif AS clasif,\r\nventas.modo,\r\nventas.addon,\r\nventas.vtasimg,\r\nventas.equipoincluido,\r\nventas.tiendamovil,\r\nventas.tiposegmento,\r\nventas.idpromocion,\r\nventas.orden,\r\nventas.comisionable,\r\nventas.consumos,\r\nventas.captura_contrato,\r\nventas.captura_cuenta,\r\nventas.captura_orden,\r\nventas.contrato_corregido,\r\nventas.cuenta_corregida,\r\nventas.orden_corregida,\r\nsectores_validacion.validador,\r\nventas.validador AS valida,\r\nsectores_validacion.sector,\r\nventas.ultimo_pago,\r\nventas.carrusel,\r\na.seguros seguro_capturado,\r\na.seguro_verificado,\r\na.control control_capturado,\r\na.control_verificado,\r\na.nfs nfs_capturado,\r\na.nfs_verificado,\r\nventas.anio,\r\n CASE ventas.mes\r\n  WHEN 1 THEN 'Enero'\r\n  WHEN 2 THEN 'Febrero'\r\n  WHEN 3 THEN 'Marzo'\r\n  WHEN 4 THEN 'Abril'\r\n  WHEN 5 THEN 'Mayo'\r\n  WHEN 6 THEN 'Junio'\r\n  WHEN 7 THEN 'Julio'\r\n  WHEN 8 THEN 'Agosto'\r\n  WHEN 9 THEN 'Septiembre'\r\n  WHEN 10 THEN 'Octubre'\r\n  WHEN 11 THEN 'Noviembre'\r\n  WHEN 12 THEN 'Diciembre'\r\nEND AS mes,\r\nventas.fecha_prox_vencimiento,\r\nventas.dia_pago,\r\nventas.importe_adeudo,\r\nventas.fecha_ultima_validacion,\r\nventas.fecha_cancelacion,\r\nventas.fecha_suspension\r\n\r\nFROM ventas\r\nINNER JOIN serviciosmoviles_users ON ventas.usuario = serviciosmoviles_users.username\r\nINNER JOIN serviciosmoviles_ugmembers ON serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName\r\nINNER JOIN serviciosmoviles_uggroups ON serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID\r\nLEFT OUTER JOIN clientes ON ventas.idcliente = clientes.idcliente\r\nLEFT OUTER JOIN tiendas ON ventas.tienda = tiendas.IdTienda\r\nLEFT OUTER JOIN planes ON ventas.`plan` = planes.idplan\r\nLEFT OUTER JOIN sectores_validacion ON tiendas.idsectorvalida = sectores_validacion.id\r\nleft outer join (\r\nselect a.idventa,sum(if(g.idgaddon=8, 1, 0)) seguros, sum(if(g.idgaddon=8 and verificacion_realizada , 1, 0)) seguro_verificado , \r\nsum(if(g.idgaddon=10,1,0)) control, sum(if(g.idgaddon=10 and verificacion_realizada,1,0) ) control_verificado,\r\n  sum(if(g.idgaddon=14,1,0) ) nfs, sum(if(g.idgaddon=14 and verificacion_realizada,1,0) ) nfs_verificado  from addons a inner join cataddons c on a.idaddon=c.idaddon inner join  gaddons g on c.idgaddon=g.idgaddon\r\ngroup by a.idventa ) a on ventas.idventa=a.idventa \r\nINNER JOIN compras ON ventas.esnimei = compras.noserie\r\nINNER JOIN tiposventa ON ventas.idtipoventa = tiposventa.idtipoventa\r\nWHERE (ventas.fecha between \r\n DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE()) AND (compras.Clasif =2) AND (tiposventa.idtipoventa in (22,23,1,2,3,5,10,11,12,14)) and if(':session.UserID'='ADMIN' or upper(':session.UserID')='SMORAV',1,tiendas.validador=':session.UserID')\r\n",
+	"sql": "SELECT\r\nventas.idventa,\r\ntiposventa.tipoventa,\r\nventas.fecha,\r\nventas.fechacaptura,\r\nclientes.nombre_completo AS cliente,\r\nventas.segmento,\r\nventas.esnimei,\r\nventas.simcard,\r\nventas.dn,\r\nventas.dnpreferido,\r\nventas.ventadomicilio,\r\nventas.cuenta,\r\nventas.contrato,\r\nventas.contratoportal,\r\nventas.`plan` AS `plan`,\r\nventas.`plan` AS planes,\r\nventas.plazo,\r\nventas.plazopendiente,\r\nventas.usuario,\r\nserviciosmoviles_uggroups.Acceso,\r\nventas.renta,\r\nplanes.renta AS rentaplan,\r\nventas.tienda,\r\ntiendas.Tienda AS tiendanombre,\r\ncompras.descripcion,\r\nventas.Factura,\r\nventas.fechavenci,\r\nventas.ciclo,\r\nserviciosmoviles_users.fullname,\r\nventas.modifico,\r\nventas.fechamodif,\r\nventas.PagoTotal,\r\nventas.Efectivo,\r\nventas.NC,\r\nventas.TC,\r\nventas.rfc,\r\nventas.cargofaciva,\r\nventas.almacenatt,\r\ncompras.Clasif AS clasif,\r\nventas.modo,\r\nventas.addon,\r\nventas.vtasimg,\r\nventas.equipoincluido,\r\nventas.tiendamovil,\r\nventas.tiposegmento,\r\nventas.idpromocion,\r\nventas.orden,\r\nventas.comisionable,\r\nventas.consumos,\r\nventas.captura_contrato,\r\nventas.captura_cuenta,\r\nventas.captura_orden,\r\nventas.contrato_corregido,\r\nventas.cuenta_corregida,\r\nventas.orden_corregida,\r\nsectores_validacion.validador,\r\nventas.validador AS valida,\r\nsectores_validacion.sector,\r\nventas.ultimo_pago,\r\nventas.carrusel,\r\na.seguros seguro_capturado,\r\na.seguro_verificado,\r\na.control control_capturado,\r\na.control_verificado,\r\na.nfs nfs_capturado,\r\na.nfs_verificado,\r\nventas.anio,\r\n CASE ventas.mes\r\n  WHEN 1 THEN 'Enero'\r\n  WHEN 2 THEN 'Febrero'\r\n  WHEN 3 THEN 'Marzo'\r\n  WHEN 4 THEN 'Abril'\r\n  WHEN 5 THEN 'Mayo'\r\n  WHEN 6 THEN 'Junio'\r\n  WHEN 7 THEN 'Julio'\r\n  WHEN 8 THEN 'Agosto'\r\n  WHEN 9 THEN 'Septiembre'\r\n  WHEN 10 THEN 'Octubre'\r\n  WHEN 11 THEN 'Noviembre'\r\n  WHEN 12 THEN 'Diciembre'\r\nEND AS mes,\r\nventas.fecha_prox_vencimiento,\r\nventas.dia_pago,\r\nventas.importe_adeudo,\r\nventas.fecha_ultima_validacion,\r\nventas.fecha_cancelacion,\r\nventas.fecha_suspension,\r\nCASE \r\n     WHEN ifnull(ventas.fecha_suspension,'')<>'' and ifnull(ventas.importe_adeudo,0)>0 THEN 'SUSPENDIDO'\r\n     WHEN ifnull(ventas.fecha_cancelacion,'')<>'' and ifnull(ventas.importe_adeudo,0)>0 THEN 'CANCELADO'\r\n     WHEN datediff(current_date,ventas.fecha)>180 THEN 'FUERA DE CHARGEBACK'\r\n     WHEN ifnull(ventas.ultimo_pago,'')<>'' and ifnull(ventas.importe_adeudo,0)>0 and ifnull(ventas.fecha_ultima_validacion,'')<>'' and ifnull(ventas.fecha_ultima_validacion,'')>date_add(ifnull(ventas.ultimo_pago,''), interval 17 day) THEN 'FALTA DE PAGO'\r\n     WHEN  IFNULL(ventas.ultimo_pago,'')<>'' and ifnull(ventas.fecha_prox_vencimiento,'')<current_date then 'PROXIMO VENCIMIENTO'\r\n     WHEN IFNULL(ventas.importe_adeudo,0)>0 and ifnull(ventas.fecha_ultima_validacion,'')<>'' THEN 'OK'\r\n     ELSE ''\r\nEND estatus\r\n\r\nFROM ventas\r\nINNER JOIN serviciosmoviles_users ON ventas.usuario = serviciosmoviles_users.username\r\nINNER JOIN serviciosmoviles_ugmembers ON serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName\r\nINNER JOIN serviciosmoviles_uggroups ON serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID\r\nLEFT OUTER JOIN clientes ON ventas.idcliente = clientes.idcliente\r\nLEFT OUTER JOIN tiendas ON ventas.tienda = tiendas.IdTienda\r\nLEFT OUTER JOIN planes ON ventas.`plan` = planes.idplan\r\nLEFT OUTER JOIN sectores_validacion ON tiendas.idsectorvalida = sectores_validacion.id\r\nleft outer join (\r\nselect a.idventa,sum(if(g.idgaddon=8, 1, 0)) seguros, sum(if(g.idgaddon=8 and verificacion_realizada , 1, 0)) seguro_verificado , \r\nsum(if(g.idgaddon=10,1,0)) control, sum(if(g.idgaddon=10 and verificacion_realizada,1,0) ) control_verificado,\r\n  sum(if(g.idgaddon=14,1,0) ) nfs, sum(if(g.idgaddon=14 and verificacion_realizada,1,0) ) nfs_verificado  from addons a inner join cataddons c on a.idaddon=c.idaddon inner join  gaddons g on c.idgaddon=g.idgaddon\r\ngroup by a.idventa ) a on ventas.idventa=a.idventa \r\nINNER JOIN compras ON ventas.esnimei = compras.noserie\r\nINNER JOIN tiposventa ON ventas.idtipoventa = tiposventa.idtipoventa\r\nWHERE (ventas.fecha between \r\n DATE_SUB(CURDATE(), INTERVAL 6 MONTH) AND CURDATE()) AND (compras.Clasif =2) AND (tiposventa.idtipoventa in (22,23,1,2,3,5,10,11,12,14)) and if(':session.UserID'='ADMIN' or upper(':session.UserID')='SMORAV',1,tiendas.validador=':session.UserID')\r\n",
 	"type": 1,
 	"connId": "conn",
 	"originalTable": "ventas",
@@ -1470,6 +1470,23 @@
 				"Spanish": "Dia Pago"
 			},
 			"tableName": "ventas"
+		},
+		{
+			"name": "estatus",
+			"sqlExpression": "CASE \r\n     WHEN ifnull(ventas.fecha_suspension,'')<>'' and ifnull(ventas.importe_adeudo,0)>0 THEN 'SUSPENDIDO'\r\n     WHEN ifnull(ventas.fecha_cancelacion,'')<>'' and ifnull(ventas.importe_adeudo,0)>0 THEN 'CANCELADO'\r\n     WHEN datediff(current_date,ventas.fecha)>180 THEN 'FUERA DE CHARGEBACK'\r\n     WHEN ifnull(ventas.ultimo_pago,'')<>'' and ifnull(ventas.importe_adeudo,0)>0 and ifnull(ventas.fecha_ultima_validacion,'')<>'' and ifnull(ventas.fecha_ultima_validacion,'')>date_add(ifnull(ventas.ultimo_pago,''), interval 17 day) THEN 'FALTA DE PAGO'\r\n     WHEN  IFNULL(ventas.ultimo_pago,'')<>'' and ifnull(ventas.fecha_prox_vencimiento,'')<current_date then 'PROXIMO VENCIMIENTO'\r\n     WHEN IFNULL(ventas.importe_adeudo,0)>0 and ifnull(ventas.fecha_ultima_validacion,'')<>'' THEN 'OK'\r\n     ELSE ''\r\nEND",
+			"index": 75,
+			"strField": "estatus",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Status"
+			},
+			"tableName": ""
 		}
 	],
 	"queryContext": {
@@ -1481,7 +1498,7 @@
 		{
 			"eventId": "EVENT_BEFOREQUERY_LIST",
 			"pageType": "list",
-			"code": "$strOrderBy=\"ORDER BY fechacaptura desc\";\n\n/*\n\n\nif (strtoupper($_SESSION['UserID'])=='ADMIN') {\n\t\t\t$strWhereClause = \" 1=1 \";\n} else {\n\t\t\t\t\t  $strWhereClause=whereAdd($strWhereClause,\" sectores_validacion.validador = '\".$_SESSION['UserID'].\"'\");\n\n}\n\n\n*/"
+			"code": "$strOrderBy=\"ORDER BY fechacaptura desc\";\n\n/*\n\n\nif (strtoupper($_SESSION['UserID'])=='ADMIN') {\n\t\t\t$strWhereClause = \" 1=1 \";\n} else {\n\t\t\t\t\t  $strWhereClause=whereAdd($strWhereClause,\" sectores_validacion.validador = '\".$_SESSION['UserID'].\"'\");\n\n}\n\n\n*/\n\n// BeforeQueryList(&$strSQL, &$strWhereClause, &$strOrderBy, &$pageObject)\n\n// Si NO hay búsqueda activa, no mostrar nada\n/*if( empty($_SESSION[$pageObject->tName . \"_search\"]) && empty($_REQUEST[\"a\"]) ) {\n    $strWhereClause = \"1=0\";\n}\n*/"
 		},
 		{
 			"eventId": "EVENT_BEFOREEDIT",
@@ -4394,6 +4411,17 @@
 					"modelId": "list-above-grid",
 					"grid": [
 						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c"
+								},
+								{
+									"cell": "c3"
+								}
+							]
+						},
+						{
 							"cells": [
 								{
 									"cell": "c1"
@@ -4422,6 +4450,14 @@
 								"print_panel",
 								"columns_control"
 							]
+						},
+						"c": {
+							"model": "c1",
+							"items": []
+						},
+						"c3": {
+							"model": "c2",
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -4501,6 +4537,17 @@
 								}
 							],
 							"section": ""
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c"
+								},
+								{
+									"cell": "c3"
+								}
+							]
 						}
 					],
 					"cells": {
@@ -4522,6 +4569,14 @@
 								"loginform_login",
 								"username_button"
 							]
+						},
+						"c": {
+							"model": "c1",
+							"items": []
+						},
+						"c3": {
+							"model": "c2",
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -4537,6 +4592,149 @@
 				"grid": {
 					"modelId": "horizontal-grid",
 					"grid": [
+						{
+							"section": "head",
+							"cells": [
+								{
+									"cell": "headcell_field43"
+								},
+								{
+									"cell": "headcell_field44"
+								},
+								{
+									"cell": "headcell_field45"
+								},
+								{
+									"cell": "headcell_field46"
+								},
+								{
+									"cell": "headcell_field47"
+								},
+								{
+									"cell": "headcell_field48"
+								},
+								{
+									"cell": "headcell_field49"
+								},
+								{
+									"cell": "headcell_field50"
+								},
+								{
+									"cell": "headcell_field51"
+								},
+								{
+									"cell": "headcell_field52"
+								},
+								{
+									"cell": "headcell_field53"
+								},
+								{
+									"cell": "headcell_field54"
+								},
+								{
+									"cell": "headcell_field55"
+								},
+								{
+									"cell": "headcell_field56"
+								},
+								{
+									"cell": "headcell_field57"
+								},
+								{
+									"cell": "headcell_field58"
+								},
+								{
+									"cell": "headcell_field59"
+								},
+								{
+									"cell": "headcell_field60"
+								},
+								{
+									"cell": "headcell_field61"
+								},
+								{
+									"cell": "headcell_field62"
+								},
+								{
+									"cell": "headcell_field63"
+								},
+								{
+									"cell": "headcell_field64"
+								},
+								{
+									"cell": "headcell_field65"
+								},
+								{
+									"cell": "headcell_field66"
+								},
+								{
+									"cell": "headcell_field67"
+								},
+								{
+									"cell": "headcell_field68"
+								},
+								{
+									"cell": "headcell_field69"
+								},
+								{
+									"cell": "headcell_field70"
+								},
+								{
+									"cell": "headcell_field71"
+								},
+								{
+									"cell": "headcell_field72"
+								},
+								{
+									"cell": "headcell_field73"
+								},
+								{
+									"cell": "headcell_field74"
+								},
+								{
+									"cell": "headcell_field75"
+								},
+								{
+									"cell": "headcell_field76"
+								},
+								{
+									"cell": "headcell_field77"
+								},
+								{
+									"cell": "headcell_field78"
+								},
+								{
+									"cell": "headcell_field79"
+								},
+								{
+									"cell": "headcell_field80"
+								},
+								{
+									"cell": "headcell_field81"
+								},
+								{
+									"cell": "headcell_field82"
+								},
+								{
+									"cell": "headcell_field83"
+								},
+								{
+									"cell": "headcell_field84"
+								},
+								{
+									"cell": "headcell_field85"
+								},
+								{
+									"cell": "headcell_field86"
+								},
+								{
+									"cell": "headcell_field87"
+								},
+								{
+									"cell": "headcell_field88"
+								}
+							]
+						},
 						{
 							"section": "head",
 							"cells": [
@@ -4674,6 +4872,9 @@
 								},
 								{
 									"cell": "headcell_field37"
+								},
+								{
+									"cell": "headcell_field42"
 								}
 							]
 						},
@@ -4814,6 +5015,9 @@
 								},
 								{
 									"cell": "cell_field37"
+								},
+								{
+									"cell": "cell_field42"
 								}
 							]
 						},
@@ -4821,7 +5025,7 @@
 							"cells": [
 								{
 									"cell": "cell_dpreview",
-									"colspan": 45
+									"colspan": 46
 								}
 							],
 							"section": "body"
@@ -4956,6 +5160,9 @@
 								},
 								{
 									"cell": "footcell_field34"
+								},
+								{
+									"cell": "footcell_field39"
 								}
 							]
 						}
@@ -5475,7 +5682,7 @@
 								"details_preview"
 							],
 							"columnName": "field",
-							"field": "fecha_suspension"
+							"field": "estatus"
 						},
 						"headcell_checkbox": {
 							"model": "headcell_checkbox",
@@ -5930,19 +6137,320 @@
 							"items": [
 								"grid_field_label13"
 							],
-							"field": "dia_pago"
+							"field": "dia_pago",
+							"columnName": "field"
 						},
 						"cell_field37": {
 							"model": "cell_field",
 							"items": [
 								"grid_field13"
 							],
-							"field": "dia_pago"
+							"field": "dia_pago",
+							"columnName": "field"
 						},
 						"footcell_field34": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "dia_pago"
+							"field": "dia_pago",
+							"columnName": "field"
+						},
+						"headcell_field42": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label18"
+							],
+							"field": "estatus",
+							"columnName": "field"
+						},
+						"cell_field42": {
+							"model": "cell_field",
+							"items": [
+								"grid_field18"
+							],
+							"field": "estatus",
+							"columnName": "field"
+						},
+						"footcell_field39": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "estatus",
+							"columnName": "field"
+						},
+						"headcell_field43": {
+							"model": "headcell_icons",
+							"items": [],
+							"field": "",
+							"columnName": "inline-edit"
+						},
+						"headcell_field44": {
+							"model": "headcell_checkbox",
+							"items": [],
+							"field": "",
+							"columnName": "checkbox"
+						},
+						"headcell_field45": {
+							"model": "headcell_details",
+							"items": [],
+							"field": "",
+							"columnName": "details"
+						},
+						"headcell_field46": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "",
+							"columnName": ""
+						},
+						"headcell_field47": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "",
+							"columnName": ""
+						},
+						"headcell_field48": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "",
+							"columnName": ""
+						},
+						"headcell_field49": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "fechacaptura",
+							"columnName": "field"
+						},
+						"headcell_field50": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "sector",
+							"columnName": "field"
+						},
+						"headcell_field51": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "tiendanombre",
+							"columnName": "field"
+						},
+						"headcell_field52": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "",
+							"columnName": ""
+						},
+						"headcell_field53": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "",
+							"columnName": ""
+						},
+						"headcell_field54": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "esnimei",
+							"columnName": "field"
+						},
+						"headcell_field55": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "simcard",
+							"columnName": "field"
+						},
+						"headcell_field56": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "dn",
+							"columnName": "field"
+						},
+						"headcell_field57": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "dnpreferido",
+							"columnName": "field"
+						},
+						"headcell_field58": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "cuenta",
+							"columnName": "field"
+						},
+						"headcell_field59": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "captura_cuenta",
+							"columnName": "field"
+						},
+						"headcell_field60": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "cuenta_corregida",
+							"columnName": "field"
+						},
+						"headcell_field61": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "contrato",
+							"columnName": "field"
+						},
+						"headcell_field62": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "captura_contrato",
+							"columnName": "field"
+						},
+						"headcell_field63": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "contrato_corregido",
+							"columnName": "field"
+						},
+						"headcell_field64": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "orden",
+							"columnName": "field"
+						},
+						"headcell_field65": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "captura_orden",
+							"columnName": "field"
+						},
+						"headcell_field66": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "orden_corregida",
+							"columnName": "field"
+						},
+						"headcell_field67": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "consumos",
+							"columnName": "field"
+						},
+						"headcell_field68": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "ultimo_pago",
+							"columnName": "field"
+						},
+						"headcell_field69": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "comisionable",
+							"columnName": "field"
+						},
+						"headcell_field70": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "carrusel",
+							"columnName": "field"
+						},
+						"headcell_field71": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "valida",
+							"columnName": "field"
+						},
+						"headcell_field72": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "seguro_capturado",
+							"columnName": "field"
+						},
+						"headcell_field73": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "seguro_verificado",
+							"columnName": "field"
+						},
+						"headcell_field74": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "control_capturado",
+							"columnName": "field"
+						},
+						"headcell_field75": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "control_verificado",
+							"columnName": "field"
+						},
+						"headcell_field76": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "nfs_capturado",
+							"columnName": "field"
+						},
+						"headcell_field77": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "nfs_verificado",
+							"columnName": "field"
+						},
+						"headcell_field78": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "fullname",
+							"columnName": "field"
+						},
+						"headcell_field79": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "usuario",
+							"columnName": "field"
+						},
+						"headcell_field80": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "",
+							"columnName": ""
+						},
+						"headcell_field81": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "fecha_prox_vencimiento",
+							"columnName": "field"
+						},
+						"headcell_field82": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "ciclo",
+							"columnName": "field"
+						},
+						"headcell_field83": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "importe_adeudo",
+							"columnName": "field"
+						},
+						"headcell_field84": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "fecha_ultima_validacion",
+							"columnName": "field"
+						},
+						"headcell_field85": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "fecha_cancelacion",
+							"columnName": "field"
+						},
+						"headcell_field86": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "fecha_suspension",
+							"columnName": "field"
+						},
+						"headcell_field87": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "dia_pago",
+							"columnName": "field"
+						},
+						"headcell_field88": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "estatus",
+							"columnName": "field"
 						}
 					},
 					"deferredItems": [],
@@ -5977,7 +6485,13 @@
 						"edit_selected",
 						"export_selected",
 						"delete_selected",
-						"-11",
+						"-16",
+						"advsearch_link",
+						"-13",
+						"save_search",
+						"-15",
+						"saved_searches",
+						"-12",
 						"export"
 					]
 				},
@@ -6645,6 +7159,40 @@
 				},
 				"-11": {
 					"type": "-"
+				},
+				"grid_field18": {
+					"field": "estatus",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label18": {
+					"type": "grid_field_label",
+					"field": "estatus"
+				},
+				"-12": {
+					"type": "-"
+				},
+				"-13": {
+					"type": "-"
+				},
+				"save_search": {
+					"type": "save_search"
+				},
+				"-14": {
+					"type": "-"
+				},
+				"saved_searches": {
+					"type": "saved_searches"
+				},
+				"-15": {
+					"type": "-"
+				},
+				"advsearch_link": {
+					"type": "advsearch_link"
+				},
+				"-16": {
+					"type": "-"
 				}
 			},
 			"dbProps": {},
@@ -7241,7 +7789,8 @@
 								"simple_grid_field60",
 								"simple_grid_field72",
 								"simple_grid_field73",
-								"simple_grid_field58"
+								"simple_grid_field58",
+								"simple_grid_field74"
 							]
 						}
 					},
@@ -7551,6 +8100,10 @@
 				"simple_grid_field58": {
 					"field": "dia_pago",
 					"type": "simple_grid_field"
+				},
+				"simple_grid_field74": {
+					"field": "estatus",
+					"type": "simple_grid_field"
 				}
 			},
 			"dbProps": {},
@@ -7725,7 +8278,8 @@
 								"simple_grid_field60",
 								"simple_grid_field72",
 								"simple_grid_field73",
-								"simple_grid_field58"
+								"simple_grid_field58",
+								"simple_grid_field74"
 							]
 						}
 					},
@@ -8032,6 +8586,124 @@
 				"simple_grid_field58": {
 					"field": "dia_pago",
 					"type": "simple_grid_field"
+				},
+				"simple_grid_field74": {
+					"field": "estatus",
+					"type": "simple_grid_field"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "search",
+			"type": "search",
+			"layoutId": "nomenu",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "search-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1",
+									"colspan": 2
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "search-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"search_search",
+								"search_reset",
+								"search_back_list",
+								"search_cancel"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "search-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"search_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-search",
+					"grid": [],
+					"cells": {},
+					"deferredItems": [],
+					"separateLabels": false
+				}
+			},
+			"items": {
+				"search_header": {
+					"type": "search_header"
+				},
+				"search_reset": {
+					"type": "search_reset"
+				},
+				"search_back_list": {
+					"type": "search_back_list"
+				},
+				"search_search": {
+					"type": "search_search"
+				},
+				"search_cancel": {
+					"type": "search_cancel"
 				}
 			},
 			"dbProps": {},
