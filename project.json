@@ -125,9 +125,9 @@
 			},
 			{
 				"gid": 80289759,
-				"y": 1237,
-				"x": 524,
-				"width": 145.28125,
+				"y": 1285,
+				"x": 491,
+				"width": 254.28125,
 				"height": 348
 			},
 			{
@@ -150,6 +150,13 @@
 				"x": 1105,
 				"width": 286.90625,
 				"height": 124
+			},
+			{
+				"gid": 3318556632,
+				"y": 1486,
+				"x": 235,
+				"width": 269.015625,
+				"height": 236
 			},
 			{
 				"gid": 605844771,
@@ -615,6 +622,20 @@
 							"table": 1911098216,
 							"pageType": "list"
 						}
+					},
+					{
+						"id": "20",
+						"data": {
+							"name": {
+								"table": "estatusentregasaccenc_historial",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 3318556632,
+							"pageType": "list"
+						}
 					}
 				]
 			}
@@ -721,7 +742,8 @@
 								"welcome_item19",
 								"welcome_item20",
 								"welcome_item21",
-								"welcome_item22"
+								"welcome_item22",
+								"welcome_item23"
 							]
 						}
 					},
@@ -1072,6 +1094,18 @@
 						"type": 6
 					},
 					"background": "#e8926f",
+					"linkType": 0
+				},
+				"welcome_item23": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "estatusentregasaccenc_historial",
+					"linkPage": "list",
+					"linkText": {
+						"table": "estatusentregasaccenc_historial",
+						"type": 6
+					},
+					"background": "#cfae83",
 					"linkType": 0
 				}
 			},

@@ -7,7 +7,7 @@
 			"asc": false
 		}
 	],
-	"sql": "SELECT\r\naccenc.id,\r\naccenc.idtipomov,\r\naccenc.referencia,\r\naccenc.fecha,\r\naccenc.idtienda,\r\naccenc.idtienda2,\r\naccenc.idcliente,\r\nc.nombre_completo cliente,\r\nt.tienda,\r\naccenc.usuario,\r\naccenc.fechaingreso,\r\nserviciosmoviles_uggroups.Acceso,\r\naccenc.venta,\r\nea.estado,\r\nea.ciudad,\r\nea.cp,\r\n\tea.calle,\r\n\tea.numeroext,\r\n\tea.numeroint,\r\n\tea.colonia,\r\n\tea.lat,\r\n\tea.lng,\r\n\taccenc.doctos,\r\n\t\tCONCAT(TRIM(CONCAT_WS(' ',\r\n      IF(IFNULL(ea.calle,'')='','', CONCAT('C.',ea.calle)),\r\n      IFNULL(CONCAT('No.',ea.numeroext),''),\r\n      IFNULL(CONCAT('Int.',ea.numeroint),''),\r\n      IFNULL(ea.colonia,''), IFNULL(CONCAT('C.P.',ea.cp),''),\r\n      IFNULL(ea.ciudad,''), IFNULL(ea.estado,'')\r\n    ))) AS direccion,\r\n    accenc.observaciones\r\nFROM accenc\r\nINNER JOIN serviciosmoviles_users ON accenc.usuario = serviciosmoviles_users.username\r\nINNER JOIN serviciosmoviles_ugmembers ON serviciosmoviles_users.username = serviciosmoviles_ugmembers.UserName\r\nINNER JOIN serviciosmoviles_uggroups ON serviciosmoviles_ugmembers.GroupID = serviciosmoviles_uggroups.GroupID\r\ninner join clientes c on accenc.idcliente=c.idcliente\r\ninner join tiendas t on accenc.idtienda=t.idtienda\r\nleft join entregasacc ea on accenc.id=ea.idaccenc\r\nWHERE (accenc.idtipomov =2) AND ((accenc.idtienda=:session.Tienda and\r\n accenc.usuario =':session.UserID') OR if(:session.acceso=1, accenc.idtienda=:session.Tienda, false) OR (':session.UserID' ='ADMIN' AND accenc.idtienda=:session.tiendaNP) OR ((':session.Label'='MESADECONTROL' OR ':session.Label'='VALIDADOR') and accenc.idtienda=:session.tiendaNP))\r\n\r\nORDER BY accenc.id DESC\r\n",
+	"sql": "SELECT\n\taccenc.id,\n\taccenc.idtipomov,\n\taccenc.referencia,\n\taccenc.fecha,\n\taccenc.idtienda,\n\taccenc.idtienda2,\n\taccenc.idcliente,\n\tc.nombre_completo AS cliente,\n\tt.Tienda,\n\taccenc.usuario,\n\taccenc.fechaingreso,\n\tserviciosmoviles_uggroups.Acceso,\n\taccenc.venta,\n\tea.estado,\n\tea.ciudad,\n\tea.cp,\n\tea.calle,\n\tea.numeroext,\n\tea.numeroint,\n\tea.colonia,\n\tea.lat,\n\tea.lng,\n\taccenc.doctos,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      IF(IFNULL(ea.calle,'')='','', CONCAT('C.',ea.calle)),\n      IFNULL(CONCAT('No.',ea.numeroext),''),\n      IFNULL(CONCAT('Int.',ea.numeroint),''),\n      IFNULL(ea.colonia,''), IFNULL(CONCAT('C.P.',ea.cp),''),\n      IFNULL(ea.ciudad,''), IFNULL(ea.estado,'')\n    ))) AS direccion,\n\taccenc.observaciones,\n\t\"\" AS btn_entrega_html,\n\taccenc.estatusentrega,\n\taccenc.fechahoraentrega\nFROM\n\taccenc\n\tINNER JOIN serviciosmoviles_users ON serviciosmoviles_users.username = accenc.usuario\n\tINNER JOIN serviciosmoviles_ugmembers ON serviciosmoviles_ugmembers.UserName = serviciosmoviles_users.username\n\tINNER JOIN serviciosmoviles_uggroups ON serviciosmoviles_uggroups.GroupID = serviciosmoviles_ugmembers.GroupID\n\tINNER JOIN clientes AS c ON c.idcliente = accenc.idcliente\n\tINNER JOIN tiendas AS t ON t.IdTienda = accenc.idtienda\n\tLEFT OUTER JOIN entregasacc AS ea ON ea.idaccenc = accenc.id\nWHERE\n(accenc.idtipomov =2) AND ((accenc.idtienda =:session.Tienda AND accenc.usuario =':session.UserID') OR if(:session.acceso=1, accenc.idtienda=:session.Tienda, false) OR (':session.UserID' ='ADMIN' AND accenc.idtienda =:session.tiendaNP) OR ((':session.Label' ='MESADECONTROL' OR ':session.Label' ='VALIDADOR') AND accenc.idtienda =:session.tiendaNP))\nORDER BY\n\taccenc.id DESC\n",
 	"connId": "conn",
 	"originalTable": "accenc",
 	"name": "accenc",
@@ -18,7 +18,8 @@
 	],
 	"detailsBadgeColor": "e8926f",
 	"detailsTables": [
-		2657604414
+		2657604414,
+		3318556632
 	],
 	"fields": [
 		{
@@ -242,23 +243,6 @@
 			"tableName": "serviciosmoviles_uggroups"
 		},
 		{
-			"name": "tienda",
-			"sqlExpression": "t.tienda",
-			"index": 9,
-			"strField": "Tienda",
-			"type": 200,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{}
-			],
-			"label": {
-				"Spanish": "Tienda"
-			},
-			"tableName": "tiendas"
-		},
-		{
 			"name": "cliente",
 			"sqlExpression": "c.nombre_completo",
 			"index": 8,
@@ -456,7 +440,7 @@
 		},
 		{
 			"name": "direccion",
-			"sqlExpression": "CONCAT(TRIM(CONCAT_WS(' ',\r\n      IF(IFNULL(ea.calle,'')='','', CONCAT('C.',ea.calle)),\r\n      IFNULL(CONCAT('No.',ea.numeroext),''),\r\n      IFNULL(CONCAT('Int.',ea.numeroint),''),\r\n      IFNULL(ea.colonia,''), IFNULL(CONCAT('C.P.',ea.cp),''),\r\n      IFNULL(ea.ciudad,''), IFNULL(ea.estado,'')\r\n    )))",
+			"sqlExpression": "CONCAT(TRIM(CONCAT_WS(' ',\n      IF(IFNULL(ea.calle,'')='','', CONCAT('C.',ea.calle)),\n      IFNULL(CONCAT('No.',ea.numeroext),''),\n      IFNULL(CONCAT('Int.',ea.numeroint),''),\n      IFNULL(ea.colonia,''), IFNULL(CONCAT('C.P.',ea.cp),''),\n      IFNULL(ea.ciudad,''), IFNULL(ea.estado,'')\n    )))",
 			"index": 24,
 			"strField": "direccion",
 			"type": 200,
@@ -488,6 +472,83 @@
 			],
 			"label": {
 				"Spanish": "Observaciones"
+			},
+			"tableName": "accenc"
+		},
+		{
+			"name": "btn_entrega_html",
+			"sqlExpression": "\"\"",
+			"index": 26,
+			"strField": "btn_entrega_html",
+			"type": 200,
+			"viewFormats": [
+				{
+					"format": "Custom",
+					"customExpression": "// Ocultar por defecto\r\n$value = \"\";\r\n\r\n// Solo mostrar el botón si el estatus NO es ACEPTADA\r\n    $id = $data[\"id\"];\r\n\r\n    $value =\r\n        '<button type=\"button\" class=\"btn btn-default btn-xs btn-entrega\" '.\r\n        'data-ids=\"'.htmlspecialchars($id).'\">'.\r\n            '<span class=\"glyphicon glyphicon-transfer\"></span>'.\r\n        '</button>';\r\n\r\n"
+				}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Btn Entrega Html"
+			},
+			"tableName": ""
+		},
+		{
+			"name": "Tienda",
+			"sqlExpression": "t.Tienda",
+			"index": 9,
+			"strField": "Tienda",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Tienda"
+			},
+			"tableName": "tiendas"
+		},
+		{
+			"name": "estatusentrega",
+			"sqlExpression": "accenc.estatusentrega",
+			"index": 27,
+			"strField": "estatusentrega",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Estatus entrega"
+			},
+			"tableName": "accenc"
+		},
+		{
+			"name": "fechahoraentrega",
+			"sqlExpression": "accenc.fechahoraentrega",
+			"index": 28,
+			"strField": "fechahoraentrega",
+			"type": 135,
+			"viewFormats": [
+				{
+					"format": "Datetime"
+				}
+			],
+			"editFormats": [
+				{
+					"format": "Date",
+					"dateEditType": 11,
+					"dateShowTime": true
+				}
+			],
+			"label": {
+				"Spanish": "Fecha/hora de entrega"
 			},
 			"tableName": "accenc"
 		}
@@ -527,6 +588,11 @@
 			"eventId": "EVENT_BEFOREEDIT",
 			"pageType": "edit",
 			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n$ent = array(\n  \"estado\"    => isset($values[\"estado\"]) ? $values[\"estado\"] : \"\",\n  \"ciudad\"    => isset($values[\"ciudad\"]) ? $values[\"ciudad\"] : \"\",\n  \"cp\"        => isset($values[\"cp\"]) ? $values[\"cp\"] : \"\",\n  \"calle\"     => isset($values[\"calle\"]) ? $values[\"calle\"] : \"\",\n  \"numeroext\" => isset($values[\"numeroext\"]) ? $values[\"numeroext\"] : \"\",\n  \"numeroint\" => isset($values[\"numeroint\"]) ? $values[\"numeroint\"] : \"\",\n  \"colonia\"   => isset($values[\"colonia\"]) ? $values[\"colonia\"] : \"\",\n  \"lat\"       => isset($values[\"lat\"]) ? $values[\"lat\"] : \"\",\n  \"lng\"       => isset($values[\"lng\"]) ? $values[\"lng\"] : \"\"\n);\n\n\n\n$pageObject->setProxyValue(\"entrega_tmp\", $ent);\nunset($values[\"estado\"]);\nunset($values[\"ciudad\"]);\nunset($values[\"cp\"]);\nunset($values[\"calle\"]);\nunset($values[\"numeroext\"]);\nunset($values[\"numeroint\"]);\nunset($values[\"colonia\"]);\nunset($values[\"lat\"]);\nunset($values[\"lng\"]);\nreturn true;"
+		},
+		{
+			"eventId": "EVENT_JS_ONLOAD",
+			"pageType": "list",
+			"code": "var ctrl = Runner.getControl(pageid, 'id');\r\nctrl.hide();"
 		}
 	],
 	"dbTableInfo": {
@@ -697,6 +763,28 @@
 				"size": 200,
 				"scale": 0,
 				"typeName": "varchar(200)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "estatusentrega",
+				"type": 200,
+				"size": 45,
+				"scale": 0,
+				"typeName": "varchar(45)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "fechahoraentrega",
+				"type": 135,
+				"size": 0,
+				"scale": 0,
+				"typeName": "datetime",
 				"nullable": true,
 				"autoinc": false,
 				"defaultValueSQL": null,
@@ -2182,6 +2270,17 @@
 								}
 							],
 							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c3"
+								},
+								{
+									"cell": "c4"
+								}
+							],
+							"section": ""
 						}
 					],
 					"cells": {
@@ -2201,6 +2300,17 @@
 								"page_size",
 								"print_details"
 							]
+						},
+						"c3": {
+							"model": "c3",
+							"items": [
+								"details_preview",
+								"details_preview2"
+							]
+						},
+						"c4": {
+							"model": "c4",
+							"items": []
 						}
 					},
 					"deferredItems": [],
@@ -2304,66 +2414,512 @@
 					"deferredItems": [],
 					"recsPerRow": 1
 				},
-				"grid": {
-					"modelId": "simple-grid",
-					"grid": [
-						{
-							"cells": [
-								{
-									"cell": "c1"
-								}
-							],
-							"section": ""
-						},
-						{
-							"cells": [
-								{
-									"cell": "c2"
-								}
-							],
-							"section": ""
-						}
-					],
-					"cells": {
-						"c1": {
-							"model": "c1",
-							"items": [
-								"simple_grid_field2",
-								"simple_grid_field3",
-								"simple_grid_field14",
-								"simple_grid_field1",
-								"simple_grid_field",
-								"simple_grid_field7",
-								"simple_grid_field11",
-								"simple_grid_field8",
-								"simple_grid_field4"
-							]
-						},
-						"c2": {
-							"model": "c2",
-							"items": [
-								"details_preview",
-								"details_preview1",
-								"details_preview2"
-							]
-						}
-					},
-					"deferredItems": [
-						"grid_checkbox",
-						"grid_checkbox_head",
-						"grid_edit",
-						"grid_alldetails_link",
-						"grid_details_link",
-						"grid_inline_edit",
-						"grid_inline_save",
-						"grid_inline_cancel"
-					],
-					"recsPerRow": 1
-				},
 				"top": {
 					"modelId": "list-sidebar-top",
 					"grid": [],
 					"cells": {},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "horizontal-grid",
+					"grid": [
+						{
+							"section": "head",
+							"cells": [
+								{
+									"cell": "headcell_icons"
+								},
+								{
+									"cell": "headcell_checkbox"
+								},
+								{
+									"cell": "headcell_details"
+								},
+								{
+									"cell": "headcell_field"
+								},
+								{
+									"cell": "headcell_field1"
+								},
+								{
+									"cell": "headcell_field2"
+								},
+								{
+									"cell": "headcell_field4"
+								},
+								{
+									"cell": "headcell_field5"
+								},
+								{
+									"cell": "headcell_field6"
+								},
+								{
+									"cell": "headcell_field7"
+								},
+								{
+									"cell": "headcell_field9"
+								},
+								{
+									"cell": "headcell_field12"
+								},
+								{
+									"cell": "headcell_field10"
+								},
+								{
+									"cell": "headcell_field3"
+								},
+								{
+									"cell": "headcell_field11"
+								}
+							]
+						},
+						{
+							"section": "body",
+							"cells": [
+								{
+									"cell": "cell_icons"
+								},
+								{
+									"cell": "cell_checkbox"
+								},
+								{
+									"cell": "cell_details"
+								},
+								{
+									"cell": "cell_field"
+								},
+								{
+									"cell": "cell_field1"
+								},
+								{
+									"cell": "cell_field2"
+								},
+								{
+									"cell": "cell_field4"
+								},
+								{
+									"cell": "cell_field5"
+								},
+								{
+									"cell": "cell_field6"
+								},
+								{
+									"cell": "cell_field7"
+								},
+								{
+									"cell": "cell_field9"
+								},
+								{
+									"cell": "cell_field12"
+								},
+								{
+									"cell": "cell_field10"
+								},
+								{
+									"cell": "cell_field3"
+								},
+								{
+									"cell": "cell_field11"
+								}
+							]
+						},
+						{
+							"cells": [
+								{
+									"cell": "cell_dpreview",
+									"colspan": 15
+								}
+							],
+							"section": "body"
+						},
+						{
+							"section": "foot",
+							"cells": [
+								{
+									"cell": "footcell_icons"
+								},
+								{
+									"cell": "footcell_checkbox"
+								},
+								{
+									"cell": "footcell_details"
+								},
+								{
+									"cell": "footcell_field"
+								},
+								{
+									"cell": "footcell_field1"
+								},
+								{
+									"cell": "footcell_field2"
+								},
+								{
+									"cell": "footcell_field4"
+								},
+								{
+									"cell": "footcell_field5"
+								},
+								{
+									"cell": "footcell_field6"
+								},
+								{
+									"cell": "footcell_field7"
+								},
+								{
+									"cell": "footcell_field9",
+									"colspan": 2
+								},
+								{
+									"cell": "footcell_field10"
+								},
+								{
+									"cell": "footcell_field3"
+								},
+								{
+									"cell": "footcell_field11"
+								}
+							]
+						}
+					],
+					"cells": {
+						"headcell_field": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field6"
+							],
+							"field": "referencia",
+							"columnName": "field"
+						},
+						"cell_field": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field2"
+							],
+							"field": "referencia",
+							"columnName": "field"
+						},
+						"footcell_field": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "referencia",
+							"columnName": "field"
+						},
+						"headcell_field1": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field9"
+							],
+							"field": "fecha",
+							"columnName": "field"
+						},
+						"cell_field1": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field3"
+							],
+							"field": "fecha",
+							"columnName": "field"
+						},
+						"footcell_field1": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "fecha",
+							"columnName": "field"
+						},
+						"headcell_field2": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field15"
+							],
+							"field": "doctos",
+							"columnName": "field"
+						},
+						"cell_field2": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field14"
+							],
+							"field": "doctos",
+							"columnName": "field"
+						},
+						"footcell_field2": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "doctos",
+							"columnName": "field"
+						},
+						"headcell_field4": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field12"
+							],
+							"field": "cliente",
+							"columnName": "field"
+						},
+						"cell_field4": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field"
+							],
+							"field": "cliente",
+							"columnName": "field"
+						},
+						"footcell_field4": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "cliente",
+							"columnName": "field"
+						},
+						"headcell_field5": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field13"
+							],
+							"field": "usuario",
+							"columnName": "field"
+						},
+						"cell_field5": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field7"
+							],
+							"field": "usuario",
+							"columnName": "field"
+						},
+						"footcell_field5": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "usuario",
+							"columnName": "field"
+						},
+						"headcell_field6": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field16"
+							],
+							"field": "venta",
+							"columnName": "field"
+						},
+						"cell_field6": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field11"
+							],
+							"field": "venta",
+							"columnName": "field"
+						},
+						"footcell_field6": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "venta",
+							"columnName": "field"
+						},
+						"headcell_field7": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field17"
+							],
+							"field": "fechaingreso",
+							"columnName": "field"
+						},
+						"cell_field7": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field8"
+							],
+							"field": "fechaingreso",
+							"columnName": "field"
+						},
+						"footcell_field7": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "fechaingreso",
+							"columnName": "field"
+						},
+						"headcell_field9": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label1"
+							],
+							"field": "estatusentrega",
+							"columnName": "field"
+						},
+						"cell_field9": {
+							"model": "cell_field",
+							"items": [
+								"grid_field1"
+							],
+							"field": "estatusentrega",
+							"columnName": "field",
+							"align": "center"
+						},
+						"footcell_field9": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "estatusentrega",
+							"columnName": "field"
+						},
+						"cell_dpreview": {
+							"model": "cell_dpreview",
+							"items": [
+								"details_preview1",
+								"details_preview3",
+								"details_preview4"
+							],
+							"columnName": "field",
+							"field": "fechahoraentrega"
+						},
+						"headcell_checkbox": {
+							"model": "headcell_checkbox",
+							"items": [
+								"grid_checkbox_head"
+							],
+							"columnName": "checkbox",
+							"field": ""
+						},
+						"cell_checkbox": {
+							"model": "cell_checkbox",
+							"items": [
+								"grid_checkbox"
+							],
+							"columnName": "checkbox",
+							"field": ""
+						},
+						"footcell_checkbox": {
+							"model": "footcell_checkbox",
+							"items": [],
+							"columnName": "checkbox",
+							"field": ""
+						},
+						"headcell_icons": {
+							"model": "headcell_icons",
+							"items": [],
+							"columnName": "list-icons",
+							"field": ""
+						},
+						"cell_icons": {
+							"model": "cell_icons",
+							"items": [
+								"grid_edit",
+								"grid_inline_edit",
+								"grid_inline_save",
+								"grid_inline_cancel"
+							],
+							"columnName": "list-icons",
+							"field": ""
+						},
+						"footcell_icons": {
+							"model": "footcell_icons",
+							"items": [],
+							"columnName": "list-icons",
+							"field": ""
+						},
+						"headcell_details": {
+							"model": "headcell_details",
+							"items": [],
+							"columnName": "details",
+							"field": ""
+						},
+						"cell_details": {
+							"model": "cell_details",
+							"items": [
+								"grid_alldetails_link",
+								"grid_details_link",
+								"grid_details_link2",
+								"grid_details_link1"
+							],
+							"columnName": "details",
+							"field": ""
+						},
+						"footcell_details": {
+							"model": "footcell_details",
+							"items": [],
+							"columnName": "details",
+							"field": ""
+						},
+						"headcell_field10": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label2"
+							],
+							"field": "",
+							"columnName": ""
+						},
+						"cell_field10": {
+							"model": "cell_field",
+							"items": [
+								"grid_field2"
+							],
+							"field": "",
+							"columnName": ""
+						},
+						"footcell_field10": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "",
+							"columnName": ""
+						},
+						"headcell_field3": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label"
+							],
+							"field": "id",
+							"columnName": "field"
+						},
+						"cell_field3": {
+							"model": "cell_field",
+							"items": [
+								"id"
+							],
+							"field": "id",
+							"columnName": "field"
+						},
+						"footcell_field3": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "id",
+							"columnName": "field"
+						},
+						"headcell_field11": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field18"
+							],
+							"field": "fechahoraentrega",
+							"columnName": "field"
+						},
+						"cell_field11": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field4"
+							],
+							"field": "fechahoraentrega",
+							"columnName": "field"
+						},
+						"footcell_field11": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "fechahoraentrega",
+							"columnName": "field"
+						},
+						"headcell_field12": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "estatusentrega",
+							"columnName": "field"
+						},
+						"cell_field12": {
+							"model": "cell_field",
+							"items": [
+								"custom_button"
+							],
+							"field": "estatusentrega",
+							"columnName": "field",
+							"align": "center"
+						}
+					},
 					"deferredItems": [],
 					"recsPerRow": 1
 				}
@@ -2387,51 +2943,14 @@
 				"pagination": {
 					"type": "pagination"
 				},
-				"grid_checkbox": {
-					"type": "grid_checkbox"
-				},
-				"grid_checkbox_head": {
-					"type": "grid_checkbox_head"
-				},
 				"details_found": {
 					"type": "details_found"
-				},
-				"simple_grid_field2": {
-					"field": "referencia",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field3": {
-					"field": "fecha",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field7": {
-					"field": "usuario",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field8": {
-					"field": "fechaingreso",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field11": {
-					"field": "venta",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
 				},
 				"search_panel": {
 					"type": "search_panel",
 					"items": [
 						"search_panel_field3",
 						"search_panel_field",
-						"search_panel_field1",
 						"search_panel_field2"
 					],
 					"_flexiblePanel": true
@@ -2499,28 +3018,118 @@
 				"-2": {
 					"type": "-"
 				},
-				"grid_edit": {
-					"type": "grid_edit"
-				},
 				"delete": {
 					"type": "delete"
 				},
 				"delete_selected": {
 					"type": "delete_selected"
 				},
+				"print_details": {
+					"type": "print_details",
+					"tables": {
+						"80289759": true,
+						"2657604414": true,
+						"3318556632": true
+					}
+				},
+				"search_panel_field": {
+					"field": "cliente",
+					"type": "search_panel_field"
+				},
+				"edit_selected": {
+					"type": "edit_selected"
+				},
+				"inline_save_all": {
+					"type": "inline_save_all"
+				},
+				"inline_cancel_all": {
+					"type": "inline_cancel_all"
+				},
+				"simple_grid_field2": {
+					"field": "referencia",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field6": {
+					"type": "grid_field_label",
+					"field": "referencia"
+				},
+				"simple_grid_field3": {
+					"field": "fecha",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field9": {
+					"type": "grid_field_label",
+					"field": "fecha"
+				},
+				"simple_grid_field14": {
+					"field": "doctos",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": true
+				},
+				"simple_grid_field15": {
+					"type": "grid_field_label",
+					"field": "doctos"
+				},
+				"simple_grid_field": {
+					"field": "cliente",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false,
+					"nowrap": true
+				},
+				"simple_grid_field12": {
+					"type": "grid_field_label",
+					"field": "cliente"
+				},
+				"simple_grid_field7": {
+					"field": "usuario",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field13": {
+					"type": "grid_field_label",
+					"field": "usuario"
+				},
+				"simple_grid_field11": {
+					"field": "venta",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field16": {
+					"type": "grid_field_label",
+					"field": "venta"
+				},
+				"simple_grid_field8": {
+					"field": "fechaingreso",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field17": {
+					"type": "grid_field_label",
+					"field": "fechaingreso"
+				},
+				"simple_grid_field4": {
+					"field": "direccion",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false,
+					"nowrap": true
+				},
+				"simple_grid_field18": {
+					"type": "grid_field_label",
+					"field": "direccion"
+				},
 				"details_preview": {
 					"type": "deleted",
 					"itemId": "details_preview"
-				},
-				"grid_alldetails_link": {
-					"type": "grid_alldetails_link"
-				},
-				"grid_details_link": {
-					"type": "grid_details_link",
-					"table": 2657604414,
-					"badge": true,
-					"hideIfNone": true,
-					"showCount": true
 				},
 				"details_preview1": {
 					"type": "details_preview",
@@ -2531,45 +3140,21 @@
 					"popup": false,
 					"pageId": "list"
 				},
-				"print_details": {
-					"type": "print_details",
-					"tables": {
-						"80289759": true,
-						"2657604414": true
-					}
-				},
-				"simple_grid_field1": {
-					"field": "tienda",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"search_panel_field1": {
-					"field": "tienda",
-					"type": "search_panel_field"
-				},
-				"simple_grid_field": {
-					"field": "cliente",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"search_panel_field": {
-					"field": "cliente",
-					"type": "search_panel_field"
-				},
 				"details_preview2": {
 					"type": "deleted",
 					"itemId": "details_preview2"
 				},
-				"simple_grid_field14": {
-					"field": "doctos",
-					"type": "simple_grid_field",
-					"inlineAdd": false,
-					"inlineEdit": true
+				"grid_checkbox": {
+					"type": "grid_checkbox"
 				},
-				"edit_selected": {
-					"type": "edit_selected"
+				"grid_checkbox_head": {
+					"type": "grid_checkbox_head"
+				},
+				"grid_edit": {
+					"type": "grid_edit"
+				},
+				"grid_alldetails_link": {
+					"type": "grid_alldetails_link"
 				},
 				"grid_inline_edit": {
 					"type": "grid_inline_edit"
@@ -2580,17 +3165,79 @@
 				"grid_inline_cancel": {
 					"type": "grid_inline_cancel"
 				},
-				"inline_save_all": {
-					"type": "inline_save_all"
+				"grid_details_link": {
+					"type": "grid_details_link",
+					"table": 2657604414,
+					"badge": true,
+					"hideIfNone": true,
+					"showCount": true
 				},
-				"inline_cancel_all": {
-					"type": "inline_cancel_all"
-				},
-				"simple_grid_field4": {
-					"field": "direccion",
-					"type": "simple_grid_field",
+				"grid_field1": {
+					"field": "estatusentrega",
+					"type": "grid_field",
 					"inlineEdit": false,
-					"inlineAdd": false
+					"inlineAdd": false,
+					"nowrap": true
+				},
+				"grid_field_label1": {
+					"type": "grid_field_label",
+					"field": "estatusentrega"
+				},
+				"custom_button": {
+					"type": "custom_button",
+					"eventGid": 1860920411,
+					"label": {
+						"type": 0,
+						"text": ""
+					},
+					"icon": {
+						"glyph": "transfer"
+					}
+				},
+				"grid_field_label": {
+					"type": "grid_field_label",
+					"field": "id"
+				},
+				"grid_field2": {
+					"field": "fechahoraentrega",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false,
+					"nowrap": true
+				},
+				"grid_field_label2": {
+					"type": "grid_field_label",
+					"field": "fechahoraentrega"
+				},
+				"details_preview3": {
+					"type": "deleted",
+					"itemId": "details_preview3"
+				},
+				"grid_details_link1": {
+					"type": "deleted",
+					"itemId": "grid_details_link1"
+				},
+				"grid_details_link2": {
+					"type": "grid_details_link",
+					"table": 3318556632,
+					"badge": true,
+					"showCount": true,
+					"hideIfNone": true
+				},
+				"details_preview4": {
+					"type": "details_preview",
+					"table": 3318556632,
+					"items": [],
+					"hideEmptyPreview": true,
+					"proceedLink": true,
+					"popup": false,
+					"pageId": "list"
+				},
+				"id": {
+					"field": "id",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
 				}
 			},
 			"dbProps": {},
@@ -2601,7 +3248,7 @@
 			"imageBgColor": "#f2f2f2",
 			"controlsBgColor": "white",
 			"imagePosition": "right",
-			"pageCSS": "/* Put  your custom CSS code here */\n\n/* Put  your custom CSS code here */\n\n/* Put  your custom CSS code here */\n/*\n.table {\n    font-family: 'Arial', sans-serif !important;\n    font-size: 12px !important;\n    border-collapse: collapse !important;\n}*/\n\n\n/* ========================================================= */\n/* VARIABLES DE COLOR */\n/* ========================================================= */\n:root {\n    /* Color de acento para botones, foco y texto */\n    --color-acento: #48C9B0; /* Turquesa/Menta */ \n    --color-elegante: #1C334A; /* Azul Marino Oscuro */\n}\n\n/* ========================================================= */\n/* 1. Fondo de la Página: Degradado Azul Cielo Intenso       */\n/* ========================================================= */\nbody, .container-fluid {\n    /* Mismo fondo azul que usamos en el formulario de agregar */\n    background: linear-gradient(180deg, #E0F7FA 0%, #B3E5FC 100%) !important; \n    min-height: 100vh;\n}\n\n/* ========================================================= */\n/* 2. Contenedor de la Lista (El \"Body\" principal de la tabla) */\n/* Aplicamos el efecto de Tarjeta y Sombra a este contenedor */\n/* El selector depende del tema, pero '.rnr-b-grid' suele ser el contenedor de la tabla */\n.rnr-body .rnr-c-body, \n.rnr-b-grid, \n.rnr-c-grid,\n.panel-default {\n    background-color: #FFFFFF !important; \n    border: none !important; \n    border-radius: 12px !important; \n    \n    /* Sombreado elegante de la tarjeta */\n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), \n                0 2px 6px rgba(0, 0, 0, 0.05) !important; \n}\n\n/* 3. Encabezados y Barras de Herramientas (Parte superior e inferior) */\n/* Limpiamos el diseño de los paneles que rodean la tabla */\n.rnr-c-hsucc, .rnr-c-message, .rnr-c-hcell {\n    background-color: transparent !important;\n    border: none !important;\n}\n\n/* 4. Estilo de las Filas de Datos (Efecto Hover de Elevación) */\n/* Le da interactividad a la tabla */\n.rnr-body tr {\n    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;\n}\n\n.rnr-body tr:hover {\n    background-color: #fcfcfc !important; /* Ligeramente más claro al pasar el mouse */\n    \n    /* Sombra y elevación sutil para destacar la fila */\n    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1), \n                0 1px 3px rgba(0, 0, 0, 0.05) !important;\n    transform: translateY(-1px);\n}\n\n/* 5. Asegurar que las celdas del encabezado de la tabla se vean bien */\n.rnr-c-grid th {\n    background-color: #f7f7f7 !important; /* Fondo sutil para el header de la tabla */\n    color: var(--color-elegante) !important;\n    font-weight: 600;\n    border-bottom: 2px solid var(--color-acento) !important;\n}\n\n/* 6. Barras de Paginación y Búsqueda */\n.rnr-bottom .panel, .rnr-c-search, .rnr-c-top, .rnr-bottom-nav {\n    background-color: transparent !important;\n    border: none !important;\n    box-shadow: none !important; /* Quitamos la sombra a estos elementos */\n}\n\n\n\n/* ========================================================= */\n/* ESTILOS PARA CELDAS DE ESTADO (FORMATO CONDICIONAL)       */\n/* ========================================================= */\n\n/* Clase base para el estilo de \"badge\" o \"tag\" */\n.status-badge {\n    display: inline-block; /* Para que tome el tamaño del contenido */\n    padding: 5px 10px; /* Relleno interno */\n    border-radius: 20px; /* MUY REDONDEADO para el efecto de píldora */\n    font-weight: bold;\n    font-size: 0.85em;\n    text-align: center;\n    min-width: 80px; /* Ancho mínimo para que no se vea muy pequeño */\n    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Sombra sutil */\n}\n\n/* Estado: Entregado (Verde) */\n.status-entregado {\n    background-color: #D4EDDA; /* Verde pastel claro */\n    color: #155724; /* Texto verde oscuro */\n    border: 1px solid #C3E6CB; /* Borde sutil */\n}\n\n/* Estado: Pendiente (Amarillo) */\n.status-pendiente {\n    background-color: #FFF3CD; /* Amarillo pastel claro */\n    color: #856404; /* Texto amarillo oscuro */\n    border: 1px solid #FFEEBA;\n}\n\n/* Estado: Cancelado (Rojo) */\n.status-cancelado {\n    background-color: #F8D7DA; /* Rojo pastel claro */\n    color: #721C24; /* Texto rojo oscuro */\n    border: 1px solid #F5C6CB;\n}\n\n/* Agrega más estados según sea necesario */\n/* Estado: En Proceso (Azul) */\n.status-en-proceso {\n    background-color: #D1ECF1; /* Azul pastel claro */\n    color: #0C5460; /* Texto azul oscuro */\n    border: 1px solid #BEE5EB;\n}\n\n\n/* ========================================================= */\n/* ELIMINAR SEPARADORES DE COLUMNA (LÍNEAS VERTICALES)        */\n/* ========================================================= */\n/* Mantén líneas horizontales ligeras, borra las verticales */\n.rnr-gridtable td,\n.rnr-gridtable th {\n  border-left: none !important;\n  border-right: none !important;\n  box-shadow: none !important; /* algunos temas usan sombras como divisores */\n}\n\n/* Si quieres una línea horizontal sutil */\n.rnr-gridtable td {\n  border-top: 1px solid #eee !important;\n}\n.rnr-gridtable thead th {\n  border-bottom: 1px solid #e6e6e6 !important;\n}\n",
+			"pageCSS": "/* Put  your custom CSS code here */\n\n/* Put  your custom CSS code here */\n\n/* Put  your custom CSS code here */\n/*\n.table {\n    font-family: 'Arial', sans-serif !important;\n    font-size: 12px !important;\n    border-collapse: collapse !important;\n}*/\n\n\n/* ========================================================= */\n/* VARIABLES DE COLOR */\n/* ========================================================= */\n:root {\n    /* Color de acento para botones, foco y texto */\n    --color-acento: #48C9B0; /* Turquesa/Menta */ \n    --color-elegante: #1C334A; /* Azul Marino Oscuro */\n}\n\n/* ========================================================= */\n/* 1. Fondo de la Página: Degradado Azul Cielo Intenso       */\n/* ========================================================= */\nbody, .container-fluid {\n    /* Mismo fondo azul que usamos en el formulario de agregar */\n    background: linear-gradient(180deg, #E0F7FA 0%, #B3E5FC 100%) !important; \n    min-height: 100vh;\n}\n\n/* ========================================================= */\n/* 2. Contenedor de la Lista (El \"Body\" principal de la tabla) */\n/* Aplicamos el efecto de Tarjeta y Sombra a este contenedor */\n/* El selector depende del tema, pero '.rnr-b-grid' suele ser el contenedor de la tabla */\n.rnr-body .rnr-c-body, \n.rnr-b-grid, \n.rnr-c-grid,\n.panel-default {\n    background-color: #FFFFFF !important; \n    border: none !important; \n    border-radius: 12px !important; \n    \n    /* Sombreado elegante de la tarjeta */\n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), \n                0 2px 6px rgba(0, 0, 0, 0.05) !important; \n}\n\n/* 3. Encabezados y Barras de Herramientas (Parte superior e inferior) */\n/* Limpiamos el diseño de los paneles que rodean la tabla */\n.rnr-c-hsucc, .rnr-c-message, .rnr-c-hcell {\n    background-color: transparent !important;\n    border: none !important;\n}\n\n/* 4. Estilo de las Filas de Datos (Efecto Hover de Elevación) */\n/* Le da interactividad a la tabla */\n.rnr-body tr {\n    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;\n}\n\n.rnr-body tr:hover {\n    background-color: #fcfcfc !important; /* Ligeramente más claro al pasar el mouse */\n    \n    /* Sombra y elevación sutil para destacar la fila */\n    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1), \n                0 1px 3px rgba(0, 0, 0, 0.05) !important;\n    transform: translateY(-1px);\n}\n\n/* 5. Asegurar que las celdas del encabezado de la tabla se vean bien */\n.rnr-c-grid th {\n    background-color: #f7f7f7 !important; /* Fondo sutil para el header de la tabla */\n    color: var(--color-elegante) !important;\n    font-weight: 600;\n    border-bottom: 2px solid var(--color-acento) !important;\n}\n\n/* 6. Barras de Paginación y Búsqueda */\n.rnr-bottom .panel, .rnr-c-search, .rnr-c-top, .rnr-bottom-nav {\n    background-color: transparent !important;\n    border: none !important;\n    box-shadow: none !important; /* Quitamos la sombra a estos elementos */\n}\n\n\n\n/* ========================================================= */\n/* ESTILOS PARA CELDAS DE ESTADO (FORMATO CONDICIONAL)       */\n/* ========================================================= */\n\n/* Clase base para el estilo de \"badge\" o \"tag\" */\n.status-badge {\n    display: inline-block; /* Para que tome el tamaño del contenido */\n    padding: 5px 10px; /* Relleno interno */\n    border-radius: 20px; /* MUY REDONDEADO para el efecto de píldora */\n    font-weight: bold;\n    font-size: 0.85em;\n    text-align: center;\n    min-width: 80px; /* Ancho mínimo para que no se vea muy pequeño */\n    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Sombra sutil */\n}\n\n/* Estado: Entregado (Verde) */\n.status-entregado {\n    background-color: #D4EDDA; /* Verde pastel claro */\n    color: #155724; /* Texto verde oscuro */\n    border: 1px solid #C3E6CB; /* Borde sutil */\n}\n\n/* Estado: Pendiente (Amarillo) */\n.status-pendiente {\n    background-color: #FFF3CD; /* Amarillo pastel claro */\n    color: #856404; /* Texto amarillo oscuro */\n    border: 1px solid #FFEEBA;\n}\n\n/* Estado: Cancelado (Rojo) */\n.status-cancelado {\n    background-color: #F8D7DA; /* Rojo pastel claro */\n    color: #721C24; /* Texto rojo oscuro */\n    border: 1px solid #F5C6CB;\n}\n\n/* Agrega más estados según sea necesario */\n/* Estado: En Proceso (Azul) */\n.status-en-proceso {\n    background-color: #D1ECF1; /* Azul pastel claro */\n    color: #0C5460; /* Texto azul oscuro */\n    border: 1px solid #BEE5EB;\n}\n\n\n/* ========================================================= */\n/* ELIMINAR SEPARADORES DE COLUMNA (LÍNEAS VERTICALES)        */\n/* ========================================================= */\n/* Mantén líneas horizontales ligeras, borra las verticales */\n.rnr-gridtable td,\n.rnr-gridtable th {\n  border-left: none !important;\n  border-right: none !important;\n  box-shadow: none !important; /* algunos temas usan sombras como divisores */\n}\n\n/* Si quieres una línea horizontal sutil */\n.rnr-gridtable td {\n  border-top: 1px solid #eee !important;\n}\n.rnr-gridtable thead th {\n  border-bottom: 1px solid #e6e6e6 !important;\n}\n\n/* Cambia \"mi_campo\" por el nombre real del campo */\nth[data-field=\"id\"],\ntd[data-field=\"id\"]{\n  display:none !important;\n}\n",
 			"listTotals": 1,
 			"title": {}
 		},
@@ -2722,7 +3369,9 @@
 							"items": [
 								"details_preview",
 								"details_preview1",
-								"details_preview2"
+								"details_preview2",
+								"details_preview3",
+								"details_preview4"
 							]
 						}
 					},
@@ -2797,6 +3446,16 @@
 				"details_preview2": {
 					"type": "deleted",
 					"itemId": "details_preview2"
+				},
+				"details_preview3": {
+					"type": "deleted",
+					"itemId": "details_preview3"
+				},
+				"details_preview4": {
+					"type": "details_preview",
+					"table": 3318556632,
+					"items": [],
+					"popup": false
 				}
 			},
 			"dbProps": {},
@@ -2923,7 +3582,6 @@
 								"simple_grid_field21",
 								"simple_grid_field22",
 								"simple_grid_field23",
-								"simple_grid_field24",
 								"simple_grid_field25",
 								"simple_grid_field26",
 								"simple_grid_field27",
@@ -2936,7 +3594,11 @@
 								"simple_grid_field34",
 								"simple_grid_field35",
 								"simple_grid_field36",
-								"simple_grid_field37"
+								"simple_grid_field37",
+								"simple_grid_field38",
+								"simple_grid_field24",
+								"simple_grid_field39",
+								"simple_grid_field40"
 							]
 						}
 					},
@@ -3047,10 +3709,6 @@
 					"field": "Acceso",
 					"type": "simple_grid_field"
 				},
-				"simple_grid_field24": {
-					"field": "tienda",
-					"type": "simple_grid_field"
-				},
 				"simple_grid_field25": {
 					"field": "cliente",
 					"type": "simple_grid_field"
@@ -3101,6 +3759,22 @@
 				},
 				"simple_grid_field37": {
 					"field": "observaciones",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field38": {
+					"field": "btn_entrega_html",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field24": {
+					"field": "Tienda",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field39": {
+					"field": "estatusentrega",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field40": {
+					"field": "fechahoraentrega",
 					"type": "simple_grid_field"
 				}
 			},
@@ -3227,7 +3901,6 @@
 								"simple_grid_field21",
 								"simple_grid_field22",
 								"simple_grid_field23",
-								"simple_grid_field24",
 								"simple_grid_field25",
 								"simple_grid_field26",
 								"simple_grid_field27",
@@ -3240,7 +3913,11 @@
 								"simple_grid_field34",
 								"simple_grid_field35",
 								"simple_grid_field36",
-								"simple_grid_field37"
+								"simple_grid_field37",
+								"simple_grid_field38",
+								"simple_grid_field24",
+								"simple_grid_field39",
+								"simple_grid_field40"
 							]
 						}
 					},
@@ -3348,10 +4025,6 @@
 					"field": "Acceso",
 					"type": "simple_grid_field"
 				},
-				"simple_grid_field24": {
-					"field": "tienda",
-					"type": "simple_grid_field"
-				},
 				"simple_grid_field25": {
 					"field": "cliente",
 					"type": "simple_grid_field"
@@ -3402,6 +4075,22 @@
 				},
 				"simple_grid_field37": {
 					"field": "observaciones",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field38": {
+					"field": "btn_entrega_html",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field24": {
+					"field": "Tienda",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field39": {
+					"field": "estatusentrega",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field40": {
+					"field": "fechahoraentrega",
 					"type": "simple_grid_field"
 				}
 			},

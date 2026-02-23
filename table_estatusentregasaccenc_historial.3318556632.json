@@ -1,0 +1,1700 @@
+{
+	"sql": "SELECT\r\n\tid,\r\n\tidaccenc,\r\n\testatusentrega,\r\n\tcomentario,\r\n\tfechacaptura,\r\n\tusuario,\r\n\tfechahoraentrega\r\nFROM\r\n\testatusentregasaccenc_historial",
+	"connId": "conn",
+	"originalTable": "estatusentregasaccenc_historial",
+	"name": "estatusentregasaccenc_historial",
+	"shortTableName": "estatusentregasaccenc_historial",
+	"dbType": 0,
+	"keyFields": [
+		"id"
+	],
+	"masterTables": [
+		{
+			"table": 3836892972,
+			"masterKeys": [
+				"id"
+			],
+			"detailsKeys": [
+				"idaccenc"
+			]
+		}
+	],
+	"detailsBadgeColor": "cfae83",
+	"fields": [
+		{
+			"name": "id",
+			"sqlExpression": "id",
+			"index": 1,
+			"strField": "id",
+			"type": 3,
+			"autoinc": true,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Id"
+			},
+			"tableName": "estatusentregasaccenc_historial"
+		},
+		{
+			"name": "idaccenc",
+			"sqlExpression": "idaccenc",
+			"index": 2,
+			"strField": "idaccenc",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Idaccenc"
+			},
+			"tableName": "estatusentregasaccenc_historial"
+		},
+		{
+			"name": "estatusentrega",
+			"sqlExpression": "estatusentrega",
+			"index": 3,
+			"strField": "estatusentrega",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Lookup wizard",
+					"required": true,
+					"lookupTable": "estatusentregas_miembros",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "estatusentrega",
+					"lookupDisplayField": "estatusentrega"
+				}
+			],
+			"label": {
+				"Spanish": "Estatus entrega"
+			},
+			"tableName": "estatusentregasaccenc_historial"
+		},
+		{
+			"name": "comentario",
+			"sqlExpression": "comentario",
+			"index": 4,
+			"strField": "comentario",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Text area"
+				}
+			],
+			"label": {
+				"Spanish": "Comentario"
+			},
+			"tableName": "estatusentregasaccenc_historial"
+		},
+		{
+			"name": "fechacaptura",
+			"sqlExpression": "fechacaptura",
+			"index": 5,
+			"strField": "fechacaptura",
+			"type": 135,
+			"viewFormats": [
+				{
+					"format": "Datetime"
+				}
+			],
+			"editFormats": [
+				{
+					"format": "Date",
+					"dateEditType": 11
+				}
+			],
+			"label": {
+				"Spanish": "Fechacaptura"
+			},
+			"tableName": "estatusentregasaccenc_historial"
+		},
+		{
+			"name": "usuario",
+			"sqlExpression": "usuario",
+			"index": 6,
+			"strField": "usuario",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Usuario"
+			},
+			"tableName": "estatusentregasaccenc_historial"
+		},
+		{
+			"name": "fechahoraentrega",
+			"sqlExpression": "fechahoraentrega",
+			"index": 7,
+			"strField": "fechahoraentrega",
+			"type": 135,
+			"viewFormats": [
+				{
+					"format": "Datetime"
+				}
+			],
+			"editFormats": [
+				{
+					"format": "Date",
+					"dateEditType": 11,
+					"dateShowTime": true
+				}
+			],
+			"label": {
+				"Spanish": "Fecha/hora entrega"
+			},
+			"tableName": "estatusentregasaccenc_historial"
+		}
+	],
+	"eventHandlers": [
+		{
+			"eventId": "EVENT_BEFOREADD",
+			"pageType": "add",
+			"code": "// Si no viene capturado, tomarlo de la URL\r\nif (empty($values[\"idaccenc\"])) {\r\n    if (isset($_SESSION[\"idaccenc_hist\"])) {\r\n        $values[\"idaccenc\"] = (int)$_SESSION[\"idaccenc_hist\"];\r\n    }\r\n}\r\n// campos automáticos opcionales\r\n$values[\"fechacaptura\"] = now();\r\n$values[\"usuario\"]  = $_SESSION[\"UserID\"];\r\n\r\nreturn true;\r\n"
+		},
+		{
+			"eventId": "EVENT_AFTERADD",
+			"pageType": "add",
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n\nglobal $conn;\n\n$fechaSql = \"NULL\";\n\n// Valores recién insertados\n$idaccenc = (int)$values[\"idaccenc\"];\n$decision  = $values[\"estatusentrega\"];\n\nif (isset($values[\"fechahoraentrega\"]) && $values[\"fechahoraentrega\"] !== \"\") {\n    $raw = $values[\"fechahoraentrega\"];\n    $ts  = strtotime($raw);\n    if ($ts !== false) {\n        $fechaSql = \"'\".date('Y-m-d H:i:s', $ts).\"'\";\n    }\n}\n// 1) Actualizar la decisión en la tabla principal\n$sql = \"UPDATE accenc \n        SET estatusentrega = '\".$decision.\"', fechahoraentrega = \".$fechaSql.\"\n        WHERE id = \".$idaccenc;\ndb_exec($sql, $conn);\n\n// 2) Refrescar el listado y cerrar la ventana\necho \"<script>\n  if (window.opener && !window.opener.closed) {\n      window.opener.location.reload();\n  }\n  window.close();\n</script>\";\nexit();\n"
+		},
+		{
+			"eventId": "EVENT_PROCESSVALUES_ADD",
+			"pageType": "add",
+			"code": "if (isset($_GET[\"idaccenc\"]) && $_GET[\"idaccenc\"] != \"\") {\r\n    // Prellenar el campo para el formulario\r\n    $values[\"idaccenc\"] = (int)$_GET[\"idaccenc\"];\r\n\r\n    // Y por si acaso, también lo guardamos en sesión\r\n    $_SESSION[\"idaccenc_hist\"] = (int)$_GET[\"idaccenc\"];\r\n\r\n   // error_log(\"BeforeDisplay GET idsolicitud:\".$_GET[\"idsolicitud\"].PHP_EOL,3,\"debug_log.log\");\r\n}\r\n"
+		},
+		{
+			"eventId": "EVENT_BEFORESHOW_ADD",
+			"pageType": "add",
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\nif ($_SESSION[\"Label\"]!==\"VENDEDORES\" && $_SESSION[\"Label\"]!==\"GERENTES\") {\n   $pageObject->hideField(\"fechahoraentrega\"); \n}"
+		},
+		{
+			"eventId": "EVENT_JS_ONLOAD",
+			"pageType": "add",
+			"code": "if (typeof pageObj !== \"undefined\" && pageObj) {\r\n\r\n    pageObj.on(\"afterSave\", function(result, formData){\r\n        // Aquí solo se entra si guardó bien\r\n        if (window.opener && !window.opener.closed) {\r\n            window.opener.location.reload();\r\n        }\r\n        window.close();\r\n    });\r\n\r\n}\r\n\r\n\r\n\r\n\r\n\r\n$(function(){\r\n\r\n  // Botón personalizado \"Regresar a la lista\"\r\n  $(\"#btnRegresarLista\").on(\"click\", function(e){\r\n      e.preventDefault();\r\n\r\n      // Si la página fue abierta desde la lista de solicitudes…\r\n      if (window.opener && !window.opener.closed) {\r\n          // Opcional: refrescar la lista\r\n          // window.opener.location.href = \"solicitudes_list.php\";\r\n          window.opener.location.reload();\r\n      }\r\n\r\n      // Cerrar esta ventana\r\n      window.close();\r\n  });\r\n\r\n});\r\n"
+		}
+	],
+	"dbTableInfo": {
+		"type": 0,
+		"foreignKeys": [],
+		"fields": [
+			{
+				"name": "id",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": false,
+				"autoinc": true,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idaccenc",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": false,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "estatusentrega",
+				"type": 200,
+				"size": 45,
+				"scale": 0,
+				"typeName": "varchar(45)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "comentario",
+				"type": 200,
+				"size": 100,
+				"scale": 0,
+				"typeName": "varchar(100)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "fechacaptura",
+				"type": 135,
+				"size": 0,
+				"scale": 0,
+				"typeName": "datetime",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "usuario",
+				"type": 200,
+				"size": 20,
+				"scale": 0,
+				"typeName": "varchar(20)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "fechahoraentrega",
+				"type": 135,
+				"size": 0,
+				"scale": 0,
+				"typeName": "datetime",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			}
+		],
+		"primaryKeys": [
+			"id"
+		],
+		"uniqueFields": [],
+		"name": "estatusentregasaccenc_historial"
+	},
+	"pages": [
+		{
+			"id": "add",
+			"type": "add",
+			"layoutId": "nomenu",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "add-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"add_message"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "add-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"add_save",
+								"add_reset",
+								"add_back_list",
+								"add_cancel"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "add-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"add_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c3"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c3": {
+							"model": "c3",
+							"items": [
+								"integrated_edit_field1",
+								"integrated_edit_field",
+								"integrated_edit_field5"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				}
+			},
+			"items": {
+				"add_header": {
+					"type": "add_header",
+					"title": {
+						"page": "add",
+						"table": "estatusentregasaccenc_historial",
+						"type": 7
+					}
+				},
+				"add_back_list": {
+					"type": "add_back_list"
+				},
+				"add_cancel": {
+					"type": "add_cancel"
+				},
+				"add_message": {
+					"type": "add_message"
+				},
+				"add_save": {
+					"type": "add_save"
+				},
+				"add_reset": {
+					"type": "add_reset"
+				},
+				"integrated_edit_field1": {
+					"field": "estatusentrega",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"label": {
+						"field": "estatusentrega",
+						"table": "estatusentregasaccenc_historial",
+						"type": 3
+					}
+				},
+				"integrated_edit_field5": {
+					"field": "fechahoraentrega",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"label": {
+						"field": "fechahoraentrega",
+						"table": "estatusentregasaccenc_historial",
+						"type": 3
+					}
+				},
+				"integrated_edit_field": {
+					"field": "comentario",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {
+				"Spanish": "Entregas Historial, Añadir nuevo"
+			}
+		},
+		{
+			"id": "export",
+			"type": "export",
+			"layoutId": "first",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"supertop": {
+					"modelId": "panel-top",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "export-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"export_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "export-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"footer": {
+					"modelId": "export-footer",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"export_export",
+								"export_cancel"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"export_header": {
+					"type": "export_header"
+				},
+				"export_export": {
+					"type": "export_export"
+				},
+				"export_cancel": {
+					"type": "export_cancel"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {},
+			"exportFormat": 2,
+			"exportDelimiter": ",",
+			"exportSelectDelimiter": false,
+			"exportSelectFields": false
+		},
+		{
+			"id": "import",
+			"type": "import",
+			"layoutId": "first",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"supertop": {
+					"modelId": "panel-top",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "import-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"import_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "import-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"import_header": {
+					"type": "import_header"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "edit",
+			"type": "edit",
+			"layoutId": "nomenu",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "edit-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"edit_message"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "edit-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"edit_save",
+								"edit_back_list",
+								"edit_close"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"hamburger"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "edit-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"edit_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c3"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c3": {
+							"model": "c3",
+							"items": [
+								"integrated_edit_field",
+								"integrated_edit_field1",
+								"integrated_edit_field2",
+								"integrated_edit_field5"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				}
+			},
+			"items": {
+				"edit_header": {
+					"type": "edit_header"
+				},
+				"hamburger": {
+					"type": "hamburger",
+					"items": [
+						"edit_reset",
+						"edit_view"
+					]
+				},
+				"edit_reset": {
+					"type": "edit_reset"
+				},
+				"edit_message": {
+					"type": "edit_message"
+				},
+				"edit_save": {
+					"type": "edit_save"
+				},
+				"edit_back_list": {
+					"type": "edit_back_list"
+				},
+				"edit_close": {
+					"type": "edit_close"
+				},
+				"integrated_edit_field": {
+					"field": "idaccenc",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field1": {
+					"field": "estatusentrega",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field2": {
+					"field": "comentario",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"integrated_edit_field5": {
+					"field": "fechahoraentrega",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
+				},
+				"edit_view": {
+					"type": "edit_view"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "view",
+			"type": "view",
+			"layoutId": "nomenu",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "view-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1",
+									"colspan": 2
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "view-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"view_back_list",
+								"view_close"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"hamburger"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "view-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"view_header"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c3"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c3": {
+							"model": "c3",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
+				}
+			},
+			"items": {
+				"view_header": {
+					"type": "view_header"
+				},
+				"view_back_list": {
+					"type": "view_back_list"
+				},
+				"view_close": {
+					"type": "view_close"
+				},
+				"hamburger": {
+					"type": "hamburger",
+					"items": [
+						"view_edit"
+					]
+				},
+				"view_edit": {
+					"type": "view_edit"
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "list",
+			"type": "list",
+			"layoutId": "leftbar",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "list-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"add",
+								"delete"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"details_found",
+								"page_size",
+								"print_panel"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "list-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"pagination"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"left": {
+					"modelId": "leftbar-menu",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c0"
+								}
+							],
+							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c0": {
+							"model": "c0",
+							"items": [
+								"logo"
+							]
+						},
+						"c1": {
+							"model": "c1",
+							"items": [
+								"menu"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"supertop": {
+					"modelId": "leftbar-top",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"expand_menu_button",
+								"collapse_button",
+								"breadcrumb"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"simple_search",
+								"list_options",
+								"loginform_login",
+								"username_button"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "list-sidebar-top",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c2": {
+							"model": "c2",
+							"items": [
+								"master_info"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "horizontal-grid",
+					"grid": [
+						{
+							"section": "head",
+							"cells": [
+								{
+									"cell": "headcell_icons"
+								},
+								{
+									"cell": "headcell_checkbox"
+								},
+								{
+									"cell": "headcell_field"
+								},
+								{
+									"cell": "headcell_field1"
+								},
+								{
+									"cell": "headcell_field2"
+								},
+								{
+									"cell": "headcell_field3"
+								},
+								{
+									"cell": "headcell_field4"
+								}
+							]
+						},
+						{
+							"section": "body",
+							"cells": [
+								{
+									"cell": "cell_icons"
+								},
+								{
+									"cell": "cell_checkbox"
+								},
+								{
+									"cell": "cell_field"
+								},
+								{
+									"cell": "cell_field1"
+								},
+								{
+									"cell": "cell_field2"
+								},
+								{
+									"cell": "cell_field3"
+								},
+								{
+									"cell": "cell_field4"
+								}
+							]
+						},
+						{
+							"section": "foot",
+							"cells": [
+								{
+									"cell": "footcell_icons"
+								},
+								{
+									"cell": "footcell_checkbox"
+								},
+								{
+									"cell": "footcell_field"
+								},
+								{
+									"cell": "footcell_field1"
+								},
+								{
+									"cell": "footcell_field2"
+								},
+								{
+									"cell": "footcell_field3"
+								},
+								{
+									"cell": "footcell_field4"
+								}
+							]
+						}
+					],
+					"cells": {
+						"headcell_field": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field"
+							],
+							"field": "estatusentrega"
+						},
+						"cell_field": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field2"
+							],
+							"field": "estatusentrega"
+						},
+						"footcell_field": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "estatusentrega"
+						},
+						"headcell_field1": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field7"
+							],
+							"field": "comentario"
+						},
+						"cell_field1": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field3"
+							],
+							"field": "comentario"
+						},
+						"footcell_field1": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "comentario"
+						},
+						"headcell_field2": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field8"
+							],
+							"field": "fechacaptura"
+						},
+						"cell_field2": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field4"
+							],
+							"field": "fechacaptura"
+						},
+						"footcell_field2": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "fechacaptura"
+						},
+						"headcell_field3": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field9"
+							],
+							"field": "usuario"
+						},
+						"cell_field3": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field5"
+							],
+							"field": "usuario"
+						},
+						"footcell_field3": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "usuario"
+						},
+						"headcell_field4": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field10"
+							],
+							"field": "fechahoraentrega"
+						},
+						"cell_field4": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field6"
+							],
+							"field": "fechahoraentrega"
+						},
+						"footcell_field4": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "fechahoraentrega"
+						},
+						"headcell_checkbox": {
+							"model": "headcell_checkbox",
+							"items": [
+								"grid_checkbox_head"
+							]
+						},
+						"cell_checkbox": {
+							"model": "cell_checkbox",
+							"items": [
+								"grid_checkbox"
+							]
+						},
+						"footcell_checkbox": {
+							"model": "footcell_checkbox",
+							"items": []
+						},
+						"headcell_icons": {
+							"model": "headcell_icons",
+							"items": []
+						},
+						"cell_icons": {
+							"model": "cell_icons",
+							"items": [
+								"grid_edit",
+								"grid_view"
+							]
+						},
+						"footcell_icons": {
+							"model": "footcell_icons",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"page_size": {
+					"type": "page_size"
+				},
+				"breadcrumb": {
+					"type": "breadcrumb"
+				},
+				"logo": {
+					"type": "logo"
+				},
+				"menu": {
+					"type": "menu"
+				},
+				"simple_search": {
+					"type": "simple_search"
+				},
+				"pagination": {
+					"type": "pagination"
+				},
+				"details_found": {
+					"type": "details_found"
+				},
+				"list_options": {
+					"type": "list_options",
+					"items": [
+						"export_selected",
+						"delete_selected",
+						"-1",
+						"export",
+						"-2",
+						"import"
+					]
+				},
+				"username_button": {
+					"type": "username_button",
+					"items": [
+						"userinfo_link",
+						"logout_link",
+						"adminarea_link"
+					]
+				},
+				"loginform_login": {
+					"type": "loginform_login",
+					"popup": false
+				},
+				"userinfo_link": {
+					"type": "userinfo_link"
+				},
+				"logout_link": {
+					"type": "logout_link"
+				},
+				"adminarea_link": {
+					"type": "adminarea_link"
+				},
+				"expand_menu_button": {
+					"type": "expand_menu_button"
+				},
+				"collapse_button": {
+					"type": "collapse_button"
+				},
+				"add": {
+					"type": "add"
+				},
+				"export": {
+					"type": "export"
+				},
+				"-": {
+					"type": "-"
+				},
+				"export_selected": {
+					"type": "export_selected"
+				},
+				"-1": {
+					"type": "-"
+				},
+				"import": {
+					"type": "import"
+				},
+				"-2": {
+					"type": "-"
+				},
+				"print_panel": {
+					"type": "print_panel",
+					"items": [
+						"print_scope",
+						"print_records",
+						"print_button"
+					]
+				},
+				"print_scope": {
+					"type": "print_scope"
+				},
+				"print_button": {
+					"type": "print_button"
+				},
+				"print_records": {
+					"type": "print_records"
+				},
+				"delete": {
+					"type": "delete"
+				},
+				"delete_selected": {
+					"type": "delete_selected"
+				},
+				"simple_grid_field2": {
+					"field": "estatusentrega",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field": {
+					"type": "grid_field_label",
+					"field": "estatusentrega"
+				},
+				"simple_grid_field3": {
+					"field": "comentario",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field7": {
+					"type": "grid_field_label",
+					"field": "comentario"
+				},
+				"simple_grid_field4": {
+					"field": "fechacaptura",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field8": {
+					"type": "grid_field_label",
+					"field": "fechacaptura"
+				},
+				"simple_grid_field5": {
+					"field": "usuario",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field9": {
+					"type": "grid_field_label",
+					"field": "usuario"
+				},
+				"simple_grid_field6": {
+					"field": "fechahoraentrega",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field10": {
+					"type": "grid_field_label",
+					"field": "fechahoraentrega"
+				},
+				"grid_checkbox": {
+					"type": "grid_checkbox"
+				},
+				"grid_checkbox_head": {
+					"type": "grid_checkbox_head"
+				},
+				"grid_edit": {
+					"type": "grid_edit"
+				},
+				"grid_view": {
+					"type": "grid_view"
+				},
+				"master_info": {
+					"type": "master_info",
+					"tables": {
+						"3836892972": "true"
+					}
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "print",
+			"type": "print",
+			"layoutId": "basic",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "print-above-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"print_pages"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "print-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "print-header",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c4"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c2": {
+							"model": "c2",
+							"items": [
+								"print_header",
+								"print_subheader"
+							]
+						},
+						"c4": {
+							"model": "c4",
+							"items": [
+								"master_info"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "simple-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"print_header": {
+					"type": "print_header"
+				},
+				"print_subheader": {
+					"type": "print_subheader"
+				},
+				"print_pages": {
+					"type": "print_pages"
+				},
+				"master_info": {
+					"type": "master_info",
+					"tables": {
+						"3836892972": "true"
+					}
+				}
+			},
+			"dbProps": {},
+			"version": 13,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		}
+	],
+	"geoCoding": {
+		"enabled": false,
+		"latField": "",
+		"lonField": "",
+		"addressFields": []
+	},
+	"caption": {
+		"Spanish": "Estatusentregasaccenc Historial"
+	}
+}
