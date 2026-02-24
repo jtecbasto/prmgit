@@ -622,20 +622,6 @@
 							"table": 1911098216,
 							"pageType": "list"
 						}
-					},
-					{
-						"id": "20",
-						"data": {
-							"name": {
-								"table": "estatusentregasaccenc_historial",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 3318556632,
-							"pageType": "list"
-						}
 					}
 				]
 			}
