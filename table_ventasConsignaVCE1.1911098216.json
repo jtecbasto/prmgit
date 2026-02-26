@@ -1536,6 +1536,21 @@
 			"eventId": "EVENT_BEFOREMOVENEXT_LIST",
 			"pageType": "list",
 			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n/*\n   \n   switch ($data[\"captura_orden\"]) {\n    case null:\n        break;\n    case 0:\n    $record[\"css\"]=\"background:#EBFAC8;\";\n        break;\n    case 1:\n    $record[\"css\"]=\"background:#FAD4C8;\";\n        break;\n}*/"
+		},
+		{
+			"eventId": "EVENT_BEFORESHOW_LIST",
+			"pageType": "list",
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n$pageObject->setProxyValue(\"username\", $_SESSION['UserID']);\n"
+		},
+		{
+			"eventId": "EVENT_BEFORESHOW_EDIT",
+			"pageType": "edit",
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n$pageObject->setProxyValue(\"username\", $_SESSION['UserID']);\n"
+		},
+		{
+			"eventId": "EVENT_JS_ONLOAD",
+			"pageType": "list",
+			"code": "\nif(proxy.username !== \"SMORAV\") {\n  // Opción A: por selector (si conoces el id o clase)\n  $(\"#btn_ValidarCIS\").hide();      // ejemplo\n\n$(\"a,button\").filter(function(){\n    return $(this).text().trim() === \"Ejecutar validación con CIS\";\n  }).hide();\n\n}\n\n"
 		}
 	],
 	"dbTableInfo": {
@@ -4467,6 +4482,17 @@
 						{
 							"cells": [
 								{
+									"cell": "c4"
+								},
+								{
+									"cell": "c5"
+								}
+							],
+							"section": ""
+						},
+						{
+							"cells": [
+								{
 									"cell": "c1"
 								},
 								{
@@ -4500,6 +4526,17 @@
 						},
 						"c3": {
 							"model": "c2",
+							"items": []
+						},
+						"c4": {
+							"model": "c3",
+							"items": [
+								"custom_button",
+								"btn_ValidarCIS"
+							]
+						},
+						"c5": {
+							"model": "c4",
 							"items": []
 						}
 					},
@@ -6358,7 +6395,7 @@
 					"field": "cuenta",
 					"type": "grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false,
+					"inlineEdit": true,
 					"clickSort": false,
 					"showFilter": true
 				},
@@ -6400,7 +6437,7 @@
 					"field": "contrato",
 					"type": "grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false,
+					"inlineEdit": true,
 					"clickSort": false,
 					"showFilter": true
 				},
@@ -6448,7 +6485,7 @@
 					"field": "orden",
 					"type": "grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false,
+					"inlineEdit": true,
 					"clickSort": false,
 					"showFilter": true
 				},
@@ -6865,6 +6902,24 @@
 				"grid_field_label19": {
 					"type": "grid_field_label",
 					"field": "sin_incidencia"
+				},
+				"custom_button": {
+					"type": "custom_button",
+					"eventGid": 4249893283,
+					"label": {
+						"type": 0,
+						"text": "Exportar seleccionados"
+					},
+					"icon": {}
+				},
+				"btn_ValidarCIS": {
+					"type": "custom_button",
+					"eventGid": 1844388914,
+					"label": {
+						"type": 0,
+						"text": "Ejecutar validación con CIS"
+					},
+					"icon": {}
 				}
 			},
 			"dbProps": {},

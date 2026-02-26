@@ -1,0 +1,7 @@
+{
+	"type": "EVENT_BUTTON",
+	"name": "Button8",
+	"serverCode": "global $conn;\r\n\r\n\t$sql=\"CALL sp_validarcis()\";\r\n\r\n\r\n$rsExists = db_query($sql,$conn);\r\n$datos=db_fetch_array($rsExists);\r\nif($datos)\r\n{\r\n\t\r\n   $j=$datos[\"message\"];\r\n}\r\n$result[\"txt\"] = $j;\r\n",
+	"beforeJsCode": "// Put your code here.\n\n",
+	"afterJsCode": "// Put your code here.\nvar message = result[\"txt\"] + \" !!!\";\n//ctrl.setMessage(message);\nalert(message);\nwindow.location.reload()"
+}
