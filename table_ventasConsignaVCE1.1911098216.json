@@ -820,8 +820,7 @@
 					"lookupTableConnection": "conn",
 					"lookupLinkField": "idlogico",
 					"lookupDisplayField": "corinc",
-					"lookupOrderBy": "corinc",
-					"lookupControlType": 1
+					"lookupOrderBy": "corinc"
 				}
 			],
 			"label": {
@@ -1530,17 +1529,12 @@
 		{
 			"eventId": "EVENT_BEFOREEDIT",
 			"pageType": "edit",
-			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n$values['validador']=$_SESSION['UserID'];\n$values['fecha_ultima_validacion'] = date('Y-m-d H:i:s');\nreturn true;"
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n$values['validador']=$_SESSION['UserID'];\n$values['fecha_ultima_validacion'] = date('Y-m-d H:i:s');\n\n// BeforeEdit (Server)\n$user = strtoupper($_SESSION[\"UserID\"] ?? \"\");\n\n// Si NO es SMORAV, impedir cambios a ciertos campos\nif ($user !== \"SMORAV\") {\n\n    // Lista de campos protegidos\n    $protegidos = [\"contrato\",\"cuenta\",\"orden\"]; // <-- cambia a tus nombres\n\n    foreach ($protegidos as $f) {\n        if (array_key_exists($f, $values)) {\n            // Opción A (mejor): revertir al valor anterior\n            // $oldvalues trae el valor original antes de editar\n            if (array_key_exists($f, $oldvalues)) {\n                $values[$f] = $oldvalues[$f];\n            } else {\n                // si no hay oldvalue, simplemente quítalo\n                unset($values[$f]);\n            }\n        }\n    }\n\n    // Si quieres además impedir que edite *cualquier cosa* excepto unos campos permitidos:\n    // $permitidos = [\"captura_orden\",\"captura_cuenta\"];\n    // foreach ($values as $k => $v) if (!in_array($k, $permitidos)) $values[$k] = $oldvalues[$k];\n}\n\n// return true para permitir guardar\n\n\nreturn true;"
 		},
 		{
 			"eventId": "EVENT_BEFOREMOVENEXT_LIST",
 			"pageType": "list",
-			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n/*\n   \n   switch ($data[\"captura_orden\"]) {\n    case null:\n        break;\n    case 0:\n    $record[\"css\"]=\"background:#EBFAC8;\";\n        break;\n    case 1:\n    $record[\"css\"]=\"background:#FAD4C8;\";\n        break;\n}*/"
-		},
-		{
-			"eventId": "EVENT_BEFORESHOW_LIST",
-			"pageType": "list",
-			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n$pageObject->setProxyValue(\"username\", $_SESSION['UserID']);\n"
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n/*\n   \n   switch ($data[\"captura_orden\"]) {\n    case null:\n        break;\n    case 0:\n    $record[\"css\"]=\"background:#EBFAC8;\";\n        break;\n    case 1:\n    $record[\"css\"]=\"background:#FAD4C8;\";\n        break;\n}*/\n\n// Comprobamos el usuario\nif ($_SESSION[\"UserID\"] !== \"SMORAV\") {\n    // Esto añade una instrucción interna para que la celda no sea editable\n    $record[\"contrato_editcontrol\"] = array(\"readonly\" => true);\n    \n    // Opcional: Cambiar el color de fondo para que el usuario sepa que está bloqueado\n    $record[\"contrato_css\"] = 'background-color: #f2f2f2; color: #999;';\n}"
 		},
 		{
 			"eventId": "EVENT_BEFORESHOW_EDIT",
@@ -1550,7 +1544,22 @@
 		{
 			"eventId": "EVENT_JS_ONLOAD",
 			"pageType": "list",
-			"code": "\nif(proxy.username !== \"SMORAV\") {\n  // Opción A: por selector (si conoces el id o clase)\n  $(\"#btn_ValidarCIS\").hide();      // ejemplo\n\n$(\"a,button\").filter(function(){\n    return $(this).text().trim() === \"Ejecutar validación con CIS\";\n  }).hide();\n\n}\n\n"
+			"code": "\nif(proxy.username !== \"SMORAV\") {\n  // Opción A: por selector (si conoces el id o clase)\n  $(\"#btn_ValidarCIS\").hide();      // ejemplo\n\n$(\"a,button\").filter(function(){\n    return $(this).text().trim() === \"Ejecutar validación con CIS\";\n  }).hide();\n\n}\n\n/*\n\n// Obtenemos la variable que enviamos desde el servidor\nvar isSMORAV = pageObj.getProxyValue(\"isSMORAV\");\n\n// Si NO es SMORAV, bloqueamos la edición del campo\nif (!isSMORAV) */\n\nvar username = Proxy.Session.UserID; // Asegúrate de haber pasado el UserID al Proxy\n\nif (username !== 'SMORAV') {\n    // Interceptamos el evento antes de editar\n    pageObject.on('beforeEdit', function( record, field ) {\n        if ( field == 'contrato' ) {\n            return false; // Cancela la edición\n        }\n    });\n}"
+		},
+		{
+			"eventId": "EVENT_BEFORESHOW_LIST",
+			"pageType": "list",
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n\n$pageObject->setProxyValue(\"username\", $_SESSION['UserID']);\n/*\n// Verificamos si NO es el usuario permitido\n$esSMORAV = ($_SESSION[\"UserID\"] == \"SMORAV\");\n\n// Pasamos esta variable al lado cliente\n$pageObject->setProxyValue(\"isSMORAV\", $esSMORAV);*/\n$pageObject->setProxyValue(\"UserID\", $_SESSION[\"UserID\"]);"
+		},
+		{
+			"eventId": "EVENT_BEFOREPROCESSROW_LIST",
+			"pageType": "list",
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n// Verificamos si NO es el usuario SMORAV y si no estamos ya en la página correcta\n\n\nreturn true;"
+		},
+		{
+			"eventId": "EVENT_BEFOREPROCESS_LIST",
+			"pageType": "list",
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n// 1. Identificar al usuari\n/*\n$user = strtoupper($_SESSION[\"UserID\"] ?? \"\");\n\n// 2. Obtener el nombre del archivo actual usando PHP nativo\n$archivoActual = basename($_SERVER[\"PHP_SELF\"]);\n\n// 3. Definir los nombres exactos de tus archivos\n$urlAdmin = \"ventasConsignaVCE1_list.php\";\n$urlReadOnly = \"ventasConsignaVCE1_list.php?page=list_readonly\";\n\n// 4. Lógica de redirección con protección contra bucle\nif ($user === \"SMORAV\") {\n    // Si NO estamos ya en la versión de edición, redirigimos\n    if ($archivoActual !== $urlAdmin) {\n        header(\"Location: \" . $urlAdmin);\n        exit();\n    }\n} else {\n    // Si NO estamos ya en la versión solo lectura, redirigimos\n    if ($archivoActual !== $urlReadOnly) {\n        header(\"Location: \" . $urlReadOnly);\n        exit();\n    }\n}*/"
 		}
 	],
 	"dbTableInfo": {
@@ -4463,7 +4472,7 @@
 			"type": "list",
 			"layoutId": "leftbar",
 			"disabled": false,
-			"default": 0,
+			"default": 1,
 			"forms": {
 				"above-grid": {
 					"modelId": "list-above-grid",
@@ -8472,6 +8481,2487 @@
 			"imageBgColor": "#f2f2f2",
 			"controlsBgColor": "white",
 			"imagePosition": "right",
+			"listTotals": 1,
+			"title": {}
+		},
+		{
+			"id": "list_readonly",
+			"type": "list",
+			"layoutId": "leftbar",
+			"disabled": false,
+			"default": 0,
+			"forms": {
+				"above-grid": {
+					"modelId": "list-above-grid",
+					"grid": [
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c"
+								},
+								{
+									"cell": "c3"
+								}
+							]
+						},
+						{
+							"cells": [
+								{
+									"cell": "c4"
+								},
+								{
+									"cell": "c5"
+								}
+							],
+							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"inline_save_all",
+								"inline_cancel_all",
+								"delete"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"details_found",
+								"page_size",
+								"print_panel",
+								"columns_control"
+							]
+						},
+						"c": {
+							"model": "c1",
+							"items": []
+						},
+						"c3": {
+							"model": "c2",
+							"items": []
+						},
+						"c4": {
+							"model": "c3",
+							"items": [
+								"custom_button",
+								"btn_ValidarCIS"
+							]
+						},
+						"c5": {
+							"model": "c4",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"below-grid": {
+					"modelId": "list-below-grid",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"pagination"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"left": {
+					"modelId": "leftbar-menu",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c0"
+								}
+							],
+							"section": ""
+						},
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c0": {
+							"model": "c0",
+							"items": [
+								"logo"
+							]
+						},
+						"c1": {
+							"model": "c1",
+							"items": [
+								"menu",
+								"filter_panel"
+							]
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"supertop": {
+					"modelId": "leftbar-top",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c1"
+								},
+								{
+									"cell": "c2"
+								}
+							],
+							"section": ""
+						},
+						{
+							"section": "",
+							"cells": [
+								{
+									"cell": "c"
+								},
+								{
+									"cell": "c3"
+								}
+							]
+						}
+					],
+					"cells": {
+						"c1": {
+							"model": "c1",
+							"items": [
+								"expand_menu_button",
+								"collapse_button",
+								"breadcrumb"
+							]
+						},
+						"c2": {
+							"model": "c2",
+							"items": [
+								"simple_search_field",
+								"simple_search_option",
+								"simple_search",
+								"list_options",
+								"loginform_login",
+								"username_button"
+							]
+						},
+						"c": {
+							"model": "c1",
+							"items": []
+						},
+						"c3": {
+							"model": "c2",
+							"items": []
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"top": {
+					"modelId": "list-sidebar-top",
+					"grid": [],
+					"cells": {},
+					"deferredItems": [],
+					"recsPerRow": 1
+				},
+				"grid": {
+					"modelId": "horizontal-grid",
+					"grid": [
+						{
+							"section": "head",
+							"cells": [
+								{
+									"cell": "headcell_icons"
+								},
+								{
+									"cell": "headcell_checkbox"
+								},
+								{
+									"cell": "headcell_details"
+								},
+								{
+									"cell": "headcell_field"
+								},
+								{
+									"cell": "headcell_field32"
+								},
+								{
+									"cell": "headcell_field31"
+								},
+								{
+									"cell": "headcell_field1"
+								},
+								{
+									"cell": "headcell_field2"
+								},
+								{
+									"cell": "headcell_field3"
+								},
+								{
+									"cell": "headcell_field4"
+								},
+								{
+									"cell": "headcell_field34"
+								},
+								{
+									"cell": "headcell_field6"
+								},
+								{
+									"cell": "headcell_field7"
+								},
+								{
+									"cell": "headcell_field8"
+								},
+								{
+									"cell": "headcell_field9"
+								},
+								{
+									"cell": "headcell_field10"
+								},
+								{
+									"cell": "headcell_field11"
+								},
+								{
+									"cell": "headcell_field12"
+								},
+								{
+									"cell": "headcell_field13"
+								},
+								{
+									"cell": "headcell_field14"
+								},
+								{
+									"cell": "headcell_field15"
+								},
+								{
+									"cell": "headcell_field16"
+								},
+								{
+									"cell": "headcell_field17"
+								},
+								{
+									"cell": "headcell_field18"
+								},
+								{
+									"cell": "headcell_field19"
+								},
+								{
+									"cell": "headcell_field20"
+								},
+								{
+									"cell": "headcell_field21"
+								},
+								{
+									"cell": "headcell_field22"
+								},
+								{
+									"cell": "headcell_field23"
+								},
+								{
+									"cell": "headcell_field24"
+								},
+								{
+									"cell": "headcell_field25"
+								},
+								{
+									"cell": "headcell_field26"
+								},
+								{
+									"cell": "headcell_field27"
+								},
+								{
+									"cell": "headcell_field28"
+								},
+								{
+									"cell": "headcell_field29"
+								},
+								{
+									"cell": "headcell_field5"
+								},
+								{
+									"cell": "headcell_field30"
+								},
+								{
+									"cell": "headcell_field33"
+								},
+								{
+									"cell": "headcell_field35"
+								},
+								{
+									"cell": "headcell_field36"
+								},
+								{
+									"cell": "headcell_field38"
+								},
+								{
+									"cell": "headcell_field39"
+								},
+								{
+									"cell": "headcell_field40"
+								},
+								{
+									"cell": "headcell_field41"
+								},
+								{
+									"cell": "headcell_field37"
+								},
+								{
+									"cell": "headcell_field42"
+								},
+								{
+									"cell": "headcell_field90"
+								}
+							]
+						},
+						{
+							"section": "body",
+							"cells": [
+								{
+									"cell": "cell_icons"
+								},
+								{
+									"cell": "cell_checkbox"
+								},
+								{
+									"cell": "cell_details"
+								},
+								{
+									"cell": "cell_field"
+								},
+								{
+									"cell": "cell_field32"
+								},
+								{
+									"cell": "cell_field31"
+								},
+								{
+									"cell": "cell_field1"
+								},
+								{
+									"cell": "cell_field2"
+								},
+								{
+									"cell": "cell_field3"
+								},
+								{
+									"cell": "cell_field4"
+								},
+								{
+									"cell": "cell_field34"
+								},
+								{
+									"cell": "cell_field6"
+								},
+								{
+									"cell": "cell_field7"
+								},
+								{
+									"cell": "cell_field8"
+								},
+								{
+									"cell": "cell_field9"
+								},
+								{
+									"cell": "cell_field10"
+								},
+								{
+									"cell": "cell_field11"
+								},
+								{
+									"cell": "cell_field12"
+								},
+								{
+									"cell": "cell_field13"
+								},
+								{
+									"cell": "cell_field14"
+								},
+								{
+									"cell": "cell_field15"
+								},
+								{
+									"cell": "cell_field16"
+								},
+								{
+									"cell": "cell_field17"
+								},
+								{
+									"cell": "cell_field18"
+								},
+								{
+									"cell": "cell_field19"
+								},
+								{
+									"cell": "cell_field20"
+								},
+								{
+									"cell": "cell_field21"
+								},
+								{
+									"cell": "cell_field22"
+								},
+								{
+									"cell": "cell_field23"
+								},
+								{
+									"cell": "cell_field24"
+								},
+								{
+									"cell": "cell_field25"
+								},
+								{
+									"cell": "cell_field26"
+								},
+								{
+									"cell": "cell_field27"
+								},
+								{
+									"cell": "cell_field28"
+								},
+								{
+									"cell": "cell_field29"
+								},
+								{
+									"cell": "cell_field5"
+								},
+								{
+									"cell": "cell_field30"
+								},
+								{
+									"cell": "cell_field33"
+								},
+								{
+									"cell": "cell_field35"
+								},
+								{
+									"cell": "cell_field36"
+								},
+								{
+									"cell": "cell_field38"
+								},
+								{
+									"cell": "cell_field39"
+								},
+								{
+									"cell": "cell_field40"
+								},
+								{
+									"cell": "cell_field41"
+								},
+								{
+									"cell": "cell_field37"
+								},
+								{
+									"cell": "cell_field42"
+								},
+								{
+									"cell": "cell_field43"
+								}
+							]
+						},
+						{
+							"cells": [
+								{
+									"cell": "cell_dpreview",
+									"colspan": 47
+								}
+							],
+							"section": "body"
+						},
+						{
+							"section": "foot",
+							"cells": [
+								{
+									"cell": "footcell_icons"
+								},
+								{
+									"cell": "footcell_checkbox"
+								},
+								{
+									"cell": "footcell_details"
+								},
+								{
+									"cell": "footcell_field",
+									"colspan": 3
+								},
+								{
+									"cell": "footcell_field1"
+								},
+								{
+									"cell": "footcell_field2"
+								},
+								{
+									"cell": "footcell_field3"
+								},
+								{
+									"cell": "footcell_field4",
+									"colspan": 2
+								},
+								{
+									"cell": "footcell_field6"
+								},
+								{
+									"cell": "footcell_field7"
+								},
+								{
+									"cell": "footcell_field8"
+								},
+								{
+									"cell": "footcell_field9"
+								},
+								{
+									"cell": "footcell_field10"
+								},
+								{
+									"cell": "footcell_field11"
+								},
+								{
+									"cell": "footcell_field12"
+								},
+								{
+									"cell": "footcell_field13"
+								},
+								{
+									"cell": "footcell_field14"
+								},
+								{
+									"cell": "footcell_field15"
+								},
+								{
+									"cell": "footcell_field16"
+								},
+								{
+									"cell": "footcell_field17"
+								},
+								{
+									"cell": "footcell_field18"
+								},
+								{
+									"cell": "footcell_field19"
+								},
+								{
+									"cell": "footcell_field20"
+								},
+								{
+									"cell": "footcell_field21"
+								},
+								{
+									"cell": "footcell_field22"
+								},
+								{
+									"cell": "footcell_field23"
+								},
+								{
+									"cell": "footcell_field24"
+								},
+								{
+									"cell": "footcell_field25"
+								},
+								{
+									"cell": "footcell_field26"
+								},
+								{
+									"cell": "footcell_field27"
+								},
+								{
+									"cell": "footcell_field28"
+								},
+								{
+									"cell": "footcell_field29"
+								},
+								{
+									"cell": "footcell_field5"
+								},
+								{
+									"cell": "footcell_field30"
+								},
+								{
+									"cell": "footcell_field31"
+								},
+								{
+									"cell": "footcell_field32"
+								},
+								{
+									"cell": "footcell_field33"
+								},
+								{
+									"cell": "footcell_field35"
+								},
+								{
+									"cell": "footcell_field36"
+								},
+								{
+									"cell": "footcell_field37"
+								},
+								{
+									"cell": "footcell_field38"
+								},
+								{
+									"cell": "footcell_field34"
+								},
+								{
+									"cell": "footcell_field39"
+								},
+								{
+									"cell": "footcell_field40"
+								}
+							]
+						}
+					],
+					"cells": {
+						"headcell_field": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label6"
+							],
+							"field": "",
+							"columnName": ""
+						},
+						"cell_field": {
+							"model": "cell_field",
+							"items": [
+								"grid_field6"
+							],
+							"field": "",
+							"columnName": ""
+						},
+						"footcell_field": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "",
+							"columnName": ""
+						},
+						"headcell_field1": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field13"
+							],
+							"field": "fechacaptura",
+							"columnName": "field"
+						},
+						"cell_field1": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field5"
+							],
+							"field": "fechacaptura",
+							"columnName": "field"
+						},
+						"footcell_field1": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "fechacaptura",
+							"columnName": "field"
+						},
+						"headcell_field2": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field14"
+							],
+							"field": "sector",
+							"columnName": "field"
+						},
+						"cell_field2": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field2"
+							],
+							"field": "sector",
+							"columnName": "field"
+						},
+						"footcell_field2": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "sector",
+							"columnName": "field"
+						},
+						"headcell_field3": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field15"
+							],
+							"field": "tiendanombre",
+							"columnName": "field"
+						},
+						"cell_field3": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field"
+							],
+							"field": "tiendanombre",
+							"columnName": "field",
+							"nowrap": true
+						},
+						"footcell_field3": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "tiendanombre",
+							"columnName": "field"
+						},
+						"headcell_field4": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field16"
+							],
+							"field": "",
+							"columnName": ""
+						},
+						"cell_field4": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field1"
+							],
+							"field": "",
+							"columnName": "",
+							"nowrap": true
+						},
+						"footcell_field4": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "",
+							"columnName": ""
+						},
+						"headcell_field6": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field17"
+							],
+							"field": "esnimei",
+							"columnName": "field"
+						},
+						"cell_field6": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field8"
+							],
+							"field": "esnimei",
+							"columnName": "field"
+						},
+						"footcell_field6": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "esnimei",
+							"columnName": "field"
+						},
+						"headcell_field7": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field18"
+							],
+							"field": "simcard",
+							"columnName": "field"
+						},
+						"cell_field7": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field9"
+							],
+							"field": "simcard",
+							"columnName": "field"
+						},
+						"footcell_field7": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "simcard",
+							"columnName": "field"
+						},
+						"headcell_field8": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field19"
+							],
+							"field": "dn",
+							"columnName": "field"
+						},
+						"cell_field8": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field10"
+							],
+							"field": "dn",
+							"columnName": "field"
+						},
+						"footcell_field8": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "dn",
+							"columnName": "field"
+						},
+						"headcell_field9": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field36"
+							],
+							"field": "dnpreferido",
+							"columnName": "field"
+						},
+						"cell_field9": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field35"
+							],
+							"field": "dnpreferido",
+							"columnName": "field"
+						},
+						"footcell_field9": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "dnpreferido",
+							"columnName": "field"
+						},
+						"headcell_field10": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field20"
+							],
+							"field": "cuenta",
+							"columnName": "field"
+						},
+						"cell_field10": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field11"
+							],
+							"field": "cuenta",
+							"columnName": "field"
+						},
+						"footcell_field10": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "cuenta",
+							"columnName": "field"
+						},
+						"headcell_field11": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field69"
+							],
+							"field": "captura_cuenta",
+							"columnName": "field"
+						},
+						"cell_field11": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field67"
+							],
+							"field": "captura_cuenta",
+							"columnName": "field"
+						},
+						"footcell_field11": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "captura_cuenta",
+							"columnName": "field"
+						},
+						"headcell_field12": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field80"
+							],
+							"field": "cuenta_corregida",
+							"columnName": "field"
+						},
+						"cell_field12": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field78"
+							],
+							"field": "cuenta_corregida",
+							"columnName": "field"
+						},
+						"footcell_field12": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "cuenta_corregida",
+							"columnName": "field"
+						},
+						"headcell_field13": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field21"
+							],
+							"field": "contrato",
+							"columnName": "field"
+						},
+						"cell_field13": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field12"
+							],
+							"field": "contrato",
+							"columnName": "field"
+						},
+						"footcell_field13": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "contrato",
+							"columnName": "field"
+						},
+						"headcell_field14": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field70"
+							],
+							"field": "captura_contrato",
+							"columnName": "field"
+						},
+						"cell_field14": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field66"
+							],
+							"field": "captura_contrato",
+							"columnName": "field"
+						},
+						"footcell_field14": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "captura_contrato",
+							"columnName": "field"
+						},
+						"headcell_field15": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field81"
+							],
+							"field": "contrato_corregido",
+							"columnName": "field"
+						},
+						"cell_field15": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field77"
+							],
+							"field": "contrato_corregido",
+							"columnName": "field"
+						},
+						"footcell_field15": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "contrato_corregido",
+							"columnName": "field"
+						},
+						"headcell_field16": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field51"
+							],
+							"field": "orden",
+							"columnName": "field"
+						},
+						"cell_field16": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field49"
+							],
+							"field": "orden",
+							"columnName": "field"
+						},
+						"footcell_field16": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "orden",
+							"columnName": "field"
+						},
+						"headcell_field17": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field71"
+							],
+							"field": "captura_orden",
+							"columnName": "field"
+						},
+						"cell_field17": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field68"
+							],
+							"field": "captura_orden",
+							"columnName": "field"
+						},
+						"footcell_field17": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "captura_orden",
+							"columnName": "field"
+						},
+						"headcell_field18": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field82"
+							],
+							"field": "orden_corregida",
+							"columnName": "field"
+						},
+						"cell_field18": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field79"
+							],
+							"field": "orden_corregida",
+							"columnName": "field"
+						},
+						"footcell_field18": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "orden_corregida",
+							"columnName": "field"
+						},
+						"headcell_field19": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field72"
+							],
+							"field": "consumos",
+							"columnName": "field"
+						},
+						"cell_field19": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field65"
+							],
+							"field": "consumos",
+							"columnName": "field"
+						},
+						"footcell_field19": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "consumos",
+							"columnName": "field"
+						},
+						"headcell_field20": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field22"
+							],
+							"field": "ultimo_pago",
+							"columnName": "field"
+						},
+						"cell_field20": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field3"
+							],
+							"field": "ultimo_pago",
+							"columnName": "field"
+						},
+						"footcell_field20": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "ultimo_pago",
+							"columnName": "field"
+						},
+						"headcell_field21": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field73"
+							],
+							"field": "comisionable",
+							"columnName": "field"
+						},
+						"cell_field21": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field64"
+							],
+							"field": "comisionable",
+							"columnName": "field"
+						},
+						"footcell_field21": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "comisionable",
+							"columnName": "field"
+						},
+						"headcell_field22": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field23"
+							],
+							"field": "carrusel",
+							"columnName": "field"
+						},
+						"cell_field22": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field6"
+							],
+							"field": "carrusel",
+							"columnName": "field"
+						},
+						"footcell_field22": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "carrusel",
+							"columnName": "field"
+						},
+						"headcell_field23": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field55"
+							],
+							"field": "valida",
+							"columnName": "field"
+						},
+						"cell_field23": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field54"
+							],
+							"field": "valida",
+							"columnName": "field"
+						},
+						"footcell_field23": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "valida",
+							"columnName": "field"
+						},
+						"cell_dpreview": {
+							"model": "cell_dpreview",
+							"items": [
+								"details_preview"
+							],
+							"columnName": "field",
+							"field": "sin_incidencia"
+						},
+						"headcell_checkbox": {
+							"model": "headcell_checkbox",
+							"items": [
+								"grid_checkbox_head"
+							],
+							"columnName": "checkbox",
+							"field": ""
+						},
+						"cell_checkbox": {
+							"model": "cell_checkbox",
+							"items": [
+								"grid_checkbox"
+							],
+							"columnName": "checkbox",
+							"field": ""
+						},
+						"footcell_checkbox": {
+							"model": "footcell_checkbox",
+							"items": [],
+							"columnName": "checkbox",
+							"field": ""
+						},
+						"headcell_icons": {
+							"model": "headcell_icons",
+							"items": [],
+							"columnName": "inline-edit",
+							"field": ""
+						},
+						"cell_icons": {
+							"model": "cell_icons",
+							"items": [
+								"grid_inline_edit",
+								"grid_inline_save",
+								"grid_inline_cancel",
+								"saving_icon"
+							],
+							"columnName": "inline-edit",
+							"field": ""
+						},
+						"footcell_icons": {
+							"model": "footcell_icons",
+							"items": [],
+							"columnName": "inline-edit",
+							"field": ""
+						},
+						"headcell_details": {
+							"model": "headcell_details",
+							"items": [],
+							"columnName": "details",
+							"field": ""
+						},
+						"cell_details": {
+							"model": "cell_details",
+							"items": [
+								"grid_alldetails_link",
+								"grid_details_link"
+							],
+							"columnName": "details",
+							"field": ""
+						},
+						"footcell_details": {
+							"model": "footcell_details",
+							"items": [],
+							"columnName": "details",
+							"field": ""
+						},
+						"headcell_field24": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label"
+							],
+							"field": "seguro_capturado",
+							"columnName": "field"
+						},
+						"cell_field24": {
+							"model": "cell_field",
+							"items": [
+								"grid_field"
+							],
+							"field": "seguro_capturado",
+							"align": "center",
+							"columnName": "field"
+						},
+						"footcell_field24": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "seguro_capturado",
+							"columnName": "field"
+						},
+						"headcell_field25": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label1"
+							],
+							"field": "seguro_verificado",
+							"columnName": "field"
+						},
+						"cell_field25": {
+							"model": "cell_field",
+							"items": [
+								"grid_field1"
+							],
+							"field": "seguro_verificado",
+							"columnName": "field",
+							"align": "center"
+						},
+						"footcell_field25": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "seguro_verificado",
+							"columnName": "field"
+						},
+						"headcell_field26": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label2"
+							],
+							"field": "control_capturado",
+							"columnName": "field"
+						},
+						"cell_field26": {
+							"model": "cell_field",
+							"items": [
+								"grid_field2"
+							],
+							"field": "control_capturado",
+							"align": "center",
+							"columnName": "field"
+						},
+						"footcell_field26": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "control_capturado",
+							"columnName": "field"
+						},
+						"headcell_field27": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label3"
+							],
+							"field": "control_verificado",
+							"columnName": "field"
+						},
+						"cell_field27": {
+							"model": "cell_field",
+							"items": [
+								"grid_field3"
+							],
+							"field": "control_verificado",
+							"align": "center",
+							"columnName": "field"
+						},
+						"footcell_field27": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "control_verificado",
+							"columnName": "field"
+						},
+						"headcell_field28": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label4"
+							],
+							"field": "nfs_capturado",
+							"columnName": "field"
+						},
+						"cell_field28": {
+							"model": "cell_field",
+							"items": [
+								"grid_field4"
+							],
+							"field": "nfs_capturado",
+							"align": "center",
+							"columnName": "field"
+						},
+						"footcell_field28": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "nfs_capturado",
+							"columnName": "field"
+						},
+						"headcell_field29": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label5"
+							],
+							"field": "nfs_verificado",
+							"columnName": "field"
+						},
+						"cell_field29": {
+							"model": "cell_field",
+							"items": [
+								"grid_field5"
+							],
+							"field": "nfs_verificado",
+							"align": "center",
+							"columnName": "field"
+						},
+						"footcell_field29": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "nfs_verificado",
+							"columnName": "field"
+						},
+						"cell_field31": {
+							"model": "cell_field",
+							"items": [
+								"simple_grid_field4"
+							],
+							"field": "",
+							"columnName": ""
+						},
+						"headcell_field31": {
+							"model": "headcell_field",
+							"items": [
+								"simple_grid_field7"
+							],
+							"field": "",
+							"columnName": ""
+						},
+						"headcell_field32": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label7"
+							],
+							"field": "",
+							"columnName": ""
+						},
+						"cell_field32": {
+							"model": "cell_field",
+							"items": [
+								"grid_field7"
+							],
+							"field": "",
+							"columnName": ""
+						},
+						"headcell_field5": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label8"
+							],
+							"field": "fullname",
+							"columnName": "field"
+						},
+						"cell_field5": {
+							"model": "cell_field",
+							"items": [
+								"grid_field8"
+							],
+							"field": "fullname",
+							"columnName": "field",
+							"nowrap": true
+						},
+						"footcell_field5": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "fullname",
+							"columnName": "field"
+						},
+						"headcell_field30": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label9"
+							],
+							"field": "usuario",
+							"columnName": "field"
+						},
+						"cell_field30": {
+							"model": "cell_field",
+							"items": [
+								"grid_field9"
+							],
+							"field": "usuario",
+							"columnName": "field"
+						},
+						"footcell_field30": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "usuario",
+							"columnName": "field"
+						},
+						"headcell_field33": {
+							"model": "headcell_field",
+							"items": [],
+							"field": "",
+							"columnName": ""
+						},
+						"cell_field33": {
+							"model": "cell_field",
+							"items": [],
+							"field": "",
+							"columnName": ""
+						},
+						"footcell_field31": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "",
+							"columnName": ""
+						},
+						"headcell_field34": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label10"
+							],
+							"field": "",
+							"columnName": ""
+						},
+						"cell_field34": {
+							"model": "cell_field",
+							"items": [
+								"grid_field10"
+							],
+							"field": "",
+							"columnName": "",
+							"nowrap": true
+						},
+						"headcell_field35": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label11"
+							],
+							"field": "fecha_prox_vencimiento",
+							"columnName": "field"
+						},
+						"cell_field35": {
+							"model": "cell_field",
+							"items": [
+								"grid_field11"
+							],
+							"field": "fecha_prox_vencimiento",
+							"columnName": "field"
+						},
+						"footcell_field32": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "fecha_prox_vencimiento",
+							"columnName": "field"
+						},
+						"headcell_field36": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label12"
+							],
+							"field": "ciclo",
+							"columnName": "field"
+						},
+						"cell_field36": {
+							"model": "cell_field",
+							"items": [
+								"grid_field12"
+							],
+							"field": "ciclo",
+							"columnName": "field"
+						},
+						"footcell_field33": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "ciclo",
+							"columnName": "field"
+						},
+						"headcell_field38": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label14"
+							],
+							"field": "importe_adeudo",
+							"columnName": "field"
+						},
+						"cell_field38": {
+							"model": "cell_field",
+							"items": [
+								"grid_field14"
+							],
+							"field": "importe_adeudo",
+							"columnName": "field"
+						},
+						"footcell_field35": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "importe_adeudo",
+							"columnName": "field"
+						},
+						"headcell_field39": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label15"
+							],
+							"field": "fecha_ultima_validacion",
+							"columnName": "field"
+						},
+						"cell_field39": {
+							"model": "cell_field",
+							"items": [
+								"grid_field15"
+							],
+							"field": "fecha_ultima_validacion",
+							"columnName": "field"
+						},
+						"footcell_field36": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "fecha_ultima_validacion",
+							"columnName": "field"
+						},
+						"headcell_field40": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label16"
+							],
+							"field": "fecha_cancelacion",
+							"columnName": "field"
+						},
+						"cell_field40": {
+							"model": "cell_field",
+							"items": [
+								"grid_field16"
+							],
+							"field": "fecha_cancelacion",
+							"columnName": "field"
+						},
+						"footcell_field37": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "fecha_cancelacion",
+							"columnName": "field"
+						},
+						"headcell_field41": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label17"
+							],
+							"field": "fecha_suspension",
+							"columnName": "field"
+						},
+						"cell_field41": {
+							"model": "cell_field",
+							"items": [
+								"grid_field17"
+							],
+							"field": "fecha_suspension",
+							"columnName": "field"
+						},
+						"footcell_field38": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "fecha_suspension",
+							"columnName": "field"
+						},
+						"headcell_field37": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label13"
+							],
+							"field": "dia_pago",
+							"columnName": "field"
+						},
+						"cell_field37": {
+							"model": "cell_field",
+							"items": [
+								"grid_field13"
+							],
+							"field": "dia_pago",
+							"columnName": "field"
+						},
+						"footcell_field34": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "dia_pago",
+							"columnName": "field"
+						},
+						"headcell_field42": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label18"
+							],
+							"field": "estatus",
+							"columnName": "field"
+						},
+						"cell_field42": {
+							"model": "cell_field",
+							"items": [
+								"grid_field18"
+							],
+							"field": "estatus",
+							"columnName": "field"
+						},
+						"footcell_field39": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "estatus",
+							"columnName": "field"
+						},
+						"headcell_field90": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label19"
+							],
+							"field": "sin_incidencia",
+							"columnName": "field"
+						},
+						"cell_field43": {
+							"model": "cell_field",
+							"items": [
+								"grid_field19"
+							],
+							"field": "sin_incidencia",
+							"align": "center",
+							"columnName": "field"
+						},
+						"footcell_field40": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "sin_incidencia",
+							"columnName": "field"
+						}
+					},
+					"deferredItems": [],
+					"recsPerRow": 1
+				}
+			},
+			"items": {
+				"page_size": {
+					"type": "page_size"
+				},
+				"breadcrumb": {
+					"type": "breadcrumb"
+				},
+				"logo": {
+					"type": "logo"
+				},
+				"menu": {
+					"type": "menu"
+				},
+				"simple_search": {
+					"type": "simple_search"
+				},
+				"pagination": {
+					"type": "pagination"
+				},
+				"details_found": {
+					"type": "details_found"
+				},
+				"list_options": {
+					"type": "list_options",
+					"items": [
+						"edit_selected",
+						"export_selected",
+						"delete_selected",
+						"-16",
+						"advsearch_link",
+						"-13",
+						"save_search",
+						"-15",
+						"saved_searches",
+						"-12",
+						"export"
+					]
+				},
+				"username_button": {
+					"type": "username_button",
+					"items": [
+						"userinfo_link",
+						"logout_link",
+						"adminarea_link"
+					]
+				},
+				"loginform_login": {
+					"type": "loginform_login",
+					"popup": false
+				},
+				"userinfo_link": {
+					"type": "userinfo_link"
+				},
+				"logout_link": {
+					"type": "logout_link"
+				},
+				"adminarea_link": {
+					"type": "adminarea_link"
+				},
+				"expand_menu_button": {
+					"type": "expand_menu_button"
+				},
+				"collapse_button": {
+					"type": "collapse_button"
+				},
+				"-": {
+					"type": "-"
+				},
+				"-1": {
+					"type": "-"
+				},
+				"-2": {
+					"type": "-"
+				},
+				"delete": {
+					"type": "delete"
+				},
+				"delete_selected": {
+					"type": "delete_selected"
+				},
+				"export": {
+					"type": "export"
+				},
+				"-3": {
+					"type": "-"
+				},
+				"export_selected": {
+					"type": "export_selected"
+				},
+				"columns_control": {
+					"type": "columns_control",
+					"reorder": true,
+					"showHide": true
+				},
+				"filter_panel": {
+					"type": "filter_panel",
+					"items": []
+				},
+				"-4": {
+					"type": "-"
+				},
+				"-5": {
+					"type": "-"
+				},
+				"print_panel": {
+					"type": "print_panel",
+					"items": [
+						"print_details"
+					]
+				},
+				"print_details": {
+					"type": "print_details",
+					"tables": {
+						"1605977166": true,
+						"3680839223": true
+					}
+				},
+				"simple_grid_field4": {
+					"field": "fecha",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": false
+				},
+				"simple_grid_field7": {
+					"type": "grid_field_label",
+					"field": "fecha",
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field5": {
+					"field": "fechacaptura",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": false
+				},
+				"simple_grid_field13": {
+					"type": "grid_field_label",
+					"field": "fechacaptura",
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field2": {
+					"field": "sector",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field14": {
+					"type": "grid_field_label",
+					"field": "sector",
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field": {
+					"field": "tiendanombre",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": false
+				},
+				"simple_grid_field15": {
+					"type": "grid_field_label",
+					"field": "tiendanombre",
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field1": {
+					"field": "tipoventa",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"simple_grid_field16": {
+					"type": "grid_field_label",
+					"field": "tipoventa",
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field8": {
+					"field": "esnimei",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": false
+				},
+				"simple_grid_field17": {
+					"type": "grid_field_label",
+					"field": "esnimei",
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field9": {
+					"field": "simcard",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": false
+				},
+				"simple_grid_field18": {
+					"type": "grid_field_label",
+					"field": "simcard",
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field10": {
+					"field": "dn",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": false
+				},
+				"simple_grid_field19": {
+					"type": "grid_field_label",
+					"field": "dn",
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field35": {
+					"field": "dnpreferido",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": false
+				},
+				"simple_grid_field36": {
+					"type": "grid_field_label",
+					"field": "dnpreferido",
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field11": {
+					"field": "cuenta",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": true,
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field20": {
+					"type": "grid_field_label",
+					"field": "cuenta",
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field67": {
+					"field": "captura_cuenta",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": true,
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field69": {
+					"type": "grid_field_label",
+					"field": "captura_cuenta",
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field78": {
+					"field": "cuenta_corregida",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": true,
+					"clickSort": false,
+					"showFilter": false
+				},
+				"simple_grid_field80": {
+					"type": "grid_field_label",
+					"field": "cuenta_corregida",
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field12": {
+					"field": "contrato",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field21": {
+					"type": "grid_field_label",
+					"field": "contrato",
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field66": {
+					"field": "captura_contrato",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": true,
+					"clickSort": false,
+					"showFilter": true,
+					"hideEmpty": true,
+					"placeholder": {
+						"field": "captura_contrato",
+						"table": "ventasConsignaVCE1",
+						"type": 5
+					}
+				},
+				"simple_grid_field70": {
+					"type": "grid_field_label",
+					"field": "captura_contrato",
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field77": {
+					"field": "contrato_corregido",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": true,
+					"clickSort": false,
+					"showFilter": false
+				},
+				"simple_grid_field81": {
+					"type": "grid_field_label",
+					"field": "contrato_corregido",
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field49": {
+					"field": "orden",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": true,
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field51": {
+					"type": "grid_field_label",
+					"field": "orden",
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field68": {
+					"field": "captura_orden",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": true,
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field71": {
+					"type": "grid_field_label",
+					"field": "captura_orden",
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field79": {
+					"field": "orden_corregida",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": true,
+					"clickSort": false,
+					"showFilter": false
+				},
+				"simple_grid_field82": {
+					"type": "grid_field_label",
+					"field": "orden_corregida",
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field65": {
+					"field": "consumos",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": true,
+					"clickSort": false,
+					"showFilter": false
+				},
+				"simple_grid_field72": {
+					"type": "grid_field_label",
+					"field": "consumos",
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field3": {
+					"field": "ultimo_pago",
+					"type": "grid_field",
+					"inlineEdit": true,
+					"inlineAdd": false
+				},
+				"simple_grid_field22": {
+					"type": "grid_field_label",
+					"field": "ultimo_pago",
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field64": {
+					"field": "comisionable",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": true,
+					"clickSort": false,
+					"showFilter": false
+				},
+				"simple_grid_field73": {
+					"type": "grid_field_label",
+					"field": "comisionable",
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field6": {
+					"field": "carrusel",
+					"type": "grid_field",
+					"inlineEdit": true,
+					"inlineAdd": false
+				},
+				"simple_grid_field23": {
+					"type": "grid_field_label",
+					"field": "carrusel",
+					"clickSort": false,
+					"showFilter": true
+				},
+				"simple_grid_field54": {
+					"field": "valida",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false,
+					"clickSort": false,
+					"showFilter": false
+				},
+				"simple_grid_field55": {
+					"type": "grid_field_label",
+					"field": "valida",
+					"clickSort": false,
+					"showFilter": true
+				},
+				"details_preview": {
+					"type": "details_preview",
+					"table": 1605977166,
+					"items": [],
+					"hideEmptyPreview": true,
+					"proceedLink": true,
+					"popup": false,
+					"pageId": "list",
+					"customCSS": "/* Put  your custom CSS code here */\n\n\n\n"
+				},
+				"grid_checkbox": {
+					"type": "grid_checkbox"
+				},
+				"grid_checkbox_head": {
+					"type": "grid_checkbox_head"
+				},
+				"grid_alldetails_link": {
+					"type": "grid_alldetails_link"
+				},
+				"grid_details_link": {
+					"type": "grid_details_link",
+					"table": 1605977166,
+					"badge": true,
+					"showCount": true,
+					"hideIfNone": true
+				},
+				"simple_search_field": {
+					"type": "simple_search_field"
+				},
+				"simple_search_option": {
+					"type": "simple_search_option"
+				},
+				"grid_inline_cancel": {
+					"type": "grid_inline_cancel"
+				},
+				"inline_save_all": {
+					"type": "inline_save_all"
+				},
+				"inline_cancel_all": {
+					"type": "inline_cancel_all"
+				},
+				"edit_selected": {
+					"type": "edit_selected"
+				},
+				"grid_inline_edit": {
+					"type": "grid_inline_edit"
+				},
+				"grid_inline_save": {
+					"type": "grid_inline_save"
+				},
+				"saving_icon": {
+					"type": "saving_icon"
+				},
+				"grid_field": {
+					"field": "seguro_capturado",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label": {
+					"type": "grid_field_label",
+					"field": "seguro_capturado",
+					"showFilter": true
+				},
+				"grid_field1": {
+					"field": "seguro_verificado",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label1": {
+					"type": "grid_field_label",
+					"field": "seguro_verificado",
+					"showFilter": true
+				},
+				"-6": {
+					"type": "-"
+				},
+				"grid_field2": {
+					"field": "control_capturado",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label2": {
+					"type": "grid_field_label",
+					"field": "control_capturado",
+					"showFilter": true
+				},
+				"grid_field3": {
+					"field": "control_verificado",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label3": {
+					"type": "grid_field_label",
+					"field": "control_verificado",
+					"showFilter": true
+				},
+				"grid_field4": {
+					"field": "nfs_capturado",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label4": {
+					"type": "grid_field_label",
+					"field": "nfs_capturado",
+					"showFilter": true
+				},
+				"grid_field5": {
+					"field": "nfs_verificado",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label5": {
+					"type": "grid_field_label",
+					"field": "nfs_verificado",
+					"showFilter": true
+				},
+				"-7": {
+					"type": "-"
+				},
+				"grid_field6": {
+					"field": "anio",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label6": {
+					"type": "grid_field_label",
+					"field": "anio",
+					"showFilter": true
+				},
+				"grid_field7": {
+					"field": "mes",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label7": {
+					"type": "grid_field_label",
+					"field": "mes",
+					"showFilter": true
+				},
+				"-8": {
+					"type": "-"
+				},
+				"grid_field8": {
+					"field": "fullname",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label8": {
+					"type": "grid_field_label",
+					"field": "fullname",
+					"showFilter": true
+				},
+				"-9": {
+					"type": "-"
+				},
+				"grid_field9": {
+					"field": "usuario",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label9": {
+					"type": "grid_field_label",
+					"field": "usuario",
+					"showFilter": true
+				},
+				"grid_field10": {
+					"field": "cliente",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label10": {
+					"type": "grid_field_label",
+					"field": "cliente",
+					"showFilter": true,
+					"clickSort": false
+				},
+				"grid_field11": {
+					"field": "fecha_prox_vencimiento",
+					"type": "grid_field",
+					"inlineEdit": true,
+					"inlineAdd": false
+				},
+				"grid_field_label11": {
+					"type": "grid_field_label",
+					"field": "fecha_prox_vencimiento",
+					"showFilter": true
+				},
+				"grid_field12": {
+					"field": "ciclo",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": true
+				},
+				"grid_field_label12": {
+					"type": "grid_field_label",
+					"field": "ciclo",
+					"showFilter": true
+				},
+				"grid_field14": {
+					"field": "importe_adeudo",
+					"type": "grid_field",
+					"inlineEdit": true,
+					"inlineAdd": false
+				},
+				"grid_field_label14": {
+					"type": "grid_field_label",
+					"field": "importe_adeudo",
+					"showFilter": true
+				},
+				"grid_field15": {
+					"field": "fecha_ultima_validacion",
+					"type": "grid_field",
+					"inlineEdit": true,
+					"inlineAdd": false
+				},
+				"grid_field_label15": {
+					"type": "grid_field_label",
+					"field": "fecha_ultima_validacion",
+					"showFilter": true
+				},
+				"grid_field16": {
+					"field": "fecha_cancelacion",
+					"type": "grid_field",
+					"inlineEdit": true,
+					"inlineAdd": false
+				},
+				"grid_field_label16": {
+					"type": "grid_field_label",
+					"field": "fecha_cancelacion",
+					"showFilter": true
+				},
+				"grid_field17": {
+					"field": "fecha_suspension",
+					"type": "grid_field",
+					"inlineEdit": true,
+					"inlineAdd": false
+				},
+				"grid_field_label17": {
+					"type": "grid_field_label",
+					"field": "fecha_suspension",
+					"showFilter": true
+				},
+				"-10": {
+					"type": "-"
+				},
+				"grid_field13": {
+					"field": "dia_pago",
+					"type": "grid_field",
+					"inlineEdit": true,
+					"inlineAdd": false
+				},
+				"grid_field_label13": {
+					"type": "grid_field_label",
+					"field": "dia_pago",
+					"showFilter": true
+				},
+				"-11": {
+					"type": "-"
+				},
+				"grid_field18": {
+					"field": "estatus",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label18": {
+					"type": "grid_field_label",
+					"field": "estatus"
+				},
+				"-12": {
+					"type": "-"
+				},
+				"-13": {
+					"type": "-"
+				},
+				"save_search": {
+					"type": "save_search"
+				},
+				"-14": {
+					"type": "-"
+				},
+				"saved_searches": {
+					"type": "saved_searches"
+				},
+				"-15": {
+					"type": "-"
+				},
+				"advsearch_link": {
+					"type": "advsearch_link"
+				},
+				"-16": {
+					"type": "-"
+				},
+				"grid_field19": {
+					"field": "sin_incidencia",
+					"type": "grid_field",
+					"inlineEdit": true,
+					"inlineAdd": false
+				},
+				"grid_field_label19": {
+					"type": "grid_field_label",
+					"field": "sin_incidencia"
+				},
+				"custom_button": {
+					"type": "custom_button",
+					"eventGid": 4249893283,
+					"label": {
+						"type": 0,
+						"text": "Exportar seleccionados"
+					},
+					"icon": {}
+				},
+				"btn_ValidarCIS": {
+					"type": "custom_button",
+					"eventGid": 1844388914,
+					"label": {
+						"type": 0,
+						"text": "Ejecutar validación con CIS"
+					},
+					"icon": {}
+				}
+			},
+			"dbProps": {},
+			"spreadsheetGrid": true,
+			"autoAddNewRecord": false,
+			"version": 13,
+			"reorderRows": false,
+			"reorderRowsField": "",
+			"addToBottom": false,
+			"imageItem": {
+				"type": "page_image"
+			},
+			"imageBgColor": "#f2f2f2",
+			"controlsBgColor": "white",
+			"imagePosition": "right",
+			"pageCSS": "/* Put  your custom CSS code here */\n/* Put  your custom CSS code here */\n/*\n.table {\n    font-family: 'Arial', sans-serif !important;\n    font-size: 12px !important;\n    border-collapse: collapse !important;\n}*/\n\n\n/* ========================================================= */\n/* VARIABLES DE COLOR */\n/* ========================================================= */\n:root {\n    /* Color de acento para botones, foco y texto */\n    --color-acento: #48C9B0; /* Turquesa/Menta */ \n    --color-elegante: #1C334A; /* Azul Marino Oscuro */\n}\n\n/* ========================================================= */\n/* 1. Fondo de la Página: Degradado Azul Cielo Intenso       */\n/* ========================================================= */\nbody, .container-fluid {\n    /* Mismo fondo azul que usamos en el formulario de agregar */\n    background: linear-gradient(180deg, #E0F7FA 0%, #B3E5FC 100%) !important; \n    min-height: 100vh;\n}\n\n/* ========================================================= */\n/* 2. Contenedor de la Lista (El \"Body\" principal de la tabla) */\n/* Aplicamos el efecto de Tarjeta y Sombra a este contenedor */\n/* El selector depende del tema, pero '.rnr-b-grid' suele ser el contenedor de la tabla */\n.rnr-body .rnr-c-body, \n.rnr-b-grid, \n.rnr-c-grid,\n.panel-default {\n    background-color: #FFFFFF !important; \n    border: none !important; \n    border-radius: 12px !important; \n    \n    /* Sombreado elegante de la tarjeta */\n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), \n                0 2px 6px rgba(0, 0, 0, 0.05) !important; \n}\n\n/* 3. Encabezados y Barras de Herramientas (Parte superior e inferior) */\n/* Limpiamos el diseño de los paneles que rodean la tabla */\n.rnr-c-hsucc, .rnr-c-message, .rnr-c-hcell {\n    background-color: transparent !important;\n    border: none !important;\n}\n\n/* 4. Estilo de las Filas de Datos (Efecto Hover de Elevación) */\n/* Le da interactividad a la tabla */\n.rnr-body tr {\n    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;\n}\n\n.rnr-body tr:hover {\n    background-color: #fcfcfc !important; /* Ligeramente más claro al pasar el mouse */\n    \n    /* Sombra y elevación sutil para destacar la fila */\n    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1), \n                0 1px 3px rgba(0, 0, 0, 0.05) !important;\n    transform: translateY(-1px);\n}\n\n/* 5. Asegurar que las celdas del encabezado de la tabla se vean bien */\n.rnr-c-grid th {\n    background-color: #f7f7f7 !important; /* Fondo sutil para el header de la tabla */\n    color: var(--color-elegante) !important;\n    font-weight: 600;\n    border-bottom: 2px solid var(--color-acento) !important;\n}\n\n/* 6. Barras de Paginación y Búsqueda */\n.rnr-bottom .panel, .rnr-c-search, .rnr-c-top, .rnr-bottom-nav {\n    background-color: transparent !important;\n    border: none !important;\n    box-shadow: none !important; /* Quitamos la sombra a estos elementos */\n}\n\n\n\n/* ========================================================= */\n/* ESTILOS PARA CELDAS DE ESTADO (FORMATO CONDICIONAL)       */\n/* ========================================================= */\n\n/* Clase base para el estilo de \"badge\" o \"tag\" */\n.status-badge {\n    display: inline-block; /* Para que tome el tamaño del contenido */\n    padding: 5px 10px; /* Relleno interno */\n    border-radius: 20px; /* MUY REDONDEADO para el efecto de píldora */\n    font-weight: bold;\n    font-size: 0.85em;\n    text-align: center;\n    min-width: 80px; /* Ancho mínimo para que no se vea muy pequeño */\n    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Sombra sutil */\n}\n\n/* Estado: Entregado (Verde) */\n.status-entregado {\n    background-color: #D4EDDA; /* Verde pastel claro */\n    color: #155724; /* Texto verde oscuro */\n    border: 1px solid #C3E6CB; /* Borde sutil */\n}\n\n/* Estado: Pendiente (Amarillo) */\n.status-pendiente {\n    background-color: #FFF3CD; /* Amarillo pastel claro */\n    color: #856404; /* Texto amarillo oscuro */\n    border: 1px solid #FFEEBA;\n}\n\n/* Estado: Cancelado (Rojo) */\n.status-cancelado {\n    background-color: #F8D7DA; /* Rojo pastel claro */\n    color: #721C24; /* Texto rojo oscuro */\n    border: 1px solid #F5C6CB;\n}\n\n/* Agrega más estados según sea necesario */\n/* Estado: En Proceso (Azul) */\n.status-en-proceso {\n    background-color: #D1ECF1; /* Azul pastel claro */\n    color: #0C5460; /* Texto azul oscuro */\n    border: 1px solid #BEE5EB;\n}\n\n\n/* ========================================================= */\n/* ELIMINAR SEPARADORES DE COLUMNA (LÍNEAS VERTICALES)        */\n/* ========================================================= */\n/* Mantén líneas horizontales ligeras, borra las verticales */\n.rnr-gridtable td,\n.rnr-gridtable th {\n  border-left: none !important;\n  border-right: none !important;\n  box-shadow: none !important; /* algunos temas usan sombras como divisores */\n}\n\n/* Si quieres una línea horizontal sutil */\n.rnr-gridtable td {\n  border-top: 1px solid #eee !important;\n}\n.rnr-gridtable thead th {\n  border-bottom: 1px solid #e6e6e6 !important;\n}\n\n\n\n\n\n\n\n\n/* 1) El TD del details preview siempre ocupa todo (colspan). \n      Aquí hacemos que SOLO el contenido no se estire. */\ntd[data-cellid=\"grid_cell_dpreview\"]{\n  background: transparent !important;\n  /* ajusta padding a tu gusto */\n  padding: 8px 10px !important;\n}\n\n/* 2) El contenedor del preview: que sea inline-block y con ancho limitado */\ntd[data-cellid=\"grid_cell_dpreview\"] > div[data-itemtype=\"details_preview\"]{\n  display: inline-block !important;\n  width: auto !important;\n  max-width: 720px;           /* <-- AJUSTA ESTE ANCHO */\n  vertical-align: top;\n}\n\n/* 3) El “hueco” donde PHPRunner inyecta el detalle */\ntd[data-cellid=\"grid_cell_dpreview\"] [data-details-preview]{\n  display: inline-block !important;\n  width: auto !important;\n  max-width: 100%;\n}\n\n/* 4) PHPRunner/Bootstrap suelen forzar tablas al 100%: las bajamos a \"auto\" SOLO aquí */\ntd[data-cellid=\"grid_cell_dpreview\"] [data-details-preview] table,\ntd[data-cellid=\"grid_cell_dpreview\"] [data-details-preview] .table{\n  width: auto !important;\n  display: inline-table;\n}\n\n/* 5) Por si algún wrapper trae width:100% */\ntd[data-cellid=\"grid_cell_dpreview\"] > div[data-itemtype=\"details_preview\"] *{\n  max-width: 100%;\n}\n",
 			"listTotals": 1,
 			"title": {}
 		}

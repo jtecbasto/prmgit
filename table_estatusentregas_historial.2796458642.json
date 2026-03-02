@@ -164,6 +164,9 @@
 			"tableName": "estatusentregas_historial"
 		}
 	],
+	"whereTabs": [
+		{}
+	],
 	"eventHandlers": [
 		{
 			"eventId": "EVENT_BEFOREADD",
