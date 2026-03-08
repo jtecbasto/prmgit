@@ -264,10 +264,24 @@
 				"height": 400
 			},
 			{
+				"gid": 3907017426,
+				"y": 1430,
+				"x": 20,
+				"width": 205.984375,
+				"height": 400
+			},
+			{
 				"gid": 1605977166,
 				"y": 1387,
 				"x": 882,
 				"width": 150.734375,
+				"height": 400
+			},
+			{
+				"gid": 4055032228,
+				"y": 685,
+				"x": 315,
+				"width": 144.390625,
 				"height": 400
 			},
 			{
@@ -512,11 +526,12 @@
 						"code": "$host = 'localhost';\r\n$user = 'rocasamexico_admin';\r\n$pwd = 'Rocas@Mexico.2025**';\r\n$port = 3306;\r\n$sys_dbname = 'rocasamexico_prm';"
 					}
 				],
-				"selectedCustomConn": "New connection"
+				"selectedCustomConn": "Local"
 			}
 		}
 	],
 	"defaultConnID": "conn",
+	"phpSpreadsheet": true,
 	"landingSettings": {
 		"table": "solicitudes",
 		"pageId": "list",
@@ -620,6 +635,34 @@
 							"itemType": 2,
 							"linkType": 0,
 							"table": 1911098216,
+							"pageType": "list"
+						}
+					},
+					{
+						"id": "20",
+						"data": {
+							"name": {
+								"table": "vw_clientes",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 4055032228,
+							"pageType": "list"
+						}
+					},
+					{
+						"id": "22",
+						"data": {
+							"name": {
+								"table": "ventasConsignaVCE2",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 3907017426,
 							"pageType": "list"
 						}
 					}
@@ -729,7 +772,9 @@
 								"welcome_item20",
 								"welcome_item21",
 								"welcome_item22",
-								"welcome_item23"
+								"welcome_item23",
+								"welcome_item24",
+								"welcome_item26"
 							]
 						}
 					},
@@ -1092,6 +1137,30 @@
 						"type": 6
 					},
 					"background": "#cfae83",
+					"linkType": 0
+				},
+				"welcome_item24": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "vw_clientes",
+					"linkPage": "list",
+					"linkText": {
+						"table": "vw_clientes",
+						"type": 6
+					},
+					"background": "#e8926f",
+					"linkType": 0
+				},
+				"welcome_item26": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "ventasConsignaVCE2",
+					"linkPage": "list",
+					"linkText": {
+						"table": "ventasConsignaVCE2",
+						"type": 6
+					},
+					"background": "#5f9ea0",
 					"linkType": 0
 				}
 			},
