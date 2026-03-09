@@ -1,5 +1,5 @@
 {
-	"sql": "SELECT\n\tidaddon,\n\tprecio,\n\tfactivaaddon,\n\tverificacion_realizada,\n\tidventaaddon\nFROM\n\taddons\n",
+	"sql": "SELECT\n    idventa,\n\tidaddon,\n\tprecio,\n\tfactivaaddon,\n\tverificacion_realizada,\n\tidventaaddon\nFROM\n\taddons\n",
 	"type": 1,
 	"connId": "conn",
 	"originalTable": "addons",
@@ -25,7 +25,7 @@
 		{
 			"name": "precio",
 			"sqlExpression": "precio",
-			"index": 2,
+			"index": 3,
 			"strField": "precio",
 			"type": 5,
 			"viewFormats": [
@@ -47,7 +47,7 @@
 		{
 			"name": "factivaaddon",
 			"sqlExpression": "factivaaddon",
-			"index": 3,
+			"index": 4,
 			"strField": "factivaaddon",
 			"type": 7,
 			"viewFormats": [
@@ -70,7 +70,7 @@
 		{
 			"name": "verificacion_realizada",
 			"sqlExpression": "verificacion_realizada",
-			"index": 4,
+			"index": 5,
 			"strField": "verificacion_realizada",
 			"type": 2,
 			"viewFormats": [
@@ -91,7 +91,7 @@
 		{
 			"name": "idaddon",
 			"sqlExpression": "idaddon",
-			"index": 1,
+			"index": 2,
 			"strField": "idaddon",
 			"type": 3,
 			"viewFormats": [
@@ -115,7 +115,7 @@
 		{
 			"name": "idventaaddon",
 			"sqlExpression": "idventaaddon",
-			"index": 5,
+			"index": 6,
 			"strField": "idventaaddon",
 			"type": 3,
 			"autoinc": true,
@@ -127,6 +127,23 @@
 			],
 			"label": {
 				"Spanish": "Idventaaddon"
+			},
+			"tableName": "addons"
+		},
+		{
+			"name": "idventa",
+			"sqlExpression": "idventa",
+			"index": 1,
+			"strField": "idventa",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Idventa"
 			},
 			"tableName": "addons"
 		}
@@ -1300,7 +1317,8 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"menu"
+								"menu",
+								"search_panel"
 							]
 						}
 					},
@@ -1390,6 +1408,9 @@
 								},
 								{
 									"cell": "headcell_field"
+								},
+								{
+									"cell": "headcell_field4"
 								}
 							]
 						},
@@ -1413,6 +1434,9 @@
 								},
 								{
 									"cell": "cell_field"
+								},
+								{
+									"cell": "cell_field4"
 								}
 							]
 						},
@@ -1436,6 +1460,9 @@
 								},
 								{
 									"cell": "footcell_field"
+								},
+								{
+									"cell": "footcell_field4"
 								}
 							]
 						}
@@ -1569,6 +1596,25 @@
 						"footcell_icons": {
 							"model": "footcell_icons",
 							"items": []
+						},
+						"headcell_field4": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label2"
+							],
+							"field": "idventa"
+						},
+						"cell_field4": {
+							"model": "cell_field",
+							"items": [
+								"grid_field2"
+							],
+							"field": "idventa"
+						},
+						"footcell_field4": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "idventa"
 						}
 					},
 					"deferredItems": [],
@@ -1600,7 +1646,10 @@
 				"list_options": {
 					"type": "list_options",
 					"items": [
-						"edit_selected"
+						"edit_selected",
+						"-6",
+						"show_search_panel",
+						"hide_search_panel"
 					]
 				},
 				"username_button": {
@@ -1720,6 +1769,34 @@
 				},
 				"inline_cancel_all": {
 					"type": "inline_cancel_all"
+				},
+				"grid_field2": {
+					"field": "idventa",
+					"type": "grid_field",
+					"inlineEdit": true
+				},
+				"grid_field_label2": {
+					"type": "grid_field_label",
+					"field": "idventa"
+				},
+				"search_panel": {
+					"type": "search_panel",
+					"items": [
+						"search_panel_field"
+					]
+				},
+				"show_search_panel": {
+					"type": "show_search_panel"
+				},
+				"-6": {
+					"type": "-"
+				},
+				"hide_search_panel": {
+					"type": "hide_search_panel"
+				},
+				"search_panel_field": {
+					"field": "idventa",
+					"type": "search_panel_field"
 				}
 			},
 			"dbProps": {},
