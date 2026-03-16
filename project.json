@@ -257,6 +257,13 @@
 				"height": 129
 			},
 			{
+				"gid": 8424862,
+				"y": 1650,
+				"x": 530,
+				"width": 191.078125,
+				"height": 400
+			},
+			{
 				"gid": 1911098216,
 				"y": 993,
 				"x": 614,
@@ -665,6 +672,20 @@
 							"table": 3907017426,
 							"pageType": "list"
 						}
+					},
+					{
+						"id": "23",
+						"data": {
+							"name": {
+								"table": "ventas",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 8424862,
+							"pageType": "list"
+						}
 					}
 				]
 			}
@@ -774,7 +795,8 @@
 								"welcome_item22",
 								"welcome_item23",
 								"welcome_item24",
-								"welcome_item26"
+								"welcome_item26",
+								"welcome_item25"
 							]
 						}
 					},
@@ -1161,6 +1183,18 @@
 						"type": 6
 					},
 					"background": "#5f9ea0",
+					"linkType": 0
+				},
+				"welcome_item25": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "ventas",
+					"linkPage": "list",
+					"linkText": {
+						"table": "ventas",
+						"type": 6
+					},
+					"background": "#daa520",
 					"linkType": 0
 				}
 			},
