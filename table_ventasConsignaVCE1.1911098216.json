@@ -1579,7 +1579,7 @@
 		{
 			"eventId": "EVENT_JS_ONLOAD",
 			"pageType": "list",
-			"code": "\nif(proxy.username !== \"SMORAV\") {\n  // Opción A: por selector (si conoces el id o clase)\n  $(\"#btn_ValidarCIS\").hide();      // ejemplo\n\n$(\"a,button\").filter(function(){\n    return $(this).text().trim() === \"Ejecutar validación con CIS\";\n  }).hide();\n\n}\n\n/*\n\n// Obtenemos la variable que enviamos desde el servidor\nvar isSMORAV = pageObj.getProxyValue(\"isSMORAV\");\n\n// Si NO es SMORAV, bloqueamos la edición del campo\nif (!isSMORAV) */\n\nvar username = Proxy.Session.UserID; // Asegúrate de haber pasado el UserID al Proxy\n\nif (username !== 'SMORAV') {\n    // Interceptamos el evento antes de editar\n    pageObject.on('beforeEdit', function( record, field ) {\n        if ( field == 'contrato' ) {\n            return false; // Cancela la edición\n        }\n    });\n}"
+			"code": "\nif(proxy.username !== \"SMORAV\") {\n  // Opción A: por selector (si conoces el id o clase)\n  $(\"#btn_ValidarCIS\").hide();      // ejemplo\n\n$(\"a,button\").filter(function(){\n    return $(this).text().trim() === \"Ejecutar validación con CIS\";\n  }).hide();\n\n}\n\n/*\n\n// Obtenemos la variable que enviamos desde el servidor\nvar isSMORAV = pageObj.getProxyValue(\"isSMORAV\");\n\n// Si NO es SMORAV, bloqueamos la edición del campo\nif (!isSMORAV) */\n\nvar username = Proxy.Session.UserID; // Asegúrate de haber pasado el UserID al Proxy\n\nif (username !== 'SMORAV' || username !=='ARIVERAH') {\n    // Interceptamos el evento antes de editar\n    pageObject.on('beforeEdit', function( record, field ) {\n        if ( field == 'contrato' ) {\n            return false; // Cancela la edición\n        }\n    });\n}"
 		},
 		{
 			"eventId": "EVENT_BEFORESHOW_LIST",
