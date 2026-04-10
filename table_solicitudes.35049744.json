@@ -7,7 +7,7 @@
 			"asc": false
 		}
 	],
-	"sql": "SELECT\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tsolicitudes.estatusentrega,\n\tcte.nombre,\n\tcte.paterno,\n\tcte.materno,\n\tcte.nombre_completo,\n\tev.estado,\n\tev.ciudad,\n\tev.cp,\n\tev.calle,\n\tev.numeroext,\n\tev.numeroint,\n\tev.colonia,\n\tp.descripcion,\n\tCONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(TRIM(CONCAT_WS(' ',\n             IFNULL(ev.numeroext,''),IFNULL(ev.calle,''),IFNULL(ev.numeroint,''),\n             IFNULL(ev.colonia,''),IFNULL(ev.cp,''),IFNULL(ev.ciudad,''),IFNULL(ev.estado,'')\n           )),' ','+')) AS maps_url,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      IF(IFNULL(ev.calle,'')='','', CONCAT('C.',ev.calle)),\n      IFNULL(CONCAT('No.',ev.numeroext),''),\n      IFNULL(CONCAT('Int.',ev.numeroint),''),\n      IFNULL(ev.colonia,''), IFNULL(CONCAT('C.P.',ev.cp),''),\n      IFNULL(ev.ciudad,''), IFNULL(ev.estado,'')\n    ))) AS direccion,\n\tsolicitudes.idsolicitud AS idsolicitud,\n\tsolicitudes.esnimei AS noserie,\n\tsolicitudes.simcard AS simcard,\n\tev.lat,\n\tev.lng,\n\tsolicitudes.dn AS dn,\n\tsolicitudes.dnpreferido AS dnpreferido,\n\tsolicitudes.cuenta AS cuenta,\n\tsolicitudes.contrato AS contrato,\n\tsolicitudes.contratoportal AS contratoportal,\n\tsolicitudes.plazopendiente AS plazopendiente,\n\tsolicitudes.Factura AS factura,\n\tsolicitudes.fechavenci AS fechavenci,\n\tsolicitudes.ciclo AS ciclo,\n\tsolicitudes.renta AS renta,\n\tsolicitudes.ine,\n\tsolicitudes.cartaburocredito,\n\tsolicitudes.polizaseguro,\n\tsolicitudes.contratodocto,\n\tsolicitudes.contratolog,\n\tsolicitudes.anticipolog,\n\tsolicitudes.fechahoraentrega,\n\tsolicitudes.totalapagar,\n\t\"\" AS btn_entrega_html\nFROM\n\tsolicitudes AS solicitudes\n\tLEFT OUTER JOIN clientes AS cte ON cte.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp AS ev ON ev.idsolicitud = solicitudes.idsolicitud\n\tLEFT OUTER JOIN productos AS p ON p.idproducto = solicitudes.idproducto\n\tLEFT OUTER JOIN tiposventa AS t ON t.idtipoventa = solicitudes.idtipoventa\n\tLEFT OUTER JOIN gtiposventa AS g ON g.idgtipoventa = t.idgtipoventa\n\tLEFT OUTER JOIN serviciosmoviles_ugmembers AS m ON m.UserName = solicitudes.usuario\n\tLEFT OUTER JOIN serviciosmoviles_uggroups AS u ON u.GroupID = m.GroupID\n\tLEFT JOIN decisionessolicitud d on solicitudes.estatus=d.decisionsolicitud\nWHERE\nsolicitudes.idtienda=146 and\ng.idggtipoventa =:session.idggtipoventa AND (solicitudes.usuario =':session.UserID' OR if(:session.acceso=1, solicitudes.idtienda=:session.Tienda, false) OR ':session.UserID' ='ADMIN' \nOR \nif(':session.Label' ='VALIDADOR' AND d.nivel>=2 ,1,0) OR if(':session.Label' ='MESADECONTROL' AND d.nivel=4  ,1,0) \n\n)\norder by solicitudes.idsolicitud desc",
+	"sql": "SELECT\n\tsolicitudes.idtipoventa,\n\tsolicitudes.fecha,\n\tsolicitudes.fechacaptura,\n\tsolicitudes.idcliente,\n\tsolicitudes.idproducto,\n\tsolicitudes.idplan,\n\tsolicitudes.usuario,\n\tsolicitudes.idtienda,\n\tsolicitudes.fechamodif,\n\tsolicitudes.orden,\n\tsolicitudes.solicitudimg,\n\tsolicitudes.estatus,\n\tsolicitudes.idsolrazon,\n\tsolicitudes.importeatt,\n\tsolicitudes.importesms,\n\tsolicitudes.plazo,\n\tsolicitudes.observaciones,\n\tsolicitudes.equipoincluido,\n\tsolicitudes.rfc,\n\tsolicitudes.idtratamiento,\n\tsolicitudes.riesgo,\n\tsolicitudes.observacionest,\n\tsolicitudes.idcli,\n\tsolicitudes.fecha1avta,\n\tsolicitudes.idplan1avta,\n\tsolicitudes.dn1avta,\n\tsolicitudes.idproceso,\n\tsolicitudes.idorigenventa,\n\tsolicitudes.estatusentrega,\n\tcte.nombre,\n\tcte.paterno,\n\tcte.materno,\n\tcte.nombre_completo,\n\tev.estado,\n\tev.ciudad,\n\tev.cp,\n\tev.calle,\n\tev.numeroext,\n\tev.numeroint,\n\tev.colonia,\n\tp.descripcion,\n\tCONCAT('https://www.google.com/maps/search/?api=1&query=', REPLACE(TRIM(CONCAT_WS(' ',\n             IFNULL(ev.numeroext,''),IFNULL(ev.calle,''),IFNULL(ev.numeroint,''),\n             IFNULL(ev.colonia,''),IFNULL(ev.cp,''),IFNULL(ev.ciudad,''),IFNULL(ev.estado,'')\n           )),' ','+')) AS maps_url,\n\tCONCAT(TRIM(CONCAT_WS(' ',\n      IF(IFNULL(ev.calle,'')='','', CONCAT('C.',ev.calle)),\n      IFNULL(CONCAT('No.',ev.numeroext),''),\n      IFNULL(CONCAT('Int.',ev.numeroint),''),\n      IFNULL(ev.colonia,''), IFNULL(CONCAT('C.P.',ev.cp),''),\n      IFNULL(ev.ciudad,''), IFNULL(ev.estado,'')\n    ))) AS direccion,\n\tsolicitudes.idsolicitud AS idsolicitud,\n\tsolicitudes.esnimei AS noserie,\n\tsolicitudes.simcard AS simcard,\n\tev.lat,\n\tev.lng,\n\tsolicitudes.dn AS dn,\n\tsolicitudes.dnpreferido AS dnpreferido,\n\tsolicitudes.cuenta AS cuenta,\n\tsolicitudes.contrato AS contrato,\n\tsolicitudes.contratoportal AS contratoportal,\n\tsolicitudes.plazopendiente AS plazopendiente,\n\tsolicitudes.Factura AS factura,\n\tsolicitudes.fechavenci AS fechavenci,\n\tsolicitudes.ciclo AS ciclo,\n\tsolicitudes.renta AS renta,\n\tsolicitudes.ine,\n\tsolicitudes.cartaburocredito,\n\tsolicitudes.polizaseguro,\n\tsolicitudes.contratodocto,\n\tsolicitudes.contratolog,\n\tsolicitudes.anticipolog,\n\tsolicitudes.fechahoraentrega,\n\tsolicitudes.totalapagar,\n\t\"\" AS btn_entrega_html,\n\tsolicitudes.idticket\nFROM\n\tsolicitudes AS solicitudes\n\tLEFT OUTER JOIN clientes AS cte ON cte.idcliente = solicitudes.idcliente\n\tLEFT OUTER JOIN entregasvnp AS ev ON ev.idsolicitud = solicitudes.idsolicitud\n\tLEFT OUTER JOIN productos AS p ON p.idproducto = solicitudes.idproducto\n\tLEFT OUTER JOIN tiposventa AS t ON t.idtipoventa = solicitudes.idtipoventa\n\tLEFT OUTER JOIN gtiposventa AS g ON g.idgtipoventa = t.idgtipoventa\n\tLEFT OUTER JOIN serviciosmoviles_ugmembers AS m ON m.UserName = solicitudes.usuario\n\tLEFT OUTER JOIN serviciosmoviles_uggroups AS u ON u.GroupID = m.GroupID\n\tLEFT JOIN decisionessolicitud d on solicitudes.estatus=d.decisionsolicitud\nWHERE\nsolicitudes.idtienda=146 and\ng.idggtipoventa =:session.idggtipoventa AND (solicitudes.usuario =':session.UserID' OR if(:session.acceso=1, solicitudes.idtienda=:session.Tienda, false) OR ':session.UserID' ='ADMIN' \nOR \nif(':session.Label' ='VALIDADOR' AND d.nivel>=2 ,1,0) OR if(':session.Label' ='MESADECONTROL' AND d.nivel=4  ,1,0) \n\n)\norder by solicitudes.idsolicitud desc",
 	"connId": "conn",
 	"originalTable": "solicitudes",
 	"name": "solicitudes",
@@ -1516,6 +1516,50 @@
 				"Spanish": "Btn Entrega Html"
 			},
 			"tableName": ""
+		},
+		{
+			"name": "idticket",
+			"sqlExpression": "solicitudes.idticket",
+			"index": 68,
+			"strField": "idticket",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Lookup wizard",
+					"lookupType": 2,
+					"lookupTable": "tickets_atencion_domicilio_view",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "id",
+					"lookupDisplayField": "id",
+					"lookupControlType": 2,
+					"lookupListPage": "list",
+					"lookupAutofillFields": [
+						{
+							"masterField": "idcliente",
+							"lookupField": "idcliente"
+						},
+						{
+							"masterField": "idplan",
+							"lookupField": "idplan"
+						},
+						{
+							"masterField": "plazo",
+							"lookupField": "plazo"
+						},
+						{
+							"masterField": "idtipoventa",
+							"lookupField": "idtipoventa"
+						}
+					]
+				}
+			],
+			"label": {
+				"Spanish": "Idticket"
+			},
+			"tableName": "solicitudes"
 		}
 	],
 	"whereTabs": [
@@ -1554,7 +1598,7 @@
 		{
 			"eventId": "EVENT_JS_ONLOAD",
 			"pageType": "add",
-			"code": "// ====================== CONFIG ======================\nwindow.STORAGE_KEY   = 'solicitud_vnp_draft';\nwindow.ENDPOINT      = 'serial_reserve.php';        // reserva/libera series\nwindow.API_SAVE      = 'solicitud_save_api.php';    // guarda solicitud vía API\n\nwindow.FIELDS = [\n  'idcliente','idproducto','idtipoventa','idplan','orden','plazo','rfc','idcli',\n  'estado','ciudad','colonia','calle','numeroext','numeroint','noserie','simcard','cp',\n  'dn','cuenta','contrato','contratoportal','plazopendiente','dnpreferido','idtienda','renta','ciclo','fechahoraentrega',\n  'factura','fechavenci','observaciones','contratolog','anticipolog','ine','cartaburocredito','polizaseguro','contratodocto','totalapagar'];\n  \n  \n  // ====================== CAMPOS OBLIGATORIOS (nuevo) ======================\nwindow.REQUIRED_FIELDS = [\n  { name:'idcliente',   label:'Cliente' },\n  { name:'idproducto',  label:'Producto' },\n  { name:'idtipoventa', label:'Tipo de venta' },\n  { name:'idplan',      label:'Plan' },\n  { name:'noserie',     label:'Equipo (IMEI)' },\n  { name:'dn',          label:'DN' },\n  { name:'orden',          label:'Orden' },\n  { name:'ciclo',          label:'Ciclo' }\n  \n  // agrega o quita según tus mandatory reales en PHPRunner\n];\n\n\nwindow.__recovering  = false;\nwindow.__res_noserie = null;\nwindow.__saving      = false;\n\nvar DRAFT_TTL = 2 * 60 * 60 * 1000; // 2 horas\n\n// ====================== CARGAR SWEETALERT2 (si no existe) ======================\n(function ensureSwal(){\n  if (typeof Swal !== 'undefined') return;\n  var s = document.createElement('script');\n  s.src = \"https://cdn.jsdelivr.net/npm/sweetalert2@11\";\n  s.async = true;\n  document.head.appendChild(s);\n})();\n\n// ====================== HELPERS BÁSICOS ======================\nfunction getPid(){\n  return $('[data-pageid]').first().attr('data-pageid') || '';\n}\nfunction getCtrl(f){\n  try { return Runner.getControl(getPid(), f); } catch(e){ return null; }\n}\nfunction readVal(f){\n  var c = getCtrl(f);\n  if (c && typeof c.getValue === 'function') return c.getValue();\n  var pid = getPid();\n  var $el = $('#value_'+f+'_'+pid);\n  return $el.length ? $el.val() : '';\n}\nfunction setVal(f,v,fire){\n  var c = getCtrl(f);\n  if (c && typeof c.setControlValue === 'function') {\n    c.setControlValue(v);\n    if (fire && typeof c.fireEvent === 'function') c.fireEvent('change');\n    return;\n  }\n  var pid = getPid();\n  var $el = $('#value_'+f+'_'+pid);\n  if ($el.length){\n    $el.val(v);\n    if (fire) $el.trigger('change');\n  }\n}\nfunction log(){ if (window.console && console.log) console.log.apply(console, arguments); }\n\n// ====================== VALIDACIÓN DE OBLIGATORIOS (nuevo) ======================\nfunction validateMandatory(){\n  if (!window.REQUIRED_FIELDS || !window.REQUIRED_FIELDS.length) return true;\n\n  var missing = [];\n\n  window.REQUIRED_FIELDS.forEach(function(f){\n    var v = readVal(f.name);\n    if (v === null || v === undefined) v = '';\n    v = String(v).trim();\n\n    // Si quieres considerar \"0\" como vacío para combos, puedes descomentar:\n    // if (v === '' || v === '0') { ... }\n\n    if (!v){\n      missing.push(f);\n    }\n  });\n\n  if (missing.length){\n    var msg = 'Debes capturar los siguientes campos obligatorios:\\n\\n' +\n      missing.map(function(f){ return '• ' + f.label; }).join('\\n');\n\n    showError(msg);\n\n    // Enfocar el primer campo faltante (si existe control PHPRunner)\n    var first = missing[0];\n    var c = getCtrl(first.name);\n    if (c && typeof c.setFocus === 'function'){\n      setTimeout(function(){ c.setFocus(); }, 200);\n    }\n\n    return false;\n  }\n\n  return true;\n}\n\n\n\n\n\n\n\n\n// ====================== SWEETALERT WRAPPERS ======================\nfunction showSuccess(msg, cb){\n  if (typeof Swal !== 'undefined') {\n    Swal.fire({\n      title: 'Guardado correctamente',\n      text: msg || '',\n      icon: 'success',\n      confirmButtonText: 'Aceptar',\n      timer: 2200,\n      timerProgressBar: true\n    }).then(function(){ if (typeof cb === 'function') cb(); });\n  } else {\n    alert(msg || 'Guardado correctamente.');\n    if (typeof cb === 'function') cb();\n  }\n}\nfunction showError(msg){\n  if (typeof Swal !== 'undefined') {\n    Swal.fire({ title: 'Error', text: msg || 'Ocurrió un error.', icon: 'error', confirmButtonText: 'Aceptar' });\n  } else {\n    alert(msg || 'Ocurrió un error.');\n  }\n}\n\n// ====================== AUTOSAVE ======================\nfunction buildDraft(){\n  var d = {};\n  (window.FIELDS || []).forEach(function(f){\n    var v = readVal(f);\n    if (v !== null && v !== undefined && v !== '') d[f] = v;\n  });\n  d.timestamp = Date.now();\n  return d;\n}\nfunction saveDraft(){\n  if (window.__recovering) return;\n  try {\n    var d = buildDraft();\n    sessionStorage.setItem(window.STORAGE_KEY, JSON.stringify(d));\n  } catch(e){ log('Error saveDraft', e); }\n}\nfunction recoverDraft(){\n  var raw = sessionStorage.getItem(window.STORAGE_KEY);\n  if (!raw) return;\n  try {\n    var d = JSON.parse(raw);\n    if (!d.timestamp || (Date.now() - d.timestamp) > DRAFT_TTL) {\n      sessionStorage.removeItem(window.STORAGE_KEY);\n      return;\n    }\n    window.__recovering = true;\n    log('Draft encontrado', d);\n\n    if (d.idproducto){\n      setVal('idproducto', d.idproducto, true);\n      setTimeout(function(){\n        Object.keys(d).forEach(function(k){\n          if (k !== 'timestamp' && k !== 'idproducto') setVal(k, d[k], false);\n        });\n        window.__recovering = false;\n      }, 300);\n    } else {\n      Object.keys(d).forEach(function(k){\n        if (k !== 'timestamp') setVal(k, d[k], false);\n      });\n      window.__recovering = false;\n    }\n  } catch(e){ log('Draft inválido', e); }\n  sessionStorage.removeItem(window.STORAGE_KEY);\n}\n\n// ====================== RESERVAS (serial_reserve.php) ======================\nfunction releasePrev(){\n  if (!window.__res_noserie) return;\n  log('Liberando reserva previa', window.__res_noserie);\n  $.post(window.ENDPOINT, { action:'release', noserie: window.__res_noserie });\n  window.__res_noserie = null;\n}\nfunction reserveForProduct(productId){\n  if (!productId || window.__recovering) return;\n  log('Reservando serie para producto', productId);\n\n  releasePrev();\n  setVal('noserie','',true);\n\n  $.post(window.ENDPOINT, { action:'reserve_by_product', product_id: productId })\n    .done(function(resp){\n      var r = (typeof resp === 'object') ? resp : (function(){ try {return JSON.parse(resp);}catch(e){return null;} })();\n      log('Respuesta reserva', r);\n\n      if (r && r.ok && r.noserie) {\n        window.__res_noserie = r.noserie;\n        setVal('noserie', r.noserie, true);\n        saveDraft();\n      } else if (r && r.error === 'no-stock') {\n        showError('No hay series disponibles para este producto.');\n        setVal('idproducto','',true);\n      } else {\n        showError('No se pudo reservar la serie.');\n        setVal('idproducto','',true);\n      }\n    })\n    .fail(function(){\n      showError('Error de comunicación al reservar la serie.');\n      setVal('idproducto','',true);\n    });\n}\n\n// ====================== RESET UI INMEDIATO (nuevo) ======================\nfunction resetAddFormUI(){\n  try {\n    var pid = getPid();\n\n    // 1) reset nativo por si el form existe\n    var frm = $('form').get(0);\n    if (frm && typeof frm.reset === 'function') frm.reset();\n\n    // 2) limpiar controles PHPRunner\n    (window.FIELDS || []).forEach(function(f){\n      try {\n        var c = getCtrl(f);\n        if (c && typeof c.setValue === 'function') {\n          c.setValue('');\n          if (typeof c.fireEvent === 'function') c.fireEvent('change');\n        } else {\n          // fallback DOM\n          var $el = $('#value_'+f+'_'+pid);\n          if ($el.length) { $el.val(''); $el.trigger('change'); }\n        }\n      } catch(e){}\n    });\n\n    // 3) limpiar select2 si existiera\n    $('.select2').each(function(){ try { $(this).val(null).trigger('change'); } catch(e){} });\n\n  } catch(e){ /* ignore */ }\n}\n\n// ====================== CLEAN FORM TRAS ÉXITO (modificado) ======================\nfunction cleanAfterSuccess(){\n  // Libera serie reservada si existe\n  if (window.__res_noserie) {\n    $.post(window.ENDPOINT, { action:'release', noserie: window.__res_noserie });\n    window.__res_noserie = null;\n  }\n\n  // Limpieza visual inmediata (sin esperar reload)\n  resetAddFormUI();\n\n  // Borrar draft\n  try { sessionStorage.removeItem(window.STORAGE_KEY); } catch(e){}\n\n  // Disparo silencioso para que el BeforeDisplay/BeforeProcess limpie la sesión\n  // (tu evento PHP mira clean=1 y hace unset de las *_add_values)\n  $.post('solicitudes_add.php', { clean: 1, ajax_clean: 1 });\n\n  // Recargamos con clean=1 para garantizar formulario fresco\n  var url = window.location.pathname + '?new=1&clean=1&_t=' + Date.now();\n  window.location.href = url;\n}\n\n// ====================== API SAVE (solicitud_save_api.php) ======================\nfunction sendToAPI(){\n  if (window.__saving) return;\n\n  // === NUEVO: validar obligatorios antes de llamar a la API ===\n  if (!validateMandatory()){\n    return; // no continúa, NO llama a la API\n  }\n\n  window.__saving = true;\n\n  var datos = {};\n  (window.FIELDS || []).forEach(function(f){ datos[f] = readVal(f); });\n\n  log('Payload a API_SAVE:', datos);\n\n  $.post(window.API_SAVE, datos, function(respRaw){\n    var r = (typeof respRaw === 'object') ? respRaw : (function(){ try { return JSON.parse(respRaw); } catch(e){ return null; } })();\n    log('Respuesta API_SAVE:', r || respRaw);\n\n    if (!r) {\n      showError('Respuesta inválida del servidor.');\n      window.__saving = false;\n      return;\n    }\n\n    var ok = (r.ok === true || r.ok === 1 || r.ok === \"1\" || r.ok === \"ok\" || r.ok === \"OK\");\n\n    if (ok) {\n      var msg = r.message || 'Solicitud guardada correctamente.';\n      showSuccess(msg, function(){ cleanAfterSuccess(); });\n    } else {\n      showError(r.error || 'Error desconocido al guardar.');\n    }\n\n    window.__saving = false;\n  })\n  .fail(function(xhr){\n    log('Fallo AJAX API_SAVE:', xhr.status, xhr.responseText);\n    showError('Error de comunicación con el servidor.');\n    window.__saving = false;\n  });\n}\n\n\n// ====================== INIT ======================\n$(function(){\n  var pid      = getPid();\n  var ctrlProd = getCtrl('idproducto');\n\n  log('INIT solicitudes_add pid=', pid, 'ctrlProd=', !!ctrlProd);\n\n  // 1) Recuperar borrador si existe\n  recoverDraft();\n\n  // 2) Autosave en cambios\n  var sel = (window.FIELDS || []).map(function(f){\n    return \"[data-field='\"+f+\"'][data-pageid='\"+pid+\"'] input,\" +\n           \"[data-field='\"+f+\"'][data-pageid='\"+pid+\"'] select,\" +\n           \"[data-field='\"+f+\"'][data-pageid='\"+pid+\"'] textarea\";\n  }).join(',');\n  if (sel) {\n    $(document).on('input change', sel, function(){ saveDraft(); });\n  }\n\n  // 3) Reserva automática al cambiar producto\n  if (ctrlProd) {\n    ctrlProd.on('change', function(){\n      if (window.__recovering) return;\n      var v = ctrlProd.getValue();\n      log('Cambio de idproducto =>', v);\n      if (v) reserveForProduct(v);\n    });\n  }\n\n  // 4) Botón personalizado \"Guardar VNP\"\n  var saveSelector =\n    \"[data-itemid='btnGuardarVNP'] a, \" +\n    \"[data-itemid='btnGuardarVNP'] button, \" +\n    \"#btnGuardarVNP\";\n\n  $(document).on('click', saveSelector, function(e){\n    e.preventDefault();\n    log('Click en botón VNP detectado');\n    sendToAPI();\n  });\n\n  // 5) Bloquear submit clásico\n  $('form').on('submit', function(e){ e.preventDefault(); return false; });\n\n  // 6) Liberar reserva al salir si no se está guardando\n  $(window).on('beforeunload pagehide', function(){\n    if (!window.__saving) {\n      releasePrev();\n      saveDraft();\n    }\n  });\n});\n\n\n(function(){\n  var $ = window.jQuery || window.$;\n  if (!$) return;\n\n  // ------------- Config -------------\n  var LOOKUP_IFR_SELECTOR = 'iframe[src*=\"_list.php\"]'; // iframes de LIST del lookup\n  var ADD_HINT = 'Alta rápida';                          // texto del botón fallback\n\n  // ------------- Portal en TOP -------------\n  function ensureTopPortal(){\n    var topDoc = window.top.document;\n    if (!topDoc.getElementById('lkpAddPortal')){\n      var wrap = topDoc.createElement('div');\n      wrap.id = 'lkpAddPortal';\n      wrap.innerHTML =\n        '<div class=\"shell\">' +\n          '<div class=\"close-btn\" id=\"lkpAddPortalClose\">Cerrar</div>' +\n          '<iframe id=\"lkpAddPortalFrame\" src=\"about:blank\" allow=\"clipboard-write; clipboard-read\"></iframe>' +\n        '</div>';\n      topDoc.body.appendChild(wrap);\n      topDoc.getElementById('lkpAddPortalClose').addEventListener('click', closeTopPortal);\n    }\n  }\n  function openTopPortal(url, onClose){\n    ensureTopPortal();\n    var topDoc = window.top.document;\n    var portal = topDoc.getElementById('lkpAddPortal');\n    var frame  = topDoc.getElementById('lkpAddPortalFrame');\n\n    // bloquear scroll del top mientras está abierto\n    window.top.document.body.style.overflow = 'hidden';\n\n    // abre el _add en el iframe del portal\n    if (url.indexOf('embedded=1') === -1){\n      url += (url.indexOf('?')>-1 ? '&' : '?') + 'embedded=1';\n    }\n    frame.src = url;\n\n    // marca handler de cierre\n    portal._onClose = (typeof onClose === 'function') ? onClose : null;\n\n    portal.style.display = 'block';\n  }\n  function closeTopPortal(){\n    var topDoc = window.top.document;\n    var portal = topDoc.getElementById('lkpAddPortal');\n    var frame  = topDoc.getElementById('lkpAddPortalFrame');\n    if (!portal) return;\n\n    // limpia y oculta\n    try { frame.src = 'about:blank'; } catch(e){}\n    portal.style.display = 'none';\n    window.top.document.body.style.overflow = '';\n\n    // callback para recargar la LIST\n    if (portal._onClose){ try { portal._onClose(); } catch(e){} }\n    portal._onClose = null;\n  }\n\n  // Permite que el _add (si es mismo origen) pueda enviar un postMessage {type:'lkp-add-close'}\n  window.top.addEventListener('message', function(ev){\n    try {\n      if (ev && ev.data && ev.data.type === 'lkp-add-close') closeTopPortal();\n    } catch(e){}\n  });\n\n  // ------------- Fijar tamaño del modal del LIST (padre) -------------\n  function fitListModal(){\n    var $modal = $('.modal:has(' + LOOKUP_IFR_SELECTOR + ')');\n    if (!$modal.length) return;\n    $modal.find('.modal-dialog').css({ maxWidth: '95vw', width: '92vw' });\n    $modal.find('.modal-body').css({ height: '85vh' });\n    $(LOOKUP_IFR_SELECTOR).css({ width: '100%', height: '100%', minHeight: '600px' });\n  }\n\n  // ------------- Hook del botón \"Add\" dentro del LIST (si es mismo origen) -------------\n  function hookAddInsideIframe($ifr){\n    if ($ifr.data('wiredAdd')) return;\n    $ifr.data('wiredAdd', true);\n\n    $ifr.on('load', function(){\n      fitListModal();\n\n      try {\n        var idoc  = this.contentDocument || this.contentWindow.document;\n        var $idoc = window.jQuery(idoc);\n\n        function rewire(){\n          // enlaces o botones que llevan al _add\n          $idoc.find('a[href*=\"_add.php\"], button[id*=\"add\"]').off('.lkp3').on('click.lkp3', (ev)=>{\n            ev.preventDefault(); ev.stopPropagation();\n\n            // construye URL del add\n            var addUrl = ev.currentTarget.href || '';\n            if (!addUrl){\n              var cur = idoc.location.href;\n              addUrl = cur.replace('_list.php','_add.php').replace(/\\?.*/,'');\n            }\n\n            // abre en portal TOP, y al cerrar recarga la LIST\n            openTopPortal(addUrl, ()=>{ try { idoc.location.reload(true); } catch(e){} });\n            return false;\n          });\n        }\n\n        rewire();\n        // si la LIST es AJAX, reengancha\n        var mo = new (window.MutationObserver || window.WebKitMutationObserver)(rewire);\n        mo.observe(idoc.body, { childList:true, subtree:true });\n\n        // Si el _add que se abre dentro del propio iframe se intentara inyectar,\n        // evitamos que cambie el src del iframe (defensa adicional):\n        var originalSrc = this.src;\n        var self = this;\n        setInterval(function(){\n          if (self.src.indexOf('_add.php')>-1) self.src = originalSrc;\n        }, 300);\n\n      } catch(e){\n        // cross-origin: no podemos enganchar dentro\n      }\n    });\n  }\n\n  // ------------- Fallback CROSS-ORIGIN (botón \"Alta rápida\") -------------\n  var floatingBtn;\n  function ensureFloatingButton(){\n    if (floatingBtn && document.body.contains(floatingBtn)) return floatingBtn;\n    floatingBtn = document.createElement('div');\n    floatingBtn.className = 'lkp-floating-add';\n    floatingBtn.textContent = ADD_HINT;\n    document.body.appendChild(floatingBtn);\n    return floatingBtn;\n  }\n  function wireFloatingButton($ifr){\n    var btn = ensureFloatingButton();\n    // Calcula la URL del ADD a partir del src del LIST (esto SÍ se puede leer cross-origin)\n    var src = $ifr.attr('src') || '';\n    if (!src || src.indexOf('_list.php') === -1){\n      btn.style.display = 'none';\n      return;\n    }\n    var addUrl = src.replace('_list.php','_add.php').replace(/\\?.*/,'');\n    btn.onclick = function(){\n      openTopPortal(addUrl, function(){\n        // intenta recargar el iframe de la LIST\n        try { $ifr[0].contentWindow.location.reload(true); } catch(e){ /* cross-origin: ignora */ }\n        // como fallback cross-origin, fuerza recargar el src:\n        var s = $ifr.attr('src');\n        $ifr.attr('src', s);\n      });\n    };\n    btn.style.display = 'block';\n  }\n\n  // ------------- Escaneo + Observers -------------\n  function scan(){\n    fitListModal();\n    $(LOOKUP_IFR_SELECTOR).each(function(){\n      var $ifr = $(this);\n      hookAddInsideIframe($ifr);\n      // Activa botón flotante siempre, sirve de fallback y es cómodo\n      wireFloatingButton($ifr);\n    });\n  }\n\n  var mo = new (window.MutationObserver || window.WebKitMutationObserver)(scan);\n  mo.observe(document.body, { childList:true, subtree:true });\n  scan();\n\n  // Ajuste por resize del viewport\n  $(window).on('resize.lkp3', fitListModal);\n})();\n\n\n\n\n\n"
+			"code": "// ====================== CONFIG ======================\nwindow.STORAGE_KEY   = 'solicitud_vnp_draft';\nwindow.ENDPOINT      = 'serial_reserve.php';        // reserva/libera series\nwindow.API_SAVE      = 'solicitud_save_api.php';    // guarda solicitud vía API\n\nwindow.FIELDS = [\n  'idcliente','idproducto','idtipoventa','idplan','orden','plazo','rfc','idcli',\n  'estado','ciudad','colonia','calle','numeroext','numeroint','noserie','simcard','cp',\n  'dn','cuenta','contrato','contratoportal','plazopendiente','dnpreferido','idtienda','renta','ciclo','fechahoraentrega',\n  'factura','fechavenci','observaciones','contratolog','anticipolog','ine','cartaburocredito','polizaseguro','contratodocto','totalapagar','idticket'];\n  \n  \n  // ====================== CAMPOS OBLIGATORIOS (nuevo) ======================\nwindow.REQUIRED_FIELDS = [\n  { name:'idcliente',   label:'Cliente' },\n  { name:'idproducto',  label:'Producto' },\n  { name:'idtipoventa', label:'Tipo de venta' },\n  { name:'idplan',      label:'Plan' },\n  { name:'noserie',     label:'Equipo (IMEI)' },\n  { name:'dn',          label:'DN' },\n  { name:'orden',          label:'Orden' },\n  { name:'ciclo',          label:'Ciclo' }\n  \n  // agrega o quita según tus mandatory reales en PHPRunner\n];\n\n\nwindow.__recovering  = false;\nwindow.__res_noserie = null;\nwindow.__saving      = false;\n\nvar DRAFT_TTL = 2 * 60 * 60 * 1000; // 2 horas\n\n// ====================== CARGAR SWEETALERT2 (si no existe) ======================\n(function ensureSwal(){\n  if (typeof Swal !== 'undefined') return;\n  var s = document.createElement('script');\n  s.src = \"https://cdn.jsdelivr.net/npm/sweetalert2@11\";\n  s.async = true;\n  document.head.appendChild(s);\n})();\n\n// ====================== HELPERS BÁSICOS ======================\nfunction getPid(){\n  return $('[data-pageid]').first().attr('data-pageid') || '';\n}\nfunction getCtrl(f){\n  try { return Runner.getControl(getPid(), f); } catch(e){ return null; }\n}\nfunction readVal(f){\n  var c = getCtrl(f);\n  if (c && typeof c.getValue === 'function') return c.getValue();\n  var pid = getPid();\n  var $el = $('#value_'+f+'_'+pid);\n  return $el.length ? $el.val() : '';\n}\nfunction setVal(f,v,fire){\n  var c = getCtrl(f);\n  if (c && typeof c.setControlValue === 'function') {\n    c.setControlValue(v);\n    if (fire && typeof c.fireEvent === 'function') c.fireEvent('change');\n    return;\n  }\n  var pid = getPid();\n  var $el = $('#value_'+f+'_'+pid);\n  if ($el.length){\n    $el.val(v);\n    if (fire) $el.trigger('change');\n  }\n}\nfunction log(){ if (window.console && console.log) console.log.apply(console, arguments); }\n\n// ====================== VALIDACIÓN DE OBLIGATORIOS (nuevo) ======================\nfunction validateMandatory(){\n  if (!window.REQUIRED_FIELDS || !window.REQUIRED_FIELDS.length) return true;\n\n  var missing = [];\n\n  window.REQUIRED_FIELDS.forEach(function(f){\n    var v = readVal(f.name);\n    if (v === null || v === undefined) v = '';\n    v = String(v).trim();\n\n    // Si quieres considerar \"0\" como vacío para combos, puedes descomentar:\n    // if (v === '' || v === '0') { ... }\n\n    if (!v){\n      missing.push(f);\n    }\n  });\n\n  if (missing.length){\n    var msg = 'Debes capturar los siguientes campos obligatorios:\\n\\n' +\n      missing.map(function(f){ return '• ' + f.label; }).join('\\n');\n\n    showError(msg);\n\n    // Enfocar el primer campo faltante (si existe control PHPRunner)\n    var first = missing[0];\n    var c = getCtrl(first.name);\n    if (c && typeof c.setFocus === 'function'){\n      setTimeout(function(){ c.setFocus(); }, 200);\n    }\n\n    return false;\n  }\n\n  return true;\n}\n\n\n\n\n\n\n\n\n// ====================== SWEETALERT WRAPPERS ======================\nfunction showSuccess(msg, cb){\n  if (typeof Swal !== 'undefined') {\n    Swal.fire({\n      title: 'Guardado correctamente',\n      text: msg || '',\n      icon: 'success',\n      confirmButtonText: 'Aceptar',\n      timer: 2200,\n      timerProgressBar: true\n    }).then(function(){ if (typeof cb === 'function') cb(); });\n  } else {\n    alert(msg || 'Guardado correctamente.');\n    if (typeof cb === 'function') cb();\n  }\n}\nfunction showError(msg){\n  if (typeof Swal !== 'undefined') {\n    Swal.fire({ title: 'Error', text: msg || 'Ocurrió un error.', icon: 'error', confirmButtonText: 'Aceptar' });\n  } else {\n    alert(msg || 'Ocurrió un error.');\n  }\n}\n\n// ====================== AUTOSAVE ======================\nfunction buildDraft(){\n  var d = {};\n  (window.FIELDS || []).forEach(function(f){\n    var v = readVal(f);\n    if (v !== null && v !== undefined && v !== '') d[f] = v;\n  });\n  d.timestamp = Date.now();\n  return d;\n}\nfunction saveDraft(){\n  if (window.__recovering) return;\n  try {\n    var d = buildDraft();\n    sessionStorage.setItem(window.STORAGE_KEY, JSON.stringify(d));\n  } catch(e){ log('Error saveDraft', e); }\n}\nfunction recoverDraft(){\n  var raw = sessionStorage.getItem(window.STORAGE_KEY);\n  if (!raw) return;\n  try {\n    var d = JSON.parse(raw);\n    if (!d.timestamp || (Date.now() - d.timestamp) > DRAFT_TTL) {\n      sessionStorage.removeItem(window.STORAGE_KEY);\n      return;\n    }\n    window.__recovering = true;\n    log('Draft encontrado', d);\n\n    if (d.idproducto){\n      setVal('idproducto', d.idproducto, true);\n      setTimeout(function(){\n        Object.keys(d).forEach(function(k){\n          if (k !== 'timestamp' && k !== 'idproducto') setVal(k, d[k], false);\n        });\n        window.__recovering = false;\n      }, 300);\n    } else {\n      Object.keys(d).forEach(function(k){\n        if (k !== 'timestamp') setVal(k, d[k], false);\n      });\n      window.__recovering = false;\n    }\n  } catch(e){ log('Draft inválido', e); }\n  sessionStorage.removeItem(window.STORAGE_KEY);\n}\n\n// ====================== RESERVAS (serial_reserve.php) ======================\nfunction releasePrev(){\n  if (!window.__res_noserie) return;\n  log('Liberando reserva previa', window.__res_noserie);\n  $.post(window.ENDPOINT, { action:'release', noserie: window.__res_noserie });\n  window.__res_noserie = null;\n}\nfunction reserveForProduct(productId){\n  if (!productId || window.__recovering) return;\n  log('Reservando serie para producto', productId);\n\n  releasePrev();\n  setVal('noserie','',true);\n\n  $.post(window.ENDPOINT, { action:'reserve_by_product', product_id: productId })\n    .done(function(resp){\n      var r = (typeof resp === 'object') ? resp : (function(){ try {return JSON.parse(resp);}catch(e){return null;} })();\n      log('Respuesta reserva', r);\n\n      if (r && r.ok && r.noserie) {\n        window.__res_noserie = r.noserie;\n        setVal('noserie', r.noserie, true);\n        saveDraft();\n      } else if (r && r.error === 'no-stock') {\n        showError('No hay series disponibles para este producto.');\n        setVal('idproducto','',true);\n      } else {\n        showError('No se pudo reservar la serie.');\n        setVal('idproducto','',true);\n      }\n    })\n    .fail(function(){\n      showError('Error de comunicación al reservar la serie.');\n      setVal('idproducto','',true);\n    });\n}\n\n// ====================== RESET UI INMEDIATO (nuevo) ======================\nfunction resetAddFormUI(){\n  try {\n    var pid = getPid();\n\n    // 1) reset nativo por si el form existe\n    var frm = $('form').get(0);\n    if (frm && typeof frm.reset === 'function') frm.reset();\n\n    // 2) limpiar controles PHPRunner\n    (window.FIELDS || []).forEach(function(f){\n      try {\n        var c = getCtrl(f);\n        if (c && typeof c.setValue === 'function') {\n          c.setValue('');\n          if (typeof c.fireEvent === 'function') c.fireEvent('change');\n        } else {\n          // fallback DOM\n          var $el = $('#value_'+f+'_'+pid);\n          if ($el.length) { $el.val(''); $el.trigger('change'); }\n        }\n      } catch(e){}\n    });\n\n    // 3) limpiar select2 si existiera\n    $('.select2').each(function(){ try { $(this).val(null).trigger('change'); } catch(e){} });\n\n  } catch(e){ /* ignore */ }\n}\n\n// ====================== CLEAN FORM TRAS ÉXITO (modificado) ======================\nfunction cleanAfterSuccess(){\n  // Libera serie reservada si existe\n  if (window.__res_noserie) {\n    $.post(window.ENDPOINT, { action:'release', noserie: window.__res_noserie });\n    window.__res_noserie = null;\n  }\n\n  // Limpieza visual inmediata (sin esperar reload)\n  resetAddFormUI();\n\n  // Borrar draft\n  try { sessionStorage.removeItem(window.STORAGE_KEY); } catch(e){}\n\n  // Disparo silencioso para que el BeforeDisplay/BeforeProcess limpie la sesión\n  // (tu evento PHP mira clean=1 y hace unset de las *_add_values)\n  $.post('solicitudes_add.php', { clean: 1, ajax_clean: 1 });\n\n  // Recargamos con clean=1 para garantizar formulario fresco\n  var url = window.location.pathname + '?new=1&clean=1&_t=' + Date.now();\n  window.location.href = url;\n}\n\n// ====================== API SAVE (solicitud_save_api.php) ======================\nfunction sendToAPI(){\n  if (window.__saving) return;\n\n  // === NUEVO: validar obligatorios antes de llamar a la API ===\n  if (!validateMandatory()){\n    return; // no continúa, NO llama a la API\n  }\n\n  window.__saving = true;\n\n  var datos = {};\n  (window.FIELDS || []).forEach(function(f){ datos[f] = readVal(f); });\n\n  log('Payload a API_SAVE:', datos);\n\n  $.post(window.API_SAVE, datos, function(respRaw){\n    var r = (typeof respRaw === 'object') ? respRaw : (function(){ try { return JSON.parse(respRaw); } catch(e){ return null; } })();\n    log('Respuesta API_SAVE:', r || respRaw);\n\n    if (!r) {\n      showError('Respuesta inválida del servidor.');\n      window.__saving = false;\n      return;\n    }\n\n    var ok = (r.ok === true || r.ok === 1 || r.ok === \"1\" || r.ok === \"ok\" || r.ok === \"OK\");\n\n    if (ok) {\n      var msg = r.message || 'Solicitud guardada correctamente.';\n      showSuccess(msg, function(){ cleanAfterSuccess(); });\n    } else {\n      showError(r.error || 'Error desconocido al guardar.');\n    }\n\n    window.__saving = false;\n  })\n  .fail(function(xhr){\n    log('Fallo AJAX API_SAVE:', xhr.status, xhr.responseText);\n    showError('Error de comunicación con el servidor.');\n    window.__saving = false;\n  });\n}\n\n\n// ====================== INIT ======================\n$(function(){\n  var pid      = getPid();\n  var ctrlProd = getCtrl('idproducto');\n\n  log('INIT solicitudes_add pid=', pid, 'ctrlProd=', !!ctrlProd);\n\n  // 1) Recuperar borrador si existe\n  recoverDraft();\n\n  // 2) Autosave en cambios\n  var sel = (window.FIELDS || []).map(function(f){\n    return \"[data-field='\"+f+\"'][data-pageid='\"+pid+\"'] input,\" +\n           \"[data-field='\"+f+\"'][data-pageid='\"+pid+\"'] select,\" +\n           \"[data-field='\"+f+\"'][data-pageid='\"+pid+\"'] textarea\";\n  }).join(',');\n  if (sel) {\n    $(document).on('input change', sel, function(){ saveDraft(); });\n  }\n\n  // 3) Reserva automática al cambiar producto\n  if (ctrlProd) {\n    ctrlProd.on('change', function(){\n      if (window.__recovering) return;\n      var v = ctrlProd.getValue();\n      log('Cambio de idproducto =>', v);\n      if (v) reserveForProduct(v);\n    });\n  }\n\n  // 4) Botón personalizado \"Guardar VNP\"\n  var saveSelector =\n    \"[data-itemid='btnGuardarVNP'] a, \" +\n    \"[data-itemid='btnGuardarVNP'] button, \" +\n    \"#btnGuardarVNP\";\n\n  $(document).on('click', saveSelector, function(e){\n    e.preventDefault();\n    log('Click en botón VNP detectado');\n    sendToAPI();\n  });\n\n  // 5) Bloquear submit clásico\n  $('form').on('submit', function(e){ e.preventDefault(); return false; });\n\n  // 6) Liberar reserva al salir si no se está guardando\n  $(window).on('beforeunload pagehide', function(){\n    if (!window.__saving) {\n      releasePrev();\n      saveDraft();\n    }\n  });\n});\n\n\n(function(){\n  var $ = window.jQuery || window.$;\n  if (!$) return;\n\n  // ------------- Config -------------\n  var LOOKUP_IFR_SELECTOR = 'iframe[src*=\"_list.php\"]'; // iframes de LIST del lookup\n  var ADD_HINT = 'Alta rápida';                          // texto del botón fallback\n\n  // ------------- Portal en TOP -------------\n  function ensureTopPortal(){\n    var topDoc = window.top.document;\n    if (!topDoc.getElementById('lkpAddPortal')){\n      var wrap = topDoc.createElement('div');\n      wrap.id = 'lkpAddPortal';\n      wrap.innerHTML =\n        '<div class=\"shell\">' +\n          '<div class=\"close-btn\" id=\"lkpAddPortalClose\">Cerrar</div>' +\n          '<iframe id=\"lkpAddPortalFrame\" src=\"about:blank\" allow=\"clipboard-write; clipboard-read\"></iframe>' +\n        '</div>';\n      topDoc.body.appendChild(wrap);\n      topDoc.getElementById('lkpAddPortalClose').addEventListener('click', closeTopPortal);\n    }\n  }\n  function openTopPortal(url, onClose){\n    ensureTopPortal();\n    var topDoc = window.top.document;\n    var portal = topDoc.getElementById('lkpAddPortal');\n    var frame  = topDoc.getElementById('lkpAddPortalFrame');\n\n    // bloquear scroll del top mientras está abierto\n    window.top.document.body.style.overflow = 'hidden';\n\n    // abre el _add en el iframe del portal\n    if (url.indexOf('embedded=1') === -1){\n      url += (url.indexOf('?')>-1 ? '&' : '?') + 'embedded=1';\n    }\n    frame.src = url;\n\n    // marca handler de cierre\n    portal._onClose = (typeof onClose === 'function') ? onClose : null;\n\n    portal.style.display = 'block';\n  }\n  function closeTopPortal(){\n    var topDoc = window.top.document;\n    var portal = topDoc.getElementById('lkpAddPortal');\n    var frame  = topDoc.getElementById('lkpAddPortalFrame');\n    if (!portal) return;\n\n    // limpia y oculta\n    try { frame.src = 'about:blank'; } catch(e){}\n    portal.style.display = 'none';\n    window.top.document.body.style.overflow = '';\n\n    // callback para recargar la LIST\n    if (portal._onClose){ try { portal._onClose(); } catch(e){} }\n    portal._onClose = null;\n  }\n\n  // Permite que el _add (si es mismo origen) pueda enviar un postMessage {type:'lkp-add-close'}\n  window.top.addEventListener('message', function(ev){\n    try {\n      if (ev && ev.data && ev.data.type === 'lkp-add-close') closeTopPortal();\n    } catch(e){}\n  });\n\n  // ------------- Fijar tamaño del modal del LIST (padre) -------------\n  function fitListModal(){\n    var $modal = $('.modal:has(' + LOOKUP_IFR_SELECTOR + ')');\n    if (!$modal.length) return;\n    $modal.find('.modal-dialog').css({ maxWidth: '95vw', width: '92vw' });\n    $modal.find('.modal-body').css({ height: '85vh' });\n    $(LOOKUP_IFR_SELECTOR).css({ width: '100%', height: '100%', minHeight: '600px' });\n  }\n\n  // ------------- Hook del botón \"Add\" dentro del LIST (si es mismo origen) -------------\n  function hookAddInsideIframe($ifr){\n    if ($ifr.data('wiredAdd')) return;\n    $ifr.data('wiredAdd', true);\n\n    $ifr.on('load', function(){\n      fitListModal();\n\n      try {\n        var idoc  = this.contentDocument || this.contentWindow.document;\n        var $idoc = window.jQuery(idoc);\n\n        function rewire(){\n          // enlaces o botones que llevan al _add\n          $idoc.find('a[href*=\"_add.php\"], button[id*=\"add\"]').off('.lkp3').on('click.lkp3', (ev)=>{\n            ev.preventDefault(); ev.stopPropagation();\n\n            // construye URL del add\n            var addUrl = ev.currentTarget.href || '';\n            if (!addUrl){\n              var cur = idoc.location.href;\n              addUrl = cur.replace('_list.php','_add.php').replace(/\\?.*/,'');\n            }\n\n            // abre en portal TOP, y al cerrar recarga la LIST\n            openTopPortal(addUrl, ()=>{ try { idoc.location.reload(true); } catch(e){} });\n            return false;\n          });\n        }\n\n        rewire();\n        // si la LIST es AJAX, reengancha\n        var mo = new (window.MutationObserver || window.WebKitMutationObserver)(rewire);\n        mo.observe(idoc.body, { childList:true, subtree:true });\n\n        // Si el _add que se abre dentro del propio iframe se intentara inyectar,\n        // evitamos que cambie el src del iframe (defensa adicional):\n        var originalSrc = this.src;\n        var self = this;\n        setInterval(function(){\n          if (self.src.indexOf('_add.php')>-1) self.src = originalSrc;\n        }, 300);\n\n      } catch(e){\n        // cross-origin: no podemos enganchar dentro\n      }\n    });\n  }\n\n  // ------------- Fallback CROSS-ORIGIN (botón \"Alta rápida\") -------------\n  var floatingBtn;\n  function ensureFloatingButton(){\n    if (floatingBtn && document.body.contains(floatingBtn)) return floatingBtn;\n    floatingBtn = document.createElement('div');\n    floatingBtn.className = 'lkp-floating-add';\n    floatingBtn.textContent = ADD_HINT;\n    document.body.appendChild(floatingBtn);\n    return floatingBtn;\n  }\n  function wireFloatingButton($ifr){\n    var btn = ensureFloatingButton();\n    // Calcula la URL del ADD a partir del src del LIST (esto SÍ se puede leer cross-origin)\n    var src = $ifr.attr('src') || '';\n    if (!src || src.indexOf('_list.php') === -1){\n      btn.style.display = 'none';\n      return;\n    }\n    var addUrl = src.replace('_list.php','_add.php').replace(/\\?.*/,'');\n    btn.onclick = function(){\n      openTopPortal(addUrl, function(){\n        // intenta recargar el iframe de la LIST\n        try { $ifr[0].contentWindow.location.reload(true); } catch(e){ /* cross-origin: ignora */ }\n        // como fallback cross-origin, fuerza recargar el src:\n        var s = $ifr.attr('src');\n        $ifr.attr('src', s);\n      });\n    };\n    btn.style.display = 'block';\n  }\n\n  // ------------- Escaneo + Observers -------------\n  function scan(){\n    fitListModal();\n    $(LOOKUP_IFR_SELECTOR).each(function(){\n      var $ifr = $(this);\n      hookAddInsideIframe($ifr);\n      // Activa botón flotante siempre, sirve de fallback y es cómodo\n      wireFloatingButton($ifr);\n    });\n  }\n\n  var mo = new (window.MutationObserver || window.WebKitMutationObserver)(scan);\n  mo.observe(document.body, { childList:true, subtree:true });\n  scan();\n\n  // Ajuste por resize del viewport\n  $(window).on('resize.lkp3', fitListModal);\n})();\n\n\n// RESERVA DE TICKETS\n(function(){\n\n    var ctrl = Runner.getControl(pageid, \"idticket\");\n    if(!ctrl) return;\n\n    var lastTicket = ctrl.getValue ? ctrl.getValue() : \"\";\n\n    function reservarTicket(idticket){\n    /*    $.ajax({\n            url: window.location.href,\n            type: \"POST\",\n            dataType: \"json\",\n            data: {\n                ajaxReservaTicket: 1,\n                idticket: idticket\n            },\n            success: function(resp){\n                if(!resp || !resp.success){\n                    alert(resp && resp.message ? resp.message : \"No se pudo reservar el ticket\");\n\n                    var c = Runner.getControl(pageid, \"idticket\");\n                    if(c){\n                        c.setValue(\"\");\n                    }\n                    lastTicket = \"\";\n                    return;\n                }\n\n                lastTicket = idticket;\n            },\n            error: function(){\n                alert(\"Error al intentar reservar el ticket\");\n                var c = Runner.getControl(pageid, \"idticket\");\n                if(c){\n                    c.setValue(\"\");\n                }\n                lastTicket = \"\";\n            }\n        });*/\n        \n        $.ajax({\n    url: \"solicitudes_add.php\",\n    type: \"POST\",\n    dataType: \"text\",\n    data: {\n        ajaxReservaTicket: 1,\n        idticket_actual: 1\n    },\n    success: function(resp){\n        alert(resp);\n        console.log(resp);\n    },\n    error: function(xhr){\n        alert(\"ERROR AJAX\");\n        console.log(xhr.responseText);\n    }\n});\n    }\n\n    function liberarTicket(idticket){\n        if(!idticket) return;\n\n        $.ajax({\n            url: window.location.href,\n            type: \"POST\",\n            dataType: \"json\",\n            async: false,\n            data: {\n                ajaxLiberarTicket: 1,\n                idticket: idticket\n            }\n        });\n    }\n\n    function getCtrlElement(){\n        var $el = null;\n\n        if(ctrl.getDispElem){\n            $el = $(ctrl.getDispElem());\n        }\n\n        if(!$el || !$el.length){\n            $el = $(\"#value_idticket_\" + pageid);\n        }\n\n        if((!$el || !$el.length) && ctrl.valElem){\n            $el = $(ctrl.valElem);\n        }\n\n        return $el;\n    }\n\n    setTimeout(function(){\n        var $el = getCtrlElement();\n\n        if(!$el || !$el.length) return;\n\n        $el.off(\"change.ticketreserva\").on(\"change.ticketreserva\", function(){\n            var nuevo = ctrl.getValue ? ctrl.getValue() : $(this).val();\n\n            if(lastTicket && nuevo != lastTicket){\n                liberarTicket(lastTicket);\n                lastTicket = \"\";\n            }\n\n            if(nuevo){\n                reservarTicket(nuevo);\n            }\n        });\n    }, 600);\n\n    $(window).on(\"beforeunload.ticketreserva\", function(){\n        var actual = ctrl.getValue ? ctrl.getValue() : \"\";\n        if(actual){\n            liberarTicket(actual);\n        }\n    });\n\n})();\n\n"
 		},
 		{
 			"eventId": "EVENT_BEFORESHOW_EDIT",
@@ -1584,12 +1628,27 @@
 		{
 			"eventId": "EVENT_BEFOREPROCESS_ADD",
 			"pageType": "add",
-			"code": "// Limpieza forzada del formulario cuando viene clean=1\nif ( postvalue(\"clean\") == 1 ) {\n\n    // Nombre de la tabla (use el literal si prefieres)\n    $t = \"solicitudes\";\n\n    // Valores cacheados por PHPRunner para Add/Edit\n    unset($_SESSION[$t . \"_add_values\"]);\n    unset($_SESSION[$t . \"_edit_values\"]);\n\n    // Claves/estructuras auxiliares que pueden mantener estado\n    unset($_SESSION[$t . \"_details\"]);\n    unset($_SESSION[$t . \"_masterkeys\"]);\n    unset($_SESSION[$t . \"_masterkey1\"]);\n    unset($_SESSION[$t . \"_masterkey2\"]);\n    unset($_SESSION[$t . \"_masterkey3\"]);\n\n   /* if ( postvalue(\"ajax_clean\") == 1 ) {\n        header(\"HTTP/1.1 204 No Content\");\n        exit();\n    }*/\n}\n\n\n"
+			"code": "// Limpieza forzada del formulario cuando viene clean=1\n\n\n\n\n\n\n\nif ( postvalue(\"clean\") == 1 ) {\n\n    // Nombre de la tabla (use el literal si prefieres)\n    $t = \"solicitudes\";\n\n    // Valores cacheados por PHPRunner para Add/Edit\n    unset($_SESSION[$t . \"_add_values\"]);\n    unset($_SESSION[$t . \"_edit_values\"]);\n\n    // Claves/estructuras auxiliares que pueden mantener estado\n    unset($_SESSION[$t . \"_details\"]);\n    unset($_SESSION[$t . \"_masterkeys\"]);\n    unset($_SESSION[$t . \"_masterkey1\"]);\n    unset($_SESSION[$t . \"_masterkey2\"]);\n    unset($_SESSION[$t . \"_masterkey3\"]);\n\n   /* if ( postvalue(\"ajax_clean\") == 1 ) {\n        header(\"HTTP/1.1 204 No Content\");\n        exit();\n    }*/\n}\n\nif( postvalue(\"ajaxReservaTicket\") == \"1\" )\n{\n\theader(\"Content-Type: text/plain; charset=utf-8\");\n\techo \"ENTRO_RESERVA\";\n\texit();\n}\n\nif( !isset($_SESSION[\"ticket_session\"]) || !$_SESSION[\"ticket_session\"] )\n{\n\t$_SESSION[\"ticket_session\"] = session_id() . \"_\" . time();\n}\n\ndb_exec(\"DELETE FROM tickets_reservados_tmp WHERE expires_at < NOW()\", $conn);\n"
 		},
 		{
 			"eventId": "EVENT_PROCESSVALUES_ADD",
 			"pageType": "add",
 			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n\n$values['idtienda']=$_SESSION['Tienda'];"
+		},
+		{
+			"eventId": "EVENT_CUSTOMADD",
+			"pageType": "add",
+			"code": "// Place event code here.\n// Use \"Add Action\" button to add code snippets.\n$_SESSION[\"idticket\"] = $values[\"idticket\"];\nreturn true;"
+		},
+		{
+			"eventId": "EVENT_BEFORESHOW_ADD",
+			"pageType": "add",
+			"code": "if( postvalue(\"ajaxReservaTicket\") == \"1\" )\n{\n\techo \"ENTRO_RESERVA\";\n\texit();\n}\n\nif( !isset($_SESSION[\"ticket_session\"]) || !$_SESSION[\"ticket_session\"] )\n{\n\t$_SESSION[\"ticket_session\"] = session_id() . \"_\" . time();\n}\n\ndb_exec(\"DELETE FROM tickets_reservados_tmp WHERE expires_at < NOW()\", $conn);\n\n/* =======================================================\n   RESERVAR TICKET\n   ======================================================= */\nif( postvalue(\"ajaxReservaTicket\") == \"1\" )\n{\n\theader(\"Content-Type: application/json; charset=utf-8\");\n\n\t$idticket = intval(postvalue(\"idticket\"));\n\t$usuario  = isset($_SESSION[\"UserID\"]) ? $_SESSION[\"UserID\"] : \"\";\n\t$sesion   = $_SESSION[\"ticket_session\"];\n\n\tif(!$idticket){\n\t\techo my_json_encode(array(\n\t\t\t\"success\" => false,\n\t\t\t\"message\" => \"Ticket inválido\"\n\t\t));\n\t\texit();\n\t}\n\n\t$usuarioSQL = db_prepare_string($usuario);\n\t$sesionSQL  = db_prepare_string($sesion);\n\n\t// limpiar vencidos\n\tdb_exec(\"DELETE FROM tickets_reservados_tmp WHERE expires_at < NOW()\", $conn);\n\n\t// liberar cualquier ticket previo reservado por esta misma sesión\n\tdb_exec(\"\n\t\tDELETE FROM tickets_reservados_tmp\n\t\tWHERE usuario = \".$usuarioSQL.\"\n\t\t  AND sesion_id = \".$sesionSQL.\"\n\t\", $conn);\n\n\t// validar que no esté ya usado en solicitudes\n\t$rsUsed = db_query(\"\n\t\tSELECT idticket\n\t\tFROM solicitudes\n\t\tWHERE idticket = \".$idticket.\"\n\t\tLIMIT 1\n\t\", $conn);\n\n\tif( db_fetch_array($rsUsed) )\n\t{\n\t\techo my_json_encode(array(\n\t\t\t\"success\" => false,\n\t\t\t\"message\" => \"Ese ticket ya fue utilizado en solicitudes\"\n\t\t));\n\t\texit();\n\t}\n\n\t// validar si ya está reservado por otro\n\t$rsRes = db_query(\"\n\t\tSELECT idticket, usuario, sesion_id\n\t\tFROM tickets_reservados_tmp\n\t\tWHERE idticket = \".$idticket.\"\n\t\t  AND expires_at >= NOW()\n\t\tLIMIT 1\n\t\", $conn);\n\n\t$rowRes = db_fetch_array($rsRes);\n\n\tif($rowRes)\n\t{\n\t\tif($rowRes[\"usuario\"] != $usuario || $rowRes[\"sesion_id\"] != $sesion)\n\t\t{\n\t\t\techo my_json_encode(array(\n\t\t\t\t\"success\" => false,\n\t\t\t\t\"message\" => \"Ese ticket ya está reservado por otro usuario\"\n\t\t\t));\n\t\t\texit();\n\t\t}\n\t}\n\n\t// insertar reserva\n\tdb_exec(\"\n\t\tINSERT INTO tickets_reservados_tmp\n\t\t(idticket, usuario, sesion_id, fecha_reserva, expires_at)\n\t\tVALUES\n\t\t(\n\t\t\t\".$idticket.\",\n\t\t\t\".$usuarioSQL.\",\n\t\t\t\".$sesionSQL.\",\n\t\t\tNOW(),\n\t\t\tDATE_ADD(NOW(), INTERVAL 15 MINUTE)\n\t\t)\n\t\", $conn);\n\n\techo my_json_encode(array(\n\t\t\"success\" => true,\n\t\t\"message\" => \"Ticket reservado\"\n\t));\n\texit();\n}\n\n/* =======================================================\n   LIBERAR TICKET\n   ======================================================= */\nif( postvalue(\"ajaxLiberarTicket\") == \"1\" )\n{\n\theader(\"Content-Type: application/json; charset=utf-8\");\n\n\t$idticket = intval(postvalue(\"idticket\"));\n\t$usuario  = isset($_SESSION[\"UserID\"]) ? $_SESSION[\"UserID\"] : \"\";\n\t$sesion   = $_SESSION[\"ticket_session\"];\n\n\t$usuarioSQL = db_prepare_string($usuario);\n\t$sesionSQL  = db_prepare_string($sesion);\n\n\tif($idticket){\n\t\tdb_exec(\"\n\t\t\tDELETE FROM tickets_reservados_tmp\n\t\t\tWHERE idticket = \".$idticket.\"\n\t\t\t  AND usuario = \".$usuarioSQL.\"\n\t\t\t  AND sesion_id = \".$sesionSQL.\"\n\t\t\", $conn);\n\t}\n\n\techo my_json_encode(array(\"success\" => true));\n\texit();\n}\n\n"
+		},
+		{
+			"eventId": "EVENT_BEFOREADD",
+			"pageType": "add",
+			"code": "$usuario = isset($_SESSION[\"UserID\"]) ? $_SESSION[\"UserID\"] : \"\";\n$sesion  = isset($_SESSION[\"ticket_session\"]) ? $_SESSION[\"ticket_session\"] : \"\";\n$idticket = intval($values[\"idticket\"]);\n\n$usuarioSQL = db_prepare_string($usuario);\n$sesionSQL  = db_prepare_string($sesion);\n\n// limpiar vencidos\ndb_exec(\"DELETE FROM tickets_reservados_tmp WHERE expires_at < NOW()\", $conn);\n\n// validar que no exista ya en solicitudes\n$rsUsed = db_query(\"\n\tSELECT idticket\n\tFROM solicitudes\n\tWHERE idticket = \".$idticket.\"\n\tLIMIT 1\n\", $conn);\n\nif( db_fetch_array($rsUsed) )\n{\n\t$message = \"Ese ticket ya fue utilizado en otra solicitud.\";\n\treturn false;\n}\n\n// validar que siga reservado por esta sesión\n$rsRes = db_query(\"\n\tSELECT idticket\n\tFROM tickets_reservados_tmp\n\tWHERE idticket = \".$idticket.\"\n\t  AND usuario = \".$usuarioSQL.\"\n\t  AND sesion_id = \".$sesionSQL.\"\n\t  AND expires_at >= NOW()\n\tLIMIT 1\n\", $conn);\n\nif( !db_fetch_array($rsRes) )\n{\n\t$message = \"Ese ticket ya no está reservado para esta sesión. Vuelve a seleccionarlo.\";\n\treturn false;\n}\n\nreturn true;"
 		}
 	],
 	"dbTableInfo": {
@@ -2167,6 +2226,17 @@
 				"autoinc": false,
 				"defaultValueSQL": null,
 				"defaultValue": ""
+			},
+			{
+				"name": "idticket",
+				"type": 3,
+				"size": 11,
+				"scale": 0,
+				"typeName": "int(11)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
 			}
 		],
 		"primaryKeys": [
@@ -2269,108 +2339,6 @@
 					"deferredItems": [],
 					"recsPerRow": 1
 				},
-				"grid": {
-					"modelId": "simple-edit",
-					"grid": [
-						{
-							"cells": [
-								{
-									"cell": "c4",
-									"colspan": 1
-								}
-							],
-							"section": ""
-						},
-						{
-							"section": "",
-							"cells": [
-								{
-									"cell": "c9",
-									"rowspan": 1
-								}
-							]
-						},
-						{
-							"section": "",
-							"cells": [
-								{
-									"cell": "c",
-									"colspan": 1
-								}
-							]
-						},
-						{
-							"section": "",
-							"cells": [
-								{
-									"cell": "c1",
-									"colspan": 1
-								}
-							]
-						},
-						{
-							"cells": [
-								{
-									"cell": "c8",
-									"colspan": 1
-								}
-							],
-							"section": ""
-						},
-						{
-							"cells": [
-								{
-									"cell": "c3"
-								}
-							],
-							"section": ""
-						}
-					],
-					"cells": {
-						"c4": {
-							"model": "c3",
-							"items": [
-								"sec_cliente"
-							],
-							"align": "center"
-						},
-						"c": {
-							"model": "c3",
-							"items": [
-								"sec_venta"
-							],
-							"align": "center"
-						},
-						"c1": {
-							"model": "c3",
-							"items": [],
-							"background": "transparent",
-							"customCSS": "/* Put  your custom CSS code here */\n\n        body {\n            box-sizing: border-box;\n        }",
-							"height": "3em"
-						},
-						"c8": {
-							"model": "c3",
-							"items": [
-								"section2"
-							],
-							"align": "center"
-						},
-						"c9": {
-							"model": "c3",
-							"items": []
-						},
-						"c3": {
-							"model": "c3",
-							"items": [
-								"details_preview"
-							]
-						}
-					},
-					"deferredItems": [],
-					"columnCount": 1,
-					"inlineLabels": false,
-					"separateLabels": false
-				},
 				"section": {
 					"modelId": "simple-edit",
 					"grid": [
@@ -2378,10 +2346,10 @@
 							"section": "",
 							"cells": [
 								{
-									"cell": "c3"
+									"cell": "c5"
 								},
 								{
-									"cell": "c4"
+									"cell": "c6"
 								}
 							]
 						},
@@ -2412,13 +2380,14 @@
 								"integrated_edit_field6"
 							]
 						},
-						"c3": {
+						"c5": {
 							"model": "c1",
 							"items": [
+								"idticket",
 								"integrated_edit_field3"
 							]
 						},
-						"c4": {
+						"c6": {
 							"model": "c1",
 							"items": [
 								"integrated_edit_field9"
@@ -2821,6 +2790,34 @@
 					"columnCount": 1,
 					"inlineLabels": false,
 					"separateLabels": false
+				},
+				"grid": {
+					"modelId": "simple-edit",
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c3"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c3": {
+							"model": "c3",
+							"items": [
+								"sec_cliente",
+								"sec_venta",
+								"section2",
+								"details_preview"
+							]
+						}
+					},
+					"deferredItems": [],
+					"columnCount": 1,
+					"inlineLabels": false,
+					"separateLabels": false
 				}
 			},
 			"items": {
@@ -3046,22 +3043,45 @@
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
-				"section2": {
-					"type": "section",
-					"title": {
-						"text": "<i class=\"fa-solid fa-location-dot\" style=\"font-size:1.5em; color:#fff;\"></i> Información de Entrega\n",
+				"text1": {
+					"type": "text",
+					"label": {
+						"text": "<button type=\"button\" id=\"btnGuardarVNP\" class=\"btn btn-primary\">\n    Guardar VNP\n</button>\n",
 						"type": 0
 					},
-					"location": "section2",
-					"bsStyle": "default",
-					"panelType": 3,
-					"headerBg": "",
-					"headerColor": "",
-					"bodyBg": "",
-					"bodyColor": "",
-					"panelBorder": null,
-					"borderColor": "",
-					"initiallyClosed": true
+					"editedByRte": false
+				},
+				"integrated_edit_field12": {
+					"field": "observaciones",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field30": {
+					"field": "renta",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field7": {
+					"field": "orden",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field31": {
+					"field": "fechahoraentrega",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field32": {
+					"field": "totalapagar",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"details_preview1": {
+					"type": "details_preview",
+					"table": 1975362622,
+					"items": [],
+					"popup": false,
+					"pageId": "list"
 				},
 				"sec_cliente": {
 					"type": "section",
@@ -3097,49 +3117,31 @@
 					"borderColor": "",
 					"initiallyClosed": true
 				},
-				"text1": {
-					"type": "text",
-					"label": {
-						"text": "<button type=\"button\" id=\"btnGuardarVNP\" class=\"btn btn-primary\">\n    Guardar VNP\n</button>\n",
+				"section2": {
+					"type": "section",
+					"title": {
+						"text": "<i class=\"fa-solid fa-location-dot\" style=\"font-size:1.5em; color:#fff;\"></i> Información de Entrega\n",
 						"type": 0
 					},
-					"editedByRte": false
-				},
-				"integrated_edit_field12": {
-					"field": "observaciones",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field30": {
-					"field": "renta",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field7": {
-					"field": "orden",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field31": {
-					"field": "fechahoraentrega",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
-				"integrated_edit_field32": {
-					"field": "totalapagar",
-					"type": "integrated_edit_field",
-					"orientation": 0
+					"location": "section2",
+					"bsStyle": "default",
+					"panelType": 3,
+					"headerBg": "",
+					"headerColor": "",
+					"bodyBg": "",
+					"bodyColor": "",
+					"panelBorder": null,
+					"borderColor": "",
+					"initiallyClosed": true
 				},
 				"details_preview": {
 					"type": "deleted",
 					"itemId": "details_preview"
 				},
-				"details_preview1": {
-					"type": "details_preview",
-					"table": 1975362622,
-					"items": [],
-					"popup": false,
-					"pageId": "list"
+				"idticket": {
+					"field": "idticket",
+					"type": "integrated_edit_field",
+					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -3242,7 +3244,8 @@
 								"export_field17",
 								"export_field18",
 								"export_field",
-								"export_field19"
+								"export_field19",
+								"export_field20"
 							]
 						}
 					},
@@ -3369,6 +3372,10 @@
 				},
 				"export_field19": {
 					"field": "btn_entrega_html",
+					"type": "export_field"
+				},
+				"export_field20": {
+					"field": "idticket",
 					"type": "export_field"
 				}
 			},
@@ -3649,7 +3656,8 @@
 						"c3": {
 							"model": "c3",
 							"items": [
-								"details_preview"
+								"details_preview",
+								"integrated_edit_field34"
 							],
 							"align": "center"
 						}
@@ -4519,6 +4527,12 @@
 						"type": 0
 					},
 					"editedByRte": false
+				},
+				"integrated_edit_field34": {
+					"field": "idticket",
+					"type": "integrated_edit_field",
+					"orientation": 0,
+					"updateOnEdit": false
 				}
 			},
 			"dbProps": {},
@@ -5394,6 +5408,9 @@
 								},
 								{
 									"cell": "headcell_field34"
+								},
+								{
+									"cell": "headcell_field35"
 								}
 							]
 						},
@@ -5525,6 +5542,10 @@
 								{
 									"cell": "cell_field25",
 									"rowspan": 2
+								},
+								{
+									"cell": "cell_field3",
+									"rowspan": 2
 								}
 							]
 						},
@@ -5541,7 +5562,7 @@
 							"cells": [
 								{
 									"cell": "cell_dpreview",
-									"colspan": 32
+									"colspan": 33
 								}
 							],
 							"section": "body"
@@ -5614,6 +5635,9 @@
 								},
 								{
 									"cell": "footcell_field16"
+								},
+								{
+									"cell": "footcell_field"
 								}
 							]
 						}
@@ -5624,18 +5648,18 @@
 							"items": [
 								"text3"
 							],
-							"field": "",
+							"align": "center",
 							"columnName": "",
-							"align": "center"
+							"field": ""
 						},
 						"cell_field2": {
 							"model": "cell_field",
 							"items": [
 								"btnCarta"
 							],
-							"field": "",
+							"align": "center",
 							"columnName": "",
-							"align": "center"
+							"field": ""
 						},
 						"footcell_field2": {
 							"model": "footcell_field",
@@ -5670,19 +5694,19 @@
 							"items": [
 								"simple_grid_field41"
 							],
+							"align": "center",
 							"field": "",
-							"columnName": "",
-							"align": "center"
+							"columnName": ""
 						},
 						"cell_field12": {
 							"model": "cell_field",
 							"items": [
 								"simple_grid_field12"
 							],
-							"field": "",
-							"columnName": "",
 							"nowrap": false,
-							"align": "center"
+							"align": "center",
+							"field": "",
+							"columnName": ""
 						},
 						"footcell_field12": {
 							"model": "footcell_field",
@@ -5741,18 +5765,18 @@
 							"items": [
 								"grid_field_label2"
 							],
+							"align": "center",
 							"field": "",
-							"columnName": "",
-							"align": "center"
+							"columnName": ""
 						},
 						"cell_field": {
 							"model": "cell_field",
 							"items": [
 								"grid_field2"
 							],
+							"align": "center",
 							"field": "",
-							"columnName": "",
-							"align": "center"
+							"columnName": ""
 						},
 						"headcell_field3": {
 							"model": "headcell_field",
@@ -5779,8 +5803,8 @@
 						"headcell_field7": {
 							"model": "headcell_field",
 							"items": [],
-							"field": "",
-							"columnName": ""
+							"columnName": "",
+							"field": ""
 						},
 						"footcell_field3": {
 							"model": "footcell_field",
@@ -5793,16 +5817,16 @@
 							"items": [
 								"grid_field_label17"
 							],
-							"columnName": "",
-							"field": ""
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field11": {
 							"model": "cell_field",
 							"items": [
 								"grid_field17"
 							],
-							"columnName": "",
-							"field": ""
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field14": {
 							"model": "footcell_field",
@@ -5845,8 +5869,8 @@
 						"footcell_field1": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "simcard",
-							"columnName": "field"
+							"columnName": "field",
+							"field": "simcard"
 						},
 						"headcell_field16": {
 							"model": "headcell_field",
@@ -5867,8 +5891,8 @@
 						"footcell_field8": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "idtienda",
-							"columnName": "field"
+							"columnName": "field",
+							"field": "idtienda"
 						},
 						"headcell_field18": {
 							"model": "headcell_field",
@@ -5889,8 +5913,8 @@
 						"footcell_field9": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "usuario",
-							"columnName": "field"
+							"columnName": "field",
+							"field": "usuario"
 						},
 						"headcell_field19": {
 							"model": "headcell_field",
@@ -5927,8 +5951,8 @@
 						"footcell_field10": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "idsolicitud",
-							"columnName": "field"
+							"columnName": "field",
+							"field": "idsolicitud"
 						},
 						"headcell_field21": {
 							"model": "headcell_field",
@@ -5949,26 +5973,26 @@
 						"footcell_field11": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "nombre_completo",
-							"columnName": "field"
+							"columnName": "field",
+							"field": "nombre_completo"
 						},
 						"cell_field14": {
 							"model": "cell_field",
 							"items": [
 								"btnChkList"
 							],
-							"field": "",
+							"align": "center",
 							"columnName": "",
-							"align": "center"
+							"field": ""
 						},
 						"headcell_field22": {
 							"model": "headcell_field",
 							"items": [
 								"text4"
 							],
-							"field": "",
+							"align": "center",
 							"columnName": "",
-							"align": "center"
+							"field": ""
 						},
 						"headcell_field24": {
 							"model": "headcell_field",
@@ -5983,15 +6007,15 @@
 							"items": [
 								"grid_field10"
 							],
+							"align": "center",
 							"field": "contratolog",
-							"columnName": "field",
-							"align": "center"
+							"columnName": "field"
 						},
 						"footcell_field14": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "contratolog",
-							"columnName": "field"
+							"columnName": "field",
+							"field": "contratolog"
 						},
 						"headcell_field25": {
 							"model": "headcell_field",
@@ -6006,32 +6030,32 @@
 							"items": [
 								"grid_field11"
 							],
+							"align": "center",
 							"field": "",
-							"columnName": "",
-							"align": "center"
+							"columnName": ""
 						},
 						"footcell_field15": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "",
-							"columnName": ""
+							"columnName": "",
+							"field": ""
 						},
 						"cell_field18": {
 							"model": "cell_field",
 							"items": [],
-							"field": "",
-							"columnName": "",
 							"align": "center",
-							"customCSS": "/* Put  your custom CSS code here */\n\n:host {\n  display: none;\n}\n"
+							"customCSS": "/* Put  your custom CSS code here */\n\n:host {\n  display: none;\n}\n",
+							"columnName": "",
+							"field": ""
 						},
 						"headcell_field26": {
 							"model": "headcell_field",
 							"items": [
 								"text2"
 							],
-							"field": "",
+							"customCSS": "/* Put  your custom CSS code here */\n\n:host {\n  display: none;\n}\n",
 							"columnName": "",
-							"customCSS": "/* Put  your custom CSS code here */\n\n:host {\n  display: none;\n}\n"
+							"field": ""
 						},
 						"headcell_field9": {
 							"model": "headcell_field",
@@ -6052,8 +6076,8 @@
 						"footcell_field6": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "cartaburocredito",
-							"columnName": "field"
+							"columnName": "field",
+							"field": "cartaburocredito"
 						},
 						"headcell_field13": {
 							"model": "headcell_field",
@@ -6074,8 +6098,8 @@
 						"footcell_field7": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "polizaseguro",
-							"columnName": "field"
+							"columnName": "field",
+							"field": "polizaseguro"
 						},
 						"headcell_field23": {
 							"model": "headcell_field",
@@ -6096,26 +6120,26 @@
 						"footcell_field13": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "contratodocto",
-							"columnName": "field"
+							"columnName": "field",
+							"field": "contratodocto"
 						},
 						"headcell_field27": {
 							"model": "headcell_field",
 							"items": [
 								"grid_field_label4"
 							],
+							"align": "center",
 							"field": "",
-							"columnName": "",
-							"align": "center"
+							"columnName": ""
 						},
 						"cell_field19": {
 							"model": "cell_field",
 							"items": [
 								"grid_field4"
 							],
+							"align": "center",
 							"field": "",
-							"columnName": "",
-							"align": "center"
+							"columnName": ""
 						},
 						"headcell_field28": {
 							"model": "headcell_field",
@@ -6130,9 +6154,9 @@
 							"items": [
 								"grid_field15"
 							],
+							"align": "center",
 							"field": "",
-							"columnName": "",
-							"align": "center"
+							"columnName": ""
 						},
 						"headcell_field29": {
 							"model": "headcell_field",
@@ -6147,24 +6171,24 @@
 							"items": [
 								"grid_field16"
 							],
+							"align": "center",
 							"field": "",
-							"columnName": "",
-							"align": "center"
+							"columnName": ""
 						},
 						"headcell_field30": {
 							"model": "headcell_field",
 							"items": [],
-							"field": "",
-							"columnName": ""
+							"columnName": "",
+							"field": ""
 						},
 						"cell_field22": {
 							"model": "cell_field",
 							"items": [
 								"btnDecision"
 							],
-							"field": "",
+							"align": "center",
 							"columnName": "",
-							"align": "center"
+							"field": ""
 						},
 						"headcell_details": {
 							"model": "headcell_details",
@@ -6204,27 +6228,27 @@
 							"items": [
 								"simple_grid_field10"
 							],
-							"field": "",
-							"columnName": "",
 							"align": "center",
 							"bold": true,
-							"underline": true
+							"underline": true,
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field32": {
 							"model": "headcell_field",
 							"items": [
 								"grid_field_label3"
 							],
-							"columnName": "",
-							"field": ""
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field33": {
 							"model": "cell_field",
 							"items": [
 								"grid_field3"
 							],
-							"columnName": "",
-							"field": ""
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field34": {
 							"model": "headcell_field",
@@ -6245,19 +6269,19 @@
 						"footcell_field16": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "direccion",
-							"columnName": "field"
+							"columnName": "field",
+							"field": "direccion"
 						},
 						"cell_field27": {
 							"model": "cell_field",
 							"items": [
 								"grid_field20"
 							],
-							"field": "",
-							"columnName": "",
 							"align": "center",
 							"bold": true,
-							"underline": true
+							"underline": true,
+							"field": "",
+							"columnName": ""
 						},
 						"headcell_field31": {
 							"model": "headcell_field",
@@ -6272,17 +6296,15 @@
 							"items": [
 								"grid_field19"
 							],
+							"align": "center",
 							"field": "",
-							"columnName": "",
-							"align": "center"
+							"columnName": ""
 						},
 						"cell_field23": {
 							"model": "cell_field",
 							"items": [
 								"details_preview1"
 							],
-							"field": "",
-							"columnName": "",
 							"nowrap": false,
 							"align": "center",
 							"background": "transparent",
@@ -6291,7 +6313,9 @@
 									"side": "",
 									"width": "0"
 								}
-							]
+							],
+							"columnName": "",
+							"field": ""
 						},
 						"cell_dpreview": {
 							"model": "cell_dpreview",
@@ -6301,7 +6325,29 @@
 								"details_preview2"
 							],
 							"columnName": "field",
-							"field": "direccion"
+							"field": "idticket"
+						},
+						"headcell_field35": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label20"
+							],
+							"field": "idticket",
+							"columnName": "field"
+						},
+						"cell_field3": {
+							"model": "cell_field",
+							"items": [
+								"grid_field21"
+							],
+							"field": "idticket",
+							"columnName": "field"
+						},
+						"footcell_field": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "idticket",
+							"columnName": "field"
 						}
 					},
 					"deferredItems": [],
@@ -6897,6 +6943,16 @@
 				},
 				"grid_alldetails_link": {
 					"type": "grid_alldetails_link"
+				},
+				"grid_field21": {
+					"field": "idticket",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label20": {
+					"type": "grid_field_label",
+					"field": "idticket"
 				}
 			},
 			"dbProps": {},
@@ -7216,7 +7272,8 @@
 								"integrated_search_field18",
 								"integrated_search_field19",
 								"integrated_search_field20",
-								"integrated_search_field21"
+								"integrated_search_field21",
+								"integrated_search_field22"
 							]
 						}
 					},
@@ -7347,6 +7404,11 @@
 				},
 				"integrated_search_field21": {
 					"field": "btn_entrega_html",
+					"type": "integrated_search_field",
+					"orientation": 0
+				},
+				"integrated_search_field22": {
+					"field": "idticket",
 					"type": "integrated_search_field",
 					"orientation": 0
 				}
@@ -7518,7 +7580,8 @@
 								"simple_grid_field64",
 								"simple_grid_field65",
 								"simple_grid_field66",
-								"simple_grid_field67"
+								"simple_grid_field67",
+								"simple_grid_field68"
 							]
 						}
 					},
@@ -7804,6 +7867,10 @@
 				"simple_grid_field67": {
 					"field": "btn_entrega_html",
 					"type": "simple_grid_field"
+				},
+				"simple_grid_field68": {
+					"field": "idticket",
+					"type": "simple_grid_field"
 				}
 			},
 			"dbProps": {},
@@ -7972,7 +8039,8 @@
 								"simple_grid_field64",
 								"simple_grid_field65",
 								"simple_grid_field66",
-								"simple_grid_field67"
+								"simple_grid_field67",
+								"simple_grid_field68"
 							]
 						}
 					},
@@ -8255,6 +8323,10 @@
 				"simple_grid_field67": {
 					"field": "btn_entrega_html",
 					"type": "simple_grid_field"
+				},
+				"simple_grid_field68": {
+					"field": "idticket",
+					"type": "simple_grid_field"
 				}
 			},
 			"dbProps": {},
@@ -8412,7 +8484,9 @@
 						},
 						"c": {
 							"model": "c3",
-							"items": [],
+							"items": [
+								"integrated_edit_field"
+							],
 							"customCSS": "/* Put  your custom CSS code here */\n/* ========================================================= */\n/* ESTILOS DE TU TEMPLATE */\n/* ========================================================= */\nbody {\n    box-sizing: border-box;\n    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;\n    /* Corrección de encogimiento por scroll */\n    overflow-y: scroll !important;\n}\n.gradient-bg {\n    /* Degradado de ejemplo, ajusta tus colores si es necesario */\n    background: linear-gradient(135deg, #03478A 0%, #6D98C2 100%);\n}\n.card-shadow {\n    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);\n}\n.check-animation {\n    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);\n}\n.check-animation:hover {\n    transform: scale(1.1);\n}\n\n/* ========================================================= */\n/* ESTILOS ESPECÍFICOS PARA PHP RUNNER */\n/* ========================================================= */\n\n/* Esconde el checkbox nativo de PHPRunner, ya que lo vamos a reemplazar visualmente */\n.custom-checkbox-phprunner input[type=\"checkbox\"] {\n    opacity: 0; \n    position: absolute; \n    width: 1px;\n    height: 1px;\n    padding: 0;\n    margin: -1px;\n    overflow: hidden;\n    clip: rect(0, 0, 0, 0);\n    border: 0;\n}\n\n/* Estilo del input de SIM Card (u otro campo de texto) */\n#control_simcard_1 input[type=\"text\"], \n#control_simcard_1 input[type=\"number\"] {\n    width: 100%;\n    padding: 0.75rem 1rem;\n    border: 1px solid #d1d5db; /* gray-300 */\n    border-radius: 0.5rem; /* rounded-lg */\n    transition: all 0.2s;\n}\n#control_simcard_1 input[type=\"text\"]:focus, \n#control_simcard_1 input[type=\"number\"]:focus {\n    border-color: #3b82f6; /* blue-500 */\n    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);\n}"
 						}
 					},
@@ -8462,6 +8536,11 @@
 						"type": 0
 					},
 					"editedByRte": false
+				},
+				"integrated_edit_field": {
+					"field": "idticket",
+					"type": "integrated_edit_field",
+					"orientation": 0
 				}
 			},
 			"dbProps": {},

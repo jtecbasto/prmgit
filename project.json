@@ -243,6 +243,20 @@
 				"height": 400
 			},
 			{
+				"gid": 3193935577,
+				"y": 1740,
+				"x": 255,
+				"width": 231.640625,
+				"height": 320
+			},
+			{
+				"gid": 2729480830,
+				"y": 1160,
+				"x": 1360,
+				"width": 267.4375,
+				"height": 400
+			},
+			{
 				"gid": 3668907077,
 				"y": 105,
 				"x": 467,
@@ -533,7 +547,7 @@
 						"code": "$host = 'localhost';\r\n$user = 'rocasamexico_admin';\r\n$pwd = 'Rocas@Mexico.2025**';\r\n$port = 3306;\r\n$sys_dbname = 'rocasamexico_prm';"
 					}
 				],
-				"selectedCustomConn": "New connection"
+				"selectedCustomConn": "Local"
 			}
 		}
 	],
@@ -672,6 +686,34 @@
 							"table": 3907017426,
 							"pageType": "list"
 						}
+					},
+					{
+						"id": "23",
+						"data": {
+							"name": {
+								"table": "tickets_atencion_domicilio",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 3193935577,
+							"pageType": "list"
+						}
+					},
+					{
+						"id": "24",
+						"data": {
+							"name": {
+								"table": "tickets_atencion_domicilio_view",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 2729480830,
+							"pageType": "list"
+						}
 					}
 				]
 			}
@@ -782,7 +824,9 @@
 								"welcome_item23",
 								"welcome_item24",
 								"welcome_item26",
-								"welcome_item25"
+								"welcome_item25",
+								"welcome_item27",
+								"welcome_item28"
 							]
 						}
 					},
@@ -1181,6 +1225,30 @@
 						"type": 6
 					},
 					"background": "#daa520",
+					"linkType": 0
+				},
+				"welcome_item27": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "tickets_atencion_domicilio",
+					"linkPage": "list",
+					"linkText": {
+						"table": "tickets_atencion_domicilio",
+						"type": 6
+					},
+					"background": "#bc8f8f",
+					"linkType": 0
+				},
+				"welcome_item28": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "tickets_atencion_domicilio_view",
+					"linkPage": "list",
+					"linkText": {
+						"table": "tickets_atencion_domicilio_view",
+						"type": 6
+					},
+					"background": "#bc8f8f",
 					"linkType": 0
 				}
 			},

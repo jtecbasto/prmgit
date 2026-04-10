@@ -1,0 +1,7 @@
+{
+	"type": "EVENT_BUTTON",
+	"name": "btnBuscarTicket",
+	"serverCode": "\n",
+	"beforeJsCode": "var modalId = \"modalSelectorTicket\";\r\n\r\nif(!document.getElementById(modalId)){\r\n    var html = ''\r\n    + '<div id=\"'+modalId+'\" style=\"position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:99999;display:none;\">'\r\n    + '  <div style=\"position:absolute;left:3%;top:3%;width:94%;height:94%;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.35);\">'\r\n    + '    <div style=\"height:52px;padding:12px 16px;background:#0b5cab;color:#fff;font-weight:600;\">'\r\n    + '      Seleccionar ticket'\r\n    + '      <button type=\"button\" id=\"cerrarSelectorTicket\" style=\"float:right;background:#fff;color:#0b5cab;border:none;border-radius:8px;padding:6px 10px;\">Cerrar</button>'\r\n    + '    </div>'\r\n    + '    <iframe id=\"iframeSelectorTicket\" src=\"\" style=\"width:100%;height:calc(100% - 52px);border:0;\"></iframe>'\r\n    + '  </div>'\r\n    + '</div>';\r\n\r\n    document.body.insertAdjacentHTML(\"beforeend\", html);\r\n\r\n    document.getElementById(\"cerrarSelectorTicket\").onclick = function(){\r\n        document.getElementById(modalId).style.display = \"none\";\r\n        document.getElementById(\"iframeSelectorTicket\").src = \"about:blank\";\r\n    };\r\n}\r\n\r\ndocument.getElementById(\"iframeSelectorTicket\").src = \"tickets_atencion_domicilio_list.php?selector_ticket=1\";\r\ndocument.getElementById(modalId).style.display = \"block\";\r\n\r\nreturn false;",
+	"afterJsCode": "\n"
+}

@@ -1,0 +1,6 @@
+{
+	"type": "EVENT_BUTTON",
+	"name": "btnseleccionarTicket",
+	"serverCode": "\nreturn '<a href=\"#\" class=\"btnSeleccionarTicket btn btn-primary btn-sm\" data-idticket=\"'.$result[\"id\"].'\">Seleccionar</a>';",
+	"beforeJsCode": "var data = arguments[1] || {};\r\nvar idticket = data.id || data[\"id\"];\r\n\r\nif(!idticket){\r\n    alert(\"No se encontró el ID del ticket\");\r\n    return false;\r\n}\r\n\r\nif(window.parent){\r\n    window.parent.postMessage({\r\n        source: \"selector_ticket\",\r\n        idticket: idticket\r\n    }, \"*\");\r\n}\r\n\r\nreturn false;"
+}
