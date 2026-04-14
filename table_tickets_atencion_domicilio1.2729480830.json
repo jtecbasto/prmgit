@@ -7,7 +7,7 @@
 			"asc": true
 		}
 	],
-	"sql": "SELECT\r\ntad.id,\r\ntad.fecha,\r\ntad.idcliente,\r\nc.nombre_completo,\r\ntad.idtipoventa,\r\ntv.tipoventa,\r\ntad.idplan,\r\np.plan,\r\ntad.idproducto,\r\nr.descripcion equipo,\r\ntad.plazo,\r\ntad.usuario,\r\ntad.idtienda,\r\nt.tienda,\r\ntad.fechacaptura\r\nFROM tickets_atencion_domicilio tad\r\nleft join clientes c on tad.idcliente = c.idcliente\r\nleft join tiposventa tv on tad.idtipoventa = tv.idtipoventa\r\nleft join planes p on tad.idplan = p.idplan\r\nleft join productos r on tad.idproducto=r.idproducto\r\nleft join tiendas t on tad.idtienda = t.idtienda\r\nWHERE tad.id NOT IN (\r\n    SELECT s.idticket\r\n    FROM solicitudes s\r\n    WHERE s.idticket IS NOT NULL\r\n)\r\nAND tad.id NOT IN (\r\n    SELECT r.idticket\r\n    FROM tickets_reservados_tmp r\r\n    WHERE r.expires_at >= NOW()\r\n      AND NOT (\r\n            r.usuario = ':session.UserID'\r\n        AND r.sesion_id = ':session.ticket_session'\r\n      )\r\n)\r\nORDER BY tad.id ",
+	"sql": "SELECT\r\ntad.id,\r\ntad.fecha,\r\ntad.idcliente,\r\nc.nombre_completo,\r\ntad.idtipoventa,\r\ntv.tipoventa,\r\ntad.idplan,\r\np.plan,\r\ntad.idproducto,\r\nr.descripcion equipo,\r\ntad.plazo,\r\ntad.usuario,\r\ntad.idtienda,\r\nt.tienda,\r\ntad.fechacaptura,\r\ntad.doctos\r\nFROM tickets_atencion_domicilio tad\r\nleft join clientes c on tad.idcliente = c.idcliente\r\nleft join tiposventa tv on tad.idtipoventa = tv.idtipoventa\r\nleft join gtiposventa gtv on tv.idgtipoventa=gtv.idgtipoventa\r\nleft join planes p on tad.idplan = p.idplan\r\nleft join productos r on tad.idproducto=r.idproducto\r\nleft join tiendas t on tad.idtienda = t.idtienda\r\nWHERE gtv.idggtipoventa = :session.idggtipoventa and tad.id NOT IN (\r\n    SELECT s.idticket\r\n    FROM solicitudes s\r\n    WHERE s.idticket IS NOT NULL\r\n)\r\nAND tad.id NOT IN (\r\n    SELECT r.idticket\r\n    FROM tickets_reservados_tmp r\r\n    WHERE r.expires_at >= NOW()\r\n      AND NOT (\r\n            r.usuario = ':session.UserID'\r\n        AND r.sesion_id = ':session.ticket_session'\r\n      )\r\n)\r\nORDER BY tad.id ",
 	"type": 1,
 	"connId": "conn",
 	"originalTable": "tickets_atencion_domicilio",
@@ -284,11 +284,31 @@
 				"Spanish": "Fecha de captura"
 			},
 			"tableName": "tickets_atencion_domicilio"
+		},
+		{
+			"name": "doctos",
+			"sqlExpression": "tad.doctos",
+			"index": 16,
+			"strField": "doctos",
+			"type": 201,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Text area"
+				}
+			],
+			"label": {
+				"Spanish": "Doctos"
+			},
+			"tableName": ""
 		}
 	],
 	"queryContext": {
 		"session.UserID": "0",
-		"session.ticket_session": "0"
+		"session.ticket_session": "0",
+		"session.idggtipoventa": "0"
 	},
 	"dbTableInfo": {
 		"type": 0,
@@ -1274,6 +1294,9 @@
 								},
 								{
 									"cell": "headcell_field14"
+								},
+								{
+									"cell": "headcell_field2"
 								}
 							]
 						},
@@ -1315,6 +1338,9 @@
 								},
 								{
 									"cell": "cell_field14"
+								},
+								{
+									"cell": "cell_field2"
 								}
 							]
 						},
@@ -1356,6 +1382,9 @@
 								},
 								{
 									"cell": "footcell_field14"
+								},
+								{
+									"cell": "footcell_field2"
 								}
 							]
 						}
@@ -1623,6 +1652,28 @@
 							"items": [],
 							"field": "fechacaptura",
 							"columnName": "field"
+						},
+						"headcell_field2": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label1"
+							],
+							"field": "doctos",
+							"columnName": "field"
+						},
+						"cell_field2": {
+							"model": "cell_field",
+							"items": [
+								"grid_field1"
+							],
+							"field": "doctos",
+							"columnName": "field"
+						},
+						"footcell_field2": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "doctos",
+							"columnName": "field"
 						}
 					},
 					"deferredItems": [],
@@ -1815,6 +1866,19 @@
 					"field": "fechacaptura"
 				},
 				"-3": {
+					"type": "-"
+				},
+				"grid_field1": {
+					"field": "doctos",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label1": {
+					"type": "grid_field_label",
+					"field": "doctos"
+				},
+				"-4": {
 					"type": "-"
 				}
 			},

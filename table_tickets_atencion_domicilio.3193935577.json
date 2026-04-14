@@ -1,5 +1,5 @@
 {
-	"sql": "SELECT\r\ntad.id,\r\ntad.fecha,\r\ntad.idcliente,\r\nc.nombre_completo,\r\ntad.idtipoventa,\r\ntv.tipoventa,\r\ntad.idplan,\r\np.plan,\r\ntad.idproducto,\r\nr.descripcion equipo,\r\ntad.plazo,\r\ntad.usuario,\r\ntad.idtienda,\r\nt.tienda,\r\ntad.fechacaptura\r\nFROM tickets_atencion_domicilio tad\r\nleft join clientes c on tad.idcliente = c.idcliente\r\nleft join tiposventa tv on tad.idtipoventa = tv.idtipoventa\r\nleft join planes p on tad.idplan = p.idplan\r\nleft join productos r on tad.idproducto=r.idproducto\r\nleft join tiendas t on tad.idtienda = t.idtienda",
+	"sql": "SELECT\r\ntad.id,\r\ntad.fecha,\r\ntad.idcliente,\r\nc.nombre_completo,\r\ntad.idtipoventa,\r\ntv.tipoventa,\r\ntad.idplan,\r\np.plan,\r\ntad.idproducto,\r\nr.descripcion equipo,\r\ntad.plazo,\r\ntad.usuario,\r\ntad.idtienda,\r\nt.tienda,\r\ntad.fechacaptura,\r\ntad.doctos\r\nFROM tickets_atencion_domicilio tad\r\nleft join clientes c on tad.idcliente = c.idcliente\r\nleft join tiposventa tv on tad.idtipoventa = tv.idtipoventa\r\nleft join planes p on tad.idplan = p.idplan\r\nleft join productos r on tad.idproducto=r.idproducto\r\nleft join tiendas t on tad.idtienda = t.idtienda",
 	"connId": "conn",
 	"originalTable": "tickets_atencion_domicilio",
 	"name": "tickets_atencion_domicilio",
@@ -275,6 +275,25 @@
 				"Spanish": "Tienda"
 			},
 			"tableName": "tiendas"
+		},
+		{
+			"name": "doctos",
+			"sqlExpression": "tad.doctos",
+			"index": 16,
+			"strField": "doctos",
+			"type": 201,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Text area"
+				}
+			],
+			"label": {
+				"Spanish": "Doctos"
+			},
+			"tableName": ""
 		}
 	],
 	"dbTableInfo": {
@@ -1140,7 +1159,8 @@
 								"integrated_edit_field11",
 								"integrated_edit_field12",
 								"integrated_edit_field13",
-								"integrated_edit_field14"
+								"integrated_edit_field14",
+								"integrated_edit_field"
 							]
 						}
 					},
@@ -1211,6 +1231,11 @@
 				},
 				"integrated_edit_field14": {
 					"field": "tienda",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field": {
+					"field": "doctos",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				}
@@ -1432,6 +1457,9 @@
 								},
 								{
 									"cell": "headcell_field9"
+								},
+								{
+									"cell": "headcell_field10"
 								}
 							]
 						},
@@ -1473,6 +1501,9 @@
 								},
 								{
 									"cell": "cell_field9"
+								},
+								{
+									"cell": "cell_field10"
 								}
 							]
 						},
@@ -1514,6 +1545,9 @@
 								},
 								{
 									"cell": "footcell_field9"
+								},
+								{
+									"cell": "footcell_field10"
 								}
 							]
 						}
@@ -1781,6 +1815,25 @@
 							"items": [],
 							"columnName": "list-icons",
 							"field": ""
+						},
+						"headcell_field10": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label"
+							],
+							"field": "doctos"
+						},
+						"cell_field10": {
+							"model": "cell_field",
+							"items": [
+								"grid_field"
+							],
+							"field": "doctos"
+						},
+						"footcell_field10": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "doctos"
 						}
 					},
 					"deferredItems": [],
@@ -1813,6 +1866,7 @@
 					"type": "search_panel",
 					"items": [
 						"search_panel_field14",
+						"search_panel_field",
 						"search_panel_field13",
 						"search_panel_field12",
 						"search_panel_field11",
@@ -2031,6 +2085,20 @@
 				},
 				"grid_view": {
 					"type": "grid_view"
+				},
+				"grid_field": {
+					"field": "doctos",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label": {
+					"type": "grid_field_label",
+					"field": "doctos"
+				},
+				"search_panel_field": {
+					"field": "doctos",
+					"type": "search_panel_field"
 				}
 			},
 			"dbProps": {},
