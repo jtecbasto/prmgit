@@ -293,7 +293,7 @@
 			"label": {
 				"Spanish": "Doctos"
 			},
-			"tableName": ""
+			"tableName": "tickets_atencion_domicilio"
 		}
 	],
 	"dbTableInfo": {
@@ -409,6 +409,17 @@
 				"autoinc": false,
 				"defaultValueSQL": "current_timestamp()",
 				"defaultValue": "CURRENT_TIMESTAMP"
+			},
+			{
+				"name": "doctos",
+				"type": 201,
+				"size": 0,
+				"scale": 0,
+				"typeName": "mediumtext",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
 			}
 		],
 		"primaryKeys": [
