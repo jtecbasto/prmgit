@@ -1,5 +1,13 @@
 {
-	"sql": "SELECT\r\ntad.id,\r\ntad.fecha,\r\ntad.idcliente,\r\nc.nombre_completo,\r\ntad.idtipoventa,\r\ntv.tipoventa,\r\ntad.idplan,\r\np.plan,\r\ntad.idproducto,\r\nr.descripcion equipo,\r\ntad.plazo,\r\ntad.usuario,\r\ntad.idtienda,\r\nt.tienda,\r\ntad.fechacaptura,\r\ntad.doctos\r\nFROM tickets_atencion_domicilio tad\r\nleft join clientes c on tad.idcliente = c.idcliente\r\nleft join tiposventa tv on tad.idtipoventa = tv.idtipoventa\r\nleft join planes p on tad.idplan = p.idplan\r\nleft join productos r on tad.idproducto=r.idproducto\r\nleft join tiendas t on tad.idtienda = t.idtienda",
+	"orderInfo": [
+		{
+			"index": 1,
+			"field": "id",
+			"expr": "tad.id",
+			"asc": false
+		}
+	],
+	"sql": "SELECT\r\ntad.id,\r\ntad.fecha,\r\ntad.idcliente,\r\nc.nombre_completo,\r\ntad.idtipoventa,\r\ntv.tipoventa,\r\ntad.idplan,\r\np.plan,\r\ntad.idproducto,\r\nr.descripcion equipo,\r\ntad.plazo,\r\ntad.usuario,\r\ntad.idtienda,\r\nt.tienda,\r\ntad.fechacaptura,\r\ntad.doctos,\r\nc.telefono,\r\ns.fecha fecha_atencion\r\nFROM tickets_atencion_domicilio tad\r\nleft join clientes c on tad.idcliente = c.idcliente\r\nleft join tiposventa tv on tad.idtipoventa = tv.idtipoventa\r\nleft join planes p on tad.idplan = p.idplan\r\nleft join productos r on tad.idproducto=r.idproducto\r\nleft join tiendas t on tad.idtienda = t.idtienda\r\nleft join solicitudes s on tad.id = s.idticket\r\norder by tad.id desc",
 	"connId": "conn",
 	"originalTable": "tickets_atencion_domicilio",
 	"name": "tickets_atencion_domicilio",
@@ -294,6 +302,45 @@
 				"Spanish": "Doctos"
 			},
 			"tableName": "tickets_atencion_domicilio"
+		},
+		{
+			"name": "telefono",
+			"sqlExpression": "c.telefono",
+			"index": 17,
+			"strField": "telefono",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Teléfono"
+			},
+			"tableName": "clientes"
+		},
+		{
+			"name": "fecha_atencion",
+			"sqlExpression": "s.fecha",
+			"index": 18,
+			"strField": "fecha",
+			"type": 7,
+			"viewFormats": [
+				{
+					"format": "Short Date"
+				}
+			],
+			"editFormats": [
+				{
+					"format": "Date",
+					"dateEditType": 11
+				}
+			],
+			"label": {
+				"Spanish": "Fecha de Atencion"
+			},
+			"tableName": "solicitudes"
 		}
 	],
 	"dbTableInfo": {
@@ -1171,7 +1218,9 @@
 								"integrated_edit_field12",
 								"integrated_edit_field13",
 								"integrated_edit_field14",
-								"integrated_edit_field"
+								"integrated_edit_field",
+								"integrated_edit_field2",
+								"integrated_edit_field3"
 							]
 						}
 					},
@@ -1247,6 +1296,16 @@
 				},
 				"integrated_edit_field": {
 					"field": "doctos",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field2": {
+					"field": "telefono",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field3": {
+					"field": "fecha_atencion",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				}
@@ -1471,6 +1530,12 @@
 								},
 								{
 									"cell": "headcell_field10"
+								},
+								{
+									"cell": "headcell_field11"
+								},
+								{
+									"cell": "headcell_field12"
 								}
 							]
 						},
@@ -1515,6 +1580,12 @@
 								},
 								{
 									"cell": "cell_field10"
+								},
+								{
+									"cell": "cell_field11"
+								},
+								{
+									"cell": "cell_field12"
 								}
 							]
 						},
@@ -1559,6 +1630,12 @@
 								},
 								{
 									"cell": "footcell_field10"
+								},
+								{
+									"cell": "footcell_field11"
+								},
+								{
+									"cell": "footcell_field12"
 								}
 							]
 						}
@@ -1832,19 +1909,63 @@
 							"items": [
 								"grid_field_label"
 							],
-							"field": "doctos"
+							"field": "doctos",
+							"columnName": "field"
 						},
 						"cell_field10": {
 							"model": "cell_field",
 							"items": [
 								"grid_field"
 							],
-							"field": "doctos"
+							"field": "doctos",
+							"columnName": "field"
 						},
 						"footcell_field10": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "doctos"
+							"field": "doctos",
+							"columnName": "field"
+						},
+						"headcell_field11": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label1"
+							],
+							"field": "telefono",
+							"columnName": "field"
+						},
+						"cell_field11": {
+							"model": "cell_field",
+							"items": [
+								"grid_field1"
+							],
+							"field": "telefono",
+							"columnName": "field"
+						},
+						"footcell_field11": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "telefono",
+							"columnName": "field"
+						},
+						"headcell_field12": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label2"
+							],
+							"field": "fecha_atencion"
+						},
+						"cell_field12": {
+							"model": "cell_field",
+							"items": [
+								"grid_field2"
+							],
+							"field": "fecha_atencion"
+						},
+						"footcell_field12": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "fecha_atencion"
 						}
 					},
 					"deferredItems": [],
@@ -1877,6 +1998,8 @@
 					"type": "search_panel",
 					"items": [
 						"search_panel_field14",
+						"search_panel_field3",
+						"search_panel_field2",
 						"search_panel_field",
 						"search_panel_field13",
 						"search_panel_field12",
@@ -2109,6 +2232,34 @@
 				},
 				"search_panel_field": {
 					"field": "doctos",
+					"type": "search_panel_field"
+				},
+				"grid_field1": {
+					"field": "telefono",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label1": {
+					"type": "grid_field_label",
+					"field": "telefono"
+				},
+				"search_panel_field2": {
+					"field": "telefono",
+					"type": "search_panel_field"
+				},
+				"grid_field2": {
+					"field": "fecha_atencion",
+					"type": "grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"grid_field_label2": {
+					"type": "grid_field_label",
+					"field": "fecha_atencion"
+				},
+				"search_panel_field3": {
+					"field": "fecha_atencion",
 					"type": "search_panel_field"
 				}
 			},

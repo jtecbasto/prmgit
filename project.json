@@ -554,7 +554,7 @@
 						"code": "$host = 'localhost';\r\n$user = 'rocasamexico_admin';\r\n$pwd = 'Rocas@Mexico.2025**';\r\n$port = 3306;\r\n$sys_dbname = 'rocasamexico_prm';"
 					}
 				],
-				"selectedCustomConn": "Local"
+				"selectedCustomConn": "New connection"
 			}
 		}
 	],
@@ -607,6 +607,20 @@
 							"iconName": "glyphicon-headphones",
 							"showIconType": 2,
 							"table": 35049744,
+							"pageType": "list"
+						}
+					},
+					{
+						"id": "23",
+						"data": {
+							"name": {
+								"text": "Tickets  de Atención a Domicilio",
+								"type": 0
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 3193935577,
 							"pageType": "list"
 						}
 					},
