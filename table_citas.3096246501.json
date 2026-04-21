@@ -2658,7 +2658,8 @@
 								"simple_grid_field5"
 							],
 							"field": "",
-							"columnName": ""
+							"columnName": "",
+							"nowrap": true
 						},
 						"footcell_field9": {
 							"model": "footcell_field",

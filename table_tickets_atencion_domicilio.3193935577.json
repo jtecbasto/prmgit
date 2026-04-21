@@ -3,11 +3,11 @@
 		{
 			"index": 1,
 			"field": "id",
-			"expr": "tad.id",
+			"expr": "tickets_atencion_domicilio.id",
 			"asc": false
 		}
 	],
-	"sql": "SELECT\r\ntad.id,\r\ntad.fecha,\r\ntad.idcliente,\r\nc.nombre_completo,\r\ntad.idtipoventa,\r\ntv.tipoventa,\r\ntad.idplan,\r\np.plan,\r\ntad.idproducto,\r\nr.descripcion equipo,\r\ntad.plazo,\r\ntad.usuario,\r\ntad.idtienda,\r\nt.tienda,\r\ntad.fechacaptura,\r\ntad.doctos,\r\nc.telefono,\r\ns.fecha fecha_atencion\r\nFROM tickets_atencion_domicilio tad\r\nleft join clientes c on tad.idcliente = c.idcliente\r\nleft join tiposventa tv on tad.idtipoventa = tv.idtipoventa\r\nleft join planes p on tad.idplan = p.idplan\r\nleft join productos r on tad.idproducto=r.idproducto\r\nleft join tiendas t on tad.idtienda = t.idtienda\r\nleft join solicitudes s on tad.id = s.idticket\r\norder by tad.id desc",
+	"sql": "SELECT\n\ttickets_atencion_domicilio.id,\n\ttickets_atencion_domicilio.fecha,\n\ttickets_atencion_domicilio.idcliente,\n\tc.nombre_completo,\n\ttickets_atencion_domicilio.idtipoventa,\n\ttv.tipoventa,\n\ttickets_atencion_domicilio.idplan,\n\tp.`plan`,\n\ttickets_atencion_domicilio.idproducto,\n\tr.descripcion AS equipo,\n\ttickets_atencion_domicilio.plazo,\n\ttickets_atencion_domicilio.usuario,\n\ttickets_atencion_domicilio.idtienda,\n\tt.Tienda,\n\ttickets_atencion_domicilio.fechacaptura,\n\ttickets_atencion_domicilio.doctos,\n\tc.telefono,\n\ts.fecha AS fecha_atencion,\n\ttickets_atencion_domicilio.dn,\n\ttickets_atencion_domicilio.fechahorallamada,\n\ttickets_atencion_domicilio.idestatusticket,\n\ttickets_atencion_domicilio.comentariosvpn,\n\ttickets_atencion_domicilio.comentariosvnp\nFROM\n\ttickets_atencion_domicilio\n\tLEFT OUTER JOIN clientes AS c ON c.idcliente = tickets_atencion_domicilio.idcliente\n\tLEFT OUTER JOIN tiposventa AS tv ON tv.idtipoventa = tickets_atencion_domicilio.idtipoventa\n\tLEFT OUTER JOIN planes AS p ON p.idplan = tickets_atencion_domicilio.idplan\n\tLEFT OUTER JOIN productos AS r ON r.idproducto = tickets_atencion_domicilio.idproducto\n\tLEFT OUTER JOIN tiendas AS t ON t.IdTienda = tickets_atencion_domicilio.idtienda\n\tLEFT OUTER JOIN solicitudes AS s ON s.idticket = tickets_atencion_domicilio.id\n\tLEFT OUTER JOIN estatustickets AS et ON et.id = tickets_atencion_domicilio.idestatusticket\nORDER BY\n\ttickets_atencion_domicilio.id DESC\n",
 	"connId": "conn",
 	"originalTable": "tickets_atencion_domicilio",
 	"name": "tickets_atencion_domicilio",
@@ -20,7 +20,7 @@
 	"fields": [
 		{
 			"name": "id",
-			"sqlExpression": "tad.id",
+			"sqlExpression": "tickets_atencion_domicilio.id",
 			"index": 1,
 			"strField": "id",
 			"type": 3,
@@ -38,7 +38,7 @@
 		},
 		{
 			"name": "fecha",
-			"sqlExpression": "tad.fecha",
+			"sqlExpression": "tickets_atencion_domicilio.fecha",
 			"index": 2,
 			"strField": "fecha",
 			"type": 7,
@@ -60,7 +60,7 @@
 		},
 		{
 			"name": "idcliente",
-			"sqlExpression": "tad.idcliente",
+			"sqlExpression": "tickets_atencion_domicilio.idcliente",
 			"index": 3,
 			"strField": "idcliente",
 			"type": 3,
@@ -77,7 +77,7 @@
 		},
 		{
 			"name": "idtipoventa",
-			"sqlExpression": "tad.idtipoventa",
+			"sqlExpression": "tickets_atencion_domicilio.idtipoventa",
 			"index": 5,
 			"strField": "idtipoventa",
 			"type": 3,
@@ -94,7 +94,7 @@
 		},
 		{
 			"name": "idplan",
-			"sqlExpression": "tad.idplan",
+			"sqlExpression": "tickets_atencion_domicilio.idplan",
 			"index": 7,
 			"strField": "idplan",
 			"type": 3,
@@ -111,7 +111,7 @@
 		},
 		{
 			"name": "idproducto",
-			"sqlExpression": "tad.idproducto",
+			"sqlExpression": "tickets_atencion_domicilio.idproducto",
 			"index": 9,
 			"strField": "idproducto",
 			"type": 3,
@@ -128,7 +128,7 @@
 		},
 		{
 			"name": "plazo",
-			"sqlExpression": "tad.plazo",
+			"sqlExpression": "tickets_atencion_domicilio.plazo",
 			"index": 11,
 			"strField": "plazo",
 			"type": 3,
@@ -145,7 +145,7 @@
 		},
 		{
 			"name": "usuario",
-			"sqlExpression": "tad.usuario",
+			"sqlExpression": "tickets_atencion_domicilio.usuario",
 			"index": 12,
 			"strField": "usuario",
 			"type": 200,
@@ -162,7 +162,7 @@
 		},
 		{
 			"name": "idtienda",
-			"sqlExpression": "tad.idtienda",
+			"sqlExpression": "tickets_atencion_domicilio.idtienda",
 			"index": 13,
 			"strField": "idtienda",
 			"type": 3,
@@ -179,7 +179,7 @@
 		},
 		{
 			"name": "fechacaptura",
-			"sqlExpression": "tad.fechacaptura",
+			"sqlExpression": "tickets_atencion_domicilio.fechacaptura",
 			"index": 15,
 			"strField": "fechacaptura",
 			"type": 135,
@@ -235,7 +235,7 @@
 		},
 		{
 			"name": "plan",
-			"sqlExpression": "p.plan",
+			"sqlExpression": "p.`plan`",
 			"index": 8,
 			"strField": "plan",
 			"type": 200,
@@ -268,34 +268,27 @@
 			"tableName": "productos"
 		},
 		{
-			"name": "tienda",
-			"sqlExpression": "t.tienda",
-			"index": 14,
-			"strField": "Tienda",
-			"type": 200,
-			"viewFormats": [
-				{}
-			],
-			"editFormats": [
-				{}
-			],
-			"label": {
-				"Spanish": "Tienda"
-			},
-			"tableName": "tiendas"
-		},
-		{
 			"name": "doctos",
-			"sqlExpression": "tad.doctos",
+			"sqlExpression": "tickets_atencion_domicilio.doctos",
 			"index": 16,
 			"strField": "doctos",
 			"type": 201,
 			"viewFormats": [
-				{}
+				{
+					"format": "Document Download",
+					"imageWidth": 100,
+					"imageHeight": 50,
+					"imageThumbWidth": 100,
+					"imageThumbHeight": 50,
+					"imageUrl": true,
+					"imageMultipleMode": 3,
+					"imageShowThumbnail": true,
+					"fileShowPdf": true
+				}
 			],
 			"editFormats": [
 				{
-					"format": "Text area"
+					"format": "Document upload"
 				}
 			],
 			"label": {
@@ -341,6 +334,121 @@
 				"Spanish": "Fecha de Atencion"
 			},
 			"tableName": "solicitudes"
+		},
+		{
+			"name": "Tienda",
+			"sqlExpression": "t.Tienda",
+			"index": 14,
+			"strField": "Tienda",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Tienda"
+			},
+			"tableName": "tiendas"
+		},
+		{
+			"name": "dn",
+			"sqlExpression": "tickets_atencion_domicilio.dn",
+			"index": 19,
+			"strField": "dn",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "DN"
+			},
+			"tableName": "tickets_atencion_domicilio"
+		},
+		{
+			"name": "fechahorallamada",
+			"sqlExpression": "tickets_atencion_domicilio.fechahorallamada",
+			"index": 20,
+			"strField": "fechahorallamada",
+			"type": 135,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Date",
+					"dateEditType": 11
+				}
+			],
+			"label": {
+				"Spanish": "Fecha Hora Llamada"
+			},
+			"tableName": "tickets_atencion_domicilio"
+		},
+		{
+			"name": "idestatusticket",
+			"sqlExpression": "tickets_atencion_domicilio.idestatusticket",
+			"index": 21,
+			"strField": "idestatusticket",
+			"type": 3,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Lookup wizard",
+					"lookupTable": "estatustickets",
+					"lookupTableConnection": "conn",
+					"lookupLinkField": "id",
+					"lookupDisplayField": "estatusticket"
+				}
+			],
+			"label": {
+				"Spanish": "Estatus del Ticket"
+			},
+			"tableName": "tickets_atencion_domicilio"
+		},
+		{
+			"name": "comentariosvpn",
+			"sqlExpression": "tickets_atencion_domicilio.comentariosvpn",
+			"index": 22,
+			"strField": "comentariosvpn",
+			"type": 201,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Text area"
+				}
+			],
+			"label": {
+				"Spanish": "Comentariosvpn"
+			},
+			"tableName": "tickets_atencion_domicilio"
+		},
+		{
+			"name": "comentariosvnp",
+			"sqlExpression": "tickets_atencion_domicilio.comentariosvnp",
+			"index": 23,
+			"strField": "comentariosvnp",
+			"type": 201,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{
+					"format": "Text area"
+				}
+			],
+			"label": {
+				"Spanish": "Comentariosvnp"
+			},
+			"tableName": "tickets_atencion_domicilio"
 		}
 	],
 	"dbTableInfo": {
@@ -467,6 +575,61 @@
 				"autoinc": false,
 				"defaultValueSQL": null,
 				"defaultValue": ""
+			},
+			{
+				"name": "dn",
+				"type": 200,
+				"size": 10,
+				"scale": 0,
+				"typeName": "varchar(10)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "fechahorallamada",
+				"type": 135,
+				"size": 0,
+				"scale": 0,
+				"typeName": "datetime",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idestatusticket",
+				"type": 3,
+				"size": 2,
+				"scale": 0,
+				"typeName": "int(2)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "comentariosvpn",
+				"type": 201,
+				"size": 0,
+				"scale": 0,
+				"typeName": "text",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "comentariosvnp",
+				"type": 201,
+				"size": 0,
+				"scale": 0,
+				"typeName": "text",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
 			}
 		],
 		"primaryKeys": [
@@ -480,7 +643,7 @@
 			"id": "add",
 			"type": "add",
 			"layoutId": "nomenu",
-			"disabled": false,
+			"disabled": true,
 			"default": 0,
 			"forms": {
 				"above-grid": {
@@ -690,8 +853,7 @@
 								"export_field10",
 								"export_field11",
 								"export_field12",
-								"export_field13",
-								"export_field14"
+								"export_field13"
 							]
 						}
 					},
@@ -794,10 +956,6 @@
 				},
 				"export_field13": {
 					"field": "equipo",
-					"type": "export_field"
-				},
-				"export_field14": {
-					"field": "tienda",
 					"type": "export_field"
 				}
 			},
@@ -960,7 +1118,7 @@
 			"id": "edit",
 			"type": "edit",
 			"layoutId": "nomenu",
-			"disabled": false,
+			"disabled": true,
 			"default": 0,
 			"forms": {
 				"above-grid": {
@@ -1217,10 +1375,15 @@
 								"integrated_edit_field11",
 								"integrated_edit_field12",
 								"integrated_edit_field13",
-								"integrated_edit_field14",
 								"integrated_edit_field",
 								"integrated_edit_field2",
-								"integrated_edit_field3"
+								"integrated_edit_field3",
+								"integrated_edit_field4",
+								"integrated_edit_field5",
+								"integrated_edit_field8",
+								"integrated_edit_field14",
+								"integrated_edit_field15",
+								"integrated_edit_field16"
 							]
 						}
 					},
@@ -1262,12 +1425,7 @@
 				},
 				"hamburger": {
 					"type": "hamburger",
-					"items": [
-						"view_edit"
-					]
-				},
-				"view_edit": {
-					"type": "view_edit"
+					"items": []
 				},
 				"integrated_edit_field10": {
 					"field": "nombre_completo",
@@ -1289,11 +1447,6 @@
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
-				"integrated_edit_field14": {
-					"field": "tienda",
-					"type": "integrated_edit_field",
-					"orientation": 0
-				},
 				"integrated_edit_field": {
 					"field": "doctos",
 					"type": "integrated_edit_field",
@@ -1306,6 +1459,36 @@
 				},
 				"integrated_edit_field3": {
 					"field": "fecha_atencion",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field4": {
+					"field": "Tienda",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field5": {
+					"field": "dn",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field8": {
+					"field": "fechahorallamada",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field14": {
+					"field": "idestatusticket",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field15": {
+					"field": "comentariosvpn",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field16": {
+					"field": "comentariosvnp",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				}
@@ -1358,7 +1541,8 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"add",
+								"inline_save_all",
+								"inline_cancel_all",
 								"delete"
 							]
 						},
@@ -1505,9 +1689,6 @@
 									"cell": "headcell_field1"
 								},
 								{
-									"cell": "headcell_field2"
-								},
-								{
 									"cell": "headcell_field3"
 								},
 								{
@@ -1536,6 +1717,24 @@
 								},
 								{
 									"cell": "headcell_field12"
+								},
+								{
+									"cell": "headcell_field2"
+								},
+								{
+									"cell": "headcell_field13"
+								},
+								{
+									"cell": "headcell_field14"
+								},
+								{
+									"cell": "headcell_field15"
+								},
+								{
+									"cell": "headcell_field16"
+								},
+								{
+									"cell": "headcell_field17"
 								}
 							]
 						},
@@ -1553,9 +1752,6 @@
 								},
 								{
 									"cell": "cell_field1"
-								},
-								{
-									"cell": "cell_field2"
 								},
 								{
 									"cell": "cell_field3"
@@ -1586,6 +1782,24 @@
 								},
 								{
 									"cell": "cell_field12"
+								},
+								{
+									"cell": "cell_field2"
+								},
+								{
+									"cell": "cell_field13"
+								},
+								{
+									"cell": "cell_field14"
+								},
+								{
+									"cell": "cell_field15"
+								},
+								{
+									"cell": "cell_field16"
+								},
+								{
+									"cell": "cell_field17"
 								}
 							]
 						},
@@ -1603,9 +1817,6 @@
 								},
 								{
 									"cell": "footcell_field1"
-								},
-								{
-									"cell": "footcell_field2"
 								},
 								{
 									"cell": "footcell_field3"
@@ -1636,6 +1847,24 @@
 								},
 								{
 									"cell": "footcell_field12"
+								},
+								{
+									"cell": "footcell_field2"
+								},
+								{
+									"cell": "footcell_field13"
+								},
+								{
+									"cell": "footcell_field14"
+								},
+								{
+									"cell": "footcell_field15"
+								},
+								{
+									"cell": "footcell_field16"
+								},
+								{
+									"cell": "footcell_field17"
 								}
 							]
 						}
@@ -1685,28 +1914,6 @@
 							"field": "fecha",
 							"columnName": "field"
 						},
-						"headcell_field2": {
-							"model": "headcell_field",
-							"items": [
-								"simple_grid_field21"
-							],
-							"field": "tienda",
-							"columnName": "field"
-						},
-						"cell_field2": {
-							"model": "cell_field",
-							"items": [
-								"simple_grid_field14"
-							],
-							"field": "tienda",
-							"columnName": "field"
-						},
-						"footcell_field2": {
-							"model": "footcell_field",
-							"items": [],
-							"field": "tienda",
-							"columnName": "field"
-						},
 						"headcell_field3": {
 							"model": "headcell_field",
 							"items": [
@@ -1721,7 +1928,8 @@
 								"simple_grid_field10"
 							],
 							"field": "nombre_completo",
-							"columnName": "field"
+							"columnName": "field",
+							"nowrap": true
 						},
 						"footcell_field3": {
 							"model": "footcell_field",
@@ -1743,7 +1951,8 @@
 								"simple_grid_field11"
 							],
 							"field": "tipoventa",
-							"columnName": "field"
+							"columnName": "field",
+							"nowrap": true
 						},
 						"footcell_field4": {
 							"model": "footcell_field",
@@ -1765,7 +1974,8 @@
 								"simple_grid_field12"
 							],
 							"field": "plan",
-							"columnName": "field"
+							"columnName": "field",
+							"nowrap": true
 						},
 						"footcell_field5": {
 							"model": "footcell_field",
@@ -1787,7 +1997,8 @@
 								"simple_grid_field13"
 							],
 							"field": "equipo",
-							"columnName": "field"
+							"columnName": "field",
+							"nowrap": true
 						},
 						"footcell_field6": {
 							"model": "footcell_field",
@@ -1892,7 +2103,9 @@
 						"cell_icons": {
 							"model": "cell_icons",
 							"items": [
-								"grid_edit",
+								"grid_inline_edit",
+								"grid_inline_save",
+								"grid_inline_cancel",
 								"grid_view"
 							],
 							"columnName": "list-icons",
@@ -1953,19 +2166,151 @@
 							"items": [
 								"grid_field_label2"
 							],
-							"field": "fecha_atencion"
+							"field": "fecha_atencion",
+							"columnName": "field"
 						},
 						"cell_field12": {
 							"model": "cell_field",
 							"items": [
 								"grid_field2"
 							],
-							"field": "fecha_atencion"
+							"field": "fecha_atencion",
+							"columnName": "field"
 						},
 						"footcell_field12": {
 							"model": "footcell_field",
 							"items": [],
-							"field": "fecha_atencion"
+							"field": "fecha_atencion",
+							"columnName": "field"
+						},
+						"headcell_field2": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label3"
+							],
+							"field": "Tienda",
+							"columnName": "field"
+						},
+						"cell_field2": {
+							"model": "cell_field",
+							"items": [
+								"grid_field3"
+							],
+							"field": "Tienda",
+							"columnName": "field",
+							"nowrap": true
+						},
+						"footcell_field2": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "Tienda",
+							"columnName": "field"
+						},
+						"headcell_field13": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label4"
+							],
+							"field": "dn",
+							"columnName": "field"
+						},
+						"cell_field13": {
+							"model": "cell_field",
+							"items": [
+								"grid_field4"
+							],
+							"field": "dn",
+							"columnName": "field"
+						},
+						"footcell_field13": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "dn",
+							"columnName": "field"
+						},
+						"headcell_field14": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label5"
+							],
+							"field": "fechahorallamada",
+							"columnName": "field"
+						},
+						"cell_field14": {
+							"model": "cell_field",
+							"items": [
+								"grid_field5"
+							],
+							"field": "fechahorallamada",
+							"columnName": "field"
+						},
+						"footcell_field14": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "fechahorallamada",
+							"columnName": "field"
+						},
+						"headcell_field15": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label6"
+							],
+							"field": "idestatusticket",
+							"columnName": "field"
+						},
+						"cell_field15": {
+							"model": "cell_field",
+							"items": [
+								"grid_field6"
+							],
+							"field": "idestatusticket",
+							"columnName": "field"
+						},
+						"footcell_field15": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "idestatusticket",
+							"columnName": "field"
+						},
+						"headcell_field16": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label7"
+							],
+							"field": "comentariosvpn"
+						},
+						"cell_field16": {
+							"model": "cell_field",
+							"items": [
+								"grid_field7"
+							],
+							"field": "comentariosvpn",
+							"nowrap": true
+						},
+						"footcell_field16": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "comentariosvpn"
+						},
+						"headcell_field17": {
+							"model": "headcell_field",
+							"items": [
+								"grid_field_label8"
+							],
+							"field": "comentariosvnp"
+						},
+						"cell_field17": {
+							"model": "cell_field",
+							"items": [
+								"grid_field8"
+							],
+							"field": "comentariosvnp",
+							"nowrap": true
+						},
+						"footcell_field17": {
+							"model": "footcell_field",
+							"items": [],
+							"field": "comentariosvnp"
 						}
 					},
 					"deferredItems": [],
@@ -1997,17 +2342,9 @@
 				"search_panel": {
 					"type": "search_panel",
 					"items": [
-						"search_panel_field14",
-						"search_panel_field3",
-						"search_panel_field2",
-						"search_panel_field",
-						"search_panel_field13",
-						"search_panel_field12",
-						"search_panel_field11",
+						"search_panel_field4",
 						"search_panel_field10",
-						"search_panel_field9",
 						"search_panel_field7",
-						"search_panel_field6",
 						"search_panel_field1"
 					],
 					"_flexiblePanel": true
@@ -2015,6 +2352,7 @@
 				"list_options": {
 					"type": "list_options",
 					"items": [
+						"edit_selected",
 						"delete_selected",
 						"-1",
 						"show_search_panel",
@@ -2031,16 +2369,8 @@
 					"field": "fecha",
 					"type": "search_panel_field"
 				},
-				"search_panel_field6": {
-					"field": "plazo",
-					"type": "search_panel_field"
-				},
 				"search_panel_field7": {
 					"field": "usuario",
-					"type": "search_panel_field"
-				},
-				"search_panel_field9": {
-					"field": "fechacaptura",
 					"type": "search_panel_field"
 				},
 				"username_button": {
@@ -2070,9 +2400,6 @@
 				"collapse_button": {
 					"type": "collapse_button"
 				},
-				"add": {
-					"type": "add"
-				},
 				"-": {
 					"type": "-"
 				},
@@ -2090,22 +2417,6 @@
 				},
 				"search_panel_field10": {
 					"field": "nombre_completo",
-					"type": "search_panel_field"
-				},
-				"search_panel_field11": {
-					"field": "tipoventa",
-					"type": "search_panel_field"
-				},
-				"search_panel_field12": {
-					"field": "plan",
-					"type": "search_panel_field"
-				},
-				"search_panel_field13": {
-					"field": "equipo",
-					"type": "search_panel_field"
-				},
-				"search_panel_field14": {
-					"field": "tienda",
 					"type": "search_panel_field"
 				},
 				"simple_grid_field": {
@@ -2198,24 +2509,11 @@
 					"type": "grid_field_label",
 					"field": "equipo"
 				},
-				"simple_grid_field14": {
-					"field": "tienda",
-					"type": "grid_field",
-					"inlineAdd": false,
-					"inlineEdit": false
-				},
-				"simple_grid_field21": {
-					"type": "grid_field_label",
-					"field": "tienda"
-				},
 				"grid_checkbox": {
 					"type": "grid_checkbox"
 				},
 				"grid_checkbox_head": {
 					"type": "grid_checkbox_head"
-				},
-				"grid_edit": {
-					"type": "grid_edit"
 				},
 				"grid_view": {
 					"type": "grid_view"
@@ -2224,15 +2522,11 @@
 					"field": "doctos",
 					"type": "grid_field",
 					"inlineAdd": false,
-					"inlineEdit": false
+					"inlineEdit": true
 				},
 				"grid_field_label": {
 					"type": "grid_field_label",
 					"field": "doctos"
-				},
-				"search_panel_field": {
-					"field": "doctos",
-					"type": "search_panel_field"
 				},
 				"grid_field1": {
 					"field": "telefono",
@@ -2244,10 +2538,6 @@
 					"type": "grid_field_label",
 					"field": "telefono"
 				},
-				"search_panel_field2": {
-					"field": "telefono",
-					"type": "search_panel_field"
-				},
 				"grid_field2": {
 					"field": "fecha_atencion",
 					"type": "grid_field",
@@ -2258,9 +2548,87 @@
 					"type": "grid_field_label",
 					"field": "fecha_atencion"
 				},
-				"search_panel_field3": {
-					"field": "fecha_atencion",
+				"edit_selected": {
+					"type": "edit_selected"
+				},
+				"grid_inline_edit": {
+					"type": "grid_inline_edit"
+				},
+				"grid_inline_save": {
+					"type": "grid_inline_save"
+				},
+				"grid_inline_cancel": {
+					"type": "grid_inline_cancel"
+				},
+				"inline_save_all": {
+					"type": "inline_save_all"
+				},
+				"inline_cancel_all": {
+					"type": "inline_cancel_all"
+				},
+				"grid_field3": {
+					"field": "Tienda",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label3": {
+					"type": "grid_field_label",
+					"field": "Tienda"
+				},
+				"search_panel_field4": {
+					"field": "Tienda",
 					"type": "search_panel_field"
+				},
+				"grid_field4": {
+					"field": "dn",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label4": {
+					"type": "grid_field_label",
+					"field": "dn"
+				},
+				"grid_field5": {
+					"field": "fechahorallamada",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label5": {
+					"type": "grid_field_label",
+					"field": "fechahorallamada"
+				},
+				"grid_field6": {
+					"field": "idestatusticket",
+					"type": "grid_field",
+					"inlineEdit": true,
+					"inlineAdd": false
+				},
+				"grid_field_label6": {
+					"type": "grid_field_label",
+					"field": "idestatusticket"
+				},
+				"grid_field7": {
+					"field": "comentariosvpn",
+					"type": "grid_field",
+					"inlineEdit": false,
+					"inlineAdd": false
+				},
+				"grid_field_label7": {
+					"type": "grid_field_label",
+					"field": "comentariosvpn"
+				},
+				"grid_field8": {
+					"field": "comentariosvnp",
+					"type": "grid_field",
+					"inlineEdit": true,
+					"inlineAdd": false
+				},
+				"grid_field_label8": {
+					"type": "grid_field_label",
+					"field": "comentariosvnp"
 				}
 			},
 			"dbProps": {},
@@ -2379,8 +2747,7 @@
 								"simple_grid_field10",
 								"simple_grid_field11",
 								"simple_grid_field12",
-								"simple_grid_field13",
-								"simple_grid_field14"
+								"simple_grid_field13"
 							]
 						}
 					},
@@ -2452,10 +2819,6 @@
 				},
 				"simple_grid_field13": {
 					"field": "equipo",
-					"type": "simple_grid_field"
-				},
-				"simple_grid_field14": {
-					"field": "tienda",
 					"type": "simple_grid_field"
 				}
 			},

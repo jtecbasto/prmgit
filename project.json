@@ -159,6 +159,13 @@
 				"height": 236
 			},
 			{
+				"gid": 3331198011,
+				"y": 1765,
+				"x": 1060,
+				"width": 153.828125,
+				"height": 124
+			},
+			{
 				"gid": 605844771,
 				"y": 1125,
 				"x": 950,
@@ -554,7 +561,7 @@
 						"code": "$host = 'localhost';\r\n$user = 'rocasamexico_admin';\r\n$pwd = 'Rocas@Mexico.2025**';\r\n$port = 3306;\r\n$sys_dbname = 'rocasamexico_prm';"
 					}
 				],
-				"selectedCustomConn": "New connection"
+				"selectedCustomConn": "Local"
 			}
 		}
 	],
@@ -707,6 +714,20 @@
 							"table": 3907017426,
 							"pageType": "list"
 						}
+					},
+					{
+						"id": "24",
+						"data": {
+							"name": {
+								"table": "estatustickets",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 3331198011,
+							"pageType": "list"
+						}
 					}
 				]
 			}
@@ -820,7 +841,8 @@
 								"welcome_item25",
 								"welcome_item27",
 								"welcome_item28",
-								"welcome_item29"
+								"welcome_item29",
+								"welcome_item30"
 							]
 						}
 					},
@@ -1255,6 +1277,18 @@
 						"type": 6
 					},
 					"background": "#4682b4",
+					"linkType": 0
+				},
+				"welcome_item30": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "estatustickets",
+					"linkPage": "list",
+					"linkText": {
+						"table": "estatustickets",
+						"type": 6
+					},
+					"background": "#b22222",
 					"linkType": 0
 				}
 			},

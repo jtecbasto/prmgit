@@ -1,14 +1,14 @@
 {
-	"sql": "SELECT\r\n\tid\r\nFROM\r\n\ttickets_monitor",
+	"sql": "SELECT\r\n\tid,\r\n\testatusticket,\r\n\talertar\r\nFROM\r\n\testatustickets",
 	"connId": "conn",
-	"originalTable": "tickets_monitor",
-	"name": "tickets_monitor",
-	"shortTableName": "tickets_monitor",
+	"originalTable": "estatustickets",
+	"name": "estatustickets",
+	"shortTableName": "estatustickets",
 	"dbType": 0,
 	"keyFields": [
 		"id"
 	],
-	"detailsBadgeColor": "4682b4",
+	"detailsBadgeColor": "b22222",
 	"fields": [
 		{
 			"name": "id",
@@ -25,14 +25,41 @@
 			"label": {
 				"Spanish": "Id"
 			},
-			"tableName": "tickets_monitor"
-		}
-	],
-	"eventHandlers": [
+			"tableName": "estatustickets"
+		},
 		{
-			"eventId": "EVENT_BEFOREPROCESS_LIST",
-			"pageType": "list",
-			"code": "if (postvalue(\"ajax\") == \"ticketsPendientes\") {\n    header(\"Content-Type: application/json; charset=UTF-8\");\n    header(\"Cache-Control: no-cache, no-store, must-revalidate\");\n    header(\"Pragma: no-cache\");\n    header(\"Expires: 0\");\n\n    $idggtipoventa = isset($_SESSION[\"idggtipoventa\"]) ? intval($_SESSION[\"idggtipoventa\"]) : 0;\n    $userId = Security::getUserName();\n    $ticketSession = isset($_SESSION[\"ticket_session\"]) ? $_SESSION[\"ticket_session\"] : \"\";\n\n    $userIdEsc = db_addslashes($userId);\n    $ticketSessionEsc = db_addslashes($ticketSession);\n\n    $sql = \"\n        SELECT COUNT(*) AS total\n        FROM tickets_atencion_domicilio tad\n        LEFT JOIN tiposventa tv ON tad.idtipoventa = tv.idtipoventa\n        LEFT JOIN gtiposventa gtv ON tv.idgtipoventa = gtv.idgtipoventa\n        LEFT JOIN estatustickets et on tad.idestatusticket=et.id\n        WHERE gtv.idggtipoventa = \".$idggtipoventa.\" AND et.alertar = 1\n          AND NOT EXISTS (\n                SELECT 1\n                FROM solicitudes s\n                WHERE s.idticket = tad.id\n          )\n          AND NOT EXISTS (\n                SELECT 1\n                FROM tickets_reservados_tmp rr\n                WHERE rr.idticket = tad.id AND rr.expires_at >= NOW()\n                  AND NOT (\n                        rr.usuario = '\".$userIdEsc.\"'\n                    AND rr.sesion_id = '\".$ticketSessionEsc.\"'\n                  )\n          )\n    \";\n\n    $rs = db_query($sql, $conn);\n    $row = $rs ? db_fetch_array($rs) : false;\n    $total = $row ? intval($row[\"total\"]) : 0;\n\n    echo my_json_encode(array(\n        \"ok\" => true,\n        \"total\" => $total\n    ));\n    exit();\n}\n\n/* opcional: bloquear acceso normal a la página */\nif (!postvalue(\"ajax\")) {\n    echo \"Acceso no válido\";\n    exit();\n}\n\n"
+			"name": "estatusticket",
+			"sqlExpression": "estatusticket",
+			"index": 2,
+			"strField": "estatusticket",
+			"type": 200,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Estatusticket"
+			},
+			"tableName": "estatustickets"
+		},
+		{
+			"name": "alertar",
+			"sqlExpression": "alertar",
+			"index": 3,
+			"strField": "alertar",
+			"type": 2,
+			"viewFormats": [
+				{}
+			],
+			"editFormats": [
+				{}
+			],
+			"label": {
+				"Spanish": "Alertar"
+			},
+			"tableName": "estatustickets"
 		}
 	],
 	"dbTableInfo": {
@@ -42,10 +69,32 @@
 			{
 				"name": "id",
 				"type": 3,
-				"size": 11,
+				"size": 2,
 				"scale": 0,
-				"typeName": "int(11)",
+				"typeName": "int(2)",
 				"nullable": false,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "estatusticket",
+				"type": 200,
+				"size": 45,
+				"scale": 0,
+				"typeName": "varchar(45)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "alertar",
+				"type": 16,
+				"size": 4,
+				"scale": 0,
+				"typeName": "tinyint(4)",
+				"nullable": true,
 				"autoinc": false,
 				"defaultValueSQL": null,
 				"defaultValue": ""
@@ -55,7 +104,7 @@
 			"id"
 		],
 		"uniqueFields": [],
-		"name": "tickets_monitor"
+		"name": "estatustickets"
 	},
 	"pages": [
 		{
@@ -139,8 +188,25 @@
 				},
 				"grid": {
 					"modelId": "simple-edit",
-					"grid": [],
-					"cells": {},
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c3"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c3": {
+							"model": "c3",
+							"items": [
+								"integrated_edit_field",
+								"integrated_edit_field1"
+							]
+						}
+					},
 					"deferredItems": [],
 					"columnCount": 1,
 					"inlineLabels": false,
@@ -165,6 +231,16 @@
 				},
 				"add_reset": {
 					"type": "add_reset"
+				},
+				"integrated_edit_field": {
+					"field": "estatusticket",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field1": {
+					"field": "alertar",
+					"type": "integrated_edit_field",
+					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -245,7 +321,9 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"export_field"
+								"export_field",
+								"export_field1",
+								"export_field2"
 							]
 						}
 					},
@@ -296,6 +374,14 @@
 				},
 				"export_field": {
 					"field": "id",
+					"type": "export_field"
+				},
+				"export_field1": {
+					"field": "estatusticket",
+					"type": "export_field"
+				},
+				"export_field2": {
+					"field": "alertar",
 					"type": "export_field"
 				}
 			},
@@ -381,7 +467,9 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"import_field"
+								"import_field",
+								"import_field1",
+								"import_field2"
 							]
 						}
 					},
@@ -395,6 +483,14 @@
 				},
 				"import_field": {
 					"field": "id",
+					"type": "import_field"
+				},
+				"import_field1": {
+					"field": "estatusticket",
+					"type": "import_field"
+				},
+				"import_field2": {
+					"field": "alertar",
 					"type": "import_field"
 				}
 			},
@@ -498,8 +594,25 @@
 				},
 				"grid": {
 					"modelId": "simple-edit",
-					"grid": [],
-					"cells": {},
+					"grid": [
+						{
+							"cells": [
+								{
+									"cell": "c3"
+								}
+							],
+							"section": ""
+						}
+					],
+					"cells": {
+						"c3": {
+							"model": "c3",
+							"items": [
+								"integrated_edit_field",
+								"integrated_edit_field1"
+							]
+						}
+					},
 					"deferredItems": [],
 					"columnCount": 1,
 					"inlineLabels": false,
@@ -530,6 +643,16 @@
 				},
 				"edit_close": {
 					"type": "edit_close"
+				},
+				"integrated_edit_field": {
+					"field": "estatusticket",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field1": {
+					"field": "alertar",
+					"type": "integrated_edit_field",
+					"orientation": 0
 				}
 			},
 			"dbProps": {},
@@ -644,7 +767,9 @@
 						"c3": {
 							"model": "c3",
 							"items": [
-								"integrated_edit_field"
+								"integrated_edit_field",
+								"integrated_edit_field1",
+								"integrated_edit_field2"
 							]
 						}
 					},
@@ -666,6 +791,16 @@
 				},
 				"integrated_edit_field": {
 					"field": "id",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field1": {
+					"field": "estatusticket",
+					"type": "integrated_edit_field",
+					"orientation": 0
+				},
+				"integrated_edit_field2": {
+					"field": "alertar",
 					"type": "integrated_edit_field",
 					"orientation": 0
 				},
@@ -776,8 +911,7 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"menu",
-								"search_panel"
+								"menu"
 							]
 						}
 					},
@@ -837,7 +971,9 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"simple_grid_field"
+								"simple_grid_field",
+								"simple_grid_field1",
+								"simple_grid_field2"
 							]
 						}
 					},
@@ -889,29 +1025,21 @@
 					"inlineAdd": false,
 					"inlineEdit": false
 				},
-				"search_panel": {
-					"type": "search_panel",
-					"items": [
-						"search_panel_field"
-					],
-					"_flexiblePanel": true
+				"simple_grid_field1": {
+					"field": "estatusticket",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
+				},
+				"simple_grid_field2": {
+					"field": "alertar",
+					"type": "simple_grid_field",
+					"inlineAdd": false,
+					"inlineEdit": false
 				},
 				"list_options": {
 					"type": "list_options",
-					"items": [
-						"show_search_panel",
-						"hide_search_panel"
-					]
-				},
-				"show_search_panel": {
-					"type": "show_search_panel"
-				},
-				"hide_search_panel": {
-					"type": "hide_search_panel"
-				},
-				"search_panel_field": {
-					"field": "id",
-					"type": "search_panel_field"
+					"items": []
 				},
 				"username_button": {
 					"type": "username_button",
@@ -1052,7 +1180,9 @@
 						"c1": {
 							"model": "c1",
 							"items": [
-								"simple_grid_field"
+								"simple_grid_field",
+								"simple_grid_field1",
+								"simple_grid_field2"
 							]
 						}
 					},
@@ -1072,6 +1202,14 @@
 				},
 				"simple_grid_field": {
 					"field": "id",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field1": {
+					"field": "estatusticket",
+					"type": "simple_grid_field"
+				},
+				"simple_grid_field2": {
+					"field": "alertar",
 					"type": "simple_grid_field"
 				}
 			},
@@ -1094,6 +1232,6 @@
 		"addressFields": []
 	},
 	"caption": {
-		"Spanish": "Tickets Monitor"
+		"Spanish": "Estatustickets"
 	}
 }

@@ -434,6 +434,61 @@
 				"autoinc": false,
 				"defaultValueSQL": null,
 				"defaultValue": ""
+			},
+			{
+				"name": "dn",
+				"type": 200,
+				"size": 10,
+				"scale": 0,
+				"typeName": "varchar(10)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "fechahorallamada",
+				"type": 135,
+				"size": 0,
+				"scale": 0,
+				"typeName": "datetime",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "idestatusticket",
+				"type": 3,
+				"size": 2,
+				"scale": 0,
+				"typeName": "int(2)",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "comentariosvpn",
+				"type": 201,
+				"size": 0,
+				"scale": 0,
+				"typeName": "text",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
+			},
+			{
+				"name": "comentariosvnp",
+				"type": 201,
+				"size": 0,
+				"scale": 0,
+				"typeName": "text",
+				"nullable": true,
+				"autoinc": false,
+				"defaultValueSQL": null,
+				"defaultValue": ""
 			}
 		],
 		"primaryKeys": [
