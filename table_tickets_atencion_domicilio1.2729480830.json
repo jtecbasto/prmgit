@@ -469,7 +469,7 @@
 				"defaultValue": ""
 			},
 			{
-				"name": "comentariosvpn",
+				"name": "comentariospdv",
 				"type": 201,
 				"size": 0,
 				"scale": 0,
