@@ -600,6 +600,20 @@
 						}
 					},
 					{
+						"id": "25",
+						"data": {
+							"name": {
+								"table": "ventas",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 8424862,
+							"pageType": "list"
+						}
+					},
+					{
 						"id": "17",
 						"data": {
 							"name": {
