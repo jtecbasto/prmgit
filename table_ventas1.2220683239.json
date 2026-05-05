@@ -1,9 +1,10 @@
 {
 	"sql": "SELECT\r\n\tidventa\r\nFROM\r\n\tventas",
+	"type": 1,
 	"connId": "conn",
 	"originalTable": "ventas",
-	"name": "ventas",
-	"shortTableName": "ventas",
+	"name": "view_ventas",
+	"shortTableName": "ventas1",
 	"dbType": 0,
 	"keyFields": [
 		"idventa"
@@ -2111,6 +2112,6 @@
 		"addressFields": []
 	},
 	"caption": {
-		"Spanish": "Ventas"
+		"Spanish": "View Ventas"
 	}
 }

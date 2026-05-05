@@ -313,6 +313,13 @@
 				"height": 400
 			},
 			{
+				"gid": 2220683239,
+				"y": 1575,
+				"x": 1360,
+				"width": 146.046875,
+				"height": 68
+			},
+			{
 				"gid": 4055032228,
 				"y": 685,
 				"x": 315,
@@ -600,20 +607,6 @@
 						}
 					},
 					{
-						"id": "25",
-						"data": {
-							"name": {
-								"table": "ventas",
-								"type": 6
-							},
-							"pageId": "list",
-							"itemType": 2,
-							"linkType": 0,
-							"table": 8424862,
-							"pageType": "list"
-						}
-					},
-					{
 						"id": "17",
 						"data": {
 							"name": {
@@ -742,6 +735,20 @@
 							"table": 3331198011,
 							"pageType": "list"
 						}
+					},
+					{
+						"id": "26",
+						"data": {
+							"name": {
+								"table": "view_ventas",
+								"type": 6
+							},
+							"pageId": "list",
+							"itemType": 2,
+							"linkType": 0,
+							"table": 2220683239,
+							"pageType": "list"
+						}
 					}
 				]
 			}
@@ -856,7 +863,8 @@
 								"welcome_item27",
 								"welcome_item28",
 								"welcome_item29",
-								"welcome_item30"
+								"welcome_item30",
+								"welcome_item31"
 							]
 						}
 					},
@@ -1303,6 +1311,18 @@
 						"type": 6
 					},
 					"background": "#b22222",
+					"linkType": 0
+				},
+				"welcome_item31": {
+					"type": "welcome_item",
+					"linkUrl": "",
+					"linkTable": "view_ventas",
+					"linkPage": "list",
+					"linkText": {
+						"table": "view_ventas",
+						"type": 6
+					},
+					"background": "#daa520",
 					"linkType": 0
 				}
 			},
@@ -2795,7 +2815,7 @@
 		"sidebarCustomThemeColor": "legacy",
 		"topbarCustomThemeColor": "legacy",
 		"logoCustomThemeColor": "legacy",
-		"customCss": "\r\n@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css');\r\n\r\n/* pega en CSS de la página o global */\r\n.panel-collapse.no-bs-trans {\r\n  transition: none !important;\r\n}\r\n\r\n\r\n/* HOVER global */\r\nbody.function-edit .form-control:hover,\r\nbody.function-add  .form-control:hover{\r\n  background: #ececec !important;\r\n  border-bottom-color: rgba(0,0,0,.87) !important;\r\n}\r\n\r\n/* FOCUS global */\r\nbody.function-edit .form-control:focus,\r\nbody.function-add  .form-control:focus{\r\n\r\n                    border-color: #0366d6;\r\n                    outline: none;\r\n                    box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;\r\n}\r\n\r\n/* Evita que afecte a checkbox/radio/file/range */\r\nbody.function-edit input.form-control[type=checkbox],\r\nbody.function-edit input.form-control[type=radio],\r\nbody.function-edit input.form-control[type=file],\r\nbody.function-edit input.form-control[type=range],\r\nbody.function-add  input.form-control[type=checkbox],\r\nbody.function-add  input.form-control[type=radio],\r\nbody.function-add  input.form-control[type=file],\r\nbody.function-add  input.form-control[type=range]{\r\n  background: transparent !important;\r\n  border: none !important;\r\n}\r\n\r\n.form-control:disabled,\r\n.form-control[readonly]{\r\n  background: #eeeeee !important;\r\n  border-bottom-color: rgba(0,0,0,.12) !important;\r\n  color: rgba(0,0,0,.45) !important;\r\n  cursor: not-allowed;\r\n}\r\n\r\n\r\n\r\n\r\n/************************************************************/\r\n\r\n/* ---- Configura tus tonos ---- */\r\n\r\n:root{\r\n  --accent: #FF4500; /*#7B68EE;   */      /* morado oscuro */\r\n  --accent-hover: #FFD700;   /* morado al pasar el mouse */\r\n}\r\n\r\n/* Listas/Lookups hechos con tablas Bootstrap */\r\n.table > thead > tr > th a:not(.btn),\r\n/*.table > tbody > tr > td a:not(.btn),*/\r\n.table > tfoot > tr > td a:not(.btn) {\r\n  color: var(--accent) !important;\r\n}\r\n.table > thead > tr > th a:not(.btn):hover,\r\n/*.table > tbody > tr > td a:not(.btn):hover,*/\r\n.table > tfoot > tr > td a:not(.btn):hover {\r\n  color: var(--accent-hover) !important;\r\n}\r\n\r\n/* Por si la grid no usa .table en alguna página */\r\n.r-grid table a:not(.btn) {\r\n  color: var(--accent) !important;\r\n}\r\n.r-grid table a:not(.btn):hover {\r\n  color: var(--accent-hover) !important;\r\n}\r\n\r\n\r\n\r\n/***********************************************************************/\r\n\r\n",
+		"customCss": "\r\n@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css');\r\n\r\n/* pega en CSS de la página o global */\r\n.panel-collapse.no-bs-trans {\r\n  transition: none !important;\r\n}\r\n\r\n\r\n/* HOVER global */\r\nbody.function-edit .form-control:hover,\r\nbody.function-add  .form-control:hover{\r\n  background: #ececec !important;\r\n  border-bottom-color: rgba(0,0,0,.87) !important;\r\n}\r\n\r\n/* FOCUS global */\r\nbody.function-edit .form-control:focus,\r\nbody.function-add  .form-control:focus{\r\n\r\n                    border-color: #0366d6;\r\n                    outline: none;\r\n                    box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;\r\n}\r\n\r\n/* Evita que afecte a checkbox/radio/file/range */\r\nbody.function-edit input.form-control[type=checkbox],\r\nbody.function-edit input.form-control[type=radio],\r\nbody.function-edit input.form-control[type=file],\r\nbody.function-edit input.form-control[type=range],\r\nbody.function-add  input.form-control[type=checkbox],\r\nbody.function-add  input.form-control[type=radio],\r\nbody.function-add  input.form-control[type=file],\r\nbody.function-add  input.form-control[type=range]{\r\n  background: transparent !important;\r\n  border: none !important;\r\n}\r\n\r\n.form-control:disabled,\r\n.form-control[readonly]{\r\n  background: #eeeeee !important;\r\n  border-bottom-color: rgba(0,0,0,.12) !important;\r\n  color: rgba(0,0,0,.45) !important;\r\n  cursor: not-allowed;\r\n}\r\n\r\n\r\n\r\n\r\n/************************************************************/\r\n\r\n/* ---- Configura tus tonos ---- */\r\n\r\n:root{\r\n  --accent: #FF4500; /*#7B68EE;   */      /* morado oscuro */\r\n  --accent-hover: #FFD700;   /* morado al pasar el mouse */\r\n}\r\n\r\n/* Listas/Lookups hechos con tablas Bootstrap */\r\n.table > thead > tr > th a:not(.btn),\r\n/*.table > tbody > tr > td a:not(.btn),*/\r\n.table > tfoot > tr > td a:not(.btn) {\r\n  color: var(--accent) !important;\r\n}\r\n.table > thead > tr > th a:not(.btn):hover,\r\n/*.table > tbody > tr > td a:not(.btn):hover,*/\r\n.table > tfoot > tr > td a:not(.btn):hover {\r\n  color: var(--accent-hover) !important;\r\n}\r\n\r\n/* Por si la grid no usa .table en alguna página */\r\n.r-grid table a:not(.btn) {\r\n  color: var(--accent) !important;\r\n}\r\n.r-grid table a:not(.btn):hover {\r\n  color: var(--accent-hover) !important;\r\n}\r\n\r\n\r\n\r\n/***********************************************************************/\r\n.ventas-check-cell {\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: center;\r\n}\r\n\r\n.ventas-check-readonly {\r\n    width: 18px;\r\n    height: 18px;\r\n    cursor: default;\r\n    opacity: .85;\r\n}\r\n\r\n.ventas-check-editable {\r\n    width: 18px;\r\n    height: 18px;\r\n    cursor: pointer;\r\n}\r\n\r\n.ventas-check-cell-editable {\r\n    background: rgba(37, 99, 235, 0.04);\r\n}\r\n\r\n\r\n.addon-verificacion-check {\r\n    width: 18px;\r\n    height: 18px;\r\n    cursor: pointer;\r\n}\r\n\r\n.addon-verificacion-check:disabled {\r\n    opacity: .6;\r\n    cursor: wait;\r\n}\r\n\r\n.addon-check-saved {\r\n    outline: 2px solid #22c55e;\r\n    outline-offset: 2px;\r\n}\r\n\r\n/************************************************************/\r\n.ciclo-combo-editor {\r\n    width: 180px;\r\n    max-height: 260px;\r\n    background: #ffffff;\r\n    border: 1px solid #9ca3af;\r\n    box-shadow: 0 8px 18px rgba(0,0,0,.16);\r\n    font-size: 12px;\r\n    overflow: hidden;\r\n}\r\n\r\n.ciclo-combo-header {\r\n    display: grid;\r\n    grid-template-columns: 1fr 1fr;\r\n    background: #f3f4f6;\r\n    color: #111827;\r\n    font-weight: 700;\r\n    border-bottom: 1px solid #d1d5db;\r\n}\r\n\r\n.ciclo-combo-header div {\r\n    padding: 6px 8px;\r\n    border-right: 1px solid #d1d5db;\r\n}\r\n\r\n.ciclo-combo-header div:last-child {\r\n    border-right: none;\r\n}\r\n\r\n.ciclo-combo-body {\r\n    max-height: 225px;\r\n    overflow-y: auto;\r\n}\r\n\r\n.ciclo-combo-row {\r\n    display: grid;\r\n    grid-template-columns: 1fr 1fr;\r\n    cursor: pointer;\r\n}\r\n\r\n.ciclo-combo-row div {\r\n    padding: 5px 8px;\r\n    border-right: 1px solid #e5e7eb;\r\n}\r\n\r\n.ciclo-combo-row div:last-child {\r\n    border-right: none;\r\n}\r\n\r\n.ciclo-combo-row:hover {\r\n    background: #e0f2fe;\r\n}\r\n\r\n.ciclo-combo-row.is-selected {\r\n    background: #2563eb;\r\n    color: #ffffff;\r\n}\r\n\r\n/*****************************************************/\r\n\r\n.ag-theme-quartz .ventas-cell-editable {\r\n    background: #fffdf2;\r\n    box-shadow: inset 0 0 0 1px #facc15;\r\n}\r\n\r\n/****************************************************/\r\n#myGrid {\r\n    width: 100%;\r\n    min-height: 420px;\r\n}\r\n\r\n/********************************************************/\r\n.ventas-select-editor {\r\n    width: 100%;\r\n    height: 100%;\r\n    border: 1px solid #2563eb;\r\n    border-radius: 4px;\r\n    padding: 2px 6px;\r\n    font-size: 12px;\r\n    background: #ffffff;\r\n}",
 		"rolloverHighlight": true,
 		"gpHeaderBg": "legacy",
 		"gpHeaderColor": "legacy",
